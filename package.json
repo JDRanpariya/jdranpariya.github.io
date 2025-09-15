@@ -1,0 +1,28 @@
+{
+    "name": "personal-site",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@11ty/eleventy": "^3.0.0",
+        "@fullhuman/postcss-purgecss": "^6.0.0",
+        "@tailwindcss/typography": "^0.5.16",
+        "autoprefixer": "^10.4.21",
+        "concurrently": "^9.2.1",
+        "del-cli": "^5.1.0",
+        "html-minifier": "^4.0.0",
+        "postcss": "^8.4.47",
+        "postcss-cli": "^11.0.0",
+        "tailwindcss": "^3.4.10"
+    },
+    "scripts": {
+        "clean": "bunx del build",
+        "start": "concurrently \"bunx @11ty/eleventy --serve\" \"bun run css:watch\"",
+        "watch": "bunx @11ty/eleventy --watch",
+        "build": "ELEVENTY_ENV=dev bunx @11ty/eleventy && bun run css:build",
+        "build:prod": "ELEVENTY_ENV=prod bunx @11ty/eleventy && bun run css:build:prod",
+        "debug": "DEBUG=* bunx @11ty/eleventy",
+        "css:build": "bunx postcss src/css/input.css --o build/css/style.css",
+        "css:build:prod": "bunx postcss src/css/input.css --o build/css/style.css --env production",
+        "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch"
+    }
+}

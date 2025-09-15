@@ -1,0 +1,74 @@
+<!-- Navigation with Dark Mode Toggle - src/_includes/components/nav.njk -->
+<nav class="top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
+    
+    <!-- Logo/Brand -->
+    <a href="/" class="group flex items-center p-2 md:p-0">
+  <span class="font-serif text-2xl font-bold text-primary tracking-wide group-hover:scale-105 transition-transform duration-300">
+    =^.^=
+  </span>
+</a>
+
+
+    <!-- Main Navigation -->
+    <div class="flex items-center space-x-8">
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="/now" class="link font-sans text-lg font-medium">
+          Now
+        </a>
+        <a href="/writings" class="link font-sans text-lg font-medium">
+          Writings
+        </a>
+        <a href="/library" class="link font-sans text-lg font-medium">
+          Library
+        </a>
+        <a href="/about" class="link font-sans text-lg font-medium">
+          About
+        </a>
+      </div>
+
+      <!-- Dark Mode Toggle -->
+      <button 
+        id="theme-toggle"
+        onclick="toggleTheme()" 
+        class="p-2 text-secondary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg"
+        title="Switch to dark mode"
+        aria-label="Toggle dark mode">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Moon icon (default - will be updated by script) -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        class="md:hidden p-2 text-secondary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg"
+        onclick="toggleMobileMenu()"
+        aria-label="Toggle mobile menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-surface border-t border-primary/10">
+    <div class="px-6 py-4 space-y-4">
+      <a href="/now" class="block link font-sans text-base font-medium py-2">
+        Now
+      </a>
+      <a href="/writings" class="block link font-sans text-base font-medium py-2">
+        Writings
+      </a>
+      <a href="/library" class="block link font-sans text-base font-medium py-2">
+        Library
+      </a>
+      <a href="/about" class="block link font-sans text-base font-medium py-2">
+        About
+      </a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Title and Meta -->
+  <title>{% if title %}{{ title }}{% else %}Jay - AI × Bio × Neuro × Embodied Intelligence{% endif %}</title>
+  <meta name="description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition{% endif %}" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+
+  
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="/css/style.css" />
+  
+  <!-- Theme initialization script (prevents flash) -->
+  <script>
+    // Initialize theme before page renders
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="bg-background text-primary min-h-screen flex flex-col transition-colors duration-300">
+  <!-- Navigation -->
+  {% include "components/nav.njk" %}
+  
+  <!-- Main Content -->
+  <main class="flex-grow">
+    {{ content | safe }}
+  </main>
+  
+  <!-- Footer -->
+  {% include "components/footer.njk" %}
+  
+  <!-- Theme management script -->
+  <script>
+    // Dark mode toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      
+      if (isDark) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        updateThemeButton('light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        updateThemeButton('dark');
+      }
+    }
+
+    function updateThemeButton(theme) {
+      const button = document.getElementById('theme-toggle');
+      const icon = button.querySelector('svg');
+      
+      if (theme === 'dark') {
+        // Sun icon for switching to light mode
+        icon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        `;
+        button.setAttribute('title', 'Switch to light mode');
+      } else {
+        // Moon icon for switching to dark mode
+        icon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        `;
+        button.setAttribute('title', 'Switch to dark mode');
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+      
+      menu.classList.toggle('hidden');
+      
+      // Update hamburger/close icon
+      const icon = button.querySelector('svg path');
+      if (menu.classList.contains('hidden')) {
+        icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+      } else {
+        icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+      }
+    }
+
+    // Initialize theme on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      updateThemeButton(savedTheme);
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const menu = document.getElementById('mobile-menu');
+        const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+        
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+          menu.classList.add('hidden');
+          const icon = button.querySelector('svg path');
+          icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
