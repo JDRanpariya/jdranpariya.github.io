@@ -18,7 +18,7 @@ jobs:
       - run: bun install
       - run: bun run build:prod
       - uses: actions/configure-pages@v3
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: 'build'
       - uses: actions/deploy-pages@v2
