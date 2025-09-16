@@ -12,24 +12,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
-
   
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/css/style.css" />
   
-  <!-- Theme initialization script (prevents flash) -->
+  <!-- Theme initialization to prevent flash -->
   <script>
-    // Initialize theme before page renders
     (function() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      if (savedTheme === 'dark') {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
         document.documentElement.classList.add('dark');
       }
     })();
   </script>
 </head>
 
-<body class="bg-background text-primary min-h-screen flex flex-col transition-colors duration-300">
+<body class="bg-bg dark:bg-bg-dark text-primary dark:text-primary-dark min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- Alert -->
+  {% include "components/alert.njk" %}
+  
   <!-- Navigation -->
   {% include "components/nav.njk" %}
   
@@ -41,77 +44,68 @@
   <!-- Footer -->
   {% include "components/footer.njk" %}
   
-  <!-- Theme management script -->
+  <!-- Scripts -->
   <script>
-    // Dark mode toggle functionality
+    // Toggle dark/light theme
     function toggleTheme() {
       const html = document.documentElement;
       const isDark = html.classList.contains('dark');
-      
-      if (isDark) {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        updateThemeButton('light');
-      } else {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        updateThemeButton('dark');
-      }
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      updateThemeButton(!isDark ? 'dark' : 'light');
     }
 
     function updateThemeButton(theme) {
       const button = document.getElementById('theme-toggle');
+      if (!button) return;
+
       const icon = button.querySelector('svg');
-      
-      if (theme === 'dark') {
-        // Sun icon for switching to light mode
-        icon.innerHTML = `
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        `;
-        button.setAttribute('title', 'Switch to light mode');
-      } else {
-        // Moon icon for switching to dark mode
-        icon.innerHTML = `
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        `;
-        button.setAttribute('title', 'Switch to dark mode');
-      }
+      if (!icon) return;
+
+      icon.innerHTML = theme === 'dark'
+        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>`
+        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>`;
+
+      button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
 
+    // Toggle mobile menu
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
       const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-      
+      if (!menu || !button) return;
+
       menu.classList.toggle('hidden');
-      
-      // Update hamburger/close icon
       const icon = button.querySelector('svg path');
-      if (menu.classList.contains('hidden')) {
-        icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-      } else {
-        icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
-      }
+      if (!icon) return;
+
+      icon.setAttribute('d', menu.classList.contains('hidden')
+        ? 'M4 6h16M4 12h16M4 18h16'
+        : 'M6 18L18 6M6 6l12 12');
     }
 
-    // Initialize theme on page load
     document.addEventListener('DOMContentLoaded', function() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      updateThemeButton(savedTheme);
-      
+      // Initialize theme button
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
+
       // Close mobile menu when clicking outside
       document.addEventListener('click', function(event) {
         const menu = document.getElementById('mobile-menu');
         const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-        
+        if (!menu || !button) return;
         if (!menu.contains(event.target) && !button.contains(event.target)) {
           menu.classList.add('hidden');
           const icon = button.querySelector('svg path');
-          icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+          if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
         }
       });
     });
   </script>
+
 </body>
 </html>
+
