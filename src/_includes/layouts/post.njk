@@ -1,0 +1,233 @@
+---
+layout: layouts/base.njk
+---
+<section class="max-w-9xl mx-auto px-6 py-16">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- TOC section -->
+<aside class="pt-4 pl-8 hidden md:block md:col-span-3 relative">
+  <div class="sticky top-16 mt-80">
+    <div class="toc-container flex items-center space-x-2 text-lg text-muted cursor-pointer">
+      <span class="font-semibold">Table of Contents</span>
+      <span class="toc-toggle transition-transform duration-300">▲</span>
+    </div>
+    <div class="toc-content mt-2 overflow-hidden transition-all duration-500 ease-in-out opacity-100 max-h-[2000px]">
+      <nav class="text-muted [&_ol]:list-none [&_ol]:p-0 [&_li]:relative [&_li]:pl-4 [&_li]:mb-1 [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-blue-500 [&_ol_ol]:ml-4 [&_ol_ol]:border-l [&_ol_ol]:border-gray-300 [&_ol_ol]:pl-4 [&_ol_ol_li]:before:content-['◦'] [&_ol_ol_li]:before:text-accent [&_a]:text-muted [&_a]:no-underline [&_a:hover]:text-accent">
+        {{ content | toc | safe }}
+      </nav>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="md:col-span-6 space-y-8">
+<div class="content-start space-y-12">
+<h1 class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize">{{ title }}</h1>
+<p class="text-3xl text-muted">{{ description }}</p>
+<div class="text-muted">
+<hr class="border-t border-border my-2">
+<div class="flex justify-between items-center">
+{% set excluded = ["book", "library", "paper"] %}
+<p class="text-lg">
+  {% for tag in tags %}
+    {% if tag not in excluded %}
+      <span class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary">
+        <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
+      </span>
+    {% endif %}
+  {% endfor %}
+</p>
+<p class="text-lg">Published: {{ published | formatDate }}</p>
+
+</div>
+</div>
+</div>
+<div class="prose text-primary dark:prose-invert text-2xl [&_.footnotes]:hidden [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800">
+{{ content | safe }}
+</div>
+</main>
+
+<!-- Right: Dynamic Footnotes -->
+<aside class="pt-4 pr-8 hidden md:block md:col-span-3 relative">
+  <div id="footnotes-container" class="relative h-screen overflow-visible">
+    <div id="footnotes-list" class="relative h-full">
+      <!-- Footnotes will be positioned here dynamically -->
+    </div>
+  </div>
+</aside>
+
+</div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // TOC functionality
+  const toggle = document.querySelector(".toc-toggle");
+  const content = document.querySelector(".toc-content");
+  const contentStart = document.querySelector(".content-start");
+
+  // TOC starts open
+  if (content) {
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.opacity = "1";
+    toggle.textContent = "▲";
+
+    // Toggle on click
+    toggle.addEventListener("click", () => {
+      if (content.style.maxHeight === "0px") {
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.opacity = "1";
+        toggle.textContent = "▲";
+      } else {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        toggle.textContent = "▼";
+      }
+    });
+
+    // Auto-close when scrolled past half of content-start
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const halfContent = contentStart.offsetTop + contentStart.offsetHeight / 2;
+      
+      if (scrollY > halfContent && content.style.maxHeight !== "0px") {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        toggle.textContent = "▼";
+      } else if (scrollY <= halfContent && content.style.maxHeight === "0px") {
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.opacity = "1";
+        toggle.textContent = "▲";
+      }
+    }, { passive: true });
+  }
+
+  // Dynamic footnotes positioning
+  let footnoteData = [];
+  
+  function setupDynamicFootnotes() {
+    const footnotesList = document.getElementById('footnotes-list');
+    const footnotesContainer = document.getElementById('footnotes-container');
+    
+    if (!footnotesList || !footnotesContainer) return;
+
+    // Find footnote references and content
+    const footnoteRefs = document.querySelectorAll('a[href^="#fn"], sup a[href^="#fn"], [role="doc-noteref"]');
+    const footnotesSection = document.querySelector('.footnotes, [role="doc-endnotes"], .footnote-list');
+    
+    if (footnoteRefs.length === 0 || !footnotesSection) {
+      console.log('No footnotes found');
+      return;
+    }
+
+    // Extract footnote content
+    const footnoteItems = footnotesSection.querySelectorAll('li, p');
+    
+    // Store footnote data
+    footnoteData = [];
+    footnoteRefs.forEach((ref, index) => {
+      const footnoteItem = footnoteItems[index];
+      if (footnoteItem) {
+        // Remove backlink if present
+        const backlink = footnoteItem.querySelector('a[href^="#fnref"]');
+        if (backlink) backlink.remove();
+        
+        footnoteData.push({
+          ref: ref,
+          content: footnoteItem.innerHTML.trim(),
+          number: index + 1,
+          element: null
+        });
+      }
+    });
+
+    // Hide original footnotes
+    footnotesSection.style.display = 'none';
+
+    console.log(`Found ${footnoteData.length} footnotes`);
+    
+    // Initial positioning
+    updateFootnotePositions();
+  }
+
+  function updateFootnotePositions() {
+    const footnotesList = document.getElementById('footnotes-list');
+    const mainContent = document.querySelector('main');
+    
+    if (!footnotesList || !mainContent || footnoteData.length === 0) return;
+
+    // Clear existing footnotes
+    footnotesList.innerHTML = '';
+
+    const viewportTop = window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const mainRect = mainContent.getBoundingClientRect();
+    const mainTop = mainRect.top + viewportTop;
+
+    footnoteData.forEach((footnote) => {
+      const refRect = footnote.ref.getBoundingClientRect();
+      const refTop = refRect.top + viewportTop;
+      const refBottom = refRect.bottom + viewportTop;
+
+      // Show footnote if reference is visible or near viewport
+      const isVisible = refTop < viewportTop + viewportHeight + 300 && refBottom > viewportTop - 300;
+      
+      if (isVisible) {
+        // Create footnote element
+        const footnoteDiv = document.createElement('div');
+        footnoteDiv.className = 'footnote-item absolute opacity-90 transition-all duration-500 ease-out max-w-full z-10';
+        footnoteDiv.style.width = '100%';
+        
+        // Calculate position relative to the reference
+        const offsetFromRef = Math.max(0, refTop - mainTop - 100);
+        footnoteDiv.style.top = offsetFromRef + 'px';
+        
+        footnoteDiv.innerHTML = `
+          <div class="flex items-start space-x-3">
+            <span class="text-accent  flex-shrink-0">${footnote.number}</span>
+            <div class="text-primary leading-relaxed">${footnote.content}</div>
+          </div>
+        `;
+
+        footnotesList.appendChild(footnoteDiv);
+
+        // Add hover effects
+        footnote.ref.addEventListener('mouseenter', () => {
+          footnoteDiv.classList.remove('opacity-90');
+          footnoteDiv.classList.add('opacity-100');
+        });
+
+        footnote.ref.addEventListener('mouseleave', () => {
+          footnoteDiv.classList.add('opacity-90');
+          footnoteDiv.classList.remove('opacity-100');
+        });
+
+        // Click to highlight
+        footnote.ref.addEventListener('click', (e) => {
+          e.preventDefault();
+          footnoteDiv.classList.add('font-semibold');
+          setTimeout(() => {
+            footnoteDiv.classList.remove('font-semibold');
+          }, 2000);
+        });
+      }
+    });
+  }
+
+  // Setup footnotes after content loads
+  setTimeout(setupDynamicFootnotes, 500);
+
+  // Update positions on scroll and resize
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateFootnotePositions, 10);
+  }, { passive: true });
+
+  window.addEventListener('resize', updateFootnotePositions);
+  
+  // Also run on window load
+  window.addEventListener('load', () => {
+    setTimeout(setupDynamicFootnotes, 100);
+  });
+});
+</script>

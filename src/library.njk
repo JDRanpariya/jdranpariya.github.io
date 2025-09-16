@@ -8,23 +8,49 @@ layout: layouts/base
   <!-- Header -->
   <div class="text-center space-y-4">
     <h1 class="text-5xl md:text-6xl font-serif text-accent">Library</h1>
-    <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
+    <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
       A curated shelf of books, papers, and resources that inspire me or shape my thinking.
       Browse through my favorites and recommended readings.
     </p>
   </div>
 
-  <!-- Book Shelf -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-    {% for book in collections.library %}
-    <div class="bg-card rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col items-center">
-      <img src="{{ book.data.cover }}" alt="{{ book.data.title }}" class="rounded-lg mb-4 w-full h-64 object-cover">
-      <h3 class="text-xl font-serif text-accent text-center mb-1">{{ book.data.title }}</h3>
-      <p class="text-secondary text-center mb-2">{{ book.data.author }}</p>
-      <a href="{{ book.data.link }}" target="_blank" class="link text-accent hover:underline">More info →</a>
+  <!-- Books -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
+  {% for book in collections.library_books %}
+    <div class="flex flex-col">
+      <!-- Cover -->
+      <a href="{{ book.url }}">
+      <img src="{{ book.data.cover }}" alt="{{ book.data.title }}"
+           class="rounded-lg mb-3 w-full object-cover aspect-[2/3] shadow-sm hover:shadow-md transition" />
+    </a>
+
+      <!-- Title & Author -->
+      <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
+        {{ book.data.title }}
+      </h3>
+      <p class="text-sm text-muted">{{ book.data.author }}</p>
     </div>
-    {% endfor %}
-  </div>
+  {% endfor %}
+</div>
+
+
+<!-- Papers -->
+<h2 class="text-5xl text-center md:text-6xl font-serif text-accent">Favorite Papers</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for paper in collections.library_papers %}
+    <div class="p-4 rounded-lg bg-surface shadow-sm hover:shadow-md transition">
+      <!-- Title (clickable) -->
+      <a href="{{ paper.data.link }}" target="_blank" rel="noopener" 
+         class="block text-base md:text-lg font-serif font-medium text-accent hover:underline leading-snug">
+        {{ paper.data.title }}
+      </a>
+
+      <!-- Author / Metadata -->
+      <p class="text-sm text-muted mt-1">{{ paper.data.author }}</p>
+    </div>
+  {% endfor %}
+</div>
+
 
 </section>
 
