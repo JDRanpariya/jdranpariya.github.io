@@ -10,6 +10,7 @@
     "concurrently": "^9.2.1",
     "del-cli": "^5.1.0",
     "html-minifier": "^4.0.0",
+    "luxon": "^3.7.2",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
     "tailwindcss": "^3.4.10"
@@ -24,5 +25,11 @@
     "css:build": "bunx postcss src/css/input.css --o build/css/style.css",
     "css:build:prod": "bunx postcss src/css/input.css --o build/css/style.css --env production",
     "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch"
+  },
+  "dependencies": {
+    "eleventy-plugin-toc": "^1.1.5",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-footnote": "^4.0.0"
   }
 }
