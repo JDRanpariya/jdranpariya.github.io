@@ -1,7 +1,11 @@
 ---
 title: on originality of my writings
 published: 2025-09-15
-tags: ["writings", "ideas"]
+tags: ["ideas", "science"]
+section: "writings"
+series:
+  name: "On writing Well"   # Series title
+  order: 1                           # Position in the series
 layout: layouts/post.njk
 description: "It's going to be a long essay about why anything I write isn't ever going to be original!"
 ---

@@ -1,14 +1,15 @@
 ---
 title: "Seeking Wisdom"
-full_title: "Seeking Wisdom: From Darwing to Munger"
+fullTitle: "Seeking Wisdom: From Darwing to Munger"
 author: "Peter Bevelin"
 cover: "https://m.media-amazon.com/images/I/61qbFGP2sFL._SL1234_.jpg"
 link: "https://www.amazon.de/-/en/Seeking-Wisdom-Darwin-Munger-3rd/dp/1578644283"
-tags: ["library", "book", "life", "decision-making", "practical"]
+section: "books"
+tags: ["life", "decision-making", "practical"]
 published: 2025-09-17 
-last_updated: "16 Sep, 2025"
+last_updated: 2025-09-18 
 layout: layouts/post.njk
-description: "It's one of the most exiciting books I even had my hands on!"
+description: "It's one of the most exiciting books I ever had my hands on!"
 ---
 
 >A man who has committed a mistake and doesn't correct it, is committing another mistake.

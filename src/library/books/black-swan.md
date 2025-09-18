@@ -1,11 +1,13 @@
 ---
 title: "The Black Swan"
+fullTitle: "The Black Swan: The Impact of the Hihgly Improbable"
 author: "Nassim Nicholas Taleb"
 cover: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141906201%2F9780141906201-jacket-large.jpg&w=819&q=100"
 link: "https://www.penguin.co.uk/books/56380/the-black-swan-by-taleb-nassim-nicholas/9780141034591"
-tags: ["library", "book", "uncertainity", "practical"]
+section: "books"
+tags: ["uncertainity", "practical"]
 published: 2025-09-13 
-last_updated: "16 Sep, 2025"
+last_updated: 2025-09-18 
 layout: layouts/post.njk
 description: "It's going to be a long essay about why anything I write isn't ever going to be original!"
 ---

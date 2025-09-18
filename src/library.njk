@@ -1,6 +1,7 @@
 ---
 title: Library
 layout: layouts/base
+section: "library"
 ---
 
 <section class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
@@ -16,7 +17,7 @@ layout: layouts/base
 
   <!-- Books -->
   <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
-  {% for book in collections.library_books %}
+  {% for book in collections.books %}
     <div class="flex flex-col">
       <!-- Cover -->
       <a href="{{ book.url }}">
@@ -37,7 +38,7 @@ layout: layouts/base
 <!-- Papers -->
 <h2 class="text-5xl text-center md:text-6xl font-serif text-accent">Favorite Papers</h2>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {% for paper in collections.library_papers %}
+  {% for paper in collections.papers %}
     <div class="p-4 rounded-lg bg-surface shadow-sm hover:shadow-md transition">
       <!-- Title (clickable) -->
       <a href="{{ paper.data.link }}" target="_blank" rel="noopener" 

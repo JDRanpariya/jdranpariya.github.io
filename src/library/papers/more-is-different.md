@@ -1,15 +1,13 @@
 ---
 title: "More Is Different"
+fullTitle: "More Is Different: Broken symmetry and the nature of the hierarchical structure of science"
 author: "P. W. Anderson"
-journal: "Science"
 year: 1972
-volume: 177
-issue: 4047
-pages: "393-396"
-doi: "10.1126/science.177.4047.393"
-link: "https://www.science.org/doi/10.1126/science.177.4047.393"
-pdf: "https://robotics.cs.tamu.edu/dshell/cs689/papers/anderson72more_is_different.pdf"
-tags: ["library", "paper", "complexity", "emergence"]
+journal: "Science"
+doi: "10.1126/science.177.4047.393"   # optional but useful
+link: "https://www.science.org/doi/10.1126/science.177.4047.393"  # optional
+section: "papers"
+tags: ["emergence", "science"]
 layout: layouts/post
 ---
 

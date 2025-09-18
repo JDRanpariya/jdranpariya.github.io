@@ -40,13 +40,52 @@ export default function (eleventyConfig) {
 
     eleventyConfig.setLibrary('md', md);
 
-    eleventyConfig.addCollection("library_books", (collection) =>
-        collection.getFilteredByTags("library", "book")
+    eleventyConfig.addCollection("books", (collection) =>
+        collection.getFilteredByGlob("src/library/books/*.md")
+    );
+    eleventyConfig.addCollection("papers", (collection) =>
+        collection.getFilteredByGlob("src/library/papers/*.md")
     );
 
-    eleventyConfig.addCollection("library_papers", (collection) =>
-        collection.getFilteredByTags("library", "paper")
+        // Projects
+    eleventyConfig.addCollection("projects", (collection) =>
+      collection.getFilteredByGlob("src/projects/**/*.md")
     );
+
+
+  eleventyConfig.addCollection("writings", function(collection) {
+    return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {
+    return new Date(b.data.published) - new Date(a.data.published);});
+  });
+
+    eleventyConfig.addFilter("filterByTag", function (collection, tag) {
+  return collection.filter(item => (item.data.tags || []).includes(tag));
+});
+
+   // Create collections for each tag
+  eleventyConfig.addCollection("tagList", function(collections) {
+    const tagSet = new Set();
+    collections.getAll().forEach(item => {
+      if ("tags" in item.data) {
+        let tags = item.data.tags;
+        tags = tags.filter(tag => {
+          // Filter out template tags and nav
+          switch(tag) {
+            case "all":
+            case "nav":
+            case "post":
+            case "posts":
+              return false;
+          }
+          return true;
+        });
+        for (const tag of tags) {
+          tagSet.add(tag);
+        }
+      }
+    });
+    return Array.from(tagSet).sort();
+  });
 
     eleventyConfig.addFilter("formatDate", (published) => {
     if (!published) return "";
@@ -54,10 +93,7 @@ export default function (eleventyConfig) {
     return DateTime.fromJSDate(date).toFormat("LLL d, yyyy"); // Sep 15, 2025
   });
 
-  eleventyConfig.addCollection("writings", function(collection) {
-    return collection.getFilteredByTags("writings").sort((a, b) => {
-    return new Date(b.data.published) - new Date(a.data.published);});
-  });
+
 
     // Minify HTML in production
     if (process.env.ELEVENTY_ENV === 'prod') {

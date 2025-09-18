@@ -1,6 +1,7 @@
 ---
 title: Writings
 layout: layouts/base
+section: "writings index"
 ---
 
 <section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
@@ -18,7 +19,7 @@ layout: layouts/base
   <div class="space-y-12">
     {% for post in collections.writings %}
       <article class="space-y-2 text-center">
-        <h2 class="text-2xl font-serif text-primary text-accent capitalize">
+        <h2 class="text-2xl font-serif hover:underline underline-offset-4 decoration-2 text-primary text-accent capitalize">
           <a href="{{ post.url }}">{{ post.data.title }}</a>
         </h2>
       </article>

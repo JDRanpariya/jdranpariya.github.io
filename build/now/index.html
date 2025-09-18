@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- Title and Meta -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Title and Meta -->
   <title>Now</title>
   <meta name="description" content="Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition" />
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
-  
+
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/css/style.css" />
-  
+
   <!-- Theme initialization to prevent flash -->
   <script>
-    (function() {
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-      }
-    })();
+  (function() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+  document.documentElement.classList.add('dark');
+  }
+  })();
   </script>
-</head>
+  </head>
 
-<body class="bg-bg dark:bg-bg-dark text-primary dark:text-primary-dark min-h-screen flex flex-col transition-colors duration-300">
+  <body class="bg-bg
+  dark:bg-bg-dark
+  text-primary
+  dark:text-primary-dark
+  min-h-screen
+  flex flex-col
+  transition-colors
+  duration-300
+  data-title="Now"
+  data-section="now"
+  data-tags=""
+  data-series=""
+  ">
 
   <!-- Alert -->
   <div class="w-full bg-bg text-primary px-2 py-1 text-center font-medium shadow-md">
@@ -36,7 +48,7 @@
 </div>
 
 
-  
+
   <!-- Navigation -->
   <!-- Navigation with Dark Mode Toggle - src/_includes/components/nav.njk -->
 <nav class="top-0 left-0 right-0 z-50">
@@ -133,7 +145,7 @@
     </div>
 </nav>
 
-  
+
   <!-- Main Content -->
   <main class="flex-grow">
   <section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
@@ -277,7 +289,7 @@
 </section>
 
   </main>
-  
+
   <!-- Footer -->
   <!-- Footer with Dark Mode Support -->
 <footer class="bg-surface border-t border-primary/10 mt-12 pt-8 pb-8 md:pt-14 md:pb-24">
@@ -401,69 +413,189 @@
     </div>
 </footer>
 
-  
+
   <!-- Scripts -->
   <script>
-    // Toggle dark/light theme
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.contains('dark');
-      html.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      updateThemeButton(!isDark ? 'dark' : 'light');
-    }
+  // Toggle dark/light theme
+  function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.classList.contains('dark');
+  html.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  updateThemeButton(!isDark ? 'dark' : 'light');
+  }
 
-    function updateThemeButton(theme) {
-      const button = document.getElementById('theme-toggle');
-      if (!button) return;
+  function updateThemeButton(theme) {
+  const button = document.getElementById('theme-toggle');
+  if (!button) return;
 
-      const icon = button.querySelector('svg');
-      if (!icon) return;
+  const icon = button.querySelector('svg');
+  if (!icon) return;
 
-      icon.innerHTML = theme === 'dark'
-        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>`
-        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>`;
+  icon.innerHTML = theme === 'dark'
+  ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>`
+  : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>`;
 
-      button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    }
+  button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
 
-    // Toggle mobile menu
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-      if (!menu || !button) return;
+  // Toggle mobile menu
+  function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  if (!menu || !button) return;
 
-      menu.classList.toggle('hidden');
-      const icon = button.querySelector('svg path');
-      if (!icon) return;
+  menu.classList.toggle('hidden');
+  const icon = button.querySelector('svg path');
+  if (!icon) return;
 
-      icon.setAttribute('d', menu.classList.contains('hidden')
-        ? 'M4 6h16M4 12h16M4 18h16'
-        : 'M6 18L18 6M6 6l12 12');
-    }
+  icon.setAttribute('d', menu.classList.contains('hidden')
+  ? 'M4 6h16M4 12h16M4 18h16'
+  : 'M6 18L18 6M6 6l12 12');
+  }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize theme button
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
+  document.addEventListener('DOMContentLoaded', function() {
+  // Initialize theme button
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
 
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function(event) {
-        const menu = document.getElementById('mobile-menu');
-        const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-        if (!menu || !button) return;
-        if (!menu.contains(event.target) && !button.contains(event.target)) {
-          menu.classList.add('hidden');
-          const icon = button.querySelector('svg path');
-          if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-        }
-      });
-    });
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+  const menu = document.getElementById('mobile-menu');
+  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  if (!menu || !button) return;
+  if (!menu.contains(event.target) && !button.contains(event.target)) {
+  menu.classList.add('hidden');
+  const icon = button.querySelector('svg path');
+  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+  }
+  });
+  });
   </script>
 
-</body>
-</html>
+  </body>
+  </html>
+
+  <script>
+(async function() {
+  // --- 0. Initialize session ---
+  let session = JSON.parse(localStorage.getItem('userSession') || 'null');
+  if (!session) {
+    session = {
+      sessionId: crypto.randomUUID(),
+      startTime: new Date().toISOString(),
+      events: [],
+      geo: null,
+      geoFetched: false
+    };
+    localStorage.setItem('userSession', JSON.stringify(session));
+  }
+
+  window._session = session;
+
+
+  // --- 1. Page metadata ---
+  const body = document.body;
+  const pageEvent = {
+    type: 'pageview',
+    url: window.location.pathname,
+    title: body.dataset.fulltitle || body.dataset.title || document.title,
+    section: body.dataset.section || 'general',
+    tags: body.dataset.tags ? body.dataset.tags.split(',') : [],
+    series: body.dataset.series || '',
+    sessionId: session.sessionId,
+    timestamp: new Date().toISOString()
+  };
+
+  // --- 2. Visitor info ---
+  const visitorData = {
+    userAgent: navigator.userAgent,
+    device: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+    language: navigator.language,
+    referrer: document.referrer
+  };
+  Object.assign(pageEvent, visitorData);
+  if(session.geo) pageEvent.geo = session.geo;
+
+  // --- 3. Engagement tracking ---
+  let startTime = Date.now();
+  let maxScroll = 0;
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY + window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
+    const scrollPercent = Math.min(100, Math.round((scrolled / docHeight) * 100));
+    if(scrollPercent > maxScroll) maxScroll = scrollPercent;
+  });
+
+  // --- 4. Click tracking ---
+  document.addEventListener('click', e => {
+    if(e.target.tagName === 'A') {
+      const href = e.target.getAttribute('href');
+      const text = e.target.innerText;
+      session.events.push({
+        type: 'click',
+        target: text || href,
+        href: href,
+        timestamp: new Date().toISOString(),
+        sessionId: session.sessionId
+      });
+    }
+  });
+
+  // --- 5. Add pageview to session ---
+  session.events.push(pageEvent);
+  localStorage.setItem('userSession', JSON.stringify(session));
+
+  // --- 6. Function to send telemetry to Worker ---
+  async function sendTelemetry(events) {
+    if (!events.length) return;
+    try {
+      const payload = { events };
+      const res = await fetch('https://telemetry-worker.ranpariya.workers.dev/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if(res.ok) {
+        const result = await res.json();
+        // Save geo info for future pageviews
+        if(result.geo && !session.geoFetched) {
+          session.geo = result.geo;
+          session.geoFetched = true;
+        }
+        session.events = []; // clear sent events
+        localStorage.setItem('userSession', JSON.stringify(session));
+        console.log('Telemetry sent');
+      }
+    } catch(e) {
+      console.error('Telemetry send failed', e);
+    }
+  }
+
+  // --- 7. Periodic flush every 30s ---
+  const flushInterval = setInterval(() => sendTelemetry(session.events), 6000);
+
+  // --- 8. Flush on page unload ---
+  window.addEventListener('beforeunload', () => {
+    clearInterval(flushInterval);
+    const timeSpent = Date.now() - startTime;
+    const engagementEvent = {
+      type: 'engagement',
+      timeSpent,
+      maxScroll,
+      sessionId: session.sessionId,
+      timestamp: new Date().toISOString()
+    };
+    session.events.push(engagementEvent);
+    localStorage.setItem('userSession', JSON.stringify(session));
+    const payload = JSON.stringify({ events: session.events });
+    navigator.sendBeacon('https://telemetry-worker.ranpariya.workers.dev/', payload);
+    session.events = []; // clear after sending
+  });
+
+})();
+</script>
 

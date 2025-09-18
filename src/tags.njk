@@ -1,0 +1,53 @@
+---
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+    - nav
+    - post
+    - posts
+    - tagList
+permalink: /tags/{{ tag | slugify }}/
+layout: layouts/base
+section: "tags index"
+eleventyComputed:
+  title: "Items tagged {{ tag }}"
+---
+<section class="max-w-3xl mx-auto px-6 py-16">
+  <div class="mb-12 capitalize text-center">
+    <h1 class="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">{{ tag }}</h1>
+    <p class="text-lg text-muted">{{ collections[tag].length }} item{% if collections[tag].length != 1 %}s{% endif %}</p>
+  </div>
+
+  {% set writings = (collections.writings or []) | filterByTag(tag) %}
+  {% set books = (collections.books or []) | filterByTag(tag) %}
+  {% set projects = (collections.projects or []) | filterByTag(tag) %}
+  {% set papers = (collections.papers or []) | filterByTag(tag) %}
+
+  {% for group, label in [
+    [writings, "Writings"],
+    [books, "Books"],
+    [projects, "Projects"],
+    [papers, "Papers"]
+  ] %}
+    {% if group | length %}
+      <h2 class="text-2xl font-serif font-semibold mt-12 mb-6">{{ label }}</h2>
+      <ul class="space-y-2">
+        {% for post in group %}
+          <li>
+            <a href="{{ post.url }}" class="text-lg capitalize decoration-2 underline-offset-4 font-medium hover:underline">
+              {{ post.data.fullTitle or post.data.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+
+  <div class="mt-16 text-center">
+    <a href="/tags" class="inline-block capitalize decoration-2 underline-offset-4 text-primary hover:underline">← Browse all tags</a>
+  </div>
+</section>
+
