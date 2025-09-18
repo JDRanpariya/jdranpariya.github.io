@@ -1,0 +1,17 @@
+[
+  {
+    "ip": "8.8.8.8",
+    "type": "pageview",
+    "geo": {
+      "country": "United States",
+      "countryCode": "US",
+      "region": "Virginia",
+      "city": "Ashburn",
+      "isp": "Google LLC",
+      "org": "Google Public DNS",
+      "zip": "20149",
+      "timezone": "America/New_York"
+    },
+    "timestamp": "2025-09-18T13:39:12.291Z"
+  }
+]
