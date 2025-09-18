@@ -20,6 +20,11 @@ export default function (eleventyConfig) {
         wrapper: 'nav', // Wrap TOC in <nav>
         wrapperClass: 'toc-list' // Add class for styling
     });
+
+    eleventyConfig.addFilter("titlecase", function(str) {
+  if (!str) return "";
+  return str.replace(/\b\w/g, c => c.toUpperCase());
+});
     // Configure Markdown with anchors and footnotes
     const md = markdownIt()
         .use(markdownItAnchor, { permalink: false })
