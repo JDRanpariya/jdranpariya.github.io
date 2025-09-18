@@ -2,63 +2,142 @@
 title: Now
 layout: layouts/base
 ---
-
 <section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
   
   <!-- Hero / Title -->
   <div class="text-center space-y-4">
-    <p class="text-5xl md:text-7xl font-serif text-accent">What I'm Doing Now</p>
+    <p class="text-5xl md:text-6xl font-serif text-accent">What I'm Doing Now</p>
     <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-      A real-time look into my current projects, experiments, and thoughts. Everything here is what I'm exploring, building, or learning at the moment.
+      Real-time snapshot of my current projects, obsessions, and rabbit holes.
+      This is what's actually consuming my mental bandwidth right now.
     </p>
   </div>
 
-  <!-- Current Projects -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+  <!-- Main Current Focus -->
+  <div class="bg-card p-8 rounded-xl shadow-lg border-l-4 border-accent">
+    <h2 class="text-3xl font-serif text-accent mb-4">The Big Thing (That I Keep Saying I'll Start Tomorrow)</h2>
+    <p class="text-lg text-secondary mb-4">
+      <strong>Digital Lifeform Project</strong> - Designing embodied intelligence from first principles. Not another task-solving agent, but a digital organism that senses, learns, adapts, and evolves through existence itself.
+    </p>
+    <p class="text-secondary">
+      This combines evolutionary learning, 3D modeling, robot learning, agentic AI, and simulations. I want to understand the entire pipeline, find bottlenecks, and see what can be improved. I really need to commit and start this properly - it's my flagship project but I haven't actually built anything yet. Tomorrow becomes today, right?
+    </p>
+  </div>
+
+  <!-- Current Projects Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     
     <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-2">AI Experiments</h3>
-      <p class="text-secondary mb-2">
-        Fine-tuning LLMs for multi-modal reasoning and testing hybrid neural-symbolic approaches for embodied agents.
+      <h3 class="text-2xl font-serif text-accent mb-3">Master's Thesis Hunt</h3>
+      <p class="text-secondary mb-3">
+        Cold emailing big companies and institutes, even where there might be no chance. Being hyperaggressive with boundless upside, minimal downside. Got my Fraunhofer job this way, so why not thesis positions?
       </p>
-      <a href="/writings#ai" class="link text-accent hover:underline">Read my notes →</a>
+      <p class="text-sm text-muted">Status: Actively sending emails and following up</p>
     </div>
 
     <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-2">Neuroscience Projects</h3>
-      <p class="text-secondary mb-2">
-        Studying motor unit activity and sensorimotor integration to inform control algorithms for adaptive robotics.
+      <h3 class="text-2xl font-serif text-accent mb-3">This Personal Site</h3>
+      <p class="text-secondary mb-3">
+        Finally rebuilding my old site that was taking ages due to perfectionism. Using it to improve my writing skills and learn in public. Sometimes the best way to beat procrastination is just to ship it.
       </p>
-      <a href="/writings#neuro" class="link text-accent hover:underline">Learn more →</a>
+      <p class="text-sm text-muted">Status: Actually launched! Now iterating and writing</p>
     </div>
 
     <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-2">Bio & Bioinformatics</h3>
-      <p class="text-secondary mb-2">
-        Exploring molecular modeling, biological simulations, and computational patterns in life sciences.
+      <h3 class="text-2xl font-serif text-accent mb-3">Emotional Intelligence Research</h3>
+      <p class="text-secondary mb-3">
+        Deep diving into affective computing, emotional lives of animals, concepts of self and agency. Learning how we regulate each other emotionally - crucial for building truly intelligent systems.
       </p>
-      <a href="/library#bio" class="link text-accent hover:underline">Dive into resources →</a>
+      <p class="text-sm text-muted">Status: Reading papers and connecting dots in Obsidian</p>
     </div>
 
     <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-2">Embodied Intelligence</h3>
-      <p class="text-secondary mb-2">
-        Testing RL and hybrid control in physical and simulated environments with real-world constraints.
+      <h3 class="text-2xl font-serif text-accent mb-3">Knowledge → Habits Pipeline</h3>
+      <p class="text-secondary mb-3">
+        Developing a system to compress knowledge directly into actionable habits. No more knowledge hoarding - I want real life effects from everything I learn.
       </p>
-      <a href="/writings#embodied" class="link text-accent hover:underline">See experiments →</a>
+      <p class="text-sm text-muted">Status: Framework in progress, testing applications</p>
     </div>
 
+  </div>
+
+  <!-- Currently Reading / Consuming -->
+  <div class="space-y-6">
+    <h2 class="text-3xl font-serif text-accent">Current Reading & Research</h2>
+    <div class="bg-card text-lg  p-6 rounded-xl shadow-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="text-lg font-semibold text-accent mb-2">Books</h4>
+          <ul class="text-secondary space-y-1">
+            <li>•<em>Antifragile</em> by Nassim Taleb</li>
+            <li>•<em>Seeking Wisdom: From Darwin to Munger</em></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold text-accent mb-2">Papers & Research</h4>
+          <ul class="text-secondary space-y-1">
+            <li>• Michael Levin's work on morphogenesis</li>
+            <li>• Open Questions about Time and Self-reference in Living Systems</li>
+            <li>• "Life and Its Origin" - various papers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Mindset / Philosophy -->
+  <div class="space-y-6">
+    <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
+    <div class="prose-custom text-lg mx-auto space-y-4">
+      <p>
+        I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
+      </p>
+      <p>
+        Exposing myself to as many opportunities as possible - applying for thesis positions, reaching out to people for collaborations, putting myself out there more. The reason you're reading this site is part of this shift. I've wanted to rebuild it forever, but perfectionism kept me stuck.
+      </p>
+      <p>
+        I want to get obsessive over building rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
+      </p>
+    </div>
   </div>
 
   <!-- Quick Thoughts / Journal -->
   <div class="space-y-6">
-    <h2 class="text-3xl font-serif text-accent text-center md:text-left">Quick Thoughts</h2>
-    <div class="prose-custom mx-auto space-y-4">
-      <p>Experimented with new RL algorithms today—seeing some emergent behaviors in simulation that might hint at more efficient control policies.</p>
-      <p>Reading a paper on neuromorphic computing and trying to map parallels with motor learning in humans.</p>
-      <p>Started sketching ideas for hybrid AI agents that combine sensory prediction and energy-efficient movement.</p>
+    <h2 class="text-3xl font-serif text-accent">Random Thoughts This Week</h2>
+    <div class="bg-card p-6 rounded-xl shadow-md">
+      <div class="prose-custom text-lg space-y-3">
+        <p>Started thinking about how understanding animal emotions could inform digital lifeform design. If I want to build something that truly adapts and persists, it needs some form of emotional regulation system.</p>
+        <p>The more I read about morphogenesis and biological intelligence, the more I think current AI is missing something fundamental about how intelligence emerges from physical constraints.</p>
+        <p>Need to stop overthinking my thesis applications and just send more emails. The worst thing that happens is they say no, which is the same as not applying at all.</p>
+        <p>Realized I spend too much time on YouTube shorts when I'm stressed. Working on reducing screen time and actually enjoying life outside screens.</p>
+      </div>
     </div>
   </div>
 
-</section>
+  <!-- What's Next -->
+  <div class="space-y-6">
+    <h2 class="text-3xl font-serif text-accent">Immediate Next Steps</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-accent/10 p-4 rounded-lg border border-accent/20">
+        <p class="font-semibold text-accent mb-2">This Week</p>
+        <p class="text-sm text-secondary">Actually start coding the digital lifeform project. Set up the basic simulation environment. No more "tomorrow."</p>
+      </div>
+      <div class="bg-accent/10 p-4 rounded-lg border border-accent/20">
+        <p class="font-semibold text-accent mb-2">This Month</p>
+        <p class="text-sm text-secondary">Get a solid thesis position lined up. Continue emotional intelligence research. Write more about my learning process.</p>
+      </div>
+      <div class="bg-accent/10 p-4 rounded-lg border border-accent/20">
+        <p class="font-semibold text-accent mb-2">This Quarter</p>
+        <p class="text-sm text-secondary">Have a working prototype of digital organism. Build better habits from knowledge. Connect with more people in the field.</p>
+      </div>
+    </div>
+  </div>
 
+  <!-- Footer Note -->
+  <div class="text-center">
+    <p class="text-sm text-muted">
+      Last updated: Right now, because this is what I'm actually doing. Check back in a week or two to see how much of this I actually followed through on.
+    </p>
+  </div>
+
+</section>
