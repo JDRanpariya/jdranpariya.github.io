@@ -28,19 +28,12 @@
   </script>
   </head>
 
-  <body class="bg-bg
-  dark:bg-bg-dark
-  text-primary
-  dark:text-primary-dark
-  min-h-screen
-  flex flex-col
-  transition-colors
-  duration-300
-  data-title="{{ title | safe }}"
-  data-section="{{ section | default('general') }}"
-  data-tags="{{ tags | default([]) | join(',')  }}"
-  data-series="{{ series | default('') }}"
-  ">
+  <body class="bg-bg dark:bg-bg-dark text-primary dark:text-primary-dark min-h-screen flex flex-col transition-colors duration-300"
+      data-title="{{ title | safe }}"
+      data-section="{{ section | default('general') }}"
+      data-tags="{{ tags | default([]) | join(',') }}"
+      data-series="{{ series | default('') }}">
+
 
   <!-- Alert -->
   {% include "components/alert.njk" %}
