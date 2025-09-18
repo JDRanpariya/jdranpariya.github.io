@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Title and Meta -->
+  <title>More Is Different</title>
+  <meta name="description" content="Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="/css/style.css" />
+  
+  <!-- Theme initialization to prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="bg-bg dark:bg-bg-dark text-primary dark:text-primary-dark min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- Alert -->
+  <div class="w-full bg-bg text-primary px-2 py-1 text-center font-medium shadow-md">
+  ⚠️ This site is under construction. Some features may not work as expected.
+</div>
+
+
+  
+  <!-- Navigation -->
+  <!-- Navigation with Dark Mode Toggle - src/_includes/components/nav.njk -->
+<nav class="top-0 left-0 right-0 z-50">
+    <div class="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
+
+        <!-- Logo/Brand -->
+        <a href="/" class="group flex items-center p-2 md:p-0">
+            <span class="font-serif
+                         text-2xl
+                         font-bold
+                         text-primary
+                         tracking-wide
+                         group-hover:scale-105
+                         transition-transform
+                         duration-300">
+                =^.^=
+            </span>
+        </a>
+
+
+        <!-- Main Navigation -->
+        <div class="flex items-center space-x-8">
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-6 text-primary">
+                <a href="/now" class="link font-sans text-lg font-medium">
+                    Now
+                </a>
+                <a href="/writings" class="link font-sans text-lg font-medium">
+                    Writings
+                </a>
+                <a href="/library" class="link font-sans text-lg font-medium">
+                    Library
+                </a>
+                <a href="/about" class="link font-sans text-lg font-medium">
+                    About
+                </a>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <button 
+                                 id="theme-toggle"
+                                 onclick="toggleTheme()" 
+                                 class="p-2 text-primary
+                                        hover:text-accent
+                                        transition-colors
+                                        duration-300
+                                        hover:bg-surface-alt
+                                        rounded-lg"
+                                 title="Switch to dark mode"
+                                 aria-label="Toggle dark mode">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Moon icon (default - will be updated by script) -->
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button 
+                          class="md:hidden
+                                 p-2 text-primary
+                                 hover:text-accent
+                                 transition-colors
+                                 duration-300
+                                 hover:bg-surface-alt
+                                 rounded-lg"
+                          onclick="toggleMobileMenu()"
+                          aria-label="Toggle mobile menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-surface border-t border-primary/10">
+        <div class="px-6 py-4 space-y-4 text-primary">
+            <a href="/now" class="block link font-sans font-medium py-2">
+                Now
+            </a>
+            <a href="/writings" class="block link font-sans font-medium py-2">
+                Writings
+            </a>
+            <a href="/library" class="block link font-sans font-medium py-2">
+                Library
+            </a>
+            <a href="/about" class="block link font-sans font-medium py-2">
+                About
+            </a>
+        </div>
+    </div>
+</nav>
+
+  
+  <!-- Main Content -->
+  <main class="flex-grow">
+  <section class="max-w-9xl mx-auto px-6 py-16">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- TOC section -->
+<aside class="pt-4 pl-8 hidden md:block md:col-span-3 relative">
+  <div class="sticky top-16 mt-80">
+    <div class="toc-container flex items-center space-x-2 text-lg text-muted cursor-pointer">
+      <span class="font-semibold">Table of Contents</span>
+      <span class="toc-toggle transition-transform duration-300">▲</span>
+    </div>
+    <div class="toc-content mt-2 overflow-hidden transition-all duration-500 ease-in-out opacity-100 max-h-[2000px]">
+      <nav class="text-muted [&_ol]:list-none [&_ol]:p-0 [&_li]:relative [&_li]:pl-4 [&_li]:mb-1 [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-blue-500 [&_ol_ol]:ml-4 [&_ol_ol]:border-l [&_ol_ol]:border-gray-300 [&_ol_ol]:pl-4 [&_ol_ol_li]:before:content-['◦'] [&_ol_ol_li]:before:text-accent [&_a]:text-muted [&_a]:no-underline [&_a:hover]:text-accent">
+        
+      </nav>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="md:col-span-6 space-y-8">
+<div class="content-start space-y-12">
+<h1 class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize">More Is Different</h1>
+<p class="text-3xl text-muted"></p>
+<div class="text-muted">
+<hr class="border-t border-border my-2">
+<div class="flex justify-between items-center">
+
+<p class="text-lg">
+  
+    
+  
+    
+  
+    
+      <span class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary">
+        <a href="/tags/complexity/">complexity</a>
+      </span>
+    
+  
+    
+      <span class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary">
+        <a href="/tags/emergence/">emergence</a>
+      </span>
+    
+  
+</p>
+<p class="text-lg">Published: </p>
+
+</div>
+</div>
+</div>
+<div class="prose text-primary dark:prose-invert text-2xl [&_.footnotes]:hidden [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800">
+<p>A short, influential essay arguing that <strong>novel laws and phenomena emerge at higher levels of complexity</strong> and therefore cannot always be derived from microscopic laws alone. Anderson’s piece is a classic statement about emergence, broken symmetry, and the hierarchical nature of scientific explanation.</p>
+<p><strong>Why I include it:</strong> foundational reading for thinking about emergence, reductionism, and why disciplines like chemistry, biology, and (complex) systems require their own principles in addition to fundamental physics.</p>
+
+</div>
+</main>
+
+<!-- Right: Dynamic Footnotes -->
+<aside class="pt-4 pr-8 hidden md:block md:col-span-3 relative">
+  <div id="footnotes-container" class="relative h-screen overflow-visible">
+    <div id="footnotes-list" class="relative h-full">
+      <!-- Footnotes will be positioned here dynamically -->
+    </div>
+  </div>
+</aside>
+
+</div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // TOC functionality
+  const toggle = document.querySelector(".toc-toggle");
+  const content = document.querySelector(".toc-content");
+  const contentStart = document.querySelector(".content-start");
+
+  // TOC starts open
+  if (content) {
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.opacity = "1";
+    toggle.textContent = "▲";
+
+    // Toggle on click
+    toggle.addEventListener("click", () => {
+      if (content.style.maxHeight === "0px") {
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.opacity = "1";
+        toggle.textContent = "▲";
+      } else {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        toggle.textContent = "▼";
+      }
+    });
+
+    // Auto-close when scrolled past half of content-start
+    window.addEventListener("scroll", () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const halfContent = contentStart.offsetTop + contentStart.offsetHeight / 2;
+      
+      if (scrollY > halfContent && content.style.maxHeight !== "0px") {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        toggle.textContent = "▼";
+      } else if (scrollY <= halfContent && content.style.maxHeight === "0px") {
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.opacity = "1";
+        toggle.textContent = "▲";
+      }
+    }, { passive: true });
+  }
+
+  // Dynamic footnotes positioning
+  let footnoteData = [];
+  
+  function setupDynamicFootnotes() {
+    const footnotesList = document.getElementById('footnotes-list');
+    const footnotesContainer = document.getElementById('footnotes-container');
+    
+    if (!footnotesList || !footnotesContainer) return;
+
+    // Find footnote references and content
+    const footnoteRefs = document.querySelectorAll('a[href^="#fn"], sup a[href^="#fn"], [role="doc-noteref"]');
+    const footnotesSection = document.querySelector('.footnotes, [role="doc-endnotes"], .footnote-list');
+    
+    if (footnoteRefs.length === 0 || !footnotesSection) {
+      console.log('No footnotes found');
+      return;
+    }
+
+    // Extract footnote content
+    const footnoteItems = footnotesSection.querySelectorAll('li, p');
+    
+    // Store footnote data
+    footnoteData = [];
+    footnoteRefs.forEach((ref, index) => {
+      const footnoteItem = footnoteItems[index];
+      if (footnoteItem) {
+        // Remove backlink if present
+        const backlink = footnoteItem.querySelector('a[href^="#fnref"]');
+        if (backlink) backlink.remove();
+        
+        footnoteData.push({
+          ref: ref,
+          content: footnoteItem.innerHTML.trim(),
+          number: index + 1,
+          element: null
+        });
+      }
+    });
+
+    // Hide original footnotes
+    footnotesSection.style.display = 'none';
+
+    console.log(`Found ${footnoteData.length} footnotes`);
+    
+    // Initial positioning
+    updateFootnotePositions();
+  }
+
+  function updateFootnotePositions() {
+    const footnotesList = document.getElementById('footnotes-list');
+    const mainContent = document.querySelector('main');
+    
+    if (!footnotesList || !mainContent || footnoteData.length === 0) return;
+
+    // Clear existing footnotes
+    footnotesList.innerHTML = '';
+
+    const viewportTop = window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const mainRect = mainContent.getBoundingClientRect();
+    const mainTop = mainRect.top + viewportTop;
+
+    footnoteData.forEach((footnote) => {
+      const refRect = footnote.ref.getBoundingClientRect();
+      const refTop = refRect.top + viewportTop;
+      const refBottom = refRect.bottom + viewportTop;
+
+      // Show footnote if reference is visible or near viewport
+      const isVisible = refTop < viewportTop + viewportHeight + 300 && refBottom > viewportTop - 300;
+      
+      if (isVisible) {
+        // Create footnote element
+        const footnoteDiv = document.createElement('div');
+        footnoteDiv.className = 'footnote-item absolute opacity-90 transition-all duration-500 ease-out max-w-full z-10';
+        footnoteDiv.style.width = '100%';
+        
+        // Calculate position relative to the reference
+        const offsetFromRef = Math.max(0, refTop - mainTop - 100);
+        footnoteDiv.style.top = offsetFromRef + 'px';
+        
+        footnoteDiv.innerHTML = `
+          <div class="flex items-start space-x-3">
+            <span class="text-accent  flex-shrink-0">${footnote.number}</span>
+            <div class="text-primary leading-relaxed">${footnote.content}</div>
+          </div>
+        `;
+
+        footnotesList.appendChild(footnoteDiv);
+
+        // Add hover effects
+        footnote.ref.addEventListener('mouseenter', () => {
+          footnoteDiv.classList.remove('opacity-90');
+          footnoteDiv.classList.add('opacity-100');
+        });
+
+        footnote.ref.addEventListener('mouseleave', () => {
+          footnoteDiv.classList.add('opacity-90');
+          footnoteDiv.classList.remove('opacity-100');
+        });
+
+        // Click to highlight
+        footnote.ref.addEventListener('click', (e) => {
+          e.preventDefault();
+          footnoteDiv.classList.add('font-semibold');
+          setTimeout(() => {
+            footnoteDiv.classList.remove('font-semibold');
+          }, 2000);
+        });
+      }
+    });
+  }
+
+  // Setup footnotes after content loads
+  setTimeout(setupDynamicFootnotes, 500);
+
+  // Update positions on scroll and resize
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateFootnotePositions, 10);
+  }, { passive: true });
+
+  window.addEventListener('resize', updateFootnotePositions);
+  
+  // Also run on window load
+  window.addEventListener('load', () => {
+    setTimeout(setupDynamicFootnotes, 100);
+  });
+});
+</script>
+
+  </main>
+  
+  <!-- Footer -->
+  <!-- Footer with Dark Mode Support -->
+<footer class="bg-surface border-t border-primary/10 mt-12 pt-8 pb-8 md:pt-14 md:pb-24">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+
+        <!-- Main Footer Content - Two Columns -->
+        <div class="grid grid-cols-1 md:grid-cols-2 mb-8">
+
+            <!-- Left Column - Navigation -->
+            <div class="space-y-16 hidden md:block ">
+                <!-- Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="font-sans text-2xl font-bold text-primary">Explore</h3>
+                    <nav class="space-y-3 text-primary text-lg" >
+                        <a href="/projects" class="block
+                                 link
+                                 font-sans
+                                 hover:text-accent
+                                 transition-colors">
+                            Projects
+                        </a>
+                        <a href="/odysseys" class="block
+                                 link 
+                                 font-sans 
+                                 hover:text-accent
+                                 transition-colors">
+                            Odysseys
+                        </a>
+                        <a href="/writings" class="block 
+                                 link 
+                                 font-sans
+                                 hover:text-accent
+                                 transition-colors">
+                            Writings
+                        </a>
+                        <a href="/library" class="block
+                                 link 
+                                 font-sans
+                                 hover:text-accent
+                                 transition-colors">
+                            Library
+                        </a>
+                        <a href="/guestbook" class="block 
+                                 link 
+                                 font-sans
+                                 hover:text-accent
+                                 transition-colors">
+                            Guest book
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Right Column - Quote & Social Media -->
+            <div class="space-y-16">
+
+                <!-- Inspirational Quote -->
+                <div class="space-y-4">
+                    <blockquote class="font-serif text-xl italic text-primary leading-loose">
+                        I have been impressed with the urgency of doing. Knowing is not enough; we must apply. Being willing is not enough; we must do.
+                    </blockquote>
+                    <cite class="text-lg text-right block text-muted font-sans">— Leonardo da Vinci</cite>
+                </div>
+
+                <!-- Social Media Icons - Horizontal Row -->
+                <div class="space-y-2">
+                    <!-- Social Media Icons - Horizontal Row -->
+                    <div class="flex flex-wrap justify-center md:justify-end gap-4">
+
+                        <!-- Twitter/X -->
+                        <a href="https://x.com/jdranpariya" 
+                           class="group p-3 rounded-lg bg-surface transition-all duration-300 hover:bg-primary/10"
+                           aria-label="Follow on Twitter">
+                            <svg class="w-6 h-6 text-primary group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Pinterest -->
+                        <a href="https://pinterest.com/jd_ranpariya" 
+                           class="group p-3 rounded-lg bg-surface transition-all duration-300 hover:bg-primary/10"
+                           aria-label="Follow on Pinterest">
+                            <svg class="w-6 h-6 text-primary group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-12C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+
+                        <!-- GitHub -->
+                        <a href="https://github.com/jdranpariya" 
+                           class="group p-3 rounded-lg bg-surface transition-all duration-300 hover:bg-primary/10"
+                           aria-label="View GitHub profile">
+                            <svg class="w-6 h-6 text-primary group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:jaydeepranpariya037@gmail.com" 
+                           class="group p-3 rounded-lg bg-surface transition-all duration-300 hover:bg-primary/10"
+                           aria-label="Send an email">
+                            <svg class="w-6 h-6 text-primary group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://linkedin.com/in/jdranpariya" 
+                           class="group p-3 rounded-lg bg-surface transition-all duration-300 hover:bg-primary/10"
+                           aria-label="Connect on LinkedIn">
+                            <svg class="w-6 h-6 text-primary group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+  
+  <!-- Scripts -->
+  <script>
+    // Toggle dark/light theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      updateThemeButton(!isDark ? 'dark' : 'light');
+    }
+
+    function updateThemeButton(theme) {
+      const button = document.getElementById('theme-toggle');
+      if (!button) return;
+
+      const icon = button.querySelector('svg');
+      if (!icon) return;
+
+      icon.innerHTML = theme === 'dark'
+        ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>`
+        : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>`;
+
+      button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+      if (!menu || !button) return;
+
+      menu.classList.toggle('hidden');
+      const icon = button.querySelector('svg path');
+      if (!icon) return;
+
+      icon.setAttribute('d', menu.classList.contains('hidden')
+        ? 'M4 6h16M4 12h16M4 18h16'
+        : 'M6 18L18 6M6 6l12 12');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize theme button
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const menu = document.getElementById('mobile-menu');
+        const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+        if (!menu || !button) return;
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+          menu.classList.add('hidden');
+          const icon = button.querySelector('svg path');
+          if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
+
