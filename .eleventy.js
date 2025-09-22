@@ -2,6 +2,7 @@ import pluginTOC from 'eleventy-plugin-toc';
 import markdownIt from 'markdown-it';
 import markdownItAnchor from 'markdown-it-anchor';
 import markdownItFootnote from 'markdown-it-footnote';
+import markdownItLinkAttributes from 'markdown-it-link-attributes';
 import { DateTime } from 'luxon';
 
 export default function (eleventyConfig) {
@@ -25,10 +26,20 @@ export default function (eleventyConfig) {
   if (!str) return "";
   return str.replace(/\b\w/g, c => c.toUpperCase());
 });
-    // Configure Markdown with anchors and footnotes
-    const md = markdownIt()
-        .use(markdownItAnchor, { permalink: false })
-        .use(markdownItFootnote);
+    // Configure Markdown with anchors, footnotes, and external link attributes
+  const md = markdownIt({ html: true, linkify: true })
+    .use(markdownItAnchor, { permalink: false })
+    .use(markdownItFootnote)
+    .use(markdownItLinkAttributes, {
+      // Apply only to external links
+      matcher(href) {
+        return href.startsWith('http');
+      },
+      attrs: {
+        target: '_blank',
+        rel: 'noopener noreferrer'
+      }
+    });
 
     // Filter to extract footnotes from rendered Markdown
     eleventyConfig.addFilter('extractFootnotes', function (content) {
@@ -51,8 +62,8 @@ export default function (eleventyConfig) {
     eleventyConfig.addCollection("papers", (collection) =>
         collection.getFilteredByGlob("src/library/papers/*.md")
     );
-
         // Projects
+
     eleventyConfig.addCollection("projects", (collection) =>
       collection.getFilteredByGlob("src/projects/**/*.md")
     );

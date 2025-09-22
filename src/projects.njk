@@ -1,8 +1,22 @@
 ---
-title: Projects of JDRanpariya
+title: Projects by JDRanpariya
 layout: layouts/base
 section: "projects"
 ---
+<section class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
+  <!-- Header -->
+  <div class="text-center space-y-4">
+    <h1 class="text-5xl md:text-6xl font-serif text-accent">Projects</h1>
+    <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
+      A collection of projects I've built, experiments I've conducted, and ideas I've brought to life.
+      Each represents a journey of learning and creation.
+    </p>
+  </div>
 
-
-<h1 class="text-5xl text-center text-primary pt-48 pb-48 "> Page Under Construction! </h1>
+  <!-- Projects Grid -->
+  <div class="space-y-12">
+    {% for project in collections.projects %}
+      {% include "components/project_card.njk" %}
+    {% endfor %}
+  </div>
+</section>
