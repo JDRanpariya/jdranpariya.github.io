@@ -12,7 +12,7 @@ tags: ["tech"]
 
 
 ## Overview
-- [Project Link](https://github.com/jdranpariya/article_summarizer.jpg)
+- [Project Link](https://github.com/jdranpariya/article_summarizer)
 - I'm still working on this page!!
 
 ## Tech Stack
