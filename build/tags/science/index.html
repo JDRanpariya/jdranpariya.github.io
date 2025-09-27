@@ -68,7 +68,6 @@
             </span>
         </a>
 
-
         <!-- Main Navigation -->
         <div class="flex items-center space-x-8">
             <!-- Navigation Links -->
@@ -92,16 +91,16 @@
 
             <!-- Dark Mode Toggle -->
             <button 
-                                 id="theme-toggle"
-                                 onclick="toggleTheme()" 
-                                 class="p-2 text-primary
-                                        hover:text-accent
-                                        transition-colors
-                                        duration-300
-                                        hover:bg-surface-alt
-                                        rounded-lg"
-                                 title="Switch to dark mode"
-                                 aria-label="Toggle dark mode">
+                id="theme-toggle"
+                onclick="toggleTheme()" 
+                class="p-2 text-primary
+                       hover:text-accent
+                       transition-colors
+                       duration-300
+                       hover:bg-surface-alt
+                       rounded-lg"
+                title="Switch to dark mode"
+                aria-label="Toggle dark mode">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <!-- Moon icon (default - will be updated by script) -->
                     <path stroke-linecap="round"
@@ -113,44 +112,72 @@
 
             <!-- Mobile Menu Button -->
             <button 
-                          class="md:hidden
-                                 p-2 text-primary
-                                 hover:text-accent
-                                 transition-colors
-                                 duration-300
-                                 hover:bg-surface-alt
-                                 rounded-lg"
-                          onclick="toggleMobileMenu()"
-                          aria-label="Toggle mobile menu">
+                class="md:hidden
+                       p-2 text-primary
+                       hover:text-accent
+                       transition-colors
+                       duration-300
+                       hover:bg-surface-alt
+                       rounded-lg"
+                onclick="toggleMobileMenu()"
+                aria-label="Toggle mobile menu">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
     </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden hidden bg-surface border-t border-primary/10">
-        <div class="px-6 py-4 space-y-4 text-primary">
-            <a href="/now" class="block link font-sans font-medium py-2">
-                Now
-            </a>
-            <a href="/projects" class="block link font-sans font-medium py-2">
-                Projects
-            </a>
-
-            <a href="/writings" class="block link font-sans font-medium py-2">
-                Writings
-            </a>
-            <a href="/library" class="block link font-sans font-medium py-2">
-                Library
-            </a>
-            <a href="/about" class="block link font-sans font-medium py-2">
-                About
-            </a>
-        </div>
-    </div>
 </nav>
+
+<!-- Mobile Menu Backdrop -->
+<div id="menu-backdrop" 
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden opacity-0 pointer-events-none transition-opacity duration-300">
+</div>
+
+<!-- Mobile Menu Panel (Slide from Right) -->
+<div id="mobile-menu" 
+     class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface border-l border-primary/10 shadow-2xl z-50 md:hidden transform translate-x-full transition-transform duration-300 ease-out">
+  
+  <!-- Menu Header -->
+  <div class="flex items-center justify-between p-6 border-b border-primary/10">
+    <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
+    <button onclick="closeMobileMenu()" 
+            class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="px-6 py-8 space-y-6 text-primary">
+    <a href="/now" 
+       class="block link font-sans font-medium text-lg py-2"
+       onclick="closeMobileMenu()">
+      Now
+    </a>
+    <a href="/projects" 
+       class="block link font-sans font-medium text-lg py-2"
+       onclick="closeMobileMenu()">
+      Projects
+    </a>
+    <a href="/writings" 
+       class="block link font-sans font-medium text-lg py-2"
+       onclick="closeMobileMenu()">
+      Writings
+    </a>
+    <a href="/library" 
+       class="block link font-sans font-medium text-lg py-2"
+       onclick="closeMobileMenu()">
+      Library
+    </a>
+    <a href="/about" 
+       class="block link font-sans font-medium text-lg py-2"
+       onclick="closeMobileMenu()">
+      About
+    </a>
+  </div>
+</div>
 
 
   <!-- Main Content -->
@@ -370,39 +397,77 @@
   button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
-  // Toggle mobile menu
-  function toggleMobileMenu() {
+  // Replace your existing toggleMobileMenu function with this:
+  
+function toggleMobileMenu() {
   const menu = document.getElementById('mobile-menu');
   const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  const backdrop = document.getElementById('menu-backdrop');
+  
   if (!menu || !button) return;
 
-  menu.classList.toggle('hidden');
-  const icon = button.querySelector('svg path');
-  if (!icon) return;
-
-  icon.setAttribute('d', menu.classList.contains('hidden')
-  ? 'M4 6h16M4 12h16M4 18h16'
-  : 'M6 18L18 6M6 6l12 12');
+  const isOpen = !menu.classList.contains('translate-x-full');
+  
+  if (isOpen) {
+    // Close menu
+    menu.classList.add('translate-x-full');
+    if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
+    document.body.classList.remove('overflow-hidden');
+  } else {
+    // Open menu
+    menu.classList.remove('translate-x-full');
+    if (backdrop) backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.classList.add('overflow-hidden'); // Prevent background scrolling
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  // Update hamburger icon
+  const icon = button.querySelector('svg path');
+  if (icon) {
+    icon.setAttribute('d', isOpen 
+      ? 'M4 6h16M4 12h16M4 18h16'  // Hamburger
+      : 'M6 18L18 6M6 6l12 12');    // X
+  }
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  
+  if (menu) menu.classList.add('translate-x-full');
+  if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
+  document.body.classList.remove('overflow-hidden');
+  
+  // Reset hamburger icon
+  const icon = button?.querySelector('svg path');
+  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme button
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
 
-  // Close mobile menu when clicking outside
+  // Close mobile menu when clicking backdrop
   document.addEventListener('click', function(event) {
-  const menu = document.getElementById('mobile-menu');
-  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-  if (!menu || !button) return;
-  if (!menu.contains(event.target) && !button.contains(event.target)) {
-  menu.classList.add('hidden');
-  const icon = button.querySelector('svg path');
-  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-  }
+    const backdrop = document.getElementById('menu-backdrop');
+    if (event.target === backdrop) {
+      closeMobileMenu();
+    }
   });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const menu = document.getElementById('mobile-menu');
+      if (menu && !menu.classList.contains('translate-x-full')) {
+        closeMobileMenu();
+      }
+    }
   });
+});
+
   </script>
 
   </body>

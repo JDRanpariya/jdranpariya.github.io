@@ -83,39 +83,77 @@
   button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
-  // Toggle mobile menu
-  function toggleMobileMenu() {
+  // Replace your existing toggleMobileMenu function with this:
+  
+function toggleMobileMenu() {
   const menu = document.getElementById('mobile-menu');
   const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  const backdrop = document.getElementById('menu-backdrop');
+  
   if (!menu || !button) return;
 
-  menu.classList.toggle('hidden');
-  const icon = button.querySelector('svg path');
-  if (!icon) return;
-
-  icon.setAttribute('d', menu.classList.contains('hidden')
-  ? 'M4 6h16M4 12h16M4 18h16'
-  : 'M6 18L18 6M6 6l12 12');
+  const isOpen = !menu.classList.contains('translate-x-full');
+  
+  if (isOpen) {
+    // Close menu
+    menu.classList.add('translate-x-full');
+    if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
+    document.body.classList.remove('overflow-hidden');
+  } else {
+    // Open menu
+    menu.classList.remove('translate-x-full');
+    if (backdrop) backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.classList.add('overflow-hidden'); // Prevent background scrolling
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  // Update hamburger icon
+  const icon = button.querySelector('svg path');
+  if (icon) {
+    icon.setAttribute('d', isOpen 
+      ? 'M4 6h16M4 12h16M4 18h16'  // Hamburger
+      : 'M6 18L18 6M6 6l12 12');    // X
+  }
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
+  
+  if (menu) menu.classList.add('translate-x-full');
+  if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
+  document.body.classList.remove('overflow-hidden');
+  
+  // Reset hamburger icon
+  const icon = button?.querySelector('svg path');
+  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   // Initialize theme button
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
 
-  // Close mobile menu when clicking outside
+  // Close mobile menu when clicking backdrop
   document.addEventListener('click', function(event) {
-  const menu = document.getElementById('mobile-menu');
-  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-  if (!menu || !button) return;
-  if (!menu.contains(event.target) && !button.contains(event.target)) {
-  menu.classList.add('hidden');
-  const icon = button.querySelector('svg path');
-  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-  }
+    const backdrop = document.getElementById('menu-backdrop');
+    if (event.target === backdrop) {
+      closeMobileMenu();
+    }
   });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const menu = document.getElementById('mobile-menu');
+      if (menu && !menu.classList.contains('translate-x-full')) {
+        closeMobileMenu();
+      }
+    }
   });
+});
+
   </script>
 
   </body>
