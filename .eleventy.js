@@ -59,6 +59,11 @@ export default function (eleventyConfig) {
     eleventyConfig.addCollection("books", (collection) =>
         collection.getFilteredByGlob("src/library/books/*.md")
     );
+
+    eleventyConfig.addCollection("lectures", (collection) =>
+        collection.getFilteredByGlob("src/library/lectures/*.md")
+    );
+
     eleventyConfig.addCollection("papers", (collection) =>
         collection.getFilteredByGlob("src/library/papers/*.md")
     );

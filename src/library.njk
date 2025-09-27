@@ -34,6 +34,35 @@ section: "library"
   {% endfor %}
 </div>
 
+  <!-- Header for lectuers -->
+  <div class="text-center space-y-4">
+    <h2 class="text-5xl md:text-6xl font-serif text-accent">Lectures</h2>
+    <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
+    These are my absolute favorite lectures that have completely blown me away!
+    if you see their photo, that's me saying "this person is pure genius and I'm practically bursting to share them with you."
+    </p>
+  </div>
+
+  <!-- Lectures -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  {% for lecture in collections.lectures %}
+    <div class="flex flex-col">
+      <!-- Cover -->
+      <a href="{{ lecture.url }}">
+      <img src="{{ lecture.data.cover }}" alt="{{ lecture.data.title }}"
+           class="rounded-lg mb-3 w-full object-cover aspect-[3/2] shadow-sm hover:shadow-md transition" />
+    </a>
+
+      <!-- Title & Author -->
+      <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
+        {{ lecture.data.title }}
+      </h3>
+      <p class="text-sm text-muted">{{ lecture.data.author }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+
 
 <!-- Papers -->
 <h2 class="text-5xl text-center md:text-6xl font-serif text-accent">Favorite Papers</h2>
