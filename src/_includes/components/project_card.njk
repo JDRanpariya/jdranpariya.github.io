@@ -1,31 +1,44 @@
 <article class="group">
-  <a href="{{ project.url }}" class="block">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 rounded-xl bg-surface/50 hover:bg-surface transition-all duration-300 hover:shadow-lg">
+<a href="{{ project.url }}" class="block">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 rounded-xl bg-surface/50 hover:bg-surface transition-all duration-300 hover:shadow-lg">
 
-      <!-- Left: Image -->
-      <div class="lg:col-span-1">
-        {% if project.data.image %}
-        <img src="{{ project.data.image }}" 
-     alt="{{ project.data.title }}"
-     class="max-w-sm w-full rounded-lg object-cover aspect-[3/2] shadow-sm group-hover:shadow-md transition-shadow" />
+<!-- Left: Image -->
+<div class="lg:col-span-1">
+{% if project.data.image %}
+    <img src="{{ project.data.image }}" 
+    alt="{{ project.data.title }}"
+    class="max-w-sm w-full rounded-lg object-cover aspect-[3/2] shadow-sm group-hover:shadow-md transition-shadow" />
 
-        {% endif %}
-      </div>
-      
-      <!-- Left: Content -->
-      <div class="space-y-4 lg:col-span-2">
-        <h2 class="text-2xl md:text-3xl font-serif font-medium text-accent group-hover:text-primary transition-colors">
-          {{ project.data.title }}
-        </h2>
-        
-        {% if project.data.description %}
-          <p class="text-base md:text-lg text-muted leading-relaxed">
-            {{ project.data.description }}
-          </p>
-        {% endif %}
-        
-      </div>
-      
+{% endif %}
+</div>
+
+<!-- Left: Content -->
+<!-- Left: Content -->
+<div class="flex flex-col justify-between lg:col-span-2 h-full">
+  <div class="space-y-4">
+    <h2 class="text-2xl md:text-3xl font-serif font-medium text-accent group-hover:text-primary transition-colors">
+      {{ project.data.title }}
+    </h2>
+
+    {% if project.data.description %}
+      <p class="text-base md:text-lg text-muted leading-relaxed">
+        {{ project.data.description }}
+      </p>
+    {% endif %}
+  </div>
+
+  {% if project.data.tech %}
+    <div class="mt-4 mb-4 flex flex-wrap gap-2">
+      {% for t in project.data.tech %}
+        <span class="text-sm capitalize font-medium px-2 py-1">
+          {{ t }}
+        </span>
+      {% endfor %}
     </div>
-  </a>
+  {% endif %}
+</div>
+
+
+</div>
+</a>
 </article>
