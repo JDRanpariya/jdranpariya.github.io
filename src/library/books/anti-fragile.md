@@ -7,7 +7,7 @@ link: "https://www.amazon.de/-/en/Antifragile-Things-that-Gain-Disorder/dp/01410
 section: "books"
 tags: ["life", "practical", "randomness"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
+lastUpdated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "Currently Reading!! I'm hyped up about this, I believe there is a lot to learn about the structure of randomness and how to leverage that for our own benefit."
 ---

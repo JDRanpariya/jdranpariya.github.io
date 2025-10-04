@@ -7,7 +7,6 @@ link: "https://www.amazon.de/-/en/Seeking-Wisdom-Darwin-Munger-3rd/dp/1578644283
 section: "books"
 tags: ["life", "decision-making", "practical"]
 published: 2025-09-17 
-last_updated: 2025-09-18 
 layout: layouts/post.njk
 description: "It's one of the most exiciting books I ever had my hands on!"
 ---

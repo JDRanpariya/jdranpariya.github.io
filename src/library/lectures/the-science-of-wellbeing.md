@@ -7,7 +7,6 @@ link: "https://www.coursera.org/learn/the-science-of-well-being"
 section: "lectures"
 tags: ["life", "practical", "health"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "She's an absolute delight to listen to and watch. For an introvert like me, this was insanely eye-opening!"
 ---

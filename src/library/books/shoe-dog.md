@@ -7,7 +7,6 @@ link: "https://www.amazon.de/-/en/Phil-Knight-ebook/dp/B0176M1A44"
 section: "books"
 tags: ["inspirational", "purpose"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "Trust me on this one—if you've ever dismissed business books as dry and predictable, Shoe Dog is about to blow your mind! Knight's storytelling is so raw and gripping."
 ---

@@ -7,7 +7,6 @@ link: "https://www.youtube.com/playlist?list=PL2FF649D0C4407B30"
 section: "lectures"
 tags: ["life", "practical", "science", "meta-learning"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "Boy, what a brilliant mind! How come more people haven't dedicated precious hours of their life listening to this man?"
 ---

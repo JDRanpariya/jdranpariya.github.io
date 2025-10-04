@@ -33,7 +33,12 @@ layout: layouts/base.njk
       </span>
   {% endfor %}
 </p>
-<p class="text-lg">Published: {{ published | formatDate }}</p>
+<div class="text-right">
+  <p class="text-lg">Published: {{ published | formatDate }}</p>
+  {% if lastUpdated %}
+  <p class="text-lg">Last Updated: {{ lastUpdated | formatDate }}</p>
+  {% endif %}
+</div>
 
 </div>
 </div>
@@ -211,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Setup footnotes after content loads
-  setTimeout(setupDynamicFootnotes, 500);
+  setTimeout(setupDynamicFootnotes, 0);
 
   // Update positions on scroll and resize
   let scrollTimeout;
@@ -224,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Also run on window load
   window.addEventListener('load', () => {
-    setTimeout(setupDynamicFootnotes, 100);
+    setTimeout(setupDynamicFootnotes, 0);
   });
 });
 </script>

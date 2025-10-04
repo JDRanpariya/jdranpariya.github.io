@@ -7,7 +7,6 @@ link: "https://www.amazon.de/-/en/Building-Second-Brain-Organize-Potential/dp/19
 section: "books"
 tags: ["productivity", "knowledge"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "Makes you realise, it's time to get things off of your brain!"
 ---

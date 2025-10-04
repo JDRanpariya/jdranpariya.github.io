@@ -6,7 +6,6 @@ link: "https://www.goodreads.com/book/show/17924489-shailaja-sagar"
 section: "books"
 tags: ["novel", "gujarati"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "I'm a complete sucker for Gujarati novels, and this one? I honestly don't even know how to put it into words — it was ridiculously delicious."
 ---

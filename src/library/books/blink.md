@@ -7,7 +7,6 @@ link: "https://www.amazon.com/Blink-Power-Thinking-Without/dp/0316010669"
 section: "books"
 tags: ["psychology"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "This was my first psychology book with real case studies, loved it!!"
 ---

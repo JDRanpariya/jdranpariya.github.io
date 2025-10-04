@@ -7,7 +7,6 @@ link: "https://www.goodreads.com/book/show/18144590-the-alchemist"
 section: "books"
 tags: ["novel", "purpose"]
 published: 2025-09-13            # Optional, when you read it or publication date
-last_updated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "I had decided I would never read this, not fan of popular classics, but bought it and I confess I loved it more than I ever imagined."
 ---

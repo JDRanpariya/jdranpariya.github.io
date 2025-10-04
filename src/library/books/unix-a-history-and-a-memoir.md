@@ -7,7 +7,6 @@ link: "https://www.amazon.de/UNIX-History-Memoir-Brian-Kernighan/dp/1695978552"
 section: "books"
 tags: ["unix", "research", "science"]
 published: 2025-09-28 
-last_updated: 2025-09-28 
 layout: layouts/post.njk
 description: "It's great book about rise and fall of research at AT&T and Unix."
 ---

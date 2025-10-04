@@ -7,7 +7,7 @@ link: "https://www.penguin.co.uk/books/56380/the-black-swan-by-taleb-nassim-nich
 section: "books"
 tags: ["uncertainity", "practical"]
 published: 2025-09-13 
-last_updated: 2025-09-18 
+lastUpdated: 2025-09-18 
 layout: layouts/post.njk
 description: "It's going to be a long essay about why anything I write isn't ever going to be original!"
 ---
