@@ -22,11 +22,15 @@ eleventyComputed:
   </div>
 
   {% set writings = (collections.writings or []) | filterByTag(tag) %}
+  {% set lectures = (collections.lectures or []) | filterByTag(tag) %}
+  {% set odysseys = (collections.odysseys or []) | filterByTag(tag) %}
   {% set books = (collections.books or []) | filterByTag(tag) %}
   {% set projects = (collections.projects or []) | filterByTag(tag) %}
   {% set papers = (collections.papers or []) | filterByTag(tag) %}
 
   {% for group, label in [
+    [odysseys, "Odysseys"],
+    [lectures, "Lectures"],
     [writings, "Writings"],
     [books, "Books"],
     [projects, "Projects"],

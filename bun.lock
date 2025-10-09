@@ -19,6 +19,7 @@
         "html-minifier": "^4.0.0",
         "luxon": "^3.7.2",
         "markdown-it-link-attributes": "^4.0.1",
+        "markdown-it-obsidian-callouts": "^0.3.2",
         "postcss": "^8.4.47",
         "postcss-cli": "^11.0.0",
         "tailwindcss": "^3.4.10",
@@ -536,6 +537,8 @@
     "markdown-it-footnote": ["markdown-it-footnote@4.0.0", "", {}, "sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ=="],
 
     "markdown-it-link-attributes": ["markdown-it-link-attributes@4.0.1", "", {}, "sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ=="],
+
+    "markdown-it-obsidian-callouts": ["markdown-it-obsidian-callouts@0.3.2", "", { "peerDependencies": { "markdown-it": "^14.0.0" } }, "sha512-YfvKgXJvqfXYqHIkQhQsDe/QzOdndhCkttqokPoZUEqUrzmumbUsUAUmyheV/igJFGwwsnE7h2UMIAKcdrLbrg=="],
 
     "maximatch": ["maximatch@0.1.0", "", { "dependencies": { "array-differ": "^1.0.0", "array-union": "^1.0.1", "arrify": "^1.0.0", "minimatch": "^3.0.0" } }, "sha512-9ORVtDUFk4u/NFfo0vG/ND/z7UQCVZBL539YW0+U1I7H1BkZwizcPx5foFv7LCPcBnm2U6RjFnQOsIvN4/Vm2A=="],
 

@@ -1,5 +1,6 @@
 import pluginTOC from 'eleventy-plugin-toc';
 import markdownIt from 'markdown-it';
+import markdownItObsidianCallouts from 'markdown-it-obsidian-callouts';
 import markdownItAnchor from 'markdown-it-anchor';
 import markdownItFootnote from 'markdown-it-footnote';
 import markdownItLinkAttributes from 'markdown-it-link-attributes';
@@ -30,6 +31,7 @@ export default function (eleventyConfig) {
   const md = markdownIt({ html: true, linkify: true })
     .use(markdownItAnchor, { permalink: false })
     .use(markdownItFootnote)
+    .use(markdownItObsidianCallouts)
     .use(markdownItLinkAttributes, {
       // Apply only to external links
       matcher(href) {
@@ -71,6 +73,11 @@ export default function (eleventyConfig) {
 
     eleventyConfig.addCollection("projects", (collection) =>
       collection.getFilteredByGlob("src/projects/**/*.md")
+    );
+
+    // odysseys
+    eleventyConfig.addCollection("odysseys", (collection) =>
+      collection.getFilteredByGlob("src/odysseys/**/*.md")
     );
 
 

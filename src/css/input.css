@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --color-bg: #fefae0; /* #fefae0; */
   --color-surface: #f0ead2; /*#ffffff; */
@@ -18,5 +19,120 @@
   --color-text-light: #d1c69a;
   --color-accent: #d4a574;
   --color-border: #3a2e22;
+}
+
+.callout {
+  background-color: rgb(var(--callout-color) / 0.1);
+  padding: 0;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.callout-title {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  background-color: rgb(var(--callout-color) / 0.15);
+  border-bottom: 1px solid rgb(var(--callout-color) / 0.2);
+}
+.callout-title-icon {
+  display: flex;
+  align-items: center;
+  color: rgb(var(--callout-color));
+}
+.callout-title-icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.callout-title-inner {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.callout-content {
+  padding: 1rem;
+  color: var(--color-text-light);
+}
+.callout-content p:first-child {
+  margin-top: 0;
+}
+.callout-content p:last-child {
+  margin-bottom: 0;
+}
+
+.callout-content p:empty {
+  display: none;
+}
+
+
+/* Callout Type Colors - from Obsidian Primary theme */
+.callout {
+  --callout-color: 182, 196, 182; /* general */
+}
+.callout[data-callout="note"] {
+  --callout-color: 200, 175, 155;
+}
+.callout[data-callout="abstract"],
+.callout[data-callout="summary"] {
+  --callout-color: 234, 181, 52;
+}
+.callout[data-callout="tldr"],
+.callout[data-callout="tl;dr"] {
+  --callout-color: 240, 180, 225;
+}
+.callout[data-callout="info"] {
+  --callout-color: 71, 162, 187;
+}
+.callout[data-callout="todo"] {
+  --callout-color: 58, 173, 252;
+}
+.callout[data-callout="tip"],
+.callout[data-callout="hint"] {
+  --callout-color: 70, 206, 185;
+}
+.callout[data-callout="important"] {
+  --callout-color: 246, 113, 118;
+}
+.callout[data-callout="success"],
+.callout[data-callout="check"],
+.callout[data-callout="done"] {
+  --callout-color: 87, 200, 83;
+}
+.callout[data-callout="question"],
+.callout[data-callout="faq"] {
+  --callout-color: 130, 190, 235;
+}
+.callout[data-callout="help"] {
+  --callout-color: 250, 128, 96;
+}
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] {
+  --callout-color: 255, 161, 32;
+}
+.callout[data-callout="failure"],
+.callout[data-callout="fail"],
+.callout[data-callout="missing"],
+.callout[data-callout="danger"],
+.callout[data-callout="error"] {
+  --callout-color: 226, 72, 86;
+}
+.callout[data-callout="bug"] {
+  --callout-color: 153, 93, 133;
+}
+.callout[data-callout="example"] {
+  --callout-color: 216, 141, 130;
+}
+.callout[data-callout="quote"] {
+  --callout-color: 173, 214, 171;
+}
+.callout[data-callout="cite"] {
+  --callout-color: 237, 217, 162;
+}
+/* Quote callout special styling */
+.callout[data-callout="quote"] .callout-content {
+  font-style: italic;
 }
 
