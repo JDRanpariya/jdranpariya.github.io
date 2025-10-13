@@ -131,6 +131,7 @@ export default function (eleventyConfig) {
                 return minify(content, {
                     collapseWhitespace: true,
                     removeComments: true,
+                    ignoreCustomFragments: [/<script[\s\S]*?<\/script>/],
                 });
             }
             return content;
