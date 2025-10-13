@@ -11,7 +11,7 @@ layout: layouts/post.njk
 description: "Boy, what a brilliant mind! How come more people haven't dedicated precious hours of their life listening to this man?"
 ---
 
-By Richard Hamming
+By **Richard Hamming**
 
 A lot of people worked very hard, but people who did significant things are few and were able to do it because of their style. It's matter of difference of style.
 
@@ -587,7 +587,7 @@ If you think economic data is bad consider social data it is worse.
 
 Guns are easy to count but attitudes are harder.
 
-```
+
 - The gap between science and engineering has shrunk.
     - There is often no time to field-test new equipment. We can choose either to work with uncertainty and use new equipment anyway, or to become obsolete.
     - Reliability testing: is the testing apparatus so much more reliable than the samples being tested, that we're confident that the results are about the reliability of our tested samples, not about the reliability of the testing apparatus?
@@ -603,7 +603,7 @@ Guns are easy to count but attitudes are harder.
         - But organisations often execute a pilot / trial differently from how they would execute a full-scale job / study. That could give different results.
 
 - Sometimes, the mere presence of a high-ranking / highly prestigious person can affect the very thing you want to measure, eg. morale.
-```
+
 
 
 ## Systems Engineering
@@ -636,7 +636,6 @@ You learn systems engineering by osmosis by doing.
 
 One of the things you need to do to be  a systems engineer is be some successive to human side of engineering.
 
-```
 Hamming's 3 rules of systems engineering (paraphrased):
     1. optimizing individual components will probably hurt the system as a whole
     2. prepare for changes — flexible, modular designs
@@ -645,6 +644,7 @@ Hamming's 3 rules of systems engineering (paraphrased):
 - Systems and solutions change each other — a continual evolution.
     - Presence of a solution changes the environment and produces new problems.
     - A solution to the original problem usually produces both deeper insight and dissatisfactions in the engineers.
+
 - Systems engineers need to block most of the local optimizations of the individuals and reach for the global optimization for the system. But these blocks change the environment, and the individuals change their local optimizations! (see previous point)
     - Human psychology to better align individual humans' incentives with the system's goals.
     - Motivating people to learn something new: figure out how to appeal / make it useful to them.
@@ -658,7 +658,7 @@ Hamming's 3 rules of systems engineering (paraphrased):
     - Without good theorizing, it's easy to solve the wrong problem.
         - Better a rough solution to almost the right problem, than a precise solution to a wrong problem.
 
-- Example of emerging phenomena (concepts and objectives) with Nike missiles:
+Example of emerging phenomena (concepts and objectives) with Nike missiles:
     - 1 plane, 1 missile:
         - objective: hit the plane.
     - A fleet of planes, a battery of missiles:
@@ -669,7 +669,7 @@ Hamming's 3 rules of systems engineering (paraphrased):
         - objective: make every value-unit of damage equally costly to the enemy.
             - Concentrate defense on valuable / vulnerable targets
             - When every value-unit of damage is equally costly, the enemy cannot gain an advantage by cleverly choosing targets.
-```
+
 
 
 ## You get what you measure
