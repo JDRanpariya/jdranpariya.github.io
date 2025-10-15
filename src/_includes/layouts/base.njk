@@ -4,9 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="d8fb4b3b-f287-4ddb-81e5-24750daa0855"></script> -->
-
-
+<script>
+  if (
+    !location.hostname.includes("localhost") &&
+    !location.hostname.includes("127.0.0.1")
+  ) {
+    const s = document.createElement("script");
+    s.defer = true;
+    s.src = "https://jay-cloud.vercel.app/script.js";
+    s.dataset.websiteId = "a210a5bb-3c45-4542-be4e-d3b7efa3de33";
+    document.head.appendChild(s);
+  } else {
+    console.log("Umami disabled on localhost");
+  }
+</script>
 
 
 <!-- Title and Meta -->
@@ -27,12 +38,6 @@
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/css/style.css" />
 
-<script
-  defer
-  src="/assets/js/jay_cloud.js"
-  data-website-id="d8fb4b3b-f287-4ddb-81e5-24750daa0855"
-  data-host-url="https://jay.ranpariya.workers.dev"
-</script>
 
   <!-- Theme initialization to prevent flash -->
   <script>
