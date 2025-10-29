@@ -7,7 +7,7 @@ permalink: /tags/
   <h1 class="text-4xl md:text-5xl font-serif font-bold mb-10 text-center">All Tags</h1>
   <div class="grid grid-cols-2 pl-2 pr-2 md:grid-cols-3 lg:grid-cols-4 gap-y-3">
     {% for tag, posts in collections %}
-      {% if not (["all", "nav", "post", "posts", "tagList", "odysseys", "library", "books", "writings", "papers", "paper", "projects"].includes(tag)) %}
+      {% if not (["all", "nav", "post", "posts", "nowUpdates", "tagList", "odysseys", "library", "lectures", "books", "writings", "papers", "paper", "projects"].includes(tag)) %}
         <a href="/tags/{{ tag | slugify }}/" 
            class="font-semibold hover:underline decoration-2 underline-offset-4">
           {{ tag }} <span class="text-muted">({{ posts.length }})</span>

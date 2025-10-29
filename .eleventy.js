@@ -24,24 +24,24 @@ export default function (eleventyConfig) {
     });
 
     eleventyConfig.addFilter("titlecase", function(str) {
-  if (!str) return "";
-  return str.replace(/\b\w/g, c => c.toUpperCase());
-});
-    // Configure Markdown with anchors, footnotes, and external link attributes
-  const md = markdownIt({ html: true, linkify: true })
-    .use(markdownItAnchor, { permalink: false })
-    .use(markdownItFootnote)
-    .use(markdownItObsidianCallouts)
-    .use(markdownItLinkAttributes, {
-      // Apply only to external links
-      matcher(href) {
-        return href.startsWith('http');
-      },
-      attrs: {
-        target: '_blank',
-        rel: 'noopener noreferrer'
-      }
+        if (!str) return "";
+        return str.replace(/\b\w/g, c => c.toUpperCase());
     });
+    // Configure Markdown with anchors, footnotes, and external link attributes
+    const md = markdownIt({ html: true, linkify: true })
+        .use(markdownItAnchor, { permalink: false })
+        .use(markdownItFootnote)
+        .use(markdownItObsidianCallouts)
+        .use(markdownItLinkAttributes, {
+            // Apply only to external links
+            matcher(href) {
+                return href.startsWith('http');
+            },
+            attrs: {
+                target: '_blank',
+                rel: 'noopener noreferrer'
+            }
+        });
 
     // Filter to extract footnotes from rendered Markdown
     eleventyConfig.addFilter('extractFootnotes', function (content) {
@@ -69,57 +69,83 @@ export default function (eleventyConfig) {
     eleventyConfig.addCollection("papers", (collection) =>
         collection.getFilteredByGlob("src/library/papers/*.md")
     );
-        // Projects
+    // Projects
 
     eleventyConfig.addCollection("projects", (collection) =>
-      collection.getFilteredByGlob("src/projects/**/*.md")
+        collection.getFilteredByGlob("src/projects/**/*.md")
     );
 
     // odysseys
     eleventyConfig.addCollection("odysseys", (collection) =>
-      collection.getFilteredByGlob("src/odysseys/**/*.md")
+        collection.getFilteredByGlob("src/odysseys/**/*.md")
     );
 
 
-  eleventyConfig.addCollection("writings", function(collection) {
-    return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {
-    return new Date(b.data.published) - new Date(a.data.published);});
-  });
+    eleventyConfig.addCollection("writings", function(collection) {
+        return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {
+            return new Date(b.data.published) - new Date(a.data.published);});
+    });
 
     eleventyConfig.addFilter("filterByTag", function (collection, tag) {
-  return collection.filter(item => (item.data.tags || []).includes(tag));
-});
-
-   // Create collections for each tag
-  eleventyConfig.addCollection("tagList", function(collections) {
-    const tagSet = new Set();
-    collections.getAll().forEach(item => {
-      if ("tags" in item.data) {
-        let tags = item.data.tags;
-        tags = tags.filter(tag => {
-          // Filter out template tags and nav
-          switch(tag) {
-            case "all":
-            case "nav":
-            case "post":
-            case "posts":
-              return false;
-          }
-          return true;
-        });
-        for (const tag of tags) {
-          tagSet.add(tag);
-        }
-      }
+        return collection.filter(item => (item.data.tags || []).includes(tag));
     });
-    return Array.from(tagSet).sort();
-  });
+
+    // Create collections for each tag
+    eleventyConfig.addCollection("tagList", function(collections) {
+        const tagSet = new Set();
+        collections.getAll().forEach(item => {
+            if ("tags" in item.data) {
+                let tags = item.data.tags;
+                tags = tags.filter(tag => {
+                    // Filter out template tags and nav
+                    switch(tag) {
+                        case "all":
+                        case "nav":
+                        case "post":
+                        case "posts":
+                            return false;
+                    }
+                    return true;
+                });
+                for (const tag of tags) {
+                    tagSet.add(tag);
+                }
+            }
+        });
+        return Array.from(tagSet).sort();
+    });
+
+    // Add this within your module.exports = function(eleventyConfig) { ... };
+    eleventyConfig.addCollection("nowUpdates", function(collectionApi) {
+        return collectionApi.getFilteredByGlob("src/now/updates/*.md").sort((a, b) => {
+            return b.date - a.date; // Sort by date descending
+        });
+    });
+
+    // Helper filter to group by year/month for the archive (add this too)
+    eleventyConfig.addFilter("groupUpdatesByYearMonth", (updates) => {
+        const grouped = {};
+        updates.forEach(update => {
+            const year = update.date.getFullYear();
+            const month = update.date.toLocaleString('default', { month: 'long' });
+            if (!grouped[year]) grouped[year] = {};
+            if (!grouped[year][month]) grouped[year][month] = [];
+            grouped[year][month].push(update);
+        });
+        return grouped;
+    });
 
     eleventyConfig.addFilter("formatDate", (published) => {
-    if (!published) return "";
-    const date = published instanceof Date ? published : new Date(published);
-    return DateTime.fromJSDate(date).toFormat("LLL d, yyyy"); // Sep 15, 2025
-  });
+        if (!published) return "";
+        const date = published instanceof Date ? published : new Date(published);
+        return DateTime.fromJSDate(date).toFormat("LLL d, yyyy"); // Sep 15, 2025
+    });
+
+    eleventyConfig.addFilter("dateToFormat", (dateObj, format = "yyyy-MM-dd") => {
+        // Corrected to handle potential string inputs
+        const dt = (dateObj instanceof Date) ? DateTime.fromJSDate(dateObj) : DateTime.fromISO(dateObj.toString());
+        return dt.toFormat(format); // e.g., 2025-10-28
+    });
 
 
 

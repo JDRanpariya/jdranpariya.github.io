@@ -3,117 +3,223 @@ title: Now | JDRanpariya
 layout: layouts/base
 section: "now"
 ---
-<section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
-  
-  <!-- Hero / Title -->
-  <div class="text-center space-y-4">
-    <p class="text-5xl md:text-6xl font-serif text-accent">What I'm Doing Now</p>
-    <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-      Real-time snapshot of my current projects, obsessions, and rabbit holes.
-      This is what's actually consuming my mental bandwidth right now.
-    </p>
-  </div>
+<section class="max-w-9xl mx-auto px-6 py-16">
+  <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
 
-  <!-- Note -->
-  <div class="flex space-x-2 justify-center">
-    <p class="text-xl md:text-xl font-serif text-accent">Note: </p>
-    <p class="text-lg md:text-lg font-semibold text-muted">
-  Currently I'm working on 
-  <a href="/projects/kosha" class="text-primary underline hover:text-accent transition-colors">Kosha</a>.
-</p>
+    {# Left Column (Empty) #}
+    <aside class="hidden md:block md:col-span-2 relative">
+      <div class="sticky top-16 mt-16">
+         {# Placeholder #}
+      </div>
+    </aside>
 
-  </div>
+    {# Main Content (Middle Column) #}
+    <main class="md:col-span-6 space-y-12">
 
-  <!-- Quick Thoughts / Journal -->
-<div class="space-y-6">
-  <h2 class="text-3xl font-serif text-accent">Updates for this Week</h2>
-  <div class="prose-custom text-lg space-y-3">
-    <p>
-      Last month has been hectic and I suppose next would be very similar. I got invited to a lot of Diwali and New Year celebrations, and I’m feeling very happy about it!!
-    </p>
-    <p>
-      It’s the first time in my life I got invited to so many places in a month — was 18, 19, 22, 25, and 26. I’m also planning for a potluck and my birthday celebration next month, and there’s already an invitation for the 30th. I said yes to all of them to see how much social interaction I could handle; surprisingly, I was able to manage it pretty well. But it does feel hectic, and I feel I’m not able to do anything else apart from events and office work (it’s a struggle to manage this along with my sports, which is 4 days a week).
-    </p>
-    <p>
-      I’m grateful for all the invites, and I am currently trying to get time for myself and do relevant stuff like applying for my master’s thesis and working on my seminar. I’m hoping to get time to improve this site, write articles, and work on Kosha. I recently met a new penpal on Slowly, and it’s really exciting to share long letters — but it’s taking up much of my bandwidth too. I’m looking for ways to sustainably handle all this mess :)
-    </p>
-    <p>
-      Last week I got bored a bit by <em>Antifragility</em> and decided to pick up <em>Why We Sleep</em>. It’s surprising how it gets me imagining how sleep mechanisms in us could inspire new AI algorithms and model architectures. I’ve decided to write an informal proposal about it — hopefully, you’ll find it soon on my writings 😁.
-    </p>
-    <p>
-      Life is full of surprises. I was looking up the university sports website to check the amount I paid for each sport and found Salsa had spots left. I texted my friend who wasn’t able to register before, and now she was able to 😄. I also found a spot for Sports Buddy (team sports where we play different team sports every Saturday) open 🥳 and finally registered. I really adore Sports Buddy!! Yesterday, when I went to class, I saw another friend of mine who registered just that morning.
-    </p>
-  </div>
-</div>
-
-  <!-- Quick Thoughts / Journal -->
-  <div class="space-y-6">
-    <h2 class="text-3xl font-serif text-accent">Updates of Last Week</h2>
-      <div class="prose-custom text-lg space-y-3">
-        <p>This page looks annoying and needs some work :P</p>
-        <p> Anyway this week was fun, I spontanously registered for Salsa, Improv Theatre and 
-        Frisbee. I had first class for Salsa and Improv, and I'm really liking it!! <p>
-        <p> I'm currently reading Anti-Fragile by Taleb, currently on a section where he talks
-        about political systems and I find it super boring. Makes me think if I should pick up,
-        Why We Sleep for a week.
+      {# 1. Hero / Title #}
+      <div class="text-center space-y-4 mb-16">
+        <p class="text-5xl md:text-6xl font-serif text-accent">What I'm Doing Now</p>
+        <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
+          Real-time snapshot of my current projects, obsessions, and rabbit holes. This is what's actually consuming my mental bandwidth right now.
         </p>
-    </div>
+      </div>
+
+      {# 2. Project Highlights #}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+         <div class="flex flex-col justify-center bg-card p-6 rounded-xl shadow-md">
+           <h3 class="text-2xl font-serif text-accent mb-3">Building Kosha</h3>
+            <p class="text-secondary mb-3">
+              I've started working on building Personalized content streamer, It was about 2 years I thought of it. It's my solution to handle overwhelming amount of content I consume.
+           </p>
+           <p class="text-sm text-muted">Status: Actively building MVP</p>
+       </div>
+       <div class="flex flex-col justify-center bg-card p-6 rounded-xl shadow-md">
+           <h3 class="text-2xl font-serif text-accent mb-3">Write a fucking article</h3>
+           <p class="text-secondary mb-3">
+             Want to write article on "On hoarding and learning knowledge" and on how sleep can inspire us think differently about AI and Learning.
+           </p>
+           <p class="text-sm text-muted">Status: Need to start working on it!</p>
+       </div>
+      </div>
+
+      {# 3. Dynamic Update Section #}
+      <div class="space-y-6">
+        <h2 id="update-heading" class="text-3xl font-serif text-accent">
+          {# Initial heading will be set by JS #}
+        </h2>
+        <div id="updates-container">
+          {% for update in collections.nowUpdates %}
+             {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %} {# <-- FIX: Use YYYY-MM-DD for ID #}
+            <div
+              id="update-{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD ID #}
+              class="now-update-content prose-custom text-lg space-y-3 {% if not loop.first %}hidden{% endif %}"
+              data-date="{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD data-date #}
+              data-formatted-date="{{ update.date | formatDate }}"        {# Keep human-readable version #}
+            >
+              {{ update.templateContent | safe }}
+            </div>
+          {% else %}
+             <p class="text-muted text-center italic">No updates posted yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      {# 4. Current Mindset #}
+      <div class="space-y-6">
+        <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
+        <div class="prose-custom text-lg mx-auto space-y-4">
+           {# ... Your mindset paragraphs ... #}
+             <p>
+               I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
+            </p>
+            <p>
+               Exposing myself to as many opportunities as possible - applying for thesis positions, reaching out to people for collaborations, putting myself out there more. The reason you're reading this site is part of this shift. I've wanted to rebuild it forever, but perfectionism kept me stuck.
+           </p>
+           <p>
+               I want to get obsessive over building rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
+           </p>
+        </div>
+      </div>
+
+      {# Footer Note #}
+      <div class="text-center pt-8">
+         {# FIX: Display the latest update date here #}
+         {% set latestUpdate = collections.nowUpdates[0] %}
+        <p class="text-sm text-muted" id="footer-update-note">
+            Latest update: {% if latestUpdate %}{{ latestUpdate.date | formatDate }}{% else %}N/A{% endif %}
+        </p>
+      </div>
+
+    </main>
+
+    {# Right Column (Archive) #}
+    <aside class="pt-4 pr-8 hidden md:block md:col-span-2 relative">
+      <div class="sticky top-16 mt-16">
+        <h2 class="text-2xl font-serif font-semibold mb-4 text-primary">Archive</h2>
+        {% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
+         {% if collections.nowUpdates | length > 0 %}
+            {% for year, months in groupedUpdates %}
+             <details class="group mb-2" {% if loop.first %}open{% endif %}>
+                 <summary class="cursor-pointer font-semibold text-lg py-1 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
+                     {{ year }}
+                     <span class="text-muted text-xs group-open:rotate-180 transition-transform duration-200">▼</span>
+                 </summary>
+                 <div class="pl-4 border-l border-border ml-1 space-y-1 mt-1">
+                 {% for month, updates in months %}
+                     <details class="group/month mt-1">
+                          <summary class="cursor-pointer font-medium text-base py-0.5 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
+                              {{ month }}
+                              <span class="text-muted text-xs group-open/month:rotate-180 transition-transform duration-200">▼</span>
+                          </summary>
+                          <ul class="pl-4 border-l border-border ml-1 py-1 text-sm space-y-0.5" id="archive-list">
+                              {% for update in updates %}
+                                   {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %} {# <-- FIX: Use YYYY-MM-DD #}
+                                   <li>
+                                     <a href="#update-{{ dateStringId }}"
+                                        onclick="showArchivedUpdate('{{ dateStringId }}'); return false;" {# <-- FIX: Pass YYYY-MM-DD #}
+                                        class="archive-link text-primary hover:underline"
+                                        data-date="{{ dateStringId }}"> {# <-- FIX: Use YYYY-MM-DD #}
+                                        {{ update.date | formatDate }} {# Keep human-readable text #}
+                                     </a>
+                                   </li>
+                              {% endfor %}
+                          </ul>
+                     </details>
+                 {% endfor %}
+                 </div>
+             </details>
+            {% endfor %}
+        {% else %}
+            <p class="text-sm text-muted italic">No past updates recorded yet.</p>
+        {% endif %}
+      </div>
+    </aside>
+
   </div>
-
-  <!-- Current Projects Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    
-    <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-3">Bulding Kosha</h3>
-      <p class="text-secondary mb-3">
-      I've started working on buildilng Personalized content streamer, It was about 2 years I thought of it. It's my solution to handle overwhleming amount of content I consume. 
-      </p>
-      <p class="text-sm text-muted">Status: Actively building MVP</p>
-    </div>
-
-    <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-3">This Personal Site</h3>
-      <p class="text-secondary mb-3">
-        Finally rebuilding my old site that was taking ages due to perfectionism. Using it to improve my writing skills and learn in public. Sometimes the best way to beat procrastination is just to ship it.
-      </p>
-      <p class="text-sm text-muted">Status: Actually launched! Now iterating and writing</p>
-    </div>
-
-
-    <div class="bg-card p-6 rounded-xl shadow-md">
-      <h3 class="text-2xl font-serif text-accent mb-3">Write a fucking article</h3>
-      <p class="text-secondary mb-3">
-      Want to write article on "On hoarding and learning knowledge"
-      </p>
-      <p class="text-sm text-muted">Status: Need to start working on it!</p>
-    </div>
-
-  </div>
-
-
-  <!-- Current Mindset / Philosophy -->
-  <div class="space-y-6">
-    <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
-    <div class="prose-custom text-lg mx-auto space-y-4">
-      <p>
-        I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
-      </p>
-      <p>
-        Exposing myself to as many opportunities as possible - applying for thesis positions, reaching out to people for collaborations, putting myself out there more. The reason you're reading this site is part of this shift. I've wanted to rebuild it forever, but perfectionism kept me stuck.
-      </p>
-      <p>
-        I want to get obsessive over building rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
-      </p>
-    </div>
-  </div>
-
-
-
-  <!-- Footer Note -->
-  <div class="text-center">
-    <p class="text-sm text-muted">
-      Last updated: Oct 28, 2025 
-    </p>
-  </div>
-
 </section>
+
+{# JavaScript (No changes needed here from the previous version) #}
+<script>
+  function showArchivedUpdate(dateStringId) { // Renamed parameter for clarity
+    const headingEl = document.getElementById('update-heading');
+    const updatesContainer = document.getElementById('updates-container');
+    const allUpdateContentDivs = updatesContainer.querySelectorAll('.now-update-content');
+    const targetUpdateDiv = document.getElementById('update-' + dateStringId); // Use YYYY-MM-DD ID
+    const archiveLinks = document.querySelectorAll('#archive-list .archive-link');
+    const footerNote = document.getElementById('footer-update-note'); // Get footer element
+
+    if (!targetUpdateDiv || !headingEl) {
+      console.error('Target update element or heading not found for date:', dateStringId);
+      return;
+    }
+
+    // 1. Hide all update content blocks
+    allUpdateContentDivs.forEach(div => {
+      div.classList.add('hidden');
+    });
+
+    // 2. Show the target update content block
+    targetUpdateDiv.classList.remove('hidden');
+
+    // 3. Update the heading using data-formatted-date
+    const formattedDate = targetUpdateDiv.dataset.formattedDate || dateStringId;
+    headingEl.textContent = 'Update from ' + formattedDate;
+
+    // 4. Update URL hash
+    //window.location.hash = '#update-' + dateStringId;
+
+    // 5. Highlight active archive link
+    archiveLinks.forEach(link => {
+       const isActive = link.dataset.date === dateStringId;
+       link.classList.toggle('font-bold', isActive);
+       link.classList.toggle('text-accent', isActive);
+       link.classList.toggle('text-primary', !isActive);
+    });
+
+     // 6. Update Footer Note (Optional, if you want it to reflect the *viewed* update)
+     // If you always want it to show the *latest* update, leave the Nunjucks part as is.
+     // If you want it to show the date of the update currently being viewed:
+     // if (footerNote) {
+     //    footerNote.textContent = 'Viewing update from: ' + formattedDate;
+     // }
+  }
+
+  // --- Initial Setup on Page Load ---
+  document.addEventListener('DOMContentLoaded', () => {
+    const initialUpdate = document.querySelector('.now-update-content:not(.hidden)');
+    // Use the YYYY-MM-DD data-date attribute
+    const initialDateStringId = initialUpdate ? initialUpdate.dataset.date : null;
+
+    if (initialDateStringId) {
+      showArchivedUpdate(initialDateStringId); // Call with YYYY-MM-DD
+    } else {
+       const headingEl = document.getElementById('update-heading');
+       if(headingEl) {
+         headingEl.textContent = 'Latest Update';
+       }
+        // Ensure footer note reflects no updates
+        const footerNote = document.getElementById('footer-update-note');
+        if(footerNote) footerNote.textContent = 'No updates yet.';
+    }
+
+    function handleHashChange() {
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#update-')) {
+            const dateFromHash = hash.substring(8);
+             const targetUpdateDiv = document.getElementById('update-' + dateFromHash);
+             if(targetUpdateDiv){
+                showArchivedUpdate(dateFromHash);
+             } else if (initialDateStringId) {
+                 showArchivedUpdate(initialDateStringId); // Show latest if hash invalid
+             }
+        } else if (initialDateStringId) {
+            showArchivedUpdate(initialDateStringId); // Show latest if no hash
+        }
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Run on initial load
+
+  });
+</script>
