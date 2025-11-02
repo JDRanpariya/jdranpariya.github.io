@@ -60,7 +60,7 @@ section: "now"
              {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %} {# <-- FIX: Use YYYY-MM-DD for ID #}
             <div
               id="update-{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD ID #}
-              class="now-update-content prose-custom text-lg space-y-3 {% if not loop.first %}hidden{% endif %}"
+              class="now-update-content prose text-lg space-y-3 {% if not loop.first %}hidden{% endif %}"
               data-date="{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD data-date #}
               data-formatted-date="{{ update.date | formatDate }}"        {# Keep human-readable version #}
             >
@@ -76,7 +76,7 @@ section: "now"
       {# 4. Current Mindset #}
       <div class="space-y-6">
         <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
-        <div class="prose-custom text-lg mx-auto space-y-4">
+        <div class="prose text-lg mx-auto space-y-4">
            {# ... Your mindset paragraphs ... #}
              <p>
                I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
