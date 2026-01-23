@@ -1,0 +1,14 @@
+{% macro guestbookCard(name, location, message, date) %}
+<div class="bg-card p-6 rounded-xl border border-primary/10 dark:border-primary/20 hover:border-accent/30 transition duration-300">
+    <div class="flex items-start justify-between mb-4">
+        <div>
+            <h3 class="font-serif text-xl text-accent">{{ name }}</h3>
+            {% if location %}
+            <p class="text-sm text-muted">{{ location }}</p>
+            {% endif %}
+        </div>
+        <time class="text-sm text-muted">{{ date }}</time>
+    </div>
+    <p class="text-secondary leading-relaxed">{{ message }}</p>
+</div>
+{% endmacro %}

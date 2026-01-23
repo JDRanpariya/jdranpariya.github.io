@@ -4,6 +4,145 @@ layout: layouts/base
 section: "guest book"
 ---
 
+<!-- Hero Section -->
+<section class="items-center justify-center px-6 pt-16 sm:pt-20">
+    <div class="max-w-3xl mx-auto text-center space-y-12">
+        
+        <!-- Main Heading -->
+        <div class="space-y-6">
+            <h1 class="font-serif text-[clamp(2.5rem,6vw,5rem)] sm:text-[clamp(3rem,7vw,6rem)] font-bold text-primary leading-snug tracking-tight">
+                Guest <span class="text-accent font-medium">Book</span>
+            </h1>
+            
+            <p class="font-sans text-lg sm:text-xl md:text-2xl text-muted max-w-3xl mx-auto leading-relaxed">
+                Leave a note, share a thought, or just say hello. I read every entry and they mean the world to me.
+            </p>
+        </div>
 
-<h1 class="text-5xl text-center text-primary pt-48 pb-48 "> Page Under Construction! </h1>
+    </div>
+</section>
 
+<section class="max-w-5xl mx-auto px-6 py-24">
+    <div class="max-w-2xl mx-auto space-y-2">
+        
+        <div class="bg-card p-6 sm:p-8 rounded-xl shadow-md">
+               <form action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse" method="POST" target="hidden_iframe" id="guestbookForm" class="space-y-6">
+
+                
+                <div>
+                    <label for="name" class="block font-sans text-base font-medium text-primary mb-2">
+                        Your Name <span class="text-accent">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="entry.1611923301" 
+                        required
+                        class="w-full px-4 py-3 rounded-xl border-2 border-secondary/10 focus:border-muted focus:outline-none transition duration-300 font-sans"
+                        placeholder="Jane Doe"
+                    >
+                </div>
+
+                <div>
+                    <label for="message" class="block font-sans text-base font-medium text-primary mb-2">
+                        Your Message <span class="text-accent">*</span>
+                    </label>
+                    <textarea 
+                        id="message" 
+                        name="entry.736310078" 
+                        required
+                        rows="5"
+                        class="w-full px-4 py-3 rounded-xl border-2 border-primary/10 focus:border-accent focus:outline-none transition duration-300 font-sans resize-none"
+                        placeholder="Share a thought, ask a question, or leave some encouragement..."
+                    ></textarea>
+                </div>
+
+                <div>
+                    <label for="location" class="block font-sans text-base font-medium text-primary mb-2">
+                        Location or Website <span class="text-muted text-sm">(optional)</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        name="entry.2008969763"
+                        class="w-full px-4 py-3 rounded-xl border-2 border-primary/10 focus:border-accent focus:outline-none transition duration-300 font-sans"
+                        placeholder="San Francisco, CA or yourwebsite.com"
+                    >
+                </div>
+
+                <div class="pt-4">
+                    <button 
+                        type="submit"
+                        class="w-full px-8 py-4 rounded-xl font-sans font-medium bg-primary text-bg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
+                    >
+                        Leave Your Mark
+                    </button>
+                </div>
+
+                <p class="text-sm text-muted italic text-center pt-2">
+                    Entries are reviewed and typically appear within a few days
+                </p>
+            </form>
+
+            <!-- Success Message (hidden by default) -->
+            <div id="successMessage" class="hidden mt-3 p-3 bg-accent/5 rounded-2xl">
+                <p class="text-accent font-medium text-lg text-center font-sans">
+                    ✨ Thank you! Your message has been received and will appear soon.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Past Entries -->
+<section class="max-w-5xl mx-auto px-6 py-24 space-y-20">
+    <div class="text-center space-y-8">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">
+            Messages from Visitors
+        </h2>
+
+        <div class="max-w-5xl mx-auto space-y-6">
+            
+            {% if guestbook.length > 0 %}
+                {% for entry in guestbook %}
+                    {% from "components/guestbook_card.njk" import guestbookCard %}
+                    {{ guestbookCard(entry.name, entry.location, entry.message, entry.date) }}
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="text-center py-16 space-y-6">
+                    <div class="w-24 h-24 mx-auto rounded-full bg-accent/10 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-serif text-2xl text-primary">Be the first to sign!</h3>
+                        <p class="text-muted">No entries yet. Leave your mark and start the conversation.</p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- Hidden iframe for Google Forms submission -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
+
+<script>
+    var submitted = false;
+    const form = document.getElementById('guestbookForm');
+    
+    if (form) {
+        form.addEventListener('submit', function() {
+            submitted = true;
+            // Show success message
+            setTimeout(() => {
+                document.getElementById('successMessage').classList.remove('hidden');
+                form.style.display = 'none';
+            }, 0);
+        });
+    }
+</script>
