@@ -1,5 +1,6 @@
 import pluginTOC from 'eleventy-plugin-toc';
 import markdownIt from 'markdown-it';
+import mk from "@vscode/markdown-it-katex";
 import markdownItObsidianCallouts from 'markdown-it-obsidian-callouts';
 import markdownItAnchor from 'markdown-it-anchor';
 import markdownItFootnote from 'markdown-it-footnote';
@@ -32,6 +33,7 @@ export default function (eleventyConfig) {
         .use(markdownItAnchor, { permalink: false })
         .use(markdownItFootnote)
         .use(markdownItObsidianCallouts)
+        .use(mk.default)
         .use(markdownItLinkAttributes, {
             // Apply only to external links
             matcher(href) {

@@ -7,6 +7,7 @@
     "@fullhuman/postcss-purgecss": "^6.0.0",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
+    "baseline-browser-mapping": "^2.9.18",
     "concurrently": "^9.2.1",
     "del-cli": "^5.1.0",
     "html-minifier": "^4.0.0",
@@ -30,6 +31,7 @@
     "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch"
   },
   "dependencies": {
+    "@vscode/markdown-it-katex": "^1.1.2",
     "eleventy-plugin-toc": "^1.1.5",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
