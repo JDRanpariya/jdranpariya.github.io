@@ -8,8 +8,15 @@ series:
   name: "On Simulation"   # Series title
   order: 1                           # Position in the series
 layout: layouts/post.njk
-description: "My notes on differntiable simulation to write my own toy version and understand it's implication for learning based methods/AI for robotics"
+description: "My notes on differentiable simulation to write my own toy version and understand it's implication for learning based methods/AI for robotics"
 ---
+
+### Why Should We Care About Differentiable Simulation?
+- Joint optimization of policy and dynamics
+- Improved sample efficiency via physics gradients
+- Morphology Optimization
+- System Identification
+
 
 #### Appendix
 - [Review on Differentiable simulators](https://arxiv.org/pdf/2407.05560)
