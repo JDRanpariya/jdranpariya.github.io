@@ -1,6 +1,7 @@
 import pluginTOC from 'eleventy-plugin-toc';
 import markdownIt from 'markdown-it';
 import mk from "@vscode/markdown-it-katex";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import markdownItObsidianCallouts from 'markdown-it-obsidian-callouts';
 import markdownItAnchor from 'markdown-it-anchor';
 import markdownItFootnote from 'markdown-it-footnote';
@@ -16,6 +17,9 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('build/css');
     // makes passthrough files live-reload instead of being copied once
     eleventyConfig.setServerPassthroughCopyBehavior('passthrough');
+
+    // Add Syntax Highlight plugin
+    eleventyConfig.addPlugin(syntaxHighlight);
 
     // Add TOC plugin
     eleventyConfig.addPlugin(pluginTOC, {
