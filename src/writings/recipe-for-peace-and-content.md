@@ -14,7 +14,7 @@ description: "How to live peaceful and contentful life! or what to do when you h
 ### to-do
 - need for purpose and how I think about [mine](/odysseys/purpose/)!
     - gives you direction and solid base to stand(build your own standards) and to not have fomo
-- introduce moslow, lifebook and foundations by scott young and figureing out what actually matters
+- introduce maslow, lifebook and foundations by scott young and figureing out what actually matters
 - now how to make time/energy for things that matter to you
 - critical components I can't think you can leave out to achieve what you want
 
