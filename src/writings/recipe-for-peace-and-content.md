@@ -19,7 +19,7 @@ description: "How to live peaceful and contentful life! or what to do when you h
 - critical components I can't think you can leave out to achieve what you want
 
 
-#### articles I found when I googled recipe for peace and content, for my personal reading
+#### Articles I found when I googled recipe for peace and content, for my personal reading
 > It's crazy how very few articles have life of their own and other just feel like lists
 - [flourish](https://bigthink.com/books/flourish/)
 - https://www.beliefnet.com/columnists/blessingsabound/2013/06/recipe-for-a-peaceful-life.html

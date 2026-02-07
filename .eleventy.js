@@ -86,6 +86,14 @@ export default function (eleventyConfig) {
         collection.getFilteredByGlob("src/odysseys/**/*.md")
     );
 
+    eleventyConfig.addCollection("reckoningTheDead", function(collectionApi) {
+     return collectionApi.getFilteredByGlob("src/odysseys/reckoning-the-dead/*.md");
+   });
+
+    eleventyConfig.addCollection("alchemistsHearth", function(collectionApi) {
+     return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
+   });
+
 
     eleventyConfig.addCollection("writings", function(collection) {
         return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {

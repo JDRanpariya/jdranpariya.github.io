@@ -1,0 +1,41 @@
+---
+title: The Alchemist's Hearth
+layout: layouts/base
+section: "alchemists-hearth"
+---
+<section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
+  <!-- Header -->
+  <div class="text-center space-y-4">
+    <h1 class="text-5xl md:text-6xl font-serif text-accent">The Alchemist's Hearth</h1>
+    <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
+      My kitchen experiments, cooking failures, and the occasional dish that actually turns out great.
+    </p>
+  </div>
+
+  <!-- Introduction -->
+  <div class="prose prose-lg mx-auto text-muted max-w-3xl">
+    <p>
+      I like cooking. Sometimes things work out, sometimes they don't. This is where I write 
+      about what I'm making, recipes I'm trying, and whatever I'm learning as I go.
+    </p>
+    <p>
+      No fancy techniques or professional advice here—just me messing around in the kitchen, 
+      figuring things out, and sharing what happens. Some posts might be about a dish I nailed, 
+      others about complete disasters. Both are equally useful.
+    </p>
+    <p>
+      If you're into cooking or just curious, welcome. Let's see what we can burn together.
+    </p>
+  </div>
+
+  <!-- List of posts -->
+  <div class="space-y-12">
+    {% for post in collections.alchemistsHearth %}
+      <article class="space-y-2 text-center">
+        <h2 class="text-2xl font-serif hover:underline underline-offset-4 decoration-2 text-primary text-accent capitalize">
+          <a href="{{ post.url }}">{{ post.data.title }}</a>
+        </h2>
+      </article>
+    {% endfor %}
+  </div>
+</section>
