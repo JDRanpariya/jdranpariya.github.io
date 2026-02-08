@@ -326,7 +326,7 @@ which can run thousands of envs at same time.
 ### Results and Conclusion
 
 
-#### Appendix
+#### References
 - [The Reality Gap in Robotics](https://arxiv.org/pdf/2510.20808)
 - [Differential Simulation Overview](https://www.emergentmind.com/topics/differentiable-simulation)
 - [Elements of Differentiable Programming](https://arxiv.org/pdf/2403.14606)

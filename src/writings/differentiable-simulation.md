@@ -18,7 +18,7 @@ description: "My notes on differentiable simulation to write my own toy version 
 - System Identification
 
 
-#### Appendix
+#### References
 - [Review on Differentiable simulators](https://arxiv.org/pdf/2407.05560)
 - [Differential Simulation SIGGRAPH](https://www.youtube.com/watch?v=atCFu-vwyVw)
 - [Introduction to Differentiable Physics](https://physicsbaseddeeplearning.org/diffphys.html)
