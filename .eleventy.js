@@ -136,7 +136,7 @@ export default function (eleventyConfig) {
         });
     });
 
-    // Helper filter to group by year/month for the archive (add this too)
+    // Helper filter to group by year/month for the archive
     eleventyConfig.addFilter("groupUpdatesByYearMonth", (updates) => {
         const grouped = {};
         updates.forEach(update => {
@@ -146,7 +146,13 @@ export default function (eleventyConfig) {
             if (!grouped[year][month]) grouped[year][month] = [];
             grouped[year][month].push(update);
         });
-        return grouped;
+        
+        // Convert to array and sort years descending (newest first)
+        const sortedYears = Object.keys(grouped)
+            .sort((a, b) => b - a) // 2026, 2025, 2024...
+            .map(year => [year, grouped[year]]);
+        
+        return sortedYears;
     });
 
     eleventyConfig.addFilter("formatDate", (published) => {

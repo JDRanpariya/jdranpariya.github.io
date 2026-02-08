@@ -77,15 +77,14 @@ section: "now"
       <div class="space-y-6">
         <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
         <div class="prose text-primary dark:text-muted text-lg space-y-4">
-           {# ... Your mindset paragraphs ... #}
+            <p>
+            This year, I've decided to stop ignoring consistancy and overvaluing persistance too much. There is no other way than to be consistant and persistant if I really want to achieve something.
+            </p>
              <p>
                I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
             </p>
-            <p>
-               Exposing myself to as many opportunities as possible - applying for thesis positions, reaching out to people for collaborations, putting myself out there more. The reason you're reading this site is part of this shift. I've wanted to rebuild it forever, but perfectionism kept me stuck.
-           </p>
            <p>
-               I want to get obsessive over building rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
+               I want to get obsessive over building and creating rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
            </p>
         </div>
       </div>
@@ -103,51 +102,52 @@ section: "now"
 
     {# Right Column (Archive) #}
     <aside class="pt-4 pr-8 hidden md:block md:col-span-2 relative">
-      <div class="sticky top-16 mt-16">
-        <h2 class="text-2xl font-serif font-semibold mb-4 text-primary">Archive</h2>
-        {% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
-         {% if collections.nowUpdates | length > 0 %}
-            {% for year, months in groupedUpdates %}
-             <details class="group mb-2" {% if loop.first %}open{% endif %}>
-                 <summary class="cursor-pointer font-semibold text-lg py-1 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
-                     {{ year }}
-                     <span class="text-muted text-xs group-open:rotate-180 transition-transform duration-200">▼</span>
-                 </summary>
-                 <div class="pl-4 border-l border-border ml-1 space-y-1 mt-1">
-                 {% for month, updates in months %}
-                     <details class="group/month mt-1">
-                          <summary class="cursor-pointer font-medium text-base py-0.5 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
-                              {{ month }}
-                              <span class="text-muted text-xs group-open/month:rotate-180 transition-transform duration-200">▼</span>
-                          </summary>
-                          <ul class="pl-4 border-l border-border ml-1 py-1 text-sm space-y-0.5" id="archive-list">
-                              {% for update in updates %}
-                                   {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %} {# <-- FIX: Use YYYY-MM-DD #}
-                                   <li>
-                                     <a href="#update-{{ dateStringId }}"
-                                        onclick="showArchivedUpdate('{{ dateStringId }}'); return false;" {# <-- FIX: Pass YYYY-MM-DD #}
-                                        class="archive-link text-primary hover:underline"
-                                        data-date="{{ dateStringId }}"> {# <-- FIX: Use YYYY-MM-DD #}
-                                        {{ update.date | formatDate }} {# Keep human-readable text #}
-                                     </a>
-                                   </li>
-                              {% endfor %}
-                          </ul>
-                     </details>
-                 {% endfor %}
-                 </div>
-             </details>
-            {% endfor %}
-        {% else %}
-            <p class="text-sm text-muted italic">No past updates recorded yet.</p>
-        {% endif %}
-      </div>
+        <div class="sticky top-16 mt-16">
+    <h2 class="text-2xl font-serif font-semibold mb-4 text-primary">Archive</h2>
+    {% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
+    {% if collections.nowUpdates | length > 0 %}
+        {% for yearData in groupedUpdates %}
+            {% set year = yearData[0] %}
+            {% set months = yearData[1] %}
+            <details class="group mb-2" {% if loop.first %}open{% endif %}>
+                <summary class="cursor-pointer font-semibold text-lg py-1 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
+                    {{ year }}
+                    <span class="text-muted text-xs group-open:rotate-180 transition-transform duration-200">▼</span>
+                </summary>
+                <div class="pl-4 border-l border-border ml-1 space-y-1 mt-1">
+                    {% for month, updates in months %}
+                        <details class="group/month mt-1">
+                            <summary class="cursor-pointer font-medium text-base py-0.5 flex justify-between items-center list-none text-primary hover:text-accent transition-colors">
+                                {{ month }}
+                                <span class="text-muted text-xs group-open/month:rotate-180 transition-transform duration-200">▼</span>
+                            </summary>
+                            <ul class="pl-4 border-l border-border ml-1 py-1 text-sm space-y-0.5" id="archive-list">
+                                {% for update in updates %}
+                                    {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %}
+                                    <li>
+                                        <a href="#update-{{ dateStringId }}"
+                                           onclick="showArchivedUpdate('{{ dateStringId }}'); return false;"
+                                           class="archive-link text-primary hover:underline"
+                                           data-date="{{ dateStringId }}">
+                                            {{ update.date | formatDate }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    {% endfor %}
+                </div>
+            </details>
+        {% endfor %}
+    {% else %}
+        <p class="text-sm text-muted italic">No past updates recorded yet.</p>
+    {% endif %}
+</div>
     </aside>
 
   </div>
 </section>
 
-{# JavaScript (No changes needed here from the previous version) #}
 <script>
   function showArchivedUpdate(dateStringId) { // Renamed parameter for clarity
     const headingEl = document.getElementById('update-heading');
