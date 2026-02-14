@@ -79,7 +79,7 @@ already existing information?
 
 ### On citing works
 
-It would be very often the idea or examples are I state are not my own, only thing that can be mine
+It would be very often that the idea or examples I state are not my own, only thing that can be mine
 is the perspective through which I see them and try to get joy, actionable insights, conneting dots(applying it to
 fields or problems that haven't been applied to yet). I believe in doing my best to cite the 
 references at the end of the articles, if you ever find a gap, please write me, credit shall 
