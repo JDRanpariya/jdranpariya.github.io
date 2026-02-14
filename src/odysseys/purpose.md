@@ -26,7 +26,7 @@ Callouts don't look nice either :(
 - [x] Finish wiki on purushartha [finish wiki](https://en.wikipedia.org/wiki/Puru%E1%B9%A3%C4%81rtha)
 - [x] Finish making list of books you want to read to learn more about purusharth, have them all downloaded if you don't find it make a decision and have it removed or if you really deep down believe that can have significant impact leave link here.
 	- [ ] Need to still format and download
-- [ ] research on [[Mindset]] and what resources can help.
+- [ ] research on [[Mindset]] and what resources can help. Read Flow. Happiness Hypothesis. Read Evolving self. Read four thousand weeks. Read Road less travelled.Read thinking in systems.
 - [x] consume and learn from [David Foster](https://fs.blog/david-foster-wallace-this-is-water/)
 
 ## Frameworks for life well being and contentment
@@ -35,6 +35,8 @@ Callouts don't look nice either :(
 	1. [x] Brainstorm Life Areas, and Identify which are important to me and want to work on? Get Clarity!
 	2. [[Lifebook]] -> Work in Progress
 	3. [[Fundamental Needs of Human]] -> Work in Progress
+        - I based it on Maslow but now we have updated version by Scott Barry in book called Transcend
+
 	4. Yoga & Ayurveda way of living <- [[Ancient Indian Knowledge]]
 
 #### Tips

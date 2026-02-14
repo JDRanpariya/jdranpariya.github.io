@@ -1,8 +1,8 @@
 ---
 title: on originality of my writings
 published: 2025-09-15
-lastUpdated: 2025-11-02
-tags: ["ideas", "science"]
+lastUpdated: 2026-02-14
+tags: ["ideas", "skill"]
 section: "writings"
 series:
   name: "On writing Well"   # Series title
@@ -76,6 +76,19 @@ already existing information?
 - I want to learn clear, pursuasive thinking and writing, writing brings clarity
     - This serves as catalog of how my writings evolve
 - Helps me practice a [skill] - "Bias for action"
+
+### On citing works
+
+It would be very often the idea or examples are I state are not my own, only thing that can be mine
+is the perspective through which I see them and try to get joy, actionable insights, conneting dots(applying it to
+fields or problems that haven't been applied to yet). I believe in doing my best to cite the 
+references at the end of the articles, if you ever find a gap, please write me, credit shall 
+never be due.
+
+It's crazy I don't believe I am ever gonna write something like, [How do I deal with my emotions by Elizabeth](https://www.elizabethfilips.com/post/7-how-i-deal-with-my-emotions).
+I feel it's either too personal or adds no value as people already know everything
+(btw biggest delusional roadblock someone can have who wants to just write. Grow up Jay!).
+
 
 #### TODO
 - [ ] I want to know if it's better to split this into multiple articles?
