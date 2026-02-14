@@ -79,11 +79,12 @@ already existing information?
 
 ### On citing works
 
-It would be very often that the idea or examples I state are not my own, only thing that can be mine
-is the perspective through which I see them and try to get joy, actionable insights, conneting dots(applying it to
-fields or problems that haven't been applied to yet). I believe in doing my best to cite the 
-references at the end of the articles, if you ever find a gap, please write me, credit shall 
-never be due.
+It would be very often that the idea or examples I state are not my own, 
+only thing that can be mine is the perspective through which I see them 
+and try to get joy, actionable insights, or being able to see the invisible picture by
+conneting dots(applying it to fields or problems that haven't been applied to yet).
+I believe in doing my best to cite the references at the end of the articles, 
+if you ever find a gap, please write me, credit shall never be due.
 
 It's crazy I don't believe I am ever gonna write something like, [How do I deal with my emotions by Elizabeth](https://www.elizabethfilips.com/post/7-how-i-deal-with-my-emotions).
 I feel it's either too personal or adds no value as people already know everything
