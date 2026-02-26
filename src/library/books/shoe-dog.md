@@ -86,7 +86,7 @@ cheeks. She had a healing effect on him, and seeing this had a bewitching effect
 
 I liked that they tried to add beauty to every part of life.
 
-He'd started over, he said.As the Japanese do.
+He'd started over, he said. As the Japanese do.
 
 The next day I returned to the United States, and one of the first things I did after landing was
 put fifty dollars in an envelop and airmail it to Fujimoto. On the card I wrote: "For a new
