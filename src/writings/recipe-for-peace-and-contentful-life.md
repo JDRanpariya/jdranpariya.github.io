@@ -1,5 +1,5 @@
 ---
-title: recipe for peace and content
+title: recipe for peace and contentful life
 published: 2026-02-05
 lastUpdated: 2026-02-05
 tags: ["life", "growth"]
