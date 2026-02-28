@@ -8,15 +8,11 @@ section: "books"
 tags: ["inspirational", "purpose"]
 published: 2025-09-13            # Optional, when you read it or publication date
 layout: layouts/post.njk
-description: "Trust me on this one—if you've ever dismissed business books as dry and predictable, Shoe Dog is about to blow your mind! Knight's storytelling is so raw and gripping."
+description: "This book is very dear to me, I never thought I would enjoy reading a memoire!"
 ---
 
-# Notes
-
-coming soon!!! I've gifted this book and my books marks are with them :)
-
 #### Actionable Insights
-- todo
+- Just Do It!
 
 #### Highlights
 
@@ -100,4 +96,75 @@ morning," he said. "Apparently a new name came to him in a dream last night." I 
 "A dream?" "what is it?" I asked, bracing myself. "Nike"**
 > This whole story about coming up with names and they end up with nike is just crazy.
 
+But in the end I don't really know what led me to my decision. Luck? Instinct? Some inner spirit?
 
+One of the first to buy was my friend Cale, who didn't hesitate to cut a check for ten thousand dollers,
+a princely sum.
+
+I'd only gone with Nike because I was out of time, and because I'd trusted Johnson's savant-like
+nature.
+
+I looked around the table and thought: my bride, my enemy, my spy. Some life.
+
+The hell's a swoosh? The answer flew out of me: It's the sound of someone going past you.
+
+**A race is a work of art.**
+
+*You are remembered for the rules you break.*
+
+That magical pronoun, "we" - he'd always use it.
+
+Supply and demand is *always* the root problem in business.
+
+But when we did fail, we had faith that we'd do it fast, learn from it, and be better for it.
+
+**Somebody may beat me - but they're going to have to bleed to do it.**
+
+Our demand is too high, our volume too low, for the biggest factories. And in smaller
+factories we'll have the dominant position. We'll be in charge.
+
+Xinsheng means "New Life."
+
+"Mr. Knight, we've come up with a way to inject...air...into a running shoe."
+
+All innovation was hailed as progressive, forward-thinking.
+
+**Beating the competition is relatively easy. Beating yourself is a never-ending commitment.**
+
+*Of all the negotiations in my life, those with my sons have been the most difficult.*
+
+We could've flown, but I insisted on the train. I wanted to see, to experience the countryside.
+
+For us business was no more about making money than being human is about making blood. Yes,
+the human body needs blood. It needs to manufacture red and white cells and platelets and redistribute
+them evenly, smoothly, to all the right places, on time, or else.
+
+What's on your bucket lists?
+
+Am I allowed to think that some coincidences are more than coincidental?
+
+He hands me the watch. It's engraved: With thanks for taking a chance on me.
+
+I was able to take my father on a long trip. We went around the world, saw Nikes in every country
+we visited, and with every appearance of a swoosh his eyes shone.
+
+If it ever does become just business, that will mean that business is very bad.
+
+**Change never comes as fast as we want it.**
+
+Tread is the path of coexistence, cooperation. Peace feeds on prosperity.
+
+Untapped resources, natural and human, that the world has at its disposal.
+
+*From the profane to the sacred*
+
+I regret not spending more time with my sons.
+
+I'd tell them to hit pause, think long and hard about how they want to spend their time, and with 
+whom they want to spend it for the next forty years.
+
+Seek a calling, they will always have a bull's-eye on their backs.
+
+Giving up doesn't mean stopping. Don't ever stop.
+
+**Luck plays a big role.**
