@@ -11,14 +11,14 @@ layout: layouts/post.njk
 description: "If you're curious about many things, you will enjoy this book immensely!"
 ---
 
-### Actionable Insights
+## Actionable Insights
 - Increase your bias towards action instead of waiting for perfect moment.
 - Take intelligent guesses, doesn't cost you anything.
 - Be persistent and learn when not to be.
 
-### Highlights
+## Highlights
 
-#### He fixes radios by thinking!
+### He fixes radios by thinking!
 
 I made my own fuses by taking tin foil and wrapping it around an old burnt-out fuse.
 
@@ -55,6 +55,6 @@ Another thing I did in high school was to invent problems and theorems.
 I realized then that if I'm going to talk to anybody else, I'll have to use the standard symbols,
 so I eventually gave up my own symbols.
 
-#### String Beans
+### String Beans
 
 Coming soon..

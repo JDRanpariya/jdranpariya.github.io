@@ -1,5 +1,5 @@
 ---
-title: "The Black Swan"
+title: "Black Swan"
 fullTitle: "The Black Swan: The Impact of the Hihgly Improbable"
 author: "Nassim Nicholas Taleb"
 cover: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141906201%2F9780141906201-jacket-large.jpg&w=819&q=100"

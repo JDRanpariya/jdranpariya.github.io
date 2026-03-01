@@ -1,5 +1,5 @@
 ---
-title: "The Alchemist"             # Short title for lists or cards
+title: "Alchemist"             # Short title for lists or cards
 fullTitle: "The Alchemist: A Fable About Following Your Dream"
 author: "Paulo Coelho"
 cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1654371463i/18144590.jpg"

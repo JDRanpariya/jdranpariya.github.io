@@ -64,9 +64,18 @@ export default function (eleventyConfig) {
 
     eleventyConfig.setLibrary('md', md);
 
-    eleventyConfig.addCollection("books", (collection) =>
-        collection.getFilteredByGlob("src/library/books/*.md")
-    );
+    eleventyConfig.addCollection("books", (collection) => {
+          return collection
+            .getFilteredByGlob("src/library/books/*.md")
+            .sort((a, b) => {
+              // compare titles alphabetically, case-insensitive
+              let titleA = a.data.title.toLowerCase();
+              let titleB = b.data.title.toLowerCase();
+              if (titleA < titleB) return -1;
+              if (titleA > titleB) return 1;
+              return 0;
+            });
+        });
 
     eleventyConfig.addCollection("lectures", (collection) =>
         collection.getFilteredByGlob("src/library/lectures/*.md")
