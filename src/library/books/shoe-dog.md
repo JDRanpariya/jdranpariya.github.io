@@ -5,15 +5,16 @@ author: "Phil Knight"
 cover: "https://m.media-amazon.com/images/I/71VmZKh1TpL._SL1500_.jpg"
 link: "https://www.amazon.de/-/en/Phil-Knight-ebook/dp/B0176M1A44"
 section: "books"
-tags: ["inspirational", "purpose"]
+tags: ["memoir", "life"]
 published: 2025-09-13            # Optional, when you read it or publication date
-lastUpdated: 2026-02-28            # Optional, when you read it or publication date
+lastUpdated: 2026-03-01            # Optional, when you read it or publication date
 layout: layouts/post.njk
 description: "This book is very dear to me, I never thought I would enjoy reading a memoire!"
 ---
 
 #### Actionable Insights
 - Just Do It!
+- Seek a calling
 
 #### Highlights
 
