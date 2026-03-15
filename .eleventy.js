@@ -1,4 +1,5 @@
 import pluginTOC from 'eleventy-plugin-toc';
+import pluginRSS from '@11ty/eleventy-plugin-rss';
 import markdownIt from 'markdown-it';
 import mk from "@vscode/markdown-it-katex";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
@@ -14,6 +15,7 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy({
         'assets': 'assets'
     });
+
     // Serve CSS so it's available in the browser
     eleventyConfig.addPassthroughCopy('build/css');
     // makes passthrough files live-reload instead of being copied once
@@ -21,6 +23,9 @@ export default function (eleventyConfig) {
 
     // Add Syntax Highlight plugin
     eleventyConfig.addPlugin(syntaxHighlight);
+
+    // Add RSS plugin
+    eleventyConfig.addPlugin(pluginRSS);
 
     // Add TOC plugin
     eleventyConfig.addPlugin(pluginTOC, {

@@ -20,26 +20,26 @@
         <div class="flex items-center space-x-8">
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center space-x-6 text-primary">
-                <a href="/now" class="link font-sans text-lg font-medium">Now</a>
-                <a href="/odysseys" class="link font-sans text-lg font-medium">Odysseys</a>
-                <a href="/projects" class="link font-sans text-lg font-medium">Projects</a>
-                <a href="/writings" class="link font-sans text-lg font-medium">Writings</a>
-                <a href="/library" class="link font-sans text-lg font-medium">Library</a>
-                <a href="/about" class="link font-sans text-lg font-medium">About</a>
+                <a href="/now"      class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Now</a>
+                <a href="/odysseys" class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Odysseys</a>
+                <a href="/projects" class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Projects</a>
+                <a href="/writings" class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Writings</a>
+                <a href="/library"  class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Library</a>
+                <a href="/about"    class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">About</a>
             </div>
 
             <!-- Dark Mode Toggle -->
             <button 
-                id="theme-toggle"
-                onclick="toggleTheme()" 
-                class="p-2 text-primary
-                       hover:text-accent
-                       transition-colors
-                       duration-300
-                       hover:bg-surface-alt
-                       rounded-lg"
-                title="Switch to dark mode"
-                aria-label="Toggle dark mode">
+                                    id="theme-toggle"
+                                    onclick="toggleTheme()" 
+                                    class="p-2 text-primary
+                                           hover:text-accent
+                                           transition-colors
+                                           duration-300
+                                           hover:bg-surface-alt
+                                           rounded-lg"
+                                    title="Switch to dark mode"
+                                    aria-label="Toggle dark mode">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <!-- Moon icon (default - will be updated by script) -->
                     <path stroke-linecap="round"
@@ -51,15 +51,15 @@
 
             <!-- Mobile Menu Button -->
             <button 
-                class="md:hidden
-                       p-2 text-primary
-                       hover:text-accent
-                       transition-colors
-                       duration-300
-                       hover:bg-surface-alt
-                       rounded-lg"
-                onclick="toggleMobileMenu()"
-                aria-label="Toggle mobile menu">
+                          class="md:hidden
+                                 p-2 text-primary
+                                 hover:text-accent
+                                 transition-colors
+                                 duration-300
+                                 hover:bg-surface-alt
+                                 rounded-lg"
+                          onclick="toggleMobileMenu()"
+                          aria-label="Toggle mobile menu">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -76,54 +76,54 @@
 <!-- Mobile Menu Panel (Slide from Right) -->
 <div id="mobile-menu" 
      class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface border-l border-primary/10 shadow-2xl z-50 md:hidden transform translate-x-full transition-transform duration-300 ease-out">
-  
-  <!-- Menu Header -->
-  <div class="flex items-center justify-between p-6 border-b border-primary/10">
-    <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
-    <button onclick="closeMobileMenu()" 
-            class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-      </svg>
-    </button>
-  </div>
 
-  <!-- Menu Items -->
-  <div class="px-6 py-8 space-y-6 text-primary">
-    <a href="/now" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Now
-    </a>
-    <a href="/odysseys" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Odysseys
-    </a>
-    <a href="/projects" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Projects
-    </a>
-    <a href="/writings" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Writings
-    </a>
-    <a href="/library" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Library
-    </a>
-    <a href="/about" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      About
-    </a>
-    <a href="/guestbook" 
-       class="block link font-sans font-medium text-lg py-2"
-       onclick="closeMobileMenu()">
-      Guest Book
-    </a>
-  </div>
+    <!-- Menu Header -->
+    <div class="flex items-center justify-between p-6 border-b border-primary/10">
+        <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
+        <button onclick="closeMobileMenu()" 
+                class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Menu Items -->
+    <div class="px-6 py-8 space-y-6 text-primary">
+        <a href="/now" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Now
+        </a>
+        <a href="/odysseys" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Odysseys
+        </a>
+        <a href="/projects" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Projects
+        </a>
+        <a href="/writings" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Writings
+        </a>
+        <a href="/library" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Library
+        </a>
+        <a href="/about" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            About
+        </a>
+        <a href="/guestbook" 
+           class="block link font-sans font-medium text-lg py-2"
+           onclick="closeMobileMenu()">
+            Guest Book
+        </a>
+    </div>
 </div>
