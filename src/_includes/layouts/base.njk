@@ -19,10 +19,206 @@
   }
 </script>
 
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{%- if section == "writings" %}
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  {% if series %}"isPartOf": { "@type": "CreativeWorkSeries", "name": "{{ series.name }}", "position": {{ series.order }} },{% endif %}
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about",
+    "sameAs": ["https://github.com/jdranpariya", "https://linkedin.com/in/jdranpariya"]
+  },
+  "publisher": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://jdranpariya.github.io{{ page.url }}" }
+}
 
-<!-- Title and Meta -->
-  <title>{% if title %}{{ title | titlecase }}{% else %}JD Ranpariya {% endif %}</title>
-  <meta name="description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition{% endif %}" />
+{%- elif section == "books" %}
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "name": "Review: {{ fullTitle or title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about"
+  },
+  "itemReviewed": {
+    "@type": "Book",
+    "name": "{{ fullTitle or title }}",
+    "author": { "@type": "Person", "name": "{{ author }}" },
+    {% if cover %}"image": "{{ cover }}",{% endif %}
+    {% if link %}"url": "{{ link }}",{% endif %}
+    "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+  }
+}
+
+{%- elif section == "lectures" %}
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "name": "Notes: {{ fullTitle or title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about"
+  },
+  "itemReviewed": {
+    "@type": "Course",
+    "name": "{{ fullTitle or title }}",
+    "author": { "@type": "Person", "name": "{{ author }}" },
+    {% if cover %}"image": "{{ cover }}",{% endif %}
+    "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+  }
+}
+
+{%- elif section == "odysseys" or section == "odyssey" %}
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ fullTitle or title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about"
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://jdranpariya.github.io{{ page.url }}" }
+}
+
+{%- elif section == "projects" %}
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "{{ title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  {% if url %}"codeRepository": "{{ url }}",{% endif %}
+  "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about"
+  }
+}
+
+{%- elif section == "writings index" %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Writings by JD Ranpariya",
+  "description": "Essays and reflections on AI, learning, neuroscience, and living curiously.",
+  "url": "https://jdranpariya.github.io/writings/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
+{%- elif section == "projects" and not published %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Projects by JD Ranpariya",
+  "description": "Things I'm building, tweaking, or just playing around with.",
+  "url": "https://jdranpariya.github.io/projects/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
+{%- elif section == "library" %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Library of JD Ranpariya",
+  "description": "Books, lectures, and papers that shaped my thinking.",
+  "url": "https://jdranpariya.github.io/library/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
+{%- elif section == "odysseys" and not published %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Odysseys of JD Ranpariya",
+  "description": "Long-term explorations into AI, biology, philosophy, and the mapping of human knowledge.",
+  "url": "https://jdranpariya.github.io/odysseys/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
+{%- else %}
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "JD Ranpariya",
+  "url": "https://jdranpariya.github.io",
+  "description": "Exploring the intersection of AI, biology, neuroscience, and embodied cognition.",
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about",
+    "sameAs": [
+      "https://github.com/jdranpariya",
+      "https://linkedin.com/in/jdranpariya",
+      "https://www.goodreads.com/user/show/161877825-jay"
+    ]
+  }
+}
+{%- endif %}
+</script>
+
+
+  <!-- Title and Meta -->
+<title>{% if title %}{{title | titlecase}} | JD Ranpariya{% else %}JD Ranpariya{% endif %}</title>
+<meta name="description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition{% endif %}" />
+<link rel="canonical" href="https://jdranpariya.com{{ page.url }}" />
+
+<!-- Open Graph (LinkedIn, Discord, WhatsApp previews) -->
+<meta property="og:type" content="{% if layout == 'layouts/post.njk' %}article{% else %}website{% endif %}" />
+<meta property="og:title" content="{% if title %}{{title | titlecase}}{% else %}JD Ranpariya{% endif %}" />
+<meta property="og:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
+<meta property="og:url" content="https://jdranpariya.com{{page.url}}" />
+<meta property="og:site_name" content="JD Ranpariya" />
+{% if image %}
+<meta property="og:image" content="https://jdranpariya.com{{ image }}" />
+{% endif %}
+
+<!-- Article-specific meta -->
+{% if published %}
+<meta property="article:published_time" content="{{ published }}" />
+{% endif %}
+{% if lastUpdated %}
+<meta property="article:modified_time" content="{{ lastUpdated }}" />
+{% endif %}
+{% if tags %}
+{% for tag in tags %}
+<meta property="article:tag" content="{{ tag }}" />
+{% endfor %}
+{% endif %}
+
+<!-- Twitter/X Card -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{% if title %}{{ title | titlecase }}{% else %}JD Ranpariya{% endif %}" />
+<meta name="twitter:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
 
   <!-- Favicon --->
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
