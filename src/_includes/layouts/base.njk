@@ -190,16 +190,16 @@
   <!-- Title and Meta -->
 <title>{% if title %}{{title | titlecase}} | JD Ranpariya{% else %}JD Ranpariya{% endif %}</title>
 <meta name="description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of artificial intelligence, biology, neuroscience, and embodied cognition{% endif %}" />
-<link rel="canonical" href="https://jdranpariya.com{{ page.url }}" />
+<link rel="canonical" href="https://jdranpariya.github.io{{ page.url }}" />
 
 <!-- Open Graph (LinkedIn, Discord, WhatsApp previews) -->
 <meta property="og:type" content="{% if layout == 'layouts/post.njk' %}article{% else %}website{% endif %}" />
 <meta property="og:title" content="{% if title %}{{title | titlecase}}{% else %}JD Ranpariya{% endif %}" />
 <meta property="og:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
-<meta property="og:url" content="https://jdranpariya.com{{page.url}}" />
+<meta property="og:url" content="https://jdranpariya.github.io{{page.url}}" />
 <meta property="og:site_name" content="JD Ranpariya" />
 {% if image %}
-<meta property="og:image" content="https://jdranpariya.com{{ image }}" />
+<meta property="og:image" content="https://jdranpariya.github.io{{ image }}" />
 {% endif %}
 
 <!-- Article-specific meta -->

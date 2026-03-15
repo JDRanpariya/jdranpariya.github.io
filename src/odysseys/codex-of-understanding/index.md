@@ -1,6 +1,6 @@
 ---
 title: Codex Index
-fullTitle: "Index: The Codex of Understnading"
+fullTitle: "Index: The Codex of Understanding"
 layout: layouts/post
 description: The structured map of all domains within the Codex of Understanding.
 tags: ["knowledge"]
