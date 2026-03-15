@@ -6,7 +6,9 @@ export default {
             colors: {
                 bg: 'var(--color-bg)',
                 surface: 'var(--color-surface)',
+                card: 'var(--color-card)',
                 primary: 'var(--color-text)',
+                secondary: 'var(--color-text-secondary)',
                 muted: 'var(--color-text-light)',
                 accent: 'var(--color-accent)',
                 border: 'var(--color-border)',
