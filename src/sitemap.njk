@@ -4,24 +4,60 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Static pages -->
   <url><loc>https://jdranpariya.github.io/</loc></url>
   <url><loc>https://jdranpariya.github.io/now/</loc></url>
   <url><loc>https://jdranpariya.github.io/writings/</loc></url>
   <url><loc>https://jdranpariya.github.io/projects/</loc></url>
   <url><loc>https://jdranpariya.github.io/library/</loc></url>
-  <url><loc>https://jdranpariya.github.io/odysseys/</loc></url>
   <url><loc>https://jdranpariya.github.io/about/</loc></url>
   <url><loc>https://jdranpariya.github.io/guestbook/</loc></url>
+
+  <!-- Odyssey index pages (hardcoded since they're .njk not .md) -->
+  <url><loc>https://jdranpariya.github.io/odysseys/</loc></url>
+  <url><loc>https://jdranpariya.github.io/odysseys/purpose/</loc></url>
+  <url><loc>https://jdranpariya.github.io/odysseys/the-codex-of-understanding/</loc></url>
+  <url><loc>https://jdranpariya.github.io/odysseys/reckoning-the-dead/</loc></url>
+  <url><loc>https://jdranpariya.github.io/odysseys/the-alchemists-hearth/</loc></url>
+
+  <!-- Odyssey sub-pages (from collections) -->
+  {% for post in collections.odysseys %}
+  <url>
+    <loc>https://jdranpariya.github.io{{ post.url }}</loc>
+    <lastmod>{{ post.data.lastUpdated or post.data.published }}</lastmod>
+  </url>
+  {% endfor %}
+
+  <!-- Writings -->
   {% for post in collections.writings %}
   <url>
     <loc>https://jdranpariya.github.io{{ post.url }}</loc>
     <lastmod>{{ post.data.lastUpdated or post.data.published }}</lastmod>
   </url>
   {% endfor %}
+
+  <!-- Books -->
   {% for book in collections.books %}
-  <url><loc>https://jdranpariya.github.io{{ book.url }}</loc></url>
+  <url>
+    <loc>https://jdranpariya.github.io{{ book.url }}</loc>
+    <lastmod>{{ book.data.lastUpdated or book.data.published }}</lastmod>
+  </url>
   {% endfor %}
+
+  <!-- Lectures -->
+  {% for lecture in collections.lectures %}
+  <url>
+    <loc>https://jdranpariya.github.io{{ lecture.url }}</loc>
+    <lastmod>{{ lecture.data.lastUpdated or lecture.data.published }}</lastmod>
+  </url>
+  {% endfor %}
+
+  <!-- Projects -->
   {% for project in collections.projects %}
-  <url><loc>https://jdranpariya.github.io{{ project.url }}</loc></url>
+  <url>
+    <loc>https://jdranpariya.github.io{{ project.url }}</loc>
+    <lastmod>{{ project.data.lastUpdated or project.data.published }}</lastmod>
+  </url>
   {% endfor %}
+
 </urlset>
