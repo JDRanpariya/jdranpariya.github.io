@@ -19,11 +19,11 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
                 <!-- I learn absurdly fast — and sometimes too much at once. --> 
                 <!-- Curious enough to ask, calm enough to listen. -->
                 <!-- Curious enough to ask, playful enough to enjoy the answers. 
-                <!-- I chase ideas, savor moments, embrace surprises. -->
-                <!-- Obsessed with learning, curious about life, but not above a good laugh. -->
-                <!-- I seek, I linger, I love the in-between. -->
-                <!-- I follow curiosity, savor joy, collect wisdom. -->
-                <!-- I chase what matters, and sometimes nothing. -->
+                    <!-- I chase ideas, savor moments, embrace surprises. -->
+                    <!-- Obsessed with learning, curious about life, but not above a good laugh. -->
+                    <!-- I seek, I linger, I love the in-between. -->
+                    <!-- I follow curiosity, savor joy, collect wisdom. -->
+                    <!-- I chase what matters, and sometimes nothing. -->
 
             </h2>
 
@@ -53,9 +53,7 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
 
         <!-- Fun fact -->
         <div class="pt-12">
-            <p class="text-sm text-muted italic">
-            Fun fact: More than 99.9999999% of the universe is empty space.
-            </p>
+            <p class="text-sm text-muted italic" id="fun-fact"></p>
         </div>
 
         <!-- Scroll indicator -->
@@ -102,8 +100,27 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
         </div>
     </div>
 
+    <!-- Odysseys Teaser -->
+    <div class="text-center space-y-4">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">Odysseys</h2>
+        <p class="text-muted max-w-xl mx-auto">
+        Long-running explorations into ideas I can't let go of - AI, knowledge, history's forgotten minds, and cooking disasters.
+        </p>
+        <a href="/odysseys"
+           class="inline-flex items-center font-sans font-medium text-primary hover:underline decoration-2 underline-offset-4">
+            See all Odysseys
+            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+        </a>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <div class="space-y-8">
+        <div class="text-center">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">How I operate</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
         <div class="bg-card p-6 rounded-xl shadow-md text-center">
             <h3 class="font-serif text-xl text-accent mb-3">Learning Style</h3>
@@ -124,11 +141,12 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
         <div class="bg-card p-6 rounded-xl shadow-md text-center">
             <h3 class="font-serif text-xl text-accent mb-3">Random Weakness</h3>
             <p class="text-secondary text-sm leading-relaxed">
-            I get awfully emberessed in front to people or situations,
+            I get awfully embarrassed in front of people or situations,
             when I expect it the least or don't it want at all.
             </p>
         </div>
 
+    </div>
     </div>
 
     <!-- Call to Action -->
@@ -155,3 +173,20 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
 
 </section>
 
+<script>
+    const facts = [
+    "There are more possible iterations of a shuffled deck of cards than there are atoms on Earth.",
+    "If you could fold a piece of paper 42 times, it would reach the moon.",
+    "Bananas are radioactive enough that truckloads can trigger radiation sensors at ports.",
+    "Your brain uses the same amount of power as a 20-watt light bulb, yet outperforms any supercomputer.",
+    "Sharks have existed longer than trees - by about 50 million years.",
+    "A teaspoon of neutron star would weigh 6 billion tons on Earth.",
+    "You've never touched anything - electrons repel, leaving atoms hovering nanometers apart.",
+    "The Mantis Shrimp can punch so fast it boils the water around it and creates light.",
+    "There's enough DNA in your body to stretch from the Sun to Pluto and back - 17 times.",
+    "Cleopatra lived closer to the invention of the iPhone than to the building of the Great Pyramid.",
+    "A photon takes 40,000 years to travel from the Sun's core to its surface, then 8 minutes to reach Earth.",
+    "If the universe's timeline was a year, humans appeared at 11:58 PM on December 31st."
+];
+    document.getElementById('fun-fact').textContent = "Fun fact: " + facts[Math.floor(Math.random() * facts.length)];
+</script>
