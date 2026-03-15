@@ -103,6 +103,7 @@ export default function (eleventyConfig) {
      return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
    });
 
+    eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
     eleventyConfig.addCollection("writings", function(collection) {
         return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {
