@@ -5,8 +5,12 @@ lastUpdated: 2026-03-15
 tags: ["skills", "life"]
 section: "writings"
 layout: layouts/post.njk
-description: "How to have an edge in the modern world?"
+description: "Having different tools matters more than having superior ones."
 ---
+
+> If he's been trying the same thing for a week, and I'm trying it and can't do it, it ain't the way to do it!
+>
+> *— Feynman*
 
 Article is inspired by the Feynman, he tells a story...
 
@@ -53,7 +57,6 @@ relate and apply them in your life, It would be great pleasure if reading this m
 think about how to approch this problem.
 
 ### Coding Error
-> How deeper understanding helps.
 
 I've a colleuge who tried to run code from the youtube tutorial but failed, it was a small repo 
 but error was generic `Class Robot has no method from_url`. I told him there is no way tutorial 
@@ -78,10 +81,7 @@ It turns out this works because it is just the algebraic identity (a − b)² = 
 **When you encounter a technique that works in one context, ask whether the underlying structure applies more broadly. Do not just learn the trick. Extract the principle. That is how you add tools to your box rather than just collecting isolated techniques.**
 
 
-> [!quote]
-> If he’s been trying the same thing for a week, and I’m trying it and can’t do it, it ain’t the way to do it!
->
-> -Feynman
+
 
 
 ::: references

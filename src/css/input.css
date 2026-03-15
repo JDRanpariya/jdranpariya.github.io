@@ -194,3 +194,48 @@
 .prose ol ul {
   border-color: var(--color-border);
 }
+
+
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  background: transparent;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  margin: 1.75rem 0;
+  font-style: italic;
+  color: var(--color-text);
+  quotes: none;
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose blockquote p:last-child:has(em) {
+  font-style: normal;
+  font-size: 0.9em;
+  color: var(--color-text-light);
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+.subtitle-note {
+    border-left: 1px solid var(--color-accent);
+    background: transparent;
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 0 0 1.5rem 0;
+    font-style: normal;
+    color: var(--color-text-light);
+    quotes: none;
+}
+
+.subtitle-note p {
+  margin: 0;
+}
+
+/* remove heading bottom margin when subtitle follows immediately */
+.prose h1 + .subtitle-note,
+.prose h2 + .subtitle-note,
+.prose h3 + .subtitle-note,
+.prose h4 + .subtitle-note {
+    margin-top: -1rem;           /* pulls against the heading's mb */
+}

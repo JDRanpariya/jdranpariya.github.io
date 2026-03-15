@@ -49,16 +49,25 @@ export default function (eleventyConfig) {
                 rel: 'noopener noreferrer'
             }
         })
-        .use(markdownItContainer, 'references', {
-        render(tokens, idx) {
-            if (tokens[idx].nesting === 1) {
-                const label = tokens[idx].info.trim().slice('references'.length).trim() || 'References';
-                return `<details class="references-block">\n<summary>${label}</summary>\n`;
-            } else {
-                return `</details>\n`;
+        .use(markdownItContainer, 'note', {
+            render(tokens, idx) {
+                if (tokens[idx].nesting === 1) {
+                    return `<blockquote class="subtitle-note">`;
+                } else {
+                    return `</blockquote>\n`;
+                }
             }
-        }
-    });
+        })
+        .use(markdownItContainer, 'references', {
+            render(tokens, idx) {
+                if (tokens[idx].nesting === 1) {
+                    const label = tokens[idx].info.trim().slice('references'.length).trim() || 'References';
+                    return `<details class="references-block">\n<summary>${label}</summary>\n`;
+                } else {
+                    return `</details>\n`;
+                }
+            }
+        });
 
     // Filter to extract footnotes from rendered Markdown
     eleventyConfig.addFilter('extractFootnotes', function (content) {
@@ -76,17 +85,17 @@ export default function (eleventyConfig) {
     eleventyConfig.setLibrary('md', md);
 
     eleventyConfig.addCollection("books", (collection) => {
-          return collection
+        return collection
             .getFilteredByGlob("src/library/books/*.md")
             .sort((a, b) => {
-              // compare titles alphabetically, case-insensitive
-              let titleA = a.data.title.toLowerCase();
-              let titleB = b.data.title.toLowerCase();
-              if (titleA < titleB) return -1;
-              if (titleA > titleB) return 1;
-              return 0;
+                // compare titles alphabetically, case-insensitive
+                let titleA = a.data.title.toLowerCase();
+                let titleB = b.data.title.toLowerCase();
+                if (titleA < titleB) return -1;
+                if (titleA > titleB) return 1;
+                return 0;
             });
-        });
+    });
 
     eleventyConfig.addCollection("lectures", (collection) =>
         collection.getFilteredByGlob("src/library/lectures/*.md")
@@ -107,12 +116,12 @@ export default function (eleventyConfig) {
     );
 
     eleventyConfig.addCollection("reckoningTheDead", function(collectionApi) {
-     return collectionApi.getFilteredByGlob("src/odysseys/reckoning-the-dead/*.md");
-   });
+        return collectionApi.getFilteredByGlob("src/odysseys/reckoning-the-dead/*.md");
+    });
 
     eleventyConfig.addCollection("alchemistsHearth", function(collectionApi) {
-     return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
-   });
+        return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
+    });
 
     eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
@@ -167,12 +176,12 @@ export default function (eleventyConfig) {
             if (!grouped[year][month]) grouped[year][month] = [];
             grouped[year][month].push(update);
         });
-        
+
         // Convert to array and sort years descending (newest first)
         const sortedYears = Object.keys(grouped)
             .sort((a, b) => b - a) // 2026, 2025, 2024...
             .map(year => [year, grouped[year]]);
-        
+
         return sortedYears;
     });
 
