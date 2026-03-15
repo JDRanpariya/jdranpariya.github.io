@@ -6,6 +6,7 @@ import markdownItObsidianCallouts from 'markdown-it-obsidian-callouts';
 import markdownItAnchor from 'markdown-it-anchor';
 import markdownItFootnote from 'markdown-it-footnote';
 import markdownItLinkAttributes from 'markdown-it-link-attributes';
+import markdownItContainer from 'markdown-it-container';
 import { DateTime } from 'luxon';
 
 export default function (eleventyConfig) {
@@ -47,7 +48,17 @@ export default function (eleventyConfig) {
                 target: '_blank',
                 rel: 'noopener noreferrer'
             }
-        });
+        })
+        .use(markdownItContainer, 'references', {
+        render(tokens, idx) {
+            if (tokens[idx].nesting === 1) {
+                const label = tokens[idx].info.trim().slice('references'.length).trim() || 'References';
+                return `<details class="references-block">\n<summary>${label}</summary>\n`;
+            } else {
+                return `</details>\n`;
+            }
+        }
+    });
 
     // Filter to extract footnotes from rendered Markdown
     eleventyConfig.addFilter('extractFootnotes', function (content) {

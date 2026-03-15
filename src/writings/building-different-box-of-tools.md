@@ -1,21 +1,17 @@
 ---
 title: building different box of tools
 published: 2026-02-15
-lastUpdated: 2026-02-15
+lastUpdated: 2026-03-15
 tags: ["skills", "life"]
 section: "writings"
-series:
-  name: "On Simulation"   # Series title
-  order: 1                           # Position in the series
 layout: layouts/post.njk
 description: "How to have an edge in the modern world?"
 ---
 
-Article is inspired by the feynman, he tells a story...
-
+Article is inspired by the Feynman, he tells a story...
 
 I had learned to do integrals by various methods shown in a book that my high school 
-physics teacher Mr.Bader had given me.
+physics teacher Mr. Bader had given me.
 
 One day he told me to stay after class."Feynman," he said, "you talk too much and 
 you make too much noise. I know why. You're bored. So I'm going to give you a book. 
@@ -56,7 +52,9 @@ that it's personal, me showing mine or feynman telling his doesn't mean you woul
 relate and apply them in your life, It would be great pleasure if reading this makes you
 think about how to approch this problem.
 
-#### Coding error or how deeper understanding helps
+### Coding Error
+> How deeper understanding helps.
+
 I've a colleuge who tried to run code from the youtube tutorial but failed, it was a small repo 
 but error was generic `Class Robot has no method from_url`. I told him there is no way tutorial 
 doesn't work. I tried it myself and got the same error. Given my computer science background and
@@ -67,17 +65,28 @@ at youtube video comments and found that rolling out older version also works.
 1. **you can be little more curious and find easy fixes(like in comments).**
 2. **Having deeper understanding and being thorough gives you an edge.**
 
-
-
-#### From elizabeth fillip's notes
-| I haven't came across this yet, would accomodate it later
-“If he’s been trying the same thing for a week, and I’m trying it and can’t do it, it ain’t the way to do it!”
+### Building Heuristics via analogy
 
 “Don’t you know how to square numbers near 50?” he says. “You square 50—that’s 2500—and subtract 100 times the difference of your number from 50 (in this case it’s 2), so you have 2300. If you want the correction, square the difference and add it on. That makes 2304.”
 
-### References
+Later, Feynman talks about squaring the number 28. I stopped reading right there and tried to do it in my head, figuring that if for 50 he is subtracting 100, maybe it's about subtracting double the number, and you should have a similar rule for numbers near 30 or any other number. So I tried it for 28: you square 30, get 900, and for 28 you subtract 60 times the difference, which is 120. Now we have 780. At this point I thought it should be around there, and accounting for 2², it's 784.
+
+But the moment I looked into how Feynman did it, it wasn't the same. He figured out some other technique and said it should be between 700 and 800. Which is quite close, but I overflowed with joy when I realized that Feynman had developed a more complex method than just finding this generalizable pattern and trying to use it. Surprisingly, this way of doubling the nearest whole number and subtracting works for all numbers up to 100. I haven't tried beyond that, but it should work fine.
+
+It turns out this works because it is just the algebraic identity (a − b)² = a² − 2ab + b², which I arrived at not through algebra but through analogy. I took a specific trick for 50, asked what the pattern behind it was, and extracted a rule that works for any round number.
+
+**When you encounter a technique that works in one context, ask whether the underlying structure applies more broadly. Do not just learn the trick. Extract the principle. That is how you add tools to your box rather than just collecting isolated techniques.**
+
+
+> [!quote]
+> If he’s been trying the same thing for a week, and I’m trying it and can’t do it, it ain’t the way to do it!
+>
+> -Feynman
+
+
+::: references
 - [Surely you're joking Mr. Feynman!](https://www.goodreads.com/book/show/35167685-surely-you-re-joking-mr-feynman)
 - https://jamesclear.com/feynman-mental-models
 - https://fs.blog/mental-tools-richard-feynman/
 - https://merriman.industries/build-your-own-tools/
-
+:::

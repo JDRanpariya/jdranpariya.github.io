@@ -326,14 +326,14 @@ which can run thousands of envs at same time.
 ### Results and Conclusion
 
 
-#### References
+::: references
 - [The Reality Gap in Robotics](https://arxiv.org/pdf/2510.20808)
 - [Differential Simulation Overview](https://www.emergentmind.com/topics/differentiable-simulation)
-- [Elements of Differentiable Programming](https://arxiv.org/pdf/2403.14606)
 - [Differentiable Simulation Project](https://fab.cba.mit.edu/classes/864.20/people/erik/final_project.html)
 - [Cart-Pole Analytical Model](https://coneural.org/florian/papers/05_cart_pole.pdf)
 - [Do Differentiable Simulators Give Better Policy Gradients?](https://arxiv.org/pdf/2202.00817)
-- [DiffTachi](https://arxiv.org/pdf/1910.00935)
+:::
+
 
 [^1]: The method used to approximate the continuous physics in discrete time steps ($dt$). Common options include Euler (fast/simple) and Runge-Kutta/RK4 (accurate/stable).
 [^2]: Paper by Florian, [link](https://coneural.org/florian/papers/05_cart_pole.pdf).

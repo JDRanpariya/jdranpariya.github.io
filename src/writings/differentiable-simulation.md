@@ -18,7 +18,7 @@ description: "My notes on differentiable simulation to write my own toy version 
 - System Identification
 
 
-#### References
+::: references
 - [Review on Differentiable simulators](https://arxiv.org/pdf/2407.05560)
 - [Differential Simulation SIGGRAPH](https://www.youtube.com/watch?v=atCFu-vwyVw)
 - [Introduction to Differentiable Physics](https://physicsbaseddeeplearning.org/diffphys.html)
@@ -26,3 +26,4 @@ description: "My notes on differentiable simulation to write my own toy version 
 - [Dojo: Differentiable Physics Engine for Robotics](https://arxiv.org/pdf/2203.00806)
 - [Understanding Automatic Differentiation Pitfalls](https://arxiv.org/pdf/2305.07546)
 - [Diffrentiable Simulation Overview](https://www.emergentmind.com/topics/differentiable-simulation)
+:::
