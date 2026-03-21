@@ -7,7 +7,7 @@ url: "https://github.com/jdranpariya/kosha.git"
 tech: ["react", "python", "RAG", "RLFH", "open-source"]
 status: "active"
 published: 2025-10-03
-lastUpdated: 2025-10-05
+lastUpdated: 2026-03-21
 layout: layouts/post
 tags: ["tech"]
 ---
@@ -15,7 +15,6 @@ tags: ["tech"]
 
 ## Overview
 - [Project Link](https://github.com/jdranpariya/kosha)
-- I'm still working on this page!!
 
 I invite you to Explore the repo, try the setup, and suggest improvements,
 contributions of any size are welcome.
