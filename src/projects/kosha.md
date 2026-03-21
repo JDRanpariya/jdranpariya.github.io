@@ -12,12 +12,13 @@ layout: layouts/post
 tags: ["tech"]
 ---
 
-
 ## Overview
 - [Project Link](https://github.com/jdranpariya/kosha)
 
 I invite you to Explore the repo, try the setup, and suggest improvements,
 contributions of any size are welcome.
+
+![Demo](../../assets/images/projects/kosha_demo.jpg)
 
 ## Motivation
 I'm building Kosha to tame my curiosity, allowing me to process overwhelming flow
