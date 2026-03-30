@@ -10,7 +10,7 @@ import markdownItLinkAttributes from 'markdown-it-link-attributes';
 import markdownItContainer from 'markdown-it-container';
 import { DateTime } from 'luxon';
 
-export default function (eleventyConfig) {
+export default function(eleventyConfig) {
     // In .eleventy.js
     eleventyConfig.addPassthroughCopy({
         'assets': 'assets'
@@ -75,13 +75,13 @@ export default function (eleventyConfig) {
         });
 
     // Filter to extract footnotes from rendered Markdown
-    eleventyConfig.addFilter('extractFootnotes', function (content) {
+    eleventyConfig.addFilter('extractFootnotes', function(content) {
         const footnoteMatch = content.match(/<ol class="footnotes-list">[\s\S]*<\/ol>/);
         return footnoteMatch ? footnoteMatch[0] : '';
     });
 
     // Filter to remove footnotes from main content
-    eleventyConfig.addFilter('removeFootnotes', function (content) {
+    eleventyConfig.addFilter('removeFootnotes', function(content) {
         return content
             .replace(/<hr class="footnote-sep">/, '')
             .replace(/<ol class="footnotes-list">[\s\S]*<\/ol>/, '');
@@ -131,11 +131,12 @@ export default function (eleventyConfig) {
     eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
     eleventyConfig.addCollection("writings", function(collection) {
-        return collection.getFilteredByGlob("src/writings/*.md").sort((a, b) => {
-            return new Date(b.data.published) - new Date(a.data.published);});
+        return collection.getFilteredByGlob("src/writings/*.md")
+            .filter(item => item.data.status !== "draft")
+            .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
     });
 
-    eleventyConfig.addFilter("filterByTag", function (collection, tag) {
+    eleventyConfig.addFilter("filterByTag", function(collection, tag) {
         return collection.filter(item => (item.data.tags || []).includes(tag));
     });
 
@@ -147,7 +148,7 @@ export default function (eleventyConfig) {
                 let tags = item.data.tags;
                 tags = tags.filter(tag => {
                     // Filter out template tags and nav
-                    switch(tag) {
+                    switch (tag) {
                         case "all":
                         case "nav":
                         case "post":
@@ -206,7 +207,7 @@ export default function (eleventyConfig) {
 
     // Minify HTML in production
     if (process.env.ELEVENTY_ENV === 'prod') {
-        eleventyConfig.addTransform('minify-html', async function (content) {
+        eleventyConfig.addTransform('minify-html', async function(content) {
             if (this.outputPath && this.outputPath.endsWith('.html')) {
                 const { minify } = await import('html-minifier');
                 return minify(content, {

@@ -3,6 +3,7 @@ title: differentiable simulation for physical AI
 published: 2026-01-23
 lastUpdated: 2026-01-23
 tags: ["simulation", "AI", "robotics"]
+status: "draft"
 section: "writings"
 series:
   name: "On Simulation"   # Series title

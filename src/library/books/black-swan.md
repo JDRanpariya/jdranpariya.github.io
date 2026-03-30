@@ -17,6 +17,7 @@ description: "It's phenomeneal book, I like taleb's writing style and sheer prac
 - Barbell your life. Be ultra-conservative in most things, and take many small asymmetric bets where the downside is capped and the upside is open.
 - for any belief you hold firmly, spend 15 minutes seriously trying to construct the scenario under which it fails catastrophically.
 - When you feel the pull to close a question with an explanation, notice that feeling, sit with it, and ask what the simplest honest answer would be if you stripped away the narrative.
+- Replace a book with few conversations with people outside your field
 
 ## Ponder
 - Why does reading the newspaper actually decrease your knowledge of the world?
