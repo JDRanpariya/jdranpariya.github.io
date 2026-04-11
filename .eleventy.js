@@ -224,6 +224,7 @@ export default function (eleventyConfig) {
         const { minify } = await import("html-minifier");
         return minify(content, {
           collapseWhitespace: true,
+          conservativeCollapse: true, // Preserve at least one space between inline elements
           removeComments: true,
           ignoreCustomFragments: [/<script[\s\S]*?<\/script>/],
         });
