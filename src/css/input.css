@@ -218,11 +218,20 @@
 }
 
 /* Explicit paragraph spacing to ensure consistent rendering across all environments */
-p {
-  margin-bottom: 1.75rem; /* matches Tailwind's space-y-7 (1.75rem = 28px) */
+/* This works even when HTML minifier removes whitespace between paragraphs */
+div.space-y-7 > p {
+  margin-bottom: 1.75rem !important; /* matches Tailwind's space-y-7 (1.75rem = 28px) */
 }
-p:last-child {
-  margin-bottom: 0;
+div.space-y-7 > p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Also handle the font-serif and text-secondary variant that's used in about.njk */
+div.font-serif.text-secondary.space-y-7 > p {
+  margin-bottom: 1.75rem !important;
+}
+div.font-serif.text-secondary.space-y-7 > p:last-child {
+  margin-bottom: 0 !important;
 }
 
 .subtitle-note {
