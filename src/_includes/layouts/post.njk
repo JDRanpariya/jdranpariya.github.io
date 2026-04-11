@@ -1,5 +1,6 @@
 ---
 layout: layouts/base.njk
+isPostLayout: true
 ---
 <section class="max-w-7xl mx-auto px-6 py-16">
 <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
@@ -43,7 +44,7 @@ layout: layouts/base.njk
 </div>
 </div>
 </div>
-<div class="prose [&_h2]:text-primary text-muted dark:prose-invert text-xl [&_.footnotes]:hidden [&_.footnotes-sep]:hidden [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800">
+<div class="prose [&_h2]:text-primary text-muted dark:prose-invert text-xl [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800">
 {{ content | safe }}
 </div>
 </main>
@@ -88,27 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Auto-close when scrolled past half of content-start
+    // Scroll listener (no-op - TOC close now manual-only)
     window.addEventListener("scroll", () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const halfContent = contentStart.offsetTop + contentStart.offsetHeight / 2;
-      
-      if (scrollY > halfContent && content.style.maxHeight !== "0px") {
-        content.style.maxHeight = "0px";
-        content.style.opacity = "0";
-        toggle.textContent = "▼";
-      } else if (scrollY <= halfContent && content.style.maxHeight === "0px") {
-        content.style.maxHeight = content.scrollHeight + "px";
-        content.style.opacity = "1";
-        toggle.textContent = "▲";
-      }
     }, { passive: true });
+
   }
 
   // Dynamic footnotes positioning
-  let footnoteData = [];
+  let footnoteData = []
   
   function setupDynamicFootnotes() {
+    // Skip sidebar footnotes on mobile
+    if (window.innerWidth < 768) return;
+
     const footnotesList = document.getElementById('footnotes-list');
     const footnotesContainer = document.getElementById('footnotes-container');
     
@@ -147,8 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hide original footnotes
     footnotesSection.style.display = 'none';
 
-    console.log(`Found ${footnoteData.length} footnotes`);
-    
     // Initial positioning
     updateFootnotePositions();
   }

@@ -9,6 +9,7 @@ tags: ["psychology", "money"]
 published: 2025-09-13            # Optional, when you read it or publication date
 layout: layouts/post.njk
 description: "Really neat ideas about money and people's mindset around it woven in stories."
+eleventyExcludeFromCollections: true
 ---
 
 # Notes

@@ -10,5 +10,6 @@ published: 2025-09-13            # Optional, when you read it or publication dat
 lastUpdated: 2025-09-16          # Optional, if you update notes
 layout: layouts/post.njk
 description: "Currently Reading!! I'm hyped up about this, I believe there is a lot to learn about the structure of randomness and how to leverage that for our own benefit."
+eleventyExcludeFromCollections: true
 ---
 

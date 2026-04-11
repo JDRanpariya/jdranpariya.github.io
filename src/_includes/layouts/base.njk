@@ -15,8 +15,6 @@
     s.src = "https://jay-cloud.vercel.app/script.js";
     s.dataset.websiteId = "a210a5bb-3c45-4542-be4e-d3b7efa3de33";
     document.head.appendChild(s);
-  } else {
-    console.log("Umami disabled on localhost");
   }
 </script>
 
@@ -231,24 +229,21 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap" media="print" onload="this.media='all'">
 <noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap">
 </noscript>
 
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/css/style.css" />
-  <link
+
+{% if isPostLayout %}
+<link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
 />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css"
-/>
-
 <link rel="stylesheet" href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css">
-
+{% endif %}
 
   <!-- Theme initialization to prevent flash -->
   <script>
@@ -269,9 +264,6 @@
       data-tags="{{ tags | default([]) | join(',') }}"
       data-series="{{ series | default('') }}">
 
-
-  <!-- Alert -->
-  {% include "components/alert.njk" %}
 
   <!-- Navigation -->
   {% include "components/nav.njk" %}

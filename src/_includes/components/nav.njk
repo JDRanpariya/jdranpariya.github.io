@@ -20,12 +20,24 @@
         <div class="flex items-center space-x-8">
             <!-- Navigation Links -->
             <div class="hidden md:flex items-center space-x-6 text-primary">
-                <a href="/now"      class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Now</a>
-                <a href="/odysseys" class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Odysseys</a>
-                <a href="/projects" class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Projects</a>
-                <a href="/writings" class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Writings</a>
-                <a href="/library"  class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">Library</a>
-                <a href="/about"    class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}">About</a>
+                <a href="/now"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}>Now</a>
+                <a href="/odysseys"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}>Odysseys</a>
+                <a href="/projects"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}>Projects</a>
+                <a href="/writings"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}>Writings</a>
+                <a href="/library"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}>Library</a>
+                <a href="/about"
+                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
+                   {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}>About</a>
             </div>
 
             <!-- Dark Mode Toggle -->
@@ -92,37 +104,44 @@
     <div class="px-6 py-8 space-y-6 text-primary">
         <a href="/now" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}>
             Now
         </a>
         <a href="/odysseys" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}>
             Odysseys
         </a>
         <a href="/projects" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}>
             Projects
         </a>
         <a href="/writings" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}>
             Writings
         </a>
         <a href="/library" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}>
             Library
         </a>
         <a href="/about" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}>
             About
         </a>
         <a href="/guestbook" 
            class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()">
+           onclick="closeMobileMenu()"
+           {% if page.url.startsWith('/guestbook') %}aria-current="page"{% endif %}>
             Guest Book
         </a>
     </div>
