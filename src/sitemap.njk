@@ -4,8 +4,6 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Static pages -->
   <url><loc>https://jdranpariya.github.io/</loc></url>
   <url><loc>https://jdranpariya.github.io/now/</loc></url>
   <url><loc>https://jdranpariya.github.io/writings/</loc></url>
@@ -13,55 +11,42 @@ eleventyExcludeFromCollections: true
   <url><loc>https://jdranpariya.github.io/library/</loc></url>
   <url><loc>https://jdranpariya.github.io/about/</loc></url>
   <url><loc>https://jdranpariya.github.io/guestbook/</loc></url>
-
-  <!-- Odyssey index pages -->
   <url><loc>https://jdranpariya.github.io/odysseys/</loc></url>
   <url><loc>https://jdranpariya.github.io/odysseys/reckoning-the-dead/</loc></url>
   <url><loc>https://jdranpariya.github.io/odysseys/the-alchemists-hearth/</loc></url>
-
-  <!-- Odyssey sub-pages -->
-  {% for post in collections.odysseys %}
+  {%- for post in collections.odysseys %}
   <url>
     <loc>https://jdranpariya.github.io{{ post.url }}</loc>
-    {% set lastmod = post.data.lastUpdated or post.data.published %}
-    {% if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{% endif %}
+    {%- set lastmod = post.data.lastUpdated or post.data.published %}
+    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
   </url>
-  {% endfor %}
-
-  <!-- Writings -->
-  {% for post in collections.writings %}
+  {%- endfor %}
+  {%- for post in collections.writings %}
   <url>
     <loc>https://jdranpariya.github.io{{ post.url }}</loc>
-    {% set lastmod = post.data.lastUpdated or post.data.published %}
-    {% if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{% endif %}
+    {%- set lastmod = post.data.lastUpdated or post.data.published %}
+    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
   </url>
-  {% endfor %}
-
-  <!-- Books -->
-  {% for book in collections.books %}
+  {%- endfor %}
+  {%- for book in collections.books %}
   <url>
     <loc>https://jdranpariya.github.io{{ book.url }}</loc>
-    {% set lastmod = book.data.lastUpdated or book.data.published %}
-    {% if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{% endif %}
+    {%- set lastmod = book.data.lastUpdated or book.data.published %}
+    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
   </url>
-  {% endfor %}
-
-  <!-- Lectures -->
-  {% for lecture in collections.lectures %}
+  {%- endfor %}
+  {%- for lecture in collections.lectures %}
   <url>
     <loc>https://jdranpariya.github.io{{ lecture.url }}</loc>
-    {% set lastmod = lecture.data.lastUpdated or lecture.data.published %}
-    {% if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{% endif %}
+    {%- set lastmod = lecture.data.lastUpdated or lecture.data.published %}
+    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
   </url>
-  {% endfor %}
-
-  <!-- Projects -->
-  {% for project in collections.projects %}
+  {%- endfor %}
+  {%- for project in collections.projects %}
   <url>
     <loc>https://jdranpariya.github.io{{ project.url }}</loc>
-    {% set lastmod = project.data.lastUpdated or project.data.published %}
-    {% if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{% endif %}
+    {%- set lastmod = project.data.lastUpdated or project.data.published %}
+    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
   </url>
-  {% endfor %}
-
+  {%- endfor %}
 </urlset>
