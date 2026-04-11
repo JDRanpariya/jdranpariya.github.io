@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --color-bg: #fefae0; /* #fefae0; */
   --color-surface: #f0ead2; /*#ffffff; */
   --color-card: #e8dfc8;
-  --color-text: #2d241a; 
+  --color-text: #2d241a;
   --color-text-light: #5a4a34;
   --color-text-secondary: #4a3d2e;
   --color-accent: #8b4513;
@@ -69,7 +68,6 @@
 .callout-content p:empty {
   display: none;
 }
-
 
 /* Callout Type Colors - from Obsidian Primary theme */
 .callout {
@@ -161,7 +159,7 @@
 }
 
 .references-block summary::before {
-  content: '▶';
+  content: "▶";
   font-size: 1.25rem;
   transition: transform 0.2s ease;
   color: var(--color-accent);
@@ -195,12 +193,13 @@
   border-color: var(--color-border);
 }
 
-
 .prose blockquote {
   border-left: 3px solid var(--color-accent);
   background: transparent;
   padding: 0.25rem 0 0.25rem 1.25rem;
   margin: 1.75rem 0;
+  line-height: 1.85;
+  word-spacing: 0.04em;
   font-style: italic;
   color: var(--color-text);
   quotes: none;
@@ -237,5 +236,5 @@
 .prose h2 + .subtitle-note,
 .prose h3 + .subtitle-note,
 .prose h4 + .subtitle-note {
-    margin-top: -1rem;           /* pulls against the heading's mb */
+  margin-top: -1rem; /* pulls against the heading's mb */
 }
