@@ -8,7 +8,7 @@
   --color-surface: #f0ead2; /*#ffffff; */
   --color-card: #e8dfc8;
   --color-text: #2d241a; 
-  --color-text-light: #6b5d44;
+  --color-text-light: #5a4a34;
   --color-text-secondary: #4a3d2e;
   --color-accent: #8b4513;
   --color-border: #e0d8c3;
@@ -219,13 +219,13 @@
 }
 
 .subtitle-note {
-    border-left: 1px solid var(--color-accent);
-    background: transparent;
-    padding: 0.1rem 0 0.1rem 1rem;
-    margin: 0 0 1.5rem 0;
-    font-style: normal;
-    color: var(--color-text-light);
-    quotes: none;
+  border-left: 1px solid var(--color-accent);
+  background: transparent;
+  padding: 0.1rem 0 0.1rem 1rem;
+  margin: 0 0 1.5rem 0;
+  font-style: normal;
+  color: var(--color-text-light);
+  quotes: none;
 }
 
 .subtitle-note p {
