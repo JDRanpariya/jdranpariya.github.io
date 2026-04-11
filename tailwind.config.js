@@ -14,7 +14,7 @@ export default {
                 border: 'var(--color-border)',
             },
             fontFamily: {
-                sans: ['Inter', 'system-ui', 'sans-serif'],
+                sans: ['system-ui', 'sans-serif'],
                 serif: ['Merriweather', 'serif'],
             },
         },
