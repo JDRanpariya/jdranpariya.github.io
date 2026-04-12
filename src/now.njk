@@ -13,92 +13,46 @@ section: "now"
       </div>
     </aside>
 
-    {# Main Content (Middle Column) #}
+        {# Main Content #}
     <main class="md:col-span-6 space-y-12">
 
-      {# 1. Hero / Title #}
       <div class="text-center space-y-4 mb-16">
-        <p class="text-5xl md:text-6xl font-serif text-accent">What I'm Doing Now</p>
-        <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-          Real-time snapshot of my current projects, obsessions, and rabbit holes. This is what's actually consuming my mental bandwidth right now.
+        <p class="text-5xl md:text-6xl font-serif text-accent">Now</p>
+        <p class="font-serif text-xl md:text-2xl text-secondary max-w-3xl mx-auto leading-relaxed">
+          What's actually going on in my life — the things I'm doing, making, reading, and figuring out.
         </p>
       </div>
 
-      {# 2. Project Highlights #}
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-         <div class="flex flex-col justify-center bg-card p-6 rounded-xl shadow-md">
-           <h3 class="text-2xl font-serif text-accent mb-3">Building Kosha</h3>
-            <p class="text-secondary mb-3">
-              I've started working on building Personalized content streamer, It was about 2 years I thought of it. It's my solution to handle overwhelming amount of content I consume.
-           </p>
-           <p class="text-sm text-muted">Status: Actively building MVP</p>
-       </div>
-       <div class="flex flex-col justify-center bg-card p-6 rounded-xl shadow-md">
-           <h3 class="text-2xl font-serif text-accent mb-3">Write a fucking article</h3>
-           <p class="text-secondary mb-3">
-             Want to write article on "On hoarding and learning knowledge" and on how sleep can inspire us think differently about AI and Learning.
-           </p>
-           <p class="text-sm text-muted">
-  Status: working on
-  <a href="/writings"
-     class="text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent"
-     aria-label="Go to writings">
-    writings
-  </a>!
-</p>
-
-       </div>
-      </div>
-
-      {# 3. Dynamic Update Section #}
+      {# Updates #}
       <div class="space-y-6">
-        <h2 id="update-heading" class="text-3xl font-serif text-accent">
-          {# Initial heading will be set by JS #}
-        </h2>
+        <h2 id="update-heading" class="text-3xl font-serif text-accent"></h2>
         <div id="updates-container">
           {% for update in collections.nowUpdates %}
-             {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %} {# <-- FIX: Use YYYY-MM-DD for ID #}
+            {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %}
             <div
-              id="update-{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD ID #}
+              id="update-{{ dateStringId }}"
               class="now-update-content prose dark:prose-invert text-primary dark:text-muted text-lg space-y-3 {% if not loop.first %}hidden{% endif %}"
-              data-date="{{ dateStringId }}"                              {# <-- FIX: Use YYYY-MM-DD data-date #}
-              data-formatted-date="{{ update.date | formatDate }}"        {# Keep human-readable version #}
+              data-date="{{ dateStringId }}"
+              data-formatted-date="{{ update.date | formatDate }}"
             >
               {{ update.templateContent | safe }}
             </div>
           {% else %}
-             <p class="text-primary dark:text-muted text-center italic">No updates posted yet.</p>
+            <p class="text-primary dark:text-muted text-center italic">No updates posted yet.</p>
           {% endfor %}
         </div>
       </div>
 
-
-      {# 4. Current Mindset #}
-      <div class="space-y-6">
-        <h2 class="text-3xl font-serif text-accent">Current Mindset</h2>
-        <div class="prose text-primary dark:text-muted text-lg space-y-4">
-            <p>
-            This year, I've decided to stop ignoring consistancy and overvaluing persistance too much. There is no other way than to be consistant and persistant if I really want to achieve something.
-            </p>
-             <p>
-               I'm in this phase where I want to do something out of the ordinary. Be hyperaggressive where there are boundless upsides with minimal downside. I'm trying to shift from being someone who plans and plans and plans to someone who just does things.
-            </p>
-           <p>
-               I want to get obsessive over building and creating rather than just consuming. Trying to create a cycle between building something while learning, not just hoarding knowledge in Obsidian forever.
-           </p>
-        </div>
-      </div>
-
-      {# Footer Note #}
       <div class="text-center pt-8">
-         {# FIX: Display the latest update date here #}
-         {% set latestUpdate = collections.nowUpdates[0] %}
+        {% set latestUpdate = collections.nowUpdates[0] %}
         <p class="text-sm text-muted" id="footer-update-note">
-            Latest update: {% if latestUpdate %}{{ latestUpdate.date | formatDate }}{% else %}N/A{% endif %}
+          Latest update: {% if latestUpdate %}{{ latestUpdate.date | formatDate }}{% else %}N/A{% endif %}
         </p>
       </div>
 
     </main>
+
+
 
     {# Right Column (Archive) #}
     <aside class="pt-4 pr-8 hidden md:block md:col-span-2 relative">
