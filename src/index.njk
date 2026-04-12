@@ -4,177 +4,55 @@ title: "Jaydeep Ranpariya"
 description: "A polymath who learns fast, overthinks decisions, and wants to build digital creatures that actually live"
 ---
 
-<!-- Hero Section -->
-<section class="min-h-screen flex items-center justify-center px-6 pt-16 sm:pt-20">
-    <div class="max-w-3xl mx-auto text-center space-y-12">
+<section class="max-w-3xl mx-auto px-6 py-24 md:py-40 space-y-20">
 
-        <!-- Main Heading -->
-        <div class="space-y-6">
-            <h1 class="font-serif text-[clamp(2.5rem,6vw,5rem)] sm:text-[clamp(3rem,7vw,6rem)] font-bold text-primary leading-snug tracking-tight">
-                Hi, I’m <span class="text-accent font-medium">Jay</span>.<br />
-            </h1>
+  <!-- Opening -->
+  <div class="space-y-8">
+    <h1 class="font-serif text-5xl md:text-7xl font-bold text-primary leading-tight">
+      Jay Ranpariya.
+    </h1>
+    <p class="font-serif text-xl md:text-2xl text-secondary leading-relaxed max-w-2xl">
+    A polymath building understanding of intelligence from molecules to minds.
+I love reading, cooking, and any sport that'll have me.
+Nothing I care about fits inside one field and most of what I build and write starts there.
+    </p>
+  </div>
 
-            <h2 class="font-serif text-[clamp(1.25rem,3vw,2.5rem)] sm:text-[clamp(1rem,3vw,3rem)] font-bold text-primary leading-snug tracking-tight">
-                Being curious and laughing along the way.
-                <!-- I learn absurdly fast — and sometimes too much at once. --> 
-                <!-- Curious enough to ask, calm enough to listen. -->
-                <!-- Curious enough to ask, playful enough to enjoy the answers. 
-                    <!-- I chase ideas, savor moments, embrace surprises. -->
-                    <!-- Obsessed with learning, curious about life, but not above a good laugh. -->
-                    <!-- I seek, I linger, I love the in-between. -->
-                    <!-- I follow curiosity, savor joy, collect wisdom. -->
-                    <!-- I chase what matters, and sometimes nothing. -->
-
-            </h2>
-
-            <!-- Tagline -->
-            <p class="font-sans text-lg sm:text-xl md:text-2xl text-muted max-w-3xl mx-auto leading-relaxed">
-            I’m the type who asks a lot of questions, makes a mess, and learns as I go. Some experiments crash, some ideas stick, but I’m always playing around and seeing what I can discover.
-            </p>
-        </div>
-
-
-        <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-8">
-            <a href="/now" 
-               class="inline-flex items-center px-8 py-4 rounded-xl font-sans font-medium bg-primary 
-                      text-bg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300">
-                What I’m doing right now
-                <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </a>
-
-            <a href="/about" 
-               class="inline-flex items-center px-8 py-4 rounded-xl border-2 border-primary text-primary font-sans font-medium hover:bg-primary hover:text-bg hover:scale-105 transition duration-300">
-                About Me
-            </a>
-        </div>
-
-        <!-- Fun fact -->
-        <div class="pt-12">
-            <p class="text-sm text-muted italic" id="fun-fact"></p>
-        </div>
-
-        <!-- Scroll indicator -->
-        <div class="pt-6 animate-bounce">
-            <svg class="w-6 h-6 mx-auto text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-        </div>
-    </div>
-</section>
-
-<!-- What I'm Actually About -->
-<section class="max-w-5xl mx-auto px-6 py-24 space-y-20">
-
-    <!-- Writings Section -->
-    <div class="text-center space-y-8">
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">
-            My Writings
+  <!-- Writings — the actual work -->
+  <div class="space-y-6">
+    <p class="font-sans text-sm text-muted uppercase tracking-widest">Recent writing</p>
+    <div class="space-y-5 divide-y divide-border">
+      {% for post in collections.writings | limit(4) %}
+      <article class="{% if not loop.first %}pt-5{% endif %}">
+        <h2 class="font-serif text-xl md:text-2xl text-primary hover:text-accent transition-colors capitalize leading-snug">
+          <a href="{{ post.url }}">{{ post.data.title }}</a>
         </h2>
-
-        <div class="max-w-5xl mx-auto space-y-6">
-
-            <!-- Recent writings preview -->
-            <div class="space-y-4">
-                {% for post in collections.writings | limit(3) %}
-                <article>
-                    <h3 class="font-serif text-xl underline underline-offset-4 decoration-2 capitalize text-primary hover:text-accent">
-                        <a href="{{ post.url }}">{{ post.data.title }}</a>
-                    </h3>
-                </article>
-                {% endfor %}
-            </div>
-
-            <!-- Button to all writings -->
-            <div class="pt-6">
-                <a href="/writings" 
-                   class="inline-flex items-center font-sans font-medium text-primary hover:underline decoration-2 underline-offset-4">
-                    See all writings
-                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </a>
-            </div>
-        </div>
+        {% if post.data.description %}
+        <p class="font-sans text-base text-muted mt-1 leading-relaxed">{{ post.data.description }}</p>
+        {% endif %}
+      </article>
+      {% endfor %}
     </div>
+    <a href="/writings"
+       class="inline-flex items-center font-sans text-sm text-muted hover:text-primary transition-colors gap-1">
+      All writings
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+      </svg>
+    </a>
+  </div>
 
-    <!-- Odysseys Teaser -->
-    <div class="text-center space-y-4">
-        <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">Odysseys</h2>
-        <p class="text-muted max-w-xl mx-auto">
-        Long-running explorations into ideas I can't let go of - AI, knowledge, history's forgotten minds, and cooking disasters.
-        </p>
-        <a href="/odysseys"
-           class="inline-flex items-center font-sans font-medium text-primary hover:underline decoration-2 underline-offset-4">
-            See all Odysseys
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-        </a>
-    </div>
-
-
-    <div class="space-y-8">
-        <div class="text-center">
-            <h2 class="font-serif text-3xl md:text-4xl font-bold text-primary">How I operate</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        <div class="bg-card p-6 rounded-xl shadow-md text-center">
-            <h3 class="font-serif text-xl text-accent mb-3">Learning Style</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-            I build curriculums in Obsidian, dive in intensely, then vanish until motivation returns. 
-            Always resume exactly where I left off. No FOMO :)
-            </p>
-        </div>
-
-        <div class="bg-card p-6 rounded-xl shadow-md text-center">
-            <h3 class="font-serif text-xl text-accent mb-3">Life Philosophy</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-            Be bold where the upside is huge and the downside small. Day-to-day, move slow and steady.  
-            It beats burnout culture every time for me.
-            </p>
-        </div>
-
-        <div class="bg-card p-6 rounded-xl shadow-md text-center">
-            <h3 class="font-serif text-xl text-accent mb-3">Random Weakness</h3>
-            <p class="text-secondary text-sm leading-relaxed">
-            I get awfully embarrassed in front of people or situations,
-            when I expect it the least or don't it want at all.
-            </p>
-        </div>
-
-    </div>
-    </div>
-
-    <!-- Call to Action -->
-    <div class="text-center space-y-6 bg-accent/5 p-8 rounded-2xl border border-accent/10">
-        <h2 class="font-serif text-2xl font-bold text-primary">
-            Want to collaborate on something bold?
-        </h2>
-        <p class="font-sans text-base text-muted max-w-3xl mx-auto leading-relaxed">
-        I’m looking for collaborators with good taste in problems, genuine curiosity, 
-        and the guts to explore confusing spaces with huge upside.  
-        If everyone else is chasing the obvious, I’d rather take the scenic route.
-        </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/about" 
-               class="inline-flex items-center px-6 py-3 rounded-lg bg-primary text-bg font-medium hover:scale-105 transition duration-200">
-                Learn more about me
-            </a>
-            <a href="mailto:jaydeepranpariya037@gmail.com" 
-               class="inline-flex items-center px-6 py-3 rounded-lg border border-primary text-primary font-medium hover:bg-primary hover:text-bg transition duration-200">
-                Send me an email
-            </a>
-        </div>
-    </div>
+  <!-- Quiet links to the rest of the site -->
+  <div class="space-y-3 font-sans text-base text-muted">
+    <a href="/now" class="block hover:text-primary transition-colors">What I'm doing now →</a>
+    <a href="/odysseys" class="block hover:text-primary transition-colors">Long explorations →</a>
+    <a href="/library" class="block hover:text-primary transition-colors">Books, lectures, papers →</a>
+  </div>
 
 </section>
 
 <script>
-    const facts = [
+  const facts = [
     "There are more possible iterations of a shuffled deck of cards than there are atoms on Earth.",
     "If you could fold a piece of paper 42 times, it would reach the moon.",
     "Bananas are radioactive enough that truckloads can trigger radiation sensors at ports.",
@@ -187,6 +65,6 @@ description: "A polymath who learns fast, overthinks decisions, and wants to bui
     "Cleopatra lived closer to the invention of the iPhone than to the building of the Great Pyramid.",
     "A photon takes 40,000 years to travel from the Sun's core to its surface, then 8 minutes to reach Earth.",
     "If the universe's timeline was a year, humans appeared at 11:58 PM on December 31st."
-];
-    document.getElementById('fun-fact').textContent = "Fun fact: " + facts[Math.floor(Math.random() * facts.length)];
+  ];
 </script>
+
