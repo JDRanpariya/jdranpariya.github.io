@@ -4,10 +4,7 @@
 
   <div class="lg:col-span-1">
     {% if project.data.image %}
-      <img src="{{ project.data.image }}" alt="{{ project.data.title }}"
-        loading="lazy"
-        decoding="async"
-        class="max-w-sm w-full rounded-lg object-cover aspect-[3/2] shadow-sm group-hover:shadow-md transition-shadow" />
+      {% image project.data.image, project.data.title, "max-w-sm w-full rounded-lg object-cover aspect-[3/2] shadow-sm group-hover:shadow-md transition-shadow" %}
     {% endif %}
   </div>
 
