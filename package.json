@@ -27,10 +27,11 @@
     "build:prod": "ELEVENTY_ENV=prod bunx @11ty/eleventy && bun run css:build:prod",
     "debug": "DEBUG=* bunx @11ty/eleventy",
     "css:build": "bunx postcss src/css/input.css --o build/css/style.css",
-    "css:build:prod": "bunx postcss src/css/input.css --o build/css/style.css --env production",
+    "css:build:prod": "ELEVENTY_ENV=prod bunx postcss src/css/input.css --o build/css/style.css",
     "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch"
   },
   "dependencies": {
+    "@11ty/eleventy-img": "^6.0.4",
     "@11ty/eleventy-plugin-rss": "^2.0.4",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@vscode/markdown-it-katex": "^1.1.2",

@@ -8,7 +8,12 @@ import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItLinkAttributes from "markdown-it-link-attributes";
 import markdownItContainer from "markdown-it-container";
+import Image from "@11ty/eleventy-img";
+import path from "path";
+import { fileURLToPath } from "url";
 import { DateTime } from "luxon";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default function (eleventyConfig) {
   // In .eleventy.js
@@ -92,6 +97,43 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.setLibrary("md", md);
+
+  // Image optimization shortcode
+  eleventyConfig.addNunjucksAsyncShortcode("image", async function (src, alt, className = "") {
+    if (!src) return "";
+
+    // Remote image - pass through as-is
+    if (src.startsWith("http")) {
+      return `<img src="${src}" alt="${alt}" loading="lazy" class="${className}">`;
+    }
+
+    // Local image - optimize
+    let inputPath = src;
+    if (src.startsWith("/assets/")) {
+      inputPath = path.join(__dirname, "assets", src.slice("/assets/".length));
+    } else if (src.startsWith("assets/")) {
+      inputPath = path.join(__dirname, src);
+    }
+
+    try {
+      // Generate AVIF at original size (widths: [null] preserves dimensions)
+      const metadata = await Image(inputPath, {
+        widths: [null], // null = original width, no resizing
+        formats: ["avif"], // AVIF only for simplicity
+        outputDir: "./build/img/",
+        urlPath: "/img/",
+      });
+
+      const avifMetadata = metadata.avif[0];
+
+      // Return simple img tag (not picture element)
+      return `<img src="${avifMetadata.url}" alt="${alt}" loading="lazy" class="${className}" width="${avifMetadata.width}" height="${avifMetadata.height}">`;
+    } catch (e) {
+      console.error(`Error optimizing image ${src}:`, e.message);
+      // Fallback to original
+      return `<img src="${src}" alt="${alt}" loading="lazy" class="${className}">`;
+    }
+  });
 
   eleventyConfig.addCollection("books", (collection) => {
     return collection

@@ -21,9 +21,7 @@ section: "library"
     <div class="flex flex-col">
       <!-- Cover -->
       <a href="{{ book.url }}">
-      <img src="{{ book.data.cover }}" alt="{{ book.data.title }}"
-           loading="lazy"
-           class="rounded-lg mb-3 w-full object-cover aspect-[2/3] shadow-sm hover:shadow-md transition" />
+      {% image book.data.cover, book.data.title, "rounded-lg mb-3 w-full object-cover aspect-[2/3] shadow-sm hover:shadow-md transition" %}
     </a>
 
       <!-- Title & Author -->
@@ -58,9 +56,7 @@ section: "library"
     <div class="flex flex-col">
       <!-- Cover -->
       <a href="{{ lecture.url }}">
-      <img src="{{ lecture.data.cover }}" alt="{{ lecture.data.title }}"
-           loading="lazy"
-           class="rounded-lg mb-3 w-full object-cover aspect-[3/2] shadow-sm hover:shadow-md transition" />
+      {% image lecture.data.cover, lecture.data.title, "rounded-lg mb-3 w-full object-cover aspect-[3/2] shadow-sm hover:shadow-md transition" %}
     </a>
 
       <!-- Title & Author -->
