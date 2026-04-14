@@ -3,6 +3,7 @@ title: Now | JDRanpariya
 layout: layouts/base
 section: "now"
 ---
+{% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
 <section class="max-w-7xl mx-auto px-6 py-14">
   <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
 
@@ -18,8 +19,8 @@ section: "now"
 
       <div class="text-center space-y-4 mb-16">
         <p class="text-5xl md:text-6xl font-serif text-accent">Now</p>
-        <p class="font-serif text-md md:text-2xl text-secondary max-w-3xl mx-auto leading-relaxed">
-          What's actually going on in my life — the things I'm doing, making, reading, and figuring out.
+        <p class="font-serif text-md md:text-xl text-secondary max-w-3xl mx-auto leading-relaxed">
+          What's actually going on in my life
         </p>
       </div>
 
@@ -58,7 +59,6 @@ section: "now"
     <aside class="pt-4 pr-8 hidden md:block md:col-span-2 relative">
         <div class="sticky top-16 mt-16">
     <h2 class="text-2xl font-serif font-semibold mb-4 text-primary">Archive</h2>
-    {% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
     {% if collections.nowUpdates | length > 0 %}
         {% for yearData in groupedUpdates %}
             {% set year = yearData[0] %}
@@ -75,7 +75,7 @@ section: "now"
                                 {{ month }}
                                 <span class="text-muted text-xs group-open/month:rotate-180 transition-transform duration-200">▼</span>
                             </summary>
-                            <ul class="pl-4 border-l border-border ml-1 py-1 text-sm space-y-0.5" id="archive-list">
+                            <ul class="pl-4 border-l border-border ml-1 py-1 text-sm space-y-0.5 archive-list">
                                 {% for update in updates %}
                                     {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %}
                                     <li>
@@ -99,6 +99,55 @@ section: "now"
 </div>
     </aside>
 
+    {# Mobile Archive #}
+    <div class="md:hidden mt-12">
+      <details class="group" open>
+        <summary class="text-base font-semibold text-primary flex items-center justify-between list-none cursor-pointer">
+          Archive
+          <span class="text-xs text-muted">Tap to toggle</span>
+        </summary>
+        <div class="mt-4 space-y-4">
+          {% if collections.nowUpdates | length > 0 %}
+            {% for yearData in groupedUpdates %}
+              {% set year = yearData[0] %}
+              {% set months = yearData[1] %}
+              <details class="space-y-2" {% if loop.first %}open{% endif %}>
+                <summary class="font-serif text-primary text-lg list-none cursor-pointer flex justify-between items-center">
+                  {{ year }}
+                  <span class="text-xs text-muted">▼</span>
+                </summary>
+                <div class="space-y-2 pl-3 border-l border-border/60">
+                  {% for month, updates in months %}
+                    <details class="space-y-1" {% if loop.first %}open{% endif %}>
+                      <summary class="font-medium text-sm tracking-wide text-muted list-none flex justify-between items-center">
+                        {{ month }}
+                        <span>▼</span>
+                      </summary>
+                      <ul class="text-sm archive-list space-y-1">
+                        {% for update in updates %}
+                          {% set dateStringId = update.date | dateToFormat('yyyy-MM-dd') %}
+                          <li>
+                            <a href="#update-{{ dateStringId }}"
+                               onclick="showArchivedUpdate('{{ dateStringId }}'); return false;"
+                               class="archive-link text-primary hover:underline"
+                               data-date="{{ dateStringId }}">
+                              {{ update.date | formatDate }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </details>
+                  {% endfor %}
+                </div>
+              </details>
+            {% endfor %}
+          {% else %}
+            <p class="text-sm text-muted italic">No past updates recorded yet.</p>
+          {% endif %}
+        </div>
+      </details>
+    </div>
+
   </div>
 </section>
 
@@ -108,7 +157,7 @@ section: "now"
     const updatesContainer = document.getElementById('updates-container');
     const allUpdateContentDivs = updatesContainer.querySelectorAll('.now-update-content');
     const targetUpdateDiv = document.getElementById('update-' + dateStringId); // Use YYYY-MM-DD ID
-    const archiveLinks = document.querySelectorAll('#archive-list .archive-link');
+    const archiveLinks = document.querySelectorAll('.archive-list .archive-link');
     const footerNote = document.getElementById('footer-update-note'); // Get footer element
 
     if (!targetUpdateDiv || !headingEl) {

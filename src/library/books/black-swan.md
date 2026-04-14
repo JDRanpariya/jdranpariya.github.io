@@ -5,7 +5,7 @@ author: "Nassim Nicholas Taleb"
 cover: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141906201%2F9780141906201-jacket-large.jpg&w=819&q=100"
 link: "https://www.penguin.co.uk/books/56380/the-black-swan-by-taleb-nassim-nicholas/9780141034591"
 section: "books"
-tags: ["uncertainity", "practical", "non-fiction"]
+tags: ["uncertainty", "practical", "non-fiction"]
 published: 2025-09-13 
 lastUpdated: 2026-03-22 
 layout: layouts/post.njk
@@ -115,5 +115,4 @@ less predictable, while both human nature and social science seem to hide the
 idea from us.
 
 ### How we seek validation
-
 

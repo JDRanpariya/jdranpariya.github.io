@@ -17,7 +17,7 @@ eleventyExcludeFromCollections: true
   {% for post in collections.writings | limit(20) %}
   <entry>
     <title>{{ post.data.title }}</title>
-    <link href="https://jdranpariya.com{{ post.url }}"/>
+    <link href="https://jdranpariya.github.io{{ post.url }}"/>
     <updated>{{ post.data.lastUpdated or post.data.published | dateToRfc3339 }}</updated>
     <id>https://jdranpariya.github.io{{ post.url }}</id>
     <summary>{{ post.data.description }}</summary>
