@@ -19,6 +19,7 @@ export default function (eleventyConfig) {
   // In .eleventy.js
   eleventyConfig.addPassthroughCopy({
     assets: "assets",
+    "src/robots.txt": "robots.txt",
   });
 
   // Serve CSS so it's available in the browser
