@@ -13,10 +13,6 @@ Personal website and digital garden for Jaydeep (Jay) Ranpariya. A place to writ
 - **Markdown:** markdown-it + anchor, footnote, KaTeX, obsidian-callouts, Prism syntax-highlight, container (`::: note`, `::: references`)
 - **Fonts:** Merriweather (serif), Inter (sans) via Google Fonts
 
-## Current milestone
-Finish WIP articles (knowledge-hoarding essay, differentiable sim, education reforms, recipe-for-life), remove the "under construction" banner, and consider the site stable v1.
-Only I do the writing not llms/agents
-
 ## Key constraints
 - Zero budget — GitHub Pages free tier, free Umami/Vercel tier
 - Purely static (no SSR, no server)
