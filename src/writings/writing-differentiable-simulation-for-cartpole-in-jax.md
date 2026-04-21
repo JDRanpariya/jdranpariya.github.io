@@ -3,6 +3,7 @@ title: "Building a Differentiable Cart-Pole World in JAX"
 published: 2026-01-23
 lastUpdated: 2026-01-27
 tags: ["simulation", "jax"]
+status: "draft"
 section: "writings"
 series:
   name: "On Simulation"   # Series title
