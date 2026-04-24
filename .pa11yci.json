@@ -1,0 +1,23 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--headless=new"]
+    },
+    "timeout": 30000,
+    "wait": 500,
+    "includeNotices": false,
+    "includeWarnings": false,
+    "threshold": 0
+  },
+  "urls": [
+    "http://localhost:8081/",
+    "http://localhost:8081/about/",
+    "http://localhost:8081/writings/",
+    "http://localhost:8081/library/",
+    "http://localhost:8081/projects/",
+    "http://localhost:8081/odysseys/",
+    "http://localhost:8081/now/"
+  ]
+}

@@ -12,6 +12,7 @@ import Image from "@11ty/eleventy-img";
 import path from "path";
 import { fileURLToPath } from "url";
 import { DateTime } from "luxon";
+import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,6 +45,9 @@ export default function (eleventyConfig) {
     if (!str) return "";
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
   });
+
+  // Frontmatter schema validation — fails build if content is malformed.
+  registerFrontmatterValidation(eleventyConfig);
   // Configure Markdown with anchors, footnotes, and external link attributes
   const md = markdownIt({ html: true, linkify: true })
     .use(markdownItAnchor, { permalink: false })
@@ -72,9 +76,7 @@ export default function (eleventyConfig) {
     .use(markdownItContainer, "references", {
       render(tokens, idx) {
         if (tokens[idx].nesting === 1) {
-          const label =
-            tokens[idx].info.trim().slice("references".length).trim() ||
-            "References";
+          const label = tokens[idx].info.trim().slice("references".length).trim() || "References";
           return `<details class="references-block">\n<summary>${label}</summary>\n`;
         } else {
           return `</details>\n`;
@@ -84,9 +86,7 @@ export default function (eleventyConfig) {
 
   // Filter to extract footnotes from rendered Markdown
   eleventyConfig.addFilter("extractFootnotes", function (content) {
-    const footnoteMatch = content.match(
-      /<ol class="footnotes-list">[\s\S]*<\/ol>/,
-    );
+    const footnoteMatch = content.match(/<ol class="footnotes-list">[\s\S]*<\/ol>/);
     return footnoteMatch ? footnoteMatch[0] : "";
   });
 
@@ -137,46 +137,40 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("books", (collection) => {
-    return collection
-      .getFilteredByGlob("src/library/books/*.md")
-      .sort((a, b) => {
-        // compare titles alphabetically, case-insensitive
-        let titleA = a.data.title.toLowerCase();
-        let titleB = b.data.title.toLowerCase();
-        if (titleA < titleB) return -1;
-        if (titleA > titleB) return 1;
-        return 0;
-      });
+    return collection.getFilteredByGlob("src/library/books/*.md").sort((a, b) => {
+      // compare titles alphabetically, case-insensitive
+      let titleA = a.data.title.toLowerCase();
+      let titleB = b.data.title.toLowerCase();
+      if (titleA < titleB) return -1;
+      if (titleA > titleB) return 1;
+      return 0;
+    });
   });
 
   eleventyConfig.addCollection("lectures", (collection) =>
-    collection.getFilteredByGlob("src/library/lectures/*.md"),
+    collection.getFilteredByGlob("src/library/lectures/*.md")
   );
 
   eleventyConfig.addCollection("papers", (collection) =>
-    collection.getFilteredByGlob("src/library/papers/*.md"),
+    collection.getFilteredByGlob("src/library/papers/*.md")
   );
   // Projects
 
   eleventyConfig.addCollection("projects", (collection) =>
-    collection.getFilteredByGlob("src/projects/**/*.md"),
+    collection.getFilteredByGlob("src/projects/**/*.md")
   );
 
   // odysseys
   eleventyConfig.addCollection("odysseys", (collection) =>
-    collection.getFilteredByGlob("src/odysseys/**/*.md"),
+    collection.getFilteredByGlob("src/odysseys/**/*.md")
   );
 
   eleventyConfig.addCollection("reckoningTheDead", function (collectionApi) {
-    return collectionApi.getFilteredByGlob(
-      "src/odysseys/reckoning-the-dead/*.md",
-    );
+    return collectionApi.getFilteredByGlob("src/odysseys/reckoning-the-dead/*.md");
   });
 
   eleventyConfig.addCollection("alchemistsHearth", function (collectionApi) {
-    return collectionApi.getFilteredByGlob(
-      "src/odysseys/the-alchemists-hearth/*.md",
-    );
+    return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
   });
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
@@ -219,11 +213,9 @@ export default function (eleventyConfig) {
 
   // Add this within your module.exports = function(eleventyConfig) { ... };
   eleventyConfig.addCollection("nowUpdates", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/now/updates/*.md")
-      .sort((a, b) => {
-        return b.date - a.date; // Sort by date descending
-      });
+    return collectionApi.getFilteredByGlob("src/now/updates/*.md").sort((a, b) => {
+      return b.date - a.date; // Sort by date descending
+    });
   });
 
   // Helper filter to group by year/month for the archive
@@ -254,9 +246,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("dateToFormat", (dateObj, format = "yyyy-MM-dd") => {
     // Corrected to handle potential string inputs
     const dt =
-      dateObj instanceof Date
-        ? DateTime.fromJSDate(dateObj)
-        : DateTime.fromISO(dateObj.toString());
+      dateObj instanceof Date ? DateTime.fromJSDate(dateObj) : DateTime.fromISO(dateObj.toString());
     return dt.toFormat(format); // e.g., 2025-10-28
   });
 
