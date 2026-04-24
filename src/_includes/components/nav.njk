@@ -1,148 +1,211 @@
 <!-- Navigation with Dark Mode Toggle - src/_includes/components/nav.njk -->
 <nav class="top-0 left-0 right-0 z-50">
-    <div class="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
-
-        <!-- Logo/Brand -->
-        <a href="/" class="group flex items-center p-2 md:p-0">
-            <span class="font-serif
+  <div class="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
+    <!-- Logo/Brand -->
+    <a href="/" class="group flex items-center p-2 md:p-0">
+      <span
+        class="font-serif
                          text-2xl
                          font-bold
                          text-primary
                          tracking-wide
                          group-hover:scale-105
                          transition-transform
-                         duration-300">
-                =^.^=
-            </span>
-        </a>
+                         duration-300"
+      >
+        =^.^=
+      </span>
+    </a>
 
-        <!-- Main Navigation -->
-        <div class="flex items-center space-x-8">
-            <!-- Navigation Links -->
-            <div class="hidden md:flex items-center space-x-6 text-primary">
-                <a href="/now"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}>Now</a>
-                <a href="/odysseys"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}>Odysseys</a>
-                <a href="/projects"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}>Projects</a>
-                <a href="/writings"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}>Writings</a>
-                <a href="/library"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}>Library</a>
-                <a href="/about"
-                   class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}underline underline-offset-8 decoration-4 decoration-accent{% endif %}"
-                   {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}>About</a>
-            </div>
+    <!-- Main Navigation -->
+    <div class="flex items-center space-x-8">
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-6 text-primary">
+        <a
+          href="/now"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}
+          >Now</a
+        >
+        <a
+          href="/odysseys"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}
+          >Odysseys</a
+        >
+        <a
+          href="/projects"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}
+          >Projects</a
+        >
+        <a
+          href="/writings"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}
+          >Writings</a
+        >
+        <a
+          href="/library"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}
+          >Library</a
+        >
+        <a
+          href="/about"
+          class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}
+            underline underline-offset-8 decoration-4 decoration-accent
+          {% endif %}"
+          {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}
+          >About</a
+        >
+      </div>
 
-            <!-- Dark Mode Toggle -->
-            <button 
-                                    id="theme-toggle"
-                                    onclick="toggleTheme()" 
-                                    class="p-2 text-primary
+      <!-- Dark Mode Toggle -->
+      <button
+        id="theme-toggle"
+        onclick="toggleTheme()"
+        class="p-2 text-primary
                                            hover:text-accent
                                            transition-colors
                                            duration-300
                                            hover:bg-surface-alt
                                            rounded-lg"
-                                    title="Switch to dark mode"
-                                    aria-label="Toggle dark mode">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <!-- Moon icon (default - will be updated by script) -->
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-            </button>
+        title="Switch to dark mode"
+        aria-label="Toggle dark mode"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Moon icon (default - will be updated by script) -->
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+      </button>
 
-            <!-- Mobile Menu Button -->
-            <button 
-                          class="md:hidden
+      <!-- Mobile Menu Button -->
+      <button
+        class="md:hidden
                                  p-2 text-primary
                                  hover:text-accent
                                  transition-colors
                                  duration-300
                                  hover:bg-surface-alt
                                  rounded-lg"
-                          onclick="toggleMobileMenu()"
-                          aria-label="Toggle mobile menu">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
+        onclick="toggleMobileMenu()"
+        aria-label="Toggle mobile menu"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
     </div>
+  </div>
 </nav>
 
 <!-- Mobile Menu Backdrop -->
-<div id="menu-backdrop" 
-     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden opacity-0 pointer-events-none transition-opacity duration-300">
-</div>
+<div
+  id="menu-backdrop"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden opacity-0 pointer-events-none transition-opacity duration-300"
+></div>
 
 <!-- Mobile Menu Panel (Slide from Right) -->
-<div id="mobile-menu" 
-     class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface border-l border-primary/10 shadow-2xl z-50 md:hidden transform translate-x-full transition-transform duration-300 ease-out">
+<div
+  id="mobile-menu"
+  class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface border-l border-primary/10 shadow-2xl z-50 md:hidden transform translate-x-full transition-transform duration-300 ease-out"
+>
+  <!-- Menu Header -->
+  <div class="flex items-center justify-between p-6 border-b border-primary/10">
+    <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
+    <button
+      onclick="closeMobileMenu()"
+      class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
 
-    <!-- Menu Header -->
-    <div class="flex items-center justify-between p-6 border-b border-primary/10">
-        <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
-        <button onclick="closeMobileMenu()" 
-                class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-    </div>
-
-    <!-- Menu Items -->
-    <div class="px-6 py-8 space-y-6 text-primary">
-        <a href="/now" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}>
-            Now
-        </a>
-        <a href="/odysseys" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}>
-            Odysseys
-        </a>
-        <a href="/projects" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}>
-            Projects
-        </a>
-        <a href="/writings" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}>
-            Writings
-        </a>
-        <a href="/library" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}>
-            Library
-        </a>
-        <a href="/about" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}>
-            About
-        </a>
-        <a href="/guestbook" 
-           class="block link font-sans font-medium text-lg py-2"
-           onclick="closeMobileMenu()"
-           {% if page.url.startsWith('/guestbook') %}aria-current="page"{% endif %}>
-            Guest Book
-        </a>
-    </div>
+  <!-- Menu Items -->
+  <div class="px-6 py-8 space-y-6 text-primary">
+    <a
+      href="/now"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}
+    >
+      Now
+    </a>
+    <a
+      href="/odysseys"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}
+    >
+      Odysseys
+    </a>
+    <a
+      href="/projects"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}
+    >
+      Projects
+    </a>
+    <a
+      href="/writings"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}
+    >
+      Writings
+    </a>
+    <a
+      href="/library"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}
+    >
+      Library
+    </a>
+    <a
+      href="/about"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}
+    >
+      About
+    </a>
+    <a
+      href="/guestbook"
+      class="block link font-sans font-medium text-lg py-2"
+      onclick="closeMobileMenu()"
+      {% if page.url.startsWith('/guestbook') %}aria-current="page"{% endif %}
+    >
+      Guest Book
+    </a>
+  </div>
 </div>

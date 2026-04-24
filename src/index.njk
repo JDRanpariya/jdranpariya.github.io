@@ -5,16 +5,15 @@ description: "A polymath building understanding of intelligence from molecules t
 ---
 
 <section class="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-20">
-
   <!-- Opening -->
   <div class="space-y-8">
     <h1 class="font-serif text-5xl md:text-7xl font-bold text-primary leading-tight">
       Jay Ranpariya.
     </h1>
     <p class="font-serif text-xl md:text-2xl text-secondary leading-relaxed max-w-2xl">
-    A polymath building understanding of intelligence from molecules to minds.
-I love reading, cooking, and any sport that'll have me.
-Nothing I care about fits inside one field and most of what I build and write starts there.
+      A polymath building understanding of intelligence from molecules to minds. I love reading,
+      cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of
+      what I build and write starts there.
     </p>
   </div>
 
@@ -23,21 +22,32 @@ Nothing I care about fits inside one field and most of what I build and write st
     <p class="font-sans text-sm text-muted uppercase tracking-widest">Recent writing</p>
     <div class="space-y-5 divide-y divide-border">
       {% for post in collections.writings | limit(4) %}
-      <article class="{% if not loop.first %}pt-5{% endif %}">
-        <h2 class="font-serif text-xl md:text-2xl text-primary hover:text-accent transition-colors capitalize leading-snug">
-          <a href="{{ post.url }}">{{ post.data.title }}</a>
-        </h2>
-        {% if post.data.description %}
-        <p class="font-sans text-base text-muted mt-1 leading-relaxed">{{ post.data.description }}</p>
-        {% endif %}
-      </article>
+        <article class="{% if not loop.first %}pt-5{% endif %}">
+          <h2
+            class="font-serif text-xl md:text-2xl text-primary hover:text-accent transition-colors capitalize leading-snug"
+          >
+            <a href="{{ post.url }}">{{ post.data.title }}</a>
+          </h2>
+          {% if post.data.description %}
+            <p class="font-sans text-base text-muted mt-1 leading-relaxed">
+              {{ post.data.description }}
+            </p>
+          {% endif %}
+        </article>
       {% endfor %}
     </div>
-    <a href="/writings"
-       class="inline-flex items-center font-sans text-sm text-muted hover:text-primary transition-colors gap-1">
+    <a
+      href="/writings"
+      class="inline-flex items-center font-sans text-sm text-muted hover:text-primary transition-colors gap-1"
+    >
       All writings
       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 8l4 4m0 0l-4 4m4-4H3"
+        />
       </svg>
     </a>
   </div>
@@ -46,9 +56,10 @@ Nothing I care about fits inside one field and most of what I build and write st
   <div class="space-y-3 font-sans text-base text-muted">
     <a href="/now" class="block hover:text-primary transition-colors">What I'm doing now →</a>
     <a href="/odysseys" class="block hover:text-primary transition-colors">Long explorations →</a>
-    <a href="/library" class="block hover:text-primary transition-colors">Books, lectures, papers →</a>
+    <a href="/library" class="block hover:text-primary transition-colors"
+      >Books, lectures, papers →</a
+    >
   </div>
-
 </section>
 
 <script>
@@ -64,7 +75,6 @@ Nothing I care about fits inside one field and most of what I build and write st
     "There's enough DNA in your body to stretch from the Sun to Pluto and back - 17 times.",
     "Cleopatra lived closer to the invention of the iPhone than to the building of the Great Pyramid.",
     "A photon takes 40,000 years to travel from the Sun's core to its surface, then 8 minutes to reach Earth.",
-    "If the universe's timeline was a year, humans appeared at 11:58 PM on December 31st."
+    "If the universe's timeline was a year, humans appeared at 11:58 PM on December 31st.",
   ];
 </script>
-

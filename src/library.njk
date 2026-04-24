@@ -6,92 +6,96 @@ section: "library"
 ---
 
 <section class="max-w-6xl mx-auto px-6 py-14 md:py-24 flex flex-col gap-16">
-
   <!-- Header -->
   <div class="text-center space-y-4">
     <h1 class="text-5xl md:text-6xl font-serif text-accent">Library</h1>
     <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
-    Books, lectures, and papers that changed how I think. Notes inside.
-</p>
+      Books, lectures, and papers that changed how I think. Notes inside.
+    </p>
   </div>
 
   <!-- Books -->
-  <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
-  {% for book in collections.books %}
-    <div class="flex flex-col">
-      <!-- Cover -->
-      <a href="{{ book.url }}">
-      {% image book.data.cover, book.data.title, "rounded-lg mb-3 w-full object-cover aspect-[2/3] shadow-sm hover:shadow-md transition" %}
-    </a>
+  <div class="space-y-8">
+    <h2 class="sr-only">Books</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
+      {% for book in collections.books %}
+        <div class="flex flex-col">
+          <!-- Cover -->
+          <a href="{{ book.url }}">
+            {% image book.data.cover, book.data.title, "rounded-lg mb-3 w-full object-cover aspect-[2/3] shadow-sm hover:shadow-md transition" %}
+          </a>
 
-      <!-- Title & Author -->
-      <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
-        {{ book.data.title }}
-      </h3>
-      <p class="text-sm text-muted">{{ book.data.author }}</p>
+          <!-- Title & Author -->
+          <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
+            {{ book.data.title }}
+          </h3>
+          <p class="text-sm text-muted">{{ book.data.author }}</p>
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-</div>
-<div class="text-center mt-2">
-  <a href="https://www.goodreads.com/user/show/161877825-jay" 
-     target="_blank" 
-     rel="noopener noreferrer"
-     class="text-sm text-muted hover:text-accent transition-colors">
-    Full reading list on Goodreads →
-  </a>
-</div>
+    <div class="text-center mt-2">
+      <a
+        href="https://www.goodreads.com/user/show/161877825-jay"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm text-muted hover:text-accent transition-colors"
+      >
+        Full reading list on Goodreads →
+      </a>
+    </div>
+  </div>
 
   <!-- Header for lectuers -->
   <div class="text-center space-y-4">
     <h2 class="text-5xl md:text-6xl font-serif text-accent">Lectures</h2>
     <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
-    These are my absolute favorite lectures that have completely blown me away!
-    if you see their photo, that's me saying "this person is pure genius and I'm practically bursting to share them with you."
+      These are my absolute favorite lectures that have completely blown me away! if you see their
+      photo, that's me saying "this person is pure genius and I'm practically bursting to share them
+      with you."
     </p>
   </div>
 
   <!-- Lectures -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {% for lecture in collections.lectures %}
-    <div class="flex flex-col">
-      <!-- Cover -->
-      <a href="{{ lecture.url }}">
-      {% image lecture.data.cover, lecture.data.title, "rounded-lg mb-3 w-full object-cover aspect-[3/2] shadow-sm hover:shadow-md transition" %}
-    </a>
+    {% for lecture in collections.lectures %}
+      <div class="flex flex-col">
+        <!-- Cover -->
+        <a href="{{ lecture.url }}">
+          {% image lecture.data.cover, lecture.data.title, "rounded-lg mb-3 w-full h-56 object-cover shadow-sm hover:shadow-md transition" %}
+        </a>
 
-      <!-- Title & Author -->
-      <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
-        {{ lecture.data.title }}
-      </h3>
-      <p class="text-sm text-muted">{{ lecture.data.author }}</p>
-    </div>
-  {% endfor %}
-</div>
+        <!-- Title & Author -->
+        <h3 class="text-base md:text-lg font-serif font-medium leading-snug">
+          {{ lecture.data.title }}
+        </h3>
+        <p class="text-sm text-muted">{{ lecture.data.author }}</p>
+      </div>
+    {% endfor %}
+  </div>
 
-
-
-<!-- Papers -->
+  <!-- Papers -->
   <div class="text-center space-y-8">
     <h2 class="text-5xl text-center md:text-6xl font-serif text-accent">Favorite Papers</h2>
     <p class="font-serif text-lg text-secondary text-center max-w-3xl mx-auto">
-    The ones I keep coming back to.
+      The ones I keep coming back to.
     </p>
   </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {% for paper in collections.papers %}
-    <div class="p-4 rounded-lg bg-surface shadow-sm hover:shadow-md transition">
-      <!-- Title (clickable) -->
-      <a href="{{ paper.data.link }}" target="_blank" rel="noopener" 
-         class="block text-base md:text-lg font-serif font-medium text-accent hover:underline leading-snug">
-        {{ paper.data.title }}
-      </a>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for paper in collections.papers %}
+      <div class="p-4 rounded-lg bg-surface shadow-sm hover:shadow-md transition">
+        <!-- Title (clickable) -->
+        <a
+          href="{{ paper.data.link }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block text-base md:text-lg font-serif font-medium text-accent hover:underline leading-snug"
+        >
+          {{ paper.data.title }}
+        </a>
 
-      <!-- Author / Metadata -->
-      <p class="text-sm text-muted mt-1">{{ paper.data.author }}</p>
-    </div>
-  {% endfor %}
-</div>
-
-
+        <!-- Author / Metadata -->
+        <p class="text-sm text-muted mt-1">{{ paper.data.author }}</p>
+      </div>
+    {% endfor %}
+  </div>
 </section>
-

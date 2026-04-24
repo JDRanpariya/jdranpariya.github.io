@@ -6,7 +6,6 @@ section: "writings index"
 ---
 
 <section class="max-w-3xl mx-auto px-6 py-14 md:py-24">
-
   <!-- Header -->
   <div class="text-center mb-16 space-y-3">
     <h1 class="text-5xl md:text-6xl font-serif text-accent">Writings</h1>
@@ -20,12 +19,12 @@ section: "writings index"
     {% for post in collections.writings | sort(true, false, "data.published") %}
       <article class="py-8 space-y-2">
         <div class="flex items-center gap-3 text-sm text-muted">
-          <time datetime="{{ post.data.published }}">
-            {{ post.data.published | formatDate }}
-          </time>
+          <time datetime="{{ post.data.published }}"> {{ post.data.published | formatDate }} </time>
           {% for tag in post.data.tags %}
-            <a href="/tags/{{ tag | slug }}/"
-               class="bg-accent/10 text-accent px-2 py-0.5 rounded capitalize hover:bg-accent/20 transition-colors">
+            <a
+              href="/tags/{{ tag | slug }}/"
+              class="bg-accent/10 text-accent px-2 py-0.5 rounded capitalize hover:bg-accent/20 transition-colors"
+            >
               {{ tag }}
             </a>
           {% endfor %}
@@ -41,5 +40,4 @@ section: "writings index"
       </article>
     {% endfor %}
   </div>
-
 </section>

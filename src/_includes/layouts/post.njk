@@ -2,226 +2,246 @@
 layout: layouts/base.njk
 isPostLayout: true
 ---
+
 <section class="max-w-7xl mx-auto px-6 py-16">
-<div class="grid grid-cols-1 md:grid-cols-10 gap-8">
-<!-- TOC section -->
-<aside class="pt-4 pl-8 hidden md:block md:col-span-2 relative ">
-  <div class="sticky top-16 mt-80">
-    <div class="toc-container flex items-center space-x-2 text-lg text-muted cursor-pointer">
-      <span class="font-semibold">Table of Contents</span>
-      <span class="toc-toggle transition-transform duration-300">▲</span>
-    </div>
-    <div class="toc-content mt-2 overflow-hidden transition-all duration-500 ease-in-out opacity-100 max-h-[2000px]">
-      <nav class="text-muted [&_ol]:list-none [&_ol]:p-0 [&_li]:relative [&_li]:pl-4 [&_li]:mb-1 [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-blue-500 [&_ol_ol]:ml-4 [&_ol_ol]:border-l [&_ol_ol]:border-gray-300 [&_ol_ol]:pl-4 [&_ol_ol_li]:before:content-['◦'] [&_ol_ol_li]:before:text-accent [&_a]:text-muted [&_a]:no-underline [&_a:hover]:text-accent">
-        {{ content | toc | safe }}
-      </nav>
-    </div>
+  <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
+    <!-- TOC section -->
+    <aside class="pt-4 pl-8 hidden md:block md:col-span-2 relative ">
+      <div class="sticky top-16 mt-80">
+        <div class="toc-container flex items-center space-x-2 text-lg text-muted cursor-pointer">
+          <span class="font-semibold">Table of Contents</span>
+          <span class="toc-toggle transition-transform duration-300">▲</span>
+        </div>
+        <div
+          class="toc-content mt-2 overflow-hidden transition-all duration-500 ease-in-out opacity-100 max-h-[2000px]"
+        >
+          <nav
+            class="text-muted [&_ol]:list-none [&_ol]:p-0 [&_li]:relative [&_li]:pl-4 [&_li]:mb-1 [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-blue-500 [&_ol_ol]:ml-4 [&_ol_ol]:border-l [&_ol_ol]:border-gray-300 [&_ol_ol]:pl-4 [&_ol_ol_li]:before:content-['◦'] [&_ol_ol_li]:before:text-accent [&_a]:text-muted [&_a]:no-underline [&_a:hover]:text-accent"
+          >
+            {{ content | toc | safe }}
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:col-span-6 space-y-8">
+      <div class="content-start space-y-12">
+        <h1
+          class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize"
+        >
+          {{ title }}
+        </h1>
+        <p class="text-3xl text-muted">{{ description }}</p>
+        <div class="text-muted">
+          <hr class="border-t border-border my-2" />
+          <div class="flex justify-between items-center">
+            <p class="text-lg">
+              {% for tag in tags %}
+                <span
+                  class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary"
+                >
+                  <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
+                </span>
+              {% endfor %}
+            </p>
+            <div class="text-right">
+              <p class="text-lg">Published: {{ published | formatDate }}</p>
+              {% if lastUpdated %}
+                <p class="text-lg">Last Updated: {{ lastUpdated | formatDate }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="prose [&_h2]:text-primary text-muted dark:prose-invert text-xl [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800"
+      >
+        {{ content | safe }}
+      </div>
+      {% if section == "writings" %}
+        <aside
+          class="max-w-xl mx-auto px-6 py-10 text-center space-y-3 border-t border-border mt-12"
+        >
+          <p class="font-serif text-lg text-secondary">
+            Thoughts on this? I'd genuinely like to hear them.
+          </p>
+          <a
+            href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
+            class="inline-block font-sans text-sm text-muted hover:text-accent transition-colors"
+          >
+            Reply by email →
+          </a>
+        </aside>
+      {% endif %}
+    </main>
+
+    <!-- Right: Sidebar Footnotes (desktop only) -->
+    <aside class="hidden md:block md:col-span-2 pt-4 pr-4">
+      <div id="footnotes-sidebar" class="relative" aria-label="Footnotes"></div>
+    </aside>
   </div>
-</aside>
-
-<!-- Main Content -->
-<main class="md:col-span-6 space-y-8">
-<div class="content-start space-y-12">
-<h1 class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize">{{ title }}</h1>
-<p class="text-3xl text-muted">{{ description }}</p>
-<div class="text-muted">
-<hr class="border-t border-border my-2">
-<div class="flex justify-between items-center">
-<p class="text-lg">
-  {% for tag in tags %}
-      <span class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary">
-        <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
-      </span>
-  {% endfor %}
-</p>
-<div class="text-right">
-  <p class="text-lg">Published: {{ published | formatDate }}</p>
-  {% if lastUpdated %}
-  <p class="text-lg">Last Updated: {{ lastUpdated | formatDate }}</p>
-  {% endif %}
-</div>
-
-</div>
-</div>
-</div>
-<div class="prose [&_h2]:text-primary text-muted dark:prose-invert text-xl [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800">
-{{ content | safe }}
-</div>
-{% if section == "writings" %}
-<aside class="max-w-xl mx-auto px-6 py-10 text-center space-y-3 border-t border-border mt-12">
-  <p class="font-serif text-lg text-secondary">
-    Thoughts on this? I'd genuinely like to hear them.
-  </p>
-  <a href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
-     class="inline-block font-sans text-sm text-muted hover:text-accent transition-colors">
-    Reply by email →
-  </a>
-</aside>
-{% endif %}
-</main>
-
-<!-- Right: Sidebar Footnotes (desktop only) -->
-<aside class="hidden md:block md:col-span-2 pt-4 pr-4">
-  <div id="footnotes-sidebar" class="relative" aria-label="Footnotes"></div>
-</aside>
-
-</div>
 </section>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // ── TOC ──
-  const toggle = document.querySelector(".toc-toggle");
-  const tocContent = document.querySelector(".toc-content");
+  document.addEventListener("DOMContentLoaded", () => {
+    // ── TOC ──
+    const toggle = document.querySelector(".toc-toggle");
+    const tocContent = document.querySelector(".toc-content");
 
-  if (tocContent && toggle) {
-    tocContent.style.maxHeight = tocContent.scrollHeight + "px";
-    tocContent.style.opacity = "1";
-    toggle.textContent = "▲";
+    if (tocContent && toggle) {
+      tocContent.style.maxHeight = tocContent.scrollHeight + "px";
+      tocContent.style.opacity = "1";
+      toggle.textContent = "▲";
 
-    toggle.addEventListener("click", () => {
-      if (tocContent.style.maxHeight === "0px") {
-        tocContent.style.maxHeight = tocContent.scrollHeight + "px";
-        tocContent.style.opacity = "1";
-        toggle.textContent = "▲";
-      } else {
-        tocContent.style.maxHeight = "0px";
-        tocContent.style.opacity = "0";
-        toggle.textContent = "▼";
-      }
-    });
-  }
-
-  // ── Sidebar Footnotes ──
-  initFootnotes();
-
-  // Re-layout after fonts/images finish loading (positions may shift)
-  window.addEventListener("load", () => {
-    if (window.__fnRender) window.__fnRender();
-  });
-});
-
-function initFootnotes() {
-  var sidebar = document.getElementById("footnotes-sidebar");
-  var section = document.querySelector("section.footnotes");
-  var sep     = document.querySelector("hr.footnotes-sep");
-
-  if (!section) return;
-
-  // Only forward refs: .footnote-ref > a (backrefs live inside the section, not in <sup>)
-  var refs  = Array.from(document.querySelectorAll(".footnote-ref > a"));
-  // Only <li> — the old code used 'li, p' which doubled the count and broke the mapping
-  var items = Array.from(section.querySelectorAll("li"));
-
-  if (!refs.length || !items.length) return;
-
-  // Build footnote data once (clone content, strip backrefs)
-  var notes = [];
-  refs.forEach(function (ref, i) {
-    if (!items[i]) return;
-    var clone = items[i].cloneNode(true);
-    var backs = clone.querySelectorAll(".footnote-backref");
-    backs.forEach(function (el) { el.remove(); });
-    notes.push({ ref: ref, html: clone.innerHTML.trim(), n: i + 1 });
-  });
-
-  // Map footnote-number → its current sidebar DOM element
-  var elMap = new Map();
-
-  function render() {
-    var desktop = window.innerWidth >= 768 && sidebar;
-
-    // ── Mobile: leave the default footnotes at the bottom ──
-    if (!desktop) {
-      section.style.display = "";
-      if (sep) sep.style.display = "";
-      if (sidebar) sidebar.innerHTML = "";
-      elMap.clear();
-      return;
+      toggle.addEventListener("click", () => {
+        if (tocContent.style.maxHeight === "0px") {
+          tocContent.style.maxHeight = tocContent.scrollHeight + "px";
+          tocContent.style.opacity = "1";
+          toggle.textContent = "▲";
+        } else {
+          tocContent.style.maxHeight = "0px";
+          tocContent.style.opacity = "0";
+          toggle.textContent = "▼";
+        }
+      });
     }
 
-    // ── Desktop: hide inline footnotes, populate sidebar ──
-    section.style.display = "none";
-    if (sep) sep.style.display = "none";
-    sidebar.innerHTML = "";
-    elMap.clear();
+    // ── Sidebar Footnotes ──
+    initFootnotes();
 
-    var origin = sidebar.getBoundingClientRect().top + window.scrollY;
-    var floor  = 0;   // tracks the bottom-edge of the last placed footnote
-    var GAP    = 16;   // minimum px between footnotes
+    // Re-layout after fonts/images finish loading (positions may shift)
+    window.addEventListener("load", () => {
+      if (window.__fnRender) window.__fnRender();
+    });
+  });
 
+  function initFootnotes() {
+    var sidebar = document.getElementById("footnotes-sidebar");
+    var section = document.querySelector("section.footnotes");
+    var sep = document.querySelector("hr.footnotes-sep");
+
+    if (!section) return;
+
+    // Only forward refs: .footnote-ref > a (backrefs live inside the section, not in <sup>)
+    var refs = Array.from(document.querySelectorAll(".footnote-ref > a"));
+    // Only <li> — the old code used 'li, p' which doubled the count and broke the mapping
+    var items = Array.from(section.querySelectorAll("li"));
+
+    if (!refs.length || !items.length) return;
+
+    // Build footnote data once (clone content, strip backrefs)
+    var notes = [];
+    refs.forEach(function (ref, i) {
+      if (!items[i]) return;
+      var clone = items[i].cloneNode(true);
+      var backs = clone.querySelectorAll(".footnote-backref");
+      backs.forEach(function (el) {
+        el.remove();
+      });
+      notes.push({ ref: ref, html: clone.innerHTML.trim(), n: i + 1 });
+    });
+
+    // Map footnote-number → its current sidebar DOM element
+    var elMap = new Map();
+
+    function render() {
+      var desktop = window.innerWidth >= 768 && sidebar;
+
+      // ── Mobile: leave the default footnotes at the bottom ──
+      if (!desktop) {
+        section.style.display = "";
+        if (sep) sep.style.display = "";
+        if (sidebar) sidebar.innerHTML = "";
+        elMap.clear();
+        return;
+      }
+
+      // ── Desktop: hide inline footnotes, populate sidebar ──
+      section.style.display = "none";
+      if (sep) sep.style.display = "none";
+      sidebar.innerHTML = "";
+      elMap.clear();
+
+      var origin = sidebar.getBoundingClientRect().top + window.scrollY;
+      var floor = 0; // tracks the bottom-edge of the last placed footnote
+      var GAP = 16; // minimum px between footnotes
+
+      notes.forEach(function (fn) {
+        var refY = fn.ref.getBoundingClientRect().top + window.scrollY;
+        var desired = refY - origin;
+
+        // ── Collision avoidance: never overlap the previous note ──
+        var top = Math.max(desired, floor);
+
+        // Build the element with inline styles (safe from PurgeCSS)
+        var el = document.createElement("div");
+        el.style.cssText =
+          "position:absolute;width:100%;top:" + top + "px;transition:color .2s,font-weight .2s";
+        el.style.color = "var(--color-text-light)";
+        el.style.fontSize = "0.875rem";
+        el.style.lineHeight = "1.625";
+
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;align-items:flex-start;gap:0.5rem";
+
+        var num = document.createElement("span");
+        num.style.cssText = "flex-shrink:0;color:var(--color-accent);font-weight:600";
+        num.textContent = fn.n + ".";
+
+        var body = document.createElement("div");
+        body.style.flex = "1";
+        body.innerHTML = fn.html;
+        // Collapse paragraph margins inside sidebar footnotes
+        var paras = body.querySelectorAll("p");
+        paras.forEach(function (p) {
+          p.style.margin = "0";
+        });
+
+        row.appendChild(num);
+        row.appendChild(body);
+        el.appendChild(row);
+        sidebar.appendChild(el);
+        elMap.set(fn.n, el);
+
+        // Measure rendered height, advance the floor
+        floor = top + el.offsetHeight + GAP;
+      });
+    }
+
+    // ── Hover / click interactions (registered once, reference elMap) ──
     notes.forEach(function (fn) {
-      var refY    = fn.ref.getBoundingClientRect().top + window.scrollY;
-      var desired = refY - origin;
+      fn.ref.addEventListener("mouseenter", function () {
+        var el = elMap.get(fn.n);
+        if (el) el.style.color = "var(--color-text)";
+      });
+      fn.ref.addEventListener("mouseleave", function () {
+        var el = elMap.get(fn.n);
+        if (el) el.style.color = "";
+      });
+      fn.ref.addEventListener("click", function (e) {
+        if (window.innerWidth < 768) return; // mobile: default jump behavior
+        e.preventDefault();
+        var el = elMap.get(fn.n);
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.style.color = "var(--color-text)";
+        el.style.fontWeight = "600";
+        setTimeout(function () {
+          el.style.color = "";
+          el.style.fontWeight = "";
+        }, 2000);
+      });
+    });
 
-      // ── Collision avoidance: never overlap the previous note ──
-      var top = Math.max(desired, floor);
+    render();
+    window.__fnRender = render;
 
-      // Build the element with inline styles (safe from PurgeCSS)
-      var el = document.createElement("div");
-      el.style.cssText = "position:absolute;width:100%;top:" + top + "px;transition:color .2s,font-weight .2s";
-      el.style.color = "var(--color-text-light)";
-      el.style.fontSize = "0.875rem";
-      el.style.lineHeight = "1.625";
-
-      var row = document.createElement("div");
-      row.style.cssText = "display:flex;align-items:flex-start;gap:0.5rem";
-
-      var num = document.createElement("span");
-      num.style.cssText = "flex-shrink:0;color:var(--color-accent);font-weight:600";
-      num.textContent = fn.n + ".";
-
-      var body = document.createElement("div");
-      body.style.flex = "1";
-      body.innerHTML = fn.html;
-      // Collapse paragraph margins inside sidebar footnotes
-      var paras = body.querySelectorAll("p");
-      paras.forEach(function (p) { p.style.margin = "0"; });
-
-      row.appendChild(num);
-      row.appendChild(body);
-      el.appendChild(row);
-      sidebar.appendChild(el);
-      elMap.set(fn.n, el);
-
-      // Measure rendered height, advance the floor
-      floor = top + el.offsetHeight + GAP;
+    // Re-layout on resize (desktop ↔ mobile switch, text reflow)
+    var timer;
+    window.addEventListener("resize", function () {
+      clearTimeout(timer);
+      timer = setTimeout(render, 250);
     });
   }
-
-  // ── Hover / click interactions (registered once, reference elMap) ──
-  notes.forEach(function (fn) {
-    fn.ref.addEventListener("mouseenter", function () {
-      var el = elMap.get(fn.n);
-      if (el) el.style.color = "var(--color-text)";
-    });
-    fn.ref.addEventListener("mouseleave", function () {
-      var el = elMap.get(fn.n);
-      if (el) el.style.color = "";
-    });
-    fn.ref.addEventListener("click", function (e) {
-      if (window.innerWidth < 768) return;       // mobile: default jump behavior
-      e.preventDefault();
-      var el = elMap.get(fn.n);
-      if (!el) return;
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.style.color = "var(--color-text)";
-      el.style.fontWeight = "600";
-      setTimeout(function () {
-        el.style.color = "";
-        el.style.fontWeight = "";
-      }, 2000);
-    });
-  });
-
-  render();
-  window.__fnRender = render;
-
-  // Re-layout on resize (desktop ↔ mobile switch, text reflow)
-  var timer;
-  window.addEventListener("resize", function () {
-    clearTimeout(timer);
-    timer = setTimeout(render, 250);
-  });
-}
 </script>

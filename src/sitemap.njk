@@ -2,51 +2,34 @@
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
+
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://jdranpariya.github.io/</loc></url>
-  <url><loc>https://jdranpariya.github.io/now/</loc></url>
-  <url><loc>https://jdranpariya.github.io/writings/</loc></url>
-  <url><loc>https://jdranpariya.github.io/projects/</loc></url>
-  <url><loc>https://jdranpariya.github.io/library/</loc></url>
-  <url><loc>https://jdranpariya.github.io/about/</loc></url>
-  <url><loc>https://jdranpariya.github.io/guestbook/</loc></url>
-  <url><loc>https://jdranpariya.github.io/odysseys/</loc></url>
-  <url><loc>https://jdranpariya.github.io/odysseys/reckoning-the-dead/</loc></url>
-  <url><loc>https://jdranpariya.github.io/odysseys/the-alchemists-hearth/</loc></url>
-  {%- for post in collections.odysseys %}
-  <url>
-    <loc>https://jdranpariya.github.io{{ post.url }}</loc>
-    {%- set lastmod = post.data.lastUpdated or post.data.published %}
-    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
-  </url>
-  {%- endfor %}
-  {%- for post in collections.writings %}
-  <url>
-    <loc>https://jdranpariya.github.io{{ post.url }}</loc>
-    {%- set lastmod = post.data.lastUpdated or post.data.published %}
-    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
-  </url>
-  {%- endfor %}
-  {%- for book in collections.books %}
-  <url>
-    <loc>https://jdranpariya.github.io{{ book.url }}</loc>
-    {%- set lastmod = book.data.lastUpdated or book.data.published %}
-    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
-  </url>
-  {%- endfor %}
-  {%- for lecture in collections.lectures %}
-  <url>
-    <loc>https://jdranpariya.github.io{{ lecture.url }}</loc>
-    {%- set lastmod = lecture.data.lastUpdated or lecture.data.published %}
-    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
-  </url>
-  {%- endfor %}
-  {%- for project in collections.projects %}
-  <url>
-    <loc>https://jdranpariya.github.io{{ project.url }}</loc>
-    {%- set lastmod = project.data.lastUpdated or project.data.published %}
-    {%- if lastmod %}<lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>{%- endif %}
-  </url>
+  {%- set site = "https://jdranpariya.github.io" %}
+  {#
+    Fully automated: emit every page Eleventy built, minus:
+      - drafts (status: "draft")
+      - explicitly excluded pages (sitemap: false in frontmatter)
+      - pages with no permalink (e.g., now/updates with layout:false)
+      - the 404 page
+  #}
+  {%- for item in collections.all %}
+    {%- set d = item.data %}
+    {%-
+      if item.url
+      and item.url != false
+      and d.status != "draft"
+      and d.sitemap != false
+      and not item.url.startsWith("/404")
+      and not item.url.startsWith("/now/updates/")
+    %}
+      <url>
+        <loc>{{ site }}{{ item.url }}</loc>
+        {%- set lastmod = d.lastUpdated or d.published or item.date %}
+        {%- if lastmod %}
+          <lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>
+        {%- endif %}
+      </url>
+    {%- endif %}
   {%- endfor %}
 </urlset>
