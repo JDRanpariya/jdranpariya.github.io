@@ -39,7 +39,7 @@
     "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch",
     "check": "bun run build:prod && bun run check:smoke && bun run check:links && bun run check:a11y && bun run check:lh",
     "check:smoke": "bun scripts/smoke.js",
-    "check:links": "bunx linkinator build --skip linkedin --skip mailto",
+    "check:links": "start-server-and-test 'http-server build -p 8082 -s' 8082 'linkinator http://localhost:8082/ --recurse --retry --skip \"^(?!http://localhost:8082)\"'",
     "check:a11y": "bunx start-server-and-test 'bunx http-server build -p 8081 -s' 8081 'bunx pa11y-ci'",
     "check:lh": "bunx lhci autorun",
     "format": "bunx prettier --write .",
