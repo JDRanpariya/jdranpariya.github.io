@@ -26,7 +26,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: oven-sh/setup-bun@v1
       - name: Regenerate bun.lock
-        run: bun install --no-save
+        run: |
+          rm -f bun.lock
+          bun install
       - name: Commit lockfile if changed
         run: |
           if [[ -n "$(git status --porcelain bun.lock)" ]]; then
