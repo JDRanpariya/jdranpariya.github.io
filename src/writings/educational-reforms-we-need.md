@@ -42,7 +42,7 @@ I believe everyone should be given a fair chance. If we know this effect exists,
 
 ### Schools fight biology
 
-Walker's *[Why We Sleep](/library/books/why-we-sleep/)* changed how I think about sleep entirely. It's not downtime — it's one of the most active biological processes for learning and brain development.
+Walker's *Why We Sleep* changed how I think about sleep entirely. It's not downtime — it's one of the most active biological processes for learning and brain development.
 
 During adolescence the brain undergoes critical remodeling. Early childhood builds neural connections through REM sleep. Adolescence prunes them through deep NREM sleep — scaling back for efficiency. This pruning directly precedes improvements in cognitive skills, reasoning, and critical thinking. Deep sleep may be a driving force of brain maturation, not a byproduct.
 
@@ -101,4 +101,4 @@ Maybe that's always been true. But the children growing up right now under arbit
 
 [^4]: Sappenfield O, Alberto C, Minnaert J, et al. Adolescent Mental and Behavioral Health, 2023. National Survey of Children's Health Data Briefs. Health Resources and Services Administration, October 2024. *https://www.ncbi.nlm.nih.gov/books/NBK608531/*
 
-[^5]: See my notes on Taleb's *[The Black Swan](/library/books/the-black-swan/)*.
+[^5]: See my notes on Taleb's *[The Black Swan](/library/books/black-swan/)*.
