@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Fail fast on broken builds or unformatted code.
+# Skip with: git commit --no-verify
+
+set -e
+
+echo "→ prettier --check"
+bun run format:check || {
+  echo "✗ unformatted files — run: bun run format"
+  exit 1
+}
+
+echo "→ build:prod"
+bun run build:prod > /dev/null 2>&1 || {
+  echo "✗ production build failed — run: bun run build:prod"
+  exit 1
+}
+
+echo "✓ pre-commit checks passed"

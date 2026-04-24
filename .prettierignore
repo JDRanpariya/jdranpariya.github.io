@@ -1,0 +1,24 @@
+# directories
+build/
+node_modules/
+public/
+.worktrees/
+.github/
+
+# lockfiles
+bun.lock
+package-lock.json
+
+# content we never want reflowed
+src/_data/guestbook.json
+src/now/updates/
+src/writings/
+src/library/
+src/odysseys/
+src/projects/
+
+# auto-generated
+assets/
+
+# has JSON-LD inside {% if %} branches, breaks the jinja parser
+src/_includes/layouts/base.njk

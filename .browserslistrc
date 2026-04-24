@@ -1,0 +1,5 @@
+# Browserslist config — suppresses "data is 7 months old" warnings.
+# Tailwind already reads this.
+defaults
+not dead
+not op_mini all
