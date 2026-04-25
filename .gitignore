@@ -42,3 +42,4 @@ package-lock.json
 # agent context files
 AGENTS.md
 CONTEXT.md
+DESIGN.md
