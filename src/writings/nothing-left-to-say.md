@@ -4,9 +4,6 @@ published: 2025-09-15
 lastUpdated: 2026-04-17
 tags: ["ideas", "writing"]
 section: "writings"
-series:
-  name: "On Writing Well"
-  order: 1
 layout: layouts/post.njk
 description: "On the feeling that everything worth saying has already been said — and writing anyway."
 ---

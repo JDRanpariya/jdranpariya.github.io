@@ -4,9 +4,6 @@ published: 2026-02-05
 lastUpdated: 2026-04-19
 tags: ["education", "learning"]
 section: "writings"
-series:
-  name: "On Education"
-  order: 1
 layout: layouts/post.njk
 description: "What reading about sleep, maturity, and emotions made me think schools should do differently."
 ---

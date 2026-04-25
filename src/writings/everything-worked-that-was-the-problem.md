@@ -6,7 +6,7 @@ tags: ["simulation", "robotics", "AI", "sim2real"]
 section: "writings"
 series:
   name: "On Simulation"
-  order: 2
+  order: 3
 layout: layouts/post.njk
 description: "A wrong simulation is most dangerous when it still produces working behavior. Lessons from a year of sim2real on a real balancing system."
 ---

@@ -4,9 +4,6 @@ published: 2026-02-05
 lastUpdated: 2026-04-20
 tags: ["life", "growth"]
 section: "writings"
-series:
-  name: "On Life"
-  order: 1
 layout: layouts/post.njk
 description: "on living intentionally, or what to do when everything's going fine but something still feels off."
 ---

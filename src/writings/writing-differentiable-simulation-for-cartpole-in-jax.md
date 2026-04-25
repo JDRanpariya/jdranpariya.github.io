@@ -7,7 +7,7 @@ status: "draft"
 section: "writings"
 series:
   name: "On Simulation"   # Series title
-  order: 1                           # Position in the series
+  order: 2                           # Position in the series
 layout: layouts/post.njk
 description: "Implementing Differentiable Cart-Pole Environment in JAX"
 ---

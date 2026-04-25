@@ -4,9 +4,6 @@ published: 2026-03-26
 lastUpdated: 2026-01-29
 tags: ["ideas", "science", "engineering"]
 section: "writings"
-series:
-  name: "On High Impact Problems"
-  order: 1
 layout: layouts/post.njk
 description: "The highest-impact problem you can work on right now. Solve energy, and everything else leaps forward."
 ---
