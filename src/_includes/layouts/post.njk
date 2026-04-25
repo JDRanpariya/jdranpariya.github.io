@@ -24,8 +24,8 @@ isPostLayout: true
       </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="md:col-span-6 space-y-8">
+    <!-- Main Content (<article> is the appropriate landmark; outer <main> is in base.njk) -->
+    <article class="md:col-span-6 space-y-8">
       <div class="content-start space-y-12">
         <h1
           class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize"
@@ -74,7 +74,7 @@ isPostLayout: true
           </a>
         </aside>
       {% endif %}
-    </main>
+    </article>
 
     <!-- Right: Sidebar Footnotes (desktop only) -->
     <aside class="hidden md:block md:col-span-2 pt-4 pr-4">

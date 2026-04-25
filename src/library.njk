@@ -14,9 +14,16 @@ section: "library"
     </p>
   </div>
 
+  <!-- Header for books -->
+  <div class="text-center space-y-4">
+    <h2 class="text-5xl md:text-6xl font-serif text-accent">Books</h2>
+    <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
+      What I'm reading and what stuck. Notes inside each.
+    </p>
+  </div>
+
   <!-- Books -->
   <div class="space-y-8">
-    <h2 class="sr-only">Books</h2>
     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8">
       {% for book in collections.books %}
         <div class="flex flex-col">
@@ -45,7 +52,7 @@ section: "library"
     </div>
   </div>
 
-  <!-- Header for lectuers -->
+  <!-- Header for lectures -->
   <div class="text-center space-y-4">
     <h2 class="text-5xl md:text-6xl font-serif text-accent">Lectures</h2>
     <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">

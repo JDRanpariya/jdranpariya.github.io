@@ -277,14 +277,18 @@
 <link rel="stylesheet" href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css">
 {% endif %}
 
-  <!-- Theme initialization to prevent flash -->
+  <!-- Theme initialization to prevent flash.
+       localStorage access is wrapped in try/catch because private-browsing
+       Safari and storage-disabled contexts throw SecurityError on read;
+       without the guard the whole IIFE would crash before <body> renders. -->
   <script>
   (function() {
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-  document.documentElement.classList.add('dark');
-  }
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    }
   })();
   </script>
   </head>
@@ -296,12 +300,17 @@
       data-tags="{{ tags | default([]) | join(',') }}"
       data-series="{{ series | default('') }}">
 
+  <!-- Keyboard-only: jump past the nav straight to page content. -->
+  <a href="#main" class="skip-to-content">Skip to content</a>
+
+  <!-- Navigation -->| default('') }}">
+
 
   <!-- Navigation -->
   {% include "components/nav.njk" %}
 
   <!-- Main Content -->
-  <main class="flex-grow">
+  <main id="main" class="flex-grow" tabindex="-1">
   {{ content | safe }}
   </main>
 
