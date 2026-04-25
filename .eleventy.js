@@ -41,9 +41,68 @@ export default function (eleventyConfig) {
     wrapperClass: "toc-list", // Add class for styling
   });
 
+  // Legacy filter — kept for back-compat during template migration.
   eleventyConfig.addFilter("titlecase", function (str) {
     if (!str) return "";
     return str.replace(/\b\w/g, (c) => c.toUpperCase());
+  });
+
+  /**
+   * smartTitleCase — Title Case respecting English small-word conventions.
+   *
+   * Used to render Title Case display titles from lowercase frontmatter
+   * (see DESIGN.md §4.2). Rules:
+   *   - Keep small words lowercase unless they are the first or last word.
+   *   - Keep all-caps tokens (acronyms: AI, UNIX, JAX, RL, PID, NMPC) as-is.
+   *   - Capitalize everything else at its first letter; preserve internal
+   *     casing so camelCase / mid-word apostrophes (don't → Don't) work.
+   */
+  const SMALL_WORDS = new Set([
+    "a",
+    "an",
+    "and",
+    "as",
+    "at",
+    "but",
+    "by",
+    "for",
+    "in",
+    "nor",
+    "of",
+    "on",
+    "or",
+    "so",
+    "the",
+    "to",
+    "up",
+    "yet",
+    "with",
+    "vs",
+    "via",
+  ]);
+  eleventyConfig.addFilter("smartTitleCase", function (str) {
+    if (!str) return "";
+    const words = String(str).split(/(\s+)/); // keep whitespace tokens
+    const wordIdx = words.reduce((acc, w, i) => {
+      if (/\S/.test(w)) acc.push(i);
+      return acc;
+    }, []);
+    const firstIdx = wordIdx[0];
+    const lastIdx = wordIdx[wordIdx.length - 1];
+    return words
+      .map((token, i) => {
+        if (!/\S/.test(token)) return token;
+        // Preserve all-caps tokens (AI, UNIX, RL, NMPC).
+        if (/^[A-Z0-9]{2,}$/.test(token)) return token;
+        const lower = token.toLowerCase();
+        const bare = lower.replace(/[^a-z]/g, "");
+        if (i !== firstIdx && i !== lastIdx && SMALL_WORDS.has(bare)) {
+          return lower;
+        }
+        // Capitalize first alphabetic char of the token, keep rest lowercase.
+        return lower.replace(/([a-z])/, (c) => c.toUpperCase());
+      })
+      .join("");
   });
 
   // Frontmatter schema validation — fails build if content is malformed.

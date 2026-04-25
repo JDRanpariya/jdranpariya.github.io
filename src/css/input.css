@@ -2,47 +2,115 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+ * Design tokens — Golden Peachy Glow
+ * Canonical source: DESIGN.md (YAML front matter). Keep these in sync.
+ * Tailwind maps these to utility names in tailwind.config.js.
+ * ========================================================================== */
+
 :root {
-  --color-bg: #fefae0; /* #fefae0; */
-  --color-surface: #f0ead2; /*#ffffff; */
+  /* color */
+  --color-bg: #fefae0;
+  --color-surface: #f0ead2;
   --color-card: #e8dfc8;
-  --color-text: #2d241a;
-  --color-text-light: #5a4a34;
-  --color-text-secondary: #4a3d2e;
+  --color-ink: #2d241a;
+  --color-ink-secondary: #4a3d2e;
+  --color-ink-muted: #5a4a34;
   --color-accent: #8b4513;
+  --color-accent-soft: #f2e3cf;
   --color-border: #e0d8c3;
+
+  /* semantic (callouts only) */
+  --color-success: #57c853;
+  --color-warning: #ffa120;
+  --color-danger: #e24856;
+  --color-info: #47a2bb;
+
+  /* shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(45, 36, 26, 0.04);
+  --shadow-sm: 0 2px 8px -2px rgba(45, 36, 26, 0.08);
+  --shadow-md: 0 8px 24px -6px rgba(45, 36, 26, 0.1);
+  --shadow-sheet: -8px 0 32px -8px rgba(45, 36, 26, 0.2);
+
+  /* motion */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark {
   --color-bg: #1a1511;
   --color-surface: #2d241a;
   --color-card: #3a2e22;
-  --color-text: #fefae0;
-  --color-text-light: #d1c69a;
-  --color-text-secondary: #e8dcc8;
+  --color-ink: #fefae0;
+  --color-ink-secondary: #e8dcc8;
+  --color-ink-muted: #d1c69a;
   --color-accent: #d4a574;
+  --color-accent-soft: #3f3224;
   --color-border: #3a2e22;
+
+  /* Darken shadow tint on dark ground so cards don't disappear. */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+  --shadow-sheet: -8px 0 32px -8px rgba(0, 0, 0, 0.6);
 }
 
-/* -----------------------------------------------------------------------
- * Keyboard accessibility.
- * Tailwind's preflight removes the default focus outline on interactive
- * elements. Re-establish a visible one for keyboard users only (so mouse
- * clicks don't flash a ring). Uses the accent token so light/dark both work.
- * --------------------------------------------------------------------- */
-/* Bare :focus-visible rule; safelisted in postcss.config.js so PurgeCSS
- * doesn't drop it (no class token for content-scan to match). */
+/* ==========================================================================
+ * Base
+ * ========================================================================== */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+body {
+  font-family: Merriweather, ui-serif, Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Sans stack owns nav, buttons, chips, meta — anything scanned. */
+.font-sans,
+nav,
+button,
+.btn,
+.chip,
+.badge,
+.eyebrow,
+.field-label,
+.field-help,
+.post-meta,
+.index-row__meta {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* ==========================================================================
+ * Keyboard focus — DESIGN.md §9
+ * Tailwind's preflight strips outlines; re-establish one for keyboard users.
+ * Safelisted in postcss.config.js so PurgeCSS doesn't drop it.
+ * ========================================================================== */
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-/* -----------------------------------------------------------------------
- * Skip-to-content link. Visually hidden until focused, then anchors to the
- * top-left so keyboard users can jump past the nav. Paired with
- * <a href="#main" class="skip-to-content"> at the top of <body>.
- * --------------------------------------------------------------------- */
+/* ==========================================================================
+ * Skip link
+ * Hidden until focused; slides in top-left over the nav.
+ * ========================================================================== */
 .skip-to-content {
   position: absolute;
   left: 0.75rem;
@@ -50,19 +118,537 @@
   z-index: 100;
   padding: 0.5rem 0.75rem;
   background: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-ink);
   border: 2px solid var(--color-accent);
   border-radius: 4px;
   font-family: system-ui, sans-serif;
   font-size: 0.875rem;
   text-decoration: none;
   transform: translateY(-150%);
-  transition: transform 150ms ease-out;
+  transition: transform var(--duration-fast) var(--ease-standard);
 }
 .skip-to-content:focus,
 .skip-to-content:focus-visible {
   transform: translateY(0);
 }
+
+/* ==========================================================================
+ * Reduced motion
+ * Disable all but the most essential transitions for motion-averse users.
+ * ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+ * Layer: components — DESIGN.md §8
+ * Every pattern the templates reach for. Tailwind          where possible;
+ * bare CSS where          can't express it.
+ * ========================================================================== */
+
+@layer components {
+  /* ---------------- Navigation ------------------------------------------- */
+
+  .nav-link {
+    @apply font-sans text-[0.9375rem] font-medium text-ink transition-colors;
+    transition-duration: var(--duration-base);
+  }
+  .nav-link:hover {
+    color: var(--color-accent);
+  }
+  /* CSS uses aria-current as the styling hook instead of a conditional class. */
+  .nav-link[aria-current="page"] {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* ---------------- Buttons ---------------------------------------------- */
+
+  .btn {
+    @apply inline-flex items-center justify-center font-sans font-medium;
+    @apply text-[0.9375rem] leading-none px-5 py-3 rounded-md;
+    @apply transition-colors;
+    transition-duration: var(--duration-base);
+    border: 1px solid transparent;
+  }
+
+  .btn-primary {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .btn-primary:hover {
+    /* Darken accent a touch; keeps cream text legible. */
+    filter: brightness(0.92);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-border);
+  }
+  .btn-ghost:hover {
+    background-color: var(--color-card);
+    border-color: var(--color-accent);
+  }
+
+  .btn-link {
+    @apply inline-flex items-center gap-1 font-sans font-medium;
+    @apply text-[0.9375rem] text-ink;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-accent);
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .btn-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* ---------------- Chips & badges --------------------------------------- */
+
+  /* ---------------- Tags ------------------------------------------------- */
+  /* .chip is intentionally minimal — plain lowercase text, no box. When a
+   * series of chips lives inside a .chip-list <ul>, a subtle "·" separator
+   * is inserted between items via ::before. Used for post tags, writing-list
+   * tags, tag-index cloud, and project tech stacks. */
+  .chip {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    font-size: 0.8125rem;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    text-transform: lowercase;
+    letter-spacing: 0.01em;
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .chip:hover {
+    color: var(--color-accent);
+  }
+
+  .chip-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline;
+  }
+  .chip-list > li {
+    display: inline;
+  }
+  .chip-list > li + li::before {
+    content: " · ";
+    color: var(--color-border);
+    margin: 0 0.15rem;
+  }
+
+  .badge {
+    @apply inline-block font-sans text-[0.75rem] font-medium;
+    @apply px-2 py-0.5 rounded-sm;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+  }
+  .badge[data-status="archived"] {
+    background-color: var(--color-surface);
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------------- UI eyebrow ------------------------------------------- */
+
+  .eyebrow {
+    @apply font-sans text-[0.75rem] font-medium uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------------- Index rows (list pages) ------------------------------ */
+
+  .index-list {
+    @apply divide-y;
+    border-color: var(--color-border);
+  }
+  .index-list > * {
+    border-color: var(--color-border);
+  }
+
+  .index-row {
+    @apply block py-8;
+  }
+  .index-row__meta {
+    @apply flex flex-wrap items-center gap-3 text-[0.8125rem];
+    color: var(--color-ink-muted);
+  }
+  .index-row__title {
+    @apply font-serif text-[1.375rem] md:text-[1.5rem] leading-snug mt-2;
+    color: var(--color-ink);
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .index-row:hover .index-row__title {
+    color: var(--color-accent);
+  }
+  .index-row__desc {
+    @apply mt-2 text-[0.9375rem];
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------------- Media cards (grid pages) ----------------------------- */
+
+  .card-media {
+    @apply flex flex-col;
+  }
+  .card-media__media {
+    @apply block overflow-hidden rounded-md;
+    transition: box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .card-media:hover .card-media__media {
+    box-shadow: var(--shadow-sm);
+  }
+  .card-media__title {
+    @apply mt-3 font-serif text-[1rem] md:text-[1.0625rem] leading-snug;
+    color: var(--color-ink);
+    transition: color var(--duration-base) var(--ease-standard);
+  }
+  .card-media:hover .card-media__title {
+    color: var(--color-accent);
+  }
+  .card-media__author {
+    @apply mt-1 font-sans text-[0.8125rem];
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------------- Post hero ------------------------------------------- */
+  /* Generous vertical rhythm between every beat of the hero. Each child owns
+   * its own margin-top; no space-y / flex-gap here, because those strategies
+   * fight back against per-element overrides. If a beat is missing (no lead,
+   * no update date), margins collapse naturally. */
+
+  .post-hero > :first-child {
+    margin-top: 0;
+  }
+
+  .post-hero__eyebrow {
+    @apply eyebrow;
+    margin: 0;
+  }
+
+  .post-hero__title {
+    @apply font-serif font-bold;
+    margin-top: 1rem;
+    font-size: clamp(2rem, 2.5vw + 1rem, 2.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+  }
+
+  /* Italic serif, not bold. It reads as a deck/dek — a quiet editor's note
+   * under the title, not a second headline competing for attention. */
+  .post-hero__lead {
+    font-family: Merriweather, ui-serif, Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.1875rem;
+    line-height: 1.6;
+    margin-top: 2rem;
+    color: var(--color-ink-secondary);
+    max-width: 52ch;
+  }
+
+  /* Plain paragraph (not flex). A <span> with .whitespace-nowrap keeps
+   * "· Updated X" together when the line wraps on narrow screens. */
+  .post-hero__meta {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    margin-top: 2.5rem;
+    color: var(--color-ink-muted);
+  }
+
+  .post-hero__divider {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: 2.5rem;
+    margin-bottom: 4rem;
+  }
+
+  /* ---------------- Post footer ---------------------------------------- */
+  /* Lives at the end of the article. Renders tag row + reply CTA. Tags here
+   * (not in the hero) keep the top of the page calm and give the reader a
+   * natural place to explore more at the bottom. */
+
+  .post-footer {
+    margin-top: 5rem;
+    padding-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .post-footer__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem 1rem;
+  }
+  .post-footer__reply {
+    text-align: center;
+    font-family: Merriweather, ui-serif, Georgia, serif;
+  }
+  .post-footer__reply p {
+    color: var(--color-ink-secondary);
+    font-size: 1.0625rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ---------------- Forms ----------------------------------------------- */
+
+  .field {
+    @apply flex flex-col gap-2;
+  }
+  .field-label {
+    @apply font-sans text-[0.75rem] font-medium uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-muted);
+  }
+  .field-label .required {
+    color: var(--color-accent);
+  }
+  .field-input {
+    @apply w-full px-4 py-3 rounded-md bg-bg;
+    @apply font-sans text-[0.9375rem];
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
+    transition:
+      border-color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .field-input::placeholder {
+    color: var(--color-ink-muted);
+    opacity: 0.7;
+  }
+  .field-input:focus,
+  .field-input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+  .field-help {
+    @apply font-sans text-[0.8125rem];
+    color: var(--color-ink-muted);
+  }
+
+  /* ---------------- Prose container (.prose-site) ----------------------- */
+
+  .prose-site {
+    max-width: 65ch;
+    font-family: Merriweather, ui-serif, Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+    word-wrap: break-word;
+  }
+  .prose-site > * + * {
+    margin-top: 1em;
+  }
+
+  .prose-site h2 {
+    @apply font-serif font-bold;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    color: var(--color-ink);
+  }
+  .prose-site h3 {
+    @apply font-serif font-bold;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-top: 1.75em;
+    margin-bottom: 0.5em;
+    color: var(--color-ink);
+  }
+  .prose-site h4 {
+    @apply font-serif font-bold;
+    font-size: 1.125rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+    color: var(--color-ink);
+  }
+
+  .prose-site a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-border);
+    transition:
+      color var(--duration-base) var(--ease-standard),
+      text-decoration-color var(--duration-base) var(--ease-standard);
+  }
+  .prose-site a:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+
+  .prose-site strong {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .prose-site em {
+    font-style: italic;
+  }
+
+  .prose-site ul,
+  .prose-site ol {
+    padding-left: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  .prose-site ul {
+    list-style: disc;
+  }
+  .prose-site ol {
+    list-style: decimal;
+  }
+  .prose-site li {
+    margin-top: 0.5em;
+    padding-left: 0.25em;
+  }
+  .prose-site li::marker {
+    color: var(--color-accent);
+  }
+
+  .prose-site blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    margin: 1.75rem 0;
+    font-style: italic;
+    color: var(--color-ink);
+    quotes: none;
+  }
+  /* Blockquotes can contain multiple paragraphs. The .prose-site > * + *
+   * rule only handles direct children, so we restore paragraph spacing
+   * inside blockquotes explicitly. */
+  .prose-site blockquote p + p {
+    margin-top: 1em;
+  }
+  .prose-site blockquote p:last-child {
+    margin-bottom: 0;
+  }
+  /* When a blockquote ends with a pure em, treat it as attribution. */
+  .prose-site blockquote p:last-child:has(em:only-child) {
+    font-style: normal;
+    font-size: 0.9em;
+    color: var(--color-ink-muted);
+    margin-top: 0.5em;
+    text-align: right;
+  }
+
+  .prose-site hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin: 2.5em 0;
+  }
+
+  .prose-site code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background-color: var(--color-card);
+    color: var(--color-accent);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+  .prose-site pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    line-height: 1.6;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.5em 0;
+  }
+  .prose-site pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  .prose-site figure {
+    margin: 1.75em auto;
+  }
+  .prose-site figure img,
+  .prose-site figure video {
+    margin: 0 auto;
+    border-radius: 6px;
+  }
+  .prose-site figcaption {
+    font-family: system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--color-ink-muted);
+    text-align: center;
+    margin-top: 0.5em;
+  }
+
+  .prose-site table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.95em;
+  }
+  .prose-site th,
+  .prose-site td {
+    padding: 0.5em 0.75em;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+  .prose-site th {
+    background-color: var(--color-surface);
+    font-weight: 700;
+  }
+  .prose-site tr:nth-child(even) td {
+    background-color: rgba(240, 234, 210, 0.4); /* surface at 40% */
+  }
+
+  /* Footnote back/forward refs inside prose — use accent, not blue. */
+  .prose-site sup a[href^="#fn"],
+  .prose-site a.footnote-ref,
+  .prose-site a[href^="#fnref"] {
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .prose-site sup a[href^="#fn"]:hover,
+  .prose-site a.footnote-ref:hover {
+    text-decoration: underline;
+  }
+}
+
+/* ==========================================================================
+ * Blocks that live outside .prose-site (callouts, references, subtitle-note)
+ * — these must work standalone because markdown injects them.
+ * ========================================================================== */
 
 .callout {
   background-color: rgb(var(--callout-color) / 0.1);
@@ -70,7 +656,7 @@
   border-radius: 8px;
   margin: 1.5rem 0;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
 }
 .callout-title {
   padding: 0.75rem 1rem;
@@ -92,11 +678,11 @@
 }
 .callout-title-inner {
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-ink);
 }
 .callout-content {
   padding: 1rem;
-  color: var(--color-text-light);
+  color: var(--color-ink-muted);
 }
 .callout-content p:first-child {
   margin-top: 0;
@@ -104,14 +690,13 @@
 .callout-content p:last-child {
   margin-bottom: 0;
 }
-
 .callout-content p:empty {
   display: none;
 }
 
-/* Callout Type Colors - from Obsidian Primary theme */
+/* callout variants (Obsidian Primary-derived) */
 .callout {
-  --callout-color: 182, 196, 182; /* general */
+  --callout-color: 182, 196, 182;
 }
 .callout[data-callout="note"] {
   --callout-color: 200, 175, 155;
@@ -173,125 +758,137 @@
 .callout[data-callout="cite"] {
   --callout-color: 237, 217, 162;
 }
-/* Quote callout special styling */
 .callout[data-callout="quote"] .callout-content {
   font-style: italic;
 }
 
+/* Custom markdown container: collapsible references. */
 .references-block {
   padding: 0.25rem 0;
   margin: 2rem 0;
 }
-
 .references-block summary {
   cursor: pointer;
   font-weight: 600;
-  color: var(--color-text-light);
+  color: var(--color-ink-muted);
   list-style: none;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   user-select: none;
 }
-
 .references-block summary::-webkit-details-marker {
   display: none;
 }
-
 .references-block summary::before {
   content: "▶";
   font-size: 1.25rem;
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-base) var(--ease-standard);
   color: var(--color-accent);
 }
-
 .references-block[open] summary::before {
   transform: rotate(90deg);
 }
-
 .references-block[open] summary {
   margin-bottom: 0.75rem;
 }
 
-/* Override prose grey bullets and list markers */
-.prose ul > li::marker {
-  color: var(--color-accent);
-}
-
-.prose ol > li::marker {
-  color: var(--color-accent);
-}
-
-/* Override prose hr / divider lines */
-.prose hr {
-  border-color: var(--color-border);
-}
-
-/* Override prose bullet connector lines (nested lists) */
-.prose ul ul,
-.prose ol ul {
-  border-color: var(--color-border);
-}
-
-.prose blockquote {
-  border-left: 3px solid var(--color-accent);
-  background: transparent;
-  padding: 0.25rem 0 0.25rem 1.25rem;
-  margin: 1.75rem 0;
-  line-height: 1.85;
-  word-spacing: 0.04em;
-  font-style: italic;
-  color: var(--color-text);
-  quotes: none;
-}
-
-.prose blockquote p:last-child {
-  margin-bottom: 0;
-}
-
-.prose blockquote p:last-child:has(em) {
-  font-style: normal;
-  font-size: 0.9em;
-  color: var(--color-text-light);
-  margin-top: 0.5rem;
-  text-align: right;
-}
-
-/* Explicit paragraph spacing to ensure consistent rendering across all environments */
-/* This works even when HTML minifier removes whitespace between paragraphs */
-div.space-y-7 > p {
-  margin-bottom: 1.75rem !important; /* matches Tailwind's space-y-7 (1.75rem = 28px) */
-}
-div.space-y-7 > p:last-child {
-  margin-bottom: 0 !important;
-}
-
-/* Also handle the font-serif and text-secondary variant that's used in about.njk */
-div.font-serif.text-secondary.space-y-7 > p {
-  margin-bottom: 1.75rem !important;
-}
-div.font-serif.text-secondary.space-y-7 > p:last-child {
-  margin-bottom: 0 !important;
-}
-
+/* Custom markdown container: subtitle aside attached to a heading. */
 .subtitle-note {
   border-left: 1px solid var(--color-accent);
   background: transparent;
   padding: 0.1rem 0 0.1rem 1rem;
   margin: 0 0 1.5rem 0;
   font-style: normal;
-  color: var(--color-text-light);
+  color: var(--color-ink-muted);
   quotes: none;
 }
-
 .subtitle-note p {
   margin: 0;
 }
+/* Let a subtitle hug the heading it follows. */
+.prose-site h1 + .subtitle-note,
+.prose-site h2 + .subtitle-note,
+.prose-site h3 + .subtitle-note,
+.prose-site h4 + .subtitle-note {
+  margin-top: -0.5rem;
+}
 
-/* remove heading bottom margin when subtitle follows immediately */
-.prose h1 + .subtitle-note,
-.prose h2 + .subtitle-note,
-.prose h3 + .subtitle-note,
-.prose h4 + .subtitle-note {
-  margin-top: -1rem; /* pulls against the heading's mb */
+/* ==========================================================================
+ * TOC (post layout, desktop sidebar)
+ * ========================================================================== */
+
+.toc {
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+}
+.toc-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.toc-toggle:hover {
+  color: var(--color-accent);
+}
+.toc-toggle svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.toc-toggle[aria-expanded="false"] svg {
+  transform: rotate(-90deg);
+}
+
+.toc-content {
+  overflow: hidden;
+  transition: opacity var(--duration-slow) var(--ease-standard);
+}
+.toc-content[aria-hidden="true"] {
+  opacity: 0;
+  max-height: 0;
+}
+.toc-content ol {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0 0;
+}
+.toc-content li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.toc-content li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 1px;
+  background: var(--color-border);
+}
+.toc-content ol ol {
+  margin-left: 0.75rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--color-border);
+}
+.toc-content a {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard);
+}
+.toc-content a:hover {
+  color: var(--color-accent);
 }
