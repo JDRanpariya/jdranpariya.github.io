@@ -27,7 +27,20 @@ export default {
             safelist: {
               // The bare :focus-visible rule in input.css has no class token
               // for PurgeCSS to find in content; keep it by selector match.
-              standard: [/^:focus-visible$/],
+              //
+              // The img element selector is safelisted because every image
+              // on the site is emitted by the {% image %} Eleventy shortcode
+              // at build time, so no source template contains a literal
+              // <img tag for PurgeCSS to discover. PurgeCSS therefore treats
+              // img as unused and strips it from Tailwind's preflight —
+              // specifically the rule
+              //   img, video { max-width: 100%; height: auto; }
+              // Without the height: auto from that rule, the HTML height
+              // attribute emitted by @11ty/eleventy-img (to fix CLS) takes
+              // effect as a pixel height, so book covers render at their
+              // intrinsic height (e.g. 2400px) instead of the 2:3 box the
+              // aspect-[2/3] utility is trying to enforce.
+              standard: [/^:focus-visible$/, /^img$/],
             },
           }),
         ]
