@@ -79,7 +79,15 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # check transitively depends on refresh-lockfile, which is skipped on
+    # pushes (it only runs on dependabot PRs). Without always(), that skipped
+    # ancestor makes the implicit success() check fail and deploy is skipped
+    # on every push. Gate explicitly on check's result instead.
+    if: |
+      always() &&
+      needs.check.result == 'success' &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
