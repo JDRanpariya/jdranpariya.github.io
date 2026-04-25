@@ -4,7 +4,7 @@ fullTitle: "Kosha: Personalized Content Streamer"
 description: "Personal AI-powered content aggregator and recommender for articles, videos, podcasts, and research, learning your preferences over time."
 image: "/assets/images/projects/lotus_2.jpg"
 url: "https://github.com/jdranpariya/kosha.git"
-tech: ["react", "python", "RAG", "RLFH", "open-source"]
+tech: ["react", "python", "RAG", "RLHF", "open-source"]
 status: "active"
 published: 2025-10-03
 lastUpdated: 2026-03-21
