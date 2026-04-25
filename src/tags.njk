@@ -11,58 +11,62 @@ pagination:
     - tagList
 permalink: /tags/{{ tag | slugify }}/
 layout: layouts/base
-section: "tags index"
+section: "tag"
 eleventyComputed:
   title: "Items tagged with {{ tag }}"
 ---
 
-<section class="max-w-3xl mx-auto px-6 py-16">
-  <div class="mb-12 capitalize text-center">
-    <h1 class="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">{{ tag }}</h1>
-    <p class="text-lg text-muted">
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">
+  <header class="space-y-4">
+    <h1 class="font-serif text-display text-ink">{{ tag }}</h1>
+    <p class="text-lead text-ink-muted">
       {{ collections[tag].length }} item{% if collections[tag].length != 1 %}s{% endif %}
     </p>
-  </div>
+  </header>
 
   {% set writings = (collections.writings or []) | filterByTag(tag) %}
   {% set lectures = (collections.lectures or []) | filterByTag(tag) %}
   {% set odysseys = (collections.odysseys or []) | filterByTag(tag) %}
-  {% set books = (collections.books or []) | filterByTag(tag) %}
+  {% set books    = (collections.books    or []) | filterByTag(tag) %}
   {% set projects = (collections.projects or []) | filterByTag(tag) %}
-  {% set papers = (collections.papers or []) | filterByTag(tag) %}
+  {% set papers   = (collections.papers   or []) | filterByTag(tag) %}
 
   {%
-    for group, label in [
+    set groups = [
       [odysseys, "Odysseys"],
       [lectures, "Lectures"],
       [writings, "Writings"],
-      [books, "Books"],
+      [books,    "Books"],
       [projects, "Projects"],
-      [papers, "Papers"]
+      [papers,   "Papers"]
     ]
   %}
-    {% if group | length %}
-      <h2 class="text-2xl font-serif font-semibold mt-12 mb-6">{{ label }}</h2>
-      <ul class="space-y-2">
-        {% for post in group %}
-          <li>
-            <a
-              href="{{ post.url }}"
-              class="text-lg capitalize decoration-2 underline-offset-4 font-medium hover:underline"
-            >
-              {{ post.data.fullTitle or post.data.title }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+
+  {% for group in groups %}
+    {% set items = group[0] %}
+    {% set label = group[1] %}
+    {% if items | length %}
+      <section class="space-y-4" aria-labelledby="tag-{{ label | slug }}">
+        <h2 id="tag-{{ label | slug }}" class="font-serif text-h2 text-ink">{{ label }}</h2>
+        <ul class="index-list list-none m-0 p-0">
+          {% for post in items %}
+            <li>
+              <a href="{{ post.url }}" class="index-row">
+                <h3 class="index-row__title">
+                  {{ (post.data.fullTitle or post.data.title) | smartTitleCase }}
+                </h3>
+                {% if post.data.description %}
+                  <p class="index-row__desc">{{ post.data.description }}</p>
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
     {% endif %}
   {% endfor %}
 
-  <div class="mt-16 text-center">
-    <a
-      href="/tags"
-      class="inline-block capitalize decoration-2 underline-offset-4 text-primary hover:underline"
-      >← Browse all tags</a
-    >
+  <div class="pt-8">
+    <a href="/tags" class="btn-link">Browse all tags</a>
   </div>
 </section>

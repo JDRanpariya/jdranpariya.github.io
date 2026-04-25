@@ -4,60 +4,72 @@ title: "Physical AI Researcher & Builder"
 description: "Jay Ranpariya's digital garden — writing on physical AI, embodied cognition, and the intersection of biology, neuroscience, and machine learning."
 ---
 
-<section class="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-20">
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-20 md:space-y-24">
   <!-- Opening -->
-  <div class="space-y-8">
-    <h1 class="font-serif text-5xl md:text-7xl font-bold text-primary leading-tight">
-      Jay Ranpariya.
-    </h1>
-    <p class="font-serif text-xl md:text-2xl text-secondary leading-relaxed max-w-2xl">
+  <header class="space-y-6">
+    <h1 class="font-serif text-display text-ink">Jay Ranpariya.</h1>
+    <p class="text-lead text-ink-secondary max-w-2xl">
       A polymath building understanding of intelligence from molecules to minds. I love reading,
       cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of
       what I build and write starts there.
     </p>
-  </div>
+  </header>
 
-  <!-- Writings — the actual work -->
-  <div class="space-y-6">
-    <p class="font-sans text-sm text-muted uppercase tracking-widest">Recent writing</p>
-    <div class="space-y-5 divide-y divide-border">
-      {% for post in collections.writings | limit(4) %}
-        <article class="{% if not loop.first %}pt-5{% endif %}">
-          <h2
-            class="font-serif text-xl md:text-2xl text-primary hover:text-accent transition-colors capitalize leading-snug"
-          >
-            <a href="{{ post.url }}">{{ post.data.title }}</a>
-          </h2>
-          {% if post.data.description %}
-            <p class="font-sans text-base text-muted mt-1 leading-relaxed">
-              {{ post.data.description }}
-            </p>
-          {% endif %}
-        </article>
-      {% endfor %}
+  <!-- Recent writing -->
+  <section aria-labelledby="home-writings" class="space-y-6">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="home-writings" class="eyebrow">Recent writings</h2>
+      <a
+        href="/writings"
+        class="font-sans text-ui-sm text-ink-muted hover:text-accent transition-colors duration-base"
+      >
+        All writings →
+      </a>
     </div>
-    <a
-      href="/writings"
-      class="inline-flex items-center font-sans text-sm text-muted hover:text-primary transition-colors gap-1"
-    >
-      All writings
-      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M17 8l4 4m0 0l-4 4m4-4H3"
-        />
-      </svg>
-    </a>
-  </div>
 
-  <!-- Quiet links to the rest of the site -->
-  <div class="space-y-3 font-sans text-base text-muted">
-    <a href="/now" class="block hover:text-primary transition-colors">What I'm doing now →</a>
-    <a href="/odysseys" class="block hover:text-primary transition-colors">Long explorations →</a>
-    <a href="/library" class="block hover:text-primary transition-colors"
-      >Books, lectures, papers →</a
-    >
-  </div>
+    <ol class="index-list list-none m-0 p-0">
+      {% for post in collections.writings | limit(4) %}
+        <li>
+          <a href="{{ post.url }}" class="index-row">
+            <div class="index-row__meta">
+              <time datetime="{{ post.data.published }}"
+                >{{ post.data.published | formatDate }}</time
+              >
+            </div>
+            <h3 class="index-row__title">{{ post.data.title | smartTitleCase }}</h3>
+            {% if post.data.description %}
+              <p class="index-row__desc">{{ post.data.description }}</p>
+            {% endif %}
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <!-- Other sections -->
+  <section aria-labelledby="home-explore" class="space-y-4">
+    <h2 id="home-explore" class="eyebrow">Also on this site</h2>
+    <ul class="space-y-2 list-none m-0 p-0 font-sans">
+      <li>
+        <a href="/library" class="text-ink hover:text-accent transition-colors duration-base"
+          >Books, lectures, papers →</a
+        >
+      </li>
+      <li>
+        <a href="/odysseys" class="text-ink hover:text-accent transition-colors duration-base"
+          >Long-running explorations →</a
+        >
+      </li>
+      <li>
+        <a href="/projects" class="text-ink hover:text-accent transition-colors duration-base"
+          >Things I'm building →</a
+        >
+      </li>
+      <li>
+        <a href="/now" class="text-ink hover:text-accent transition-colors duration-base"
+          >What I'm doing now →</a
+        >
+      </li>
+    </ul>
+  </section>
 </section>

@@ -6,30 +6,34 @@ permalink: /404.html
 eleventyExcludeFromCollections: true
 ---
 
-<section class="min-h-[60vh] flex items-center justify-center px-6">
-  <div class="max-w-xl text-center space-y-8">
-    <p class="font-serif text-8xl text-accent">404</p>
-
+<section class="min-h-[60vh] flex items-center justify-center px-6 py-16">
+  <div class="max-w-sm text-center space-y-8">
+    <p class="font-serif text-[5rem] leading-none text-accent">404</p>
     <div class="space-y-3">
-      <h1 class="font-serif text-3xl text-primary">Page not found</h1>
-      <p class="text-muted text-lg">
-        This page doesn't exist or has moved. But there's plenty of interesting things around.
+      <h1 class="font-serif text-h2 text-ink">Page not found</h1>
+      <p class="text-body text-ink-muted">
+        This page doesn't exist or has moved. Plenty of interesting things around.
       </p>
     </div>
-
-    <div class="space-y-3 text-left max-w-xs mx-auto">
-      <a href="/writings" class="block text-primary hover:text-accent transition-colors font-sans"
-        >→ Writings</a
-      >
-      <a href="/odysseys" class="block text-primary hover:text-accent transition-colors font-sans"
-        >→ Odysseys</a
-      >
-      <a href="/library" class="block text-primary hover:text-accent transition-colors font-sans"
-        >→ Library</a
-      >
-      <a href="/" class="block text-primary hover:text-accent transition-colors font-sans"
-        >→ Home</a
-      >
-    </div>
+    <ul class="space-y-3 text-left max-w-xs mx-auto list-none m-0 p-0 font-sans">
+      <li>
+        <a href="/writings" class="text-ink hover:text-accent transition-colors duration-base"
+          >→ Writings</a
+        >
+      </li>
+      <li>
+        <a href="/library" class="text-ink hover:text-accent transition-colors duration-base"
+          >→ Library</a
+        >
+      </li>
+      <li>
+        <a href="/odysseys" class="text-ink hover:text-accent transition-colors duration-base"
+          >→ Odysseys</a
+        >
+      </li>
+      <li>
+        <a href="/" class="text-ink hover:text-accent transition-colors duration-base">→ Home</a>
+      </li>
+    </ul>
   </div>
 </section>

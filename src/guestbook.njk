@@ -4,117 +4,116 @@ layout: layouts/base
 section: "guest book"
 ---
 
-<section class="max-w-3xl mx-auto px-6 py-14 md:py-24 flex flex-col gap-16">
-  <!-- Header -->
-  <div class="space-y-4">
-    <h1 class="font-serif text-5xl md:text-6xl font-bold text-accent">Guest Book</h1>
-    <p class="font-serif text-xl text-secondary leading-relaxed">
-      Leave a note, share a thought, or just say hello. I read every entry.
-    </p>
-  </div>
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16">
+  <header class="space-y-4">
+    <h1 class="font-serif text-display text-ink">Guest Book</h1>
+    <p class="text-lead text-ink-secondary max-w-xl">Leave a note. I read every entry.</p>
+  </header>
 
   <!-- Form -->
-  <div class="flex flex-col gap-6">
-    <form
-      action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse"
-      method="POST"
-      target="hidden_iframe"
-      id="guestbookForm"
-      class="space-y-6"
-    >
-      <div>
-        <label for="name" class="block font-sans text-sm text-muted mb-2">
-          Your name <span class="text-accent">*</span>
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="entry.1611923301"
-          required
-          class="w-full px-4 py-3 rounded-xl border-2 border-primary/10 focus:border-muted focus:outline-none transition duration-300 font-sans bg-transparent"
-          placeholder="Jane Doe"
-        />
-      </div>
-
-      <div>
-        <label for="message" class="block font-sans text-sm text-muted mb-2">
-          Your message <span class="text-accent">*</span>
-        </label>
-        <textarea
-          id="message"
-          name="entry.736310078"
-          required
-          rows="5"
-          class="w-full px-4 py-3 rounded-xl border-2 border-primary/10 focus:border-accent focus:outline-none transition duration-300 font-sans resize-none bg-transparent"
-          placeholder="Share a thought, ask a question, or leave some encouragement..."
-        ></textarea>
-      </div>
-
-      <div>
-        <label for="location" class="block font-sans text-sm text-muted mb-2">
-          Location or website <span class="text-muted text-xs">(optional)</span>
-        </label>
-        <input
-          type="text"
-          id="location"
-          name="entry.2008969763"
-          class="w-full px-4 py-3 rounded-xl border-2 border-primary/10 focus:border-accent focus:outline-none transition duration-300 font-sans bg-transparent"
-          placeholder="San Francisco, CA or yourwebsite.com"
-        />
-      </div>
-
-      <button
-        type="submit"
-        class="px-8 py-4 rounded-xl font-sans font-medium bg-primary text-bg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
-      >
-        Leave your mark
-      </button>
-
-      <p class="text-sm text-muted">Entries are reviewed and typically appear within a few days.</p>
-    </form>
-
-    <div id="successMessage" class="hidden p-4 rounded-xl bg-accent/5">
-      <p class="text-accent font-sans">✨ Thank you — your message has been received.</p>
+  <form
+    action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse"
+    method="POST"
+    target="hidden_iframe"
+    id="guestbookForm"
+    class="space-y-6"
+  >
+    <div class="field">
+      <label for="name" class="field-label"> Your name <span class="required">*</span> </label>
+      <input
+        id="name"
+        name="entry.1611923301"
+        type="text"
+        required
+        class="field-input"
+        placeholder="Jane Doe"
+      />
     </div>
+
+    <div class="field">
+      <label for="message" class="field-label">
+        Your message <span class="required">*</span>
+      </label>
+      <textarea
+        id="message"
+        name="entry.736310078"
+        rows="5"
+        required
+        class="field-input resize-y"
+        placeholder="Share a thought, ask a question, or leave some encouragement."
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label for="location" class="field-label">Location or website (optional)</label>
+      <input
+        id="location"
+        name="entry.2008969763"
+        type="text"
+        class="field-input"
+        placeholder="San Francisco, CA, or yourwebsite.com"
+      />
+    </div>
+
+    <div class="flex items-center gap-4">
+      <button type="submit" class="btn btn-primary">Leave your mark</button>
+      <p class="field-help">Entries appear within a few days.</p>
+    </div>
+  </form>
+
+  <div id="successMessage" class="hidden p-4 rounded-md bg-accent-soft border border-accent">
+    <p class="font-sans text-accent">Thank you — your message has been received.</p>
   </div>
 
   <!-- Past entries -->
-  <div class="flex flex-col gap-8">
-    <p class="font-sans text-sm text-muted uppercase tracking-widest">Messages from visitors</p>
+  <section aria-labelledby="past-entries" class="space-y-6">
+    <h2 id="past-entries" class="eyebrow">Messages from visitors</h2>
 
     {% if guestbook.length > 0 %}
-      <div class="divide-y divide-border">
+      <ol class="index-list list-none m-0 p-0">
         {% for entry in guestbook %}
-          {% from "components/guestbook_card.njk" import guestbookCard %}
-          {{ guestbookCard(entry.name, entry.location, entry.message, entry.date) }}
+          <li class="py-8">
+            <div class="flex items-baseline justify-between gap-4">
+              <div>
+                <p class="font-serif text-h4 text-ink">{{ entry.name }}</p>
+                {% if entry.location %}
+                  <p class="font-sans text-ui-sm text-ink-muted mt-1">{{ entry.location }}</p>
+                {% endif %}
+              </div>
+              <time class="font-sans text-ui-sm text-ink-muted shrink-0">{{ entry.date }}</time>
+            </div>
+            <p class="mt-4 font-serif text-body text-ink-secondary leading-relaxed">
+              {{ entry.message }}
+            </p>
+          </li>
         {% endfor %}
-      </div>
+      </ol>
     {% else %}
-      <div class="py-12 space-y-3">
-        <p class="font-serif text-xl text-primary">Be the first to sign.</p>
-        <p class="font-sans text-base text-muted">No entries yet. Leave your mark above.</p>
+      <div class="py-12 space-y-2">
+        <p class="font-serif text-h4 text-ink">Be the first to sign.</p>
+        <p class="font-sans text-ui text-ink-muted">No entries yet. Leave your mark above.</p>
       </div>
     {% endif %}
-  </div>
+  </section>
+
+  <iframe
+    name="hidden_iframe"
+    id="hidden_iframe"
+    title="Guestbook form target"
+    style="display:none"
+  ></iframe>
 </section>
 
-<iframe
-  name="hidden_iframe"
-  id="hidden_iframe"
-  title="Guestbook form target"
-  style="display:none;"
-></iframe>
-
 <script>
-  var submitted = false;
-  const form = document.getElementById("guestbookForm");
-  if (form) {
+  (function () {
+    var form = document.getElementById("guestbookForm");
+    if (!form) return;
     form.addEventListener("submit", function () {
-      submitted = true;
-      setTimeout(() => {
-        document.getElementById("successMessage").classList.remove("hidden");
+      setTimeout(function () {
+        var msg = document.getElementById("successMessage");
+        if (msg) msg.classList.remove("hidden");
         form.style.display = "none";
       }, 0);
     });
-  }
+  })();
 </script>

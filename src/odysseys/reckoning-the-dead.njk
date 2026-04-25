@@ -3,39 +3,54 @@ title: Reckoning the Dead
 layout: layouts/base
 section: "reckoning-the-dead"
 ---
-<section class="max-w-5xl mx-auto px-6 py-24 md:py-32 flex flex-col gap-16">
-  <!-- Header -->
-  <div class="text-center space-y-6">
-    <h1 class="text-5xl md:text-6xl font-serif text-accent">Reckoning the Dead</h1>
-    <p class="text-lg md:text-xl text-secondary max-w-3xl mx-auto">
-    Unearthing the greats who got lost in time
+
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">
+
+  <header class="space-y-4">
+    <h1 class="font-serif text-display text-ink">Reckoning the Dead</h1>
+    <p class="text-lead text-ink-secondary max-w-xl">
+      Unearthing the greats who got lost in time.
+    </p>
+  </header>
+
+  <div class="prose-site text-ink-secondary">
+    <p>
+      On a rather sunny day, I was commuting to work on Bus 30 to Nuremberg. We had
+      just passed the Flughafen while I was reading about the brilliance of Henri
+      Poincaré in <em>Antifragile</em>. I was awestruck — the guy understood chaos
+      theory and relativity before they were even things. How did I not know about
+      him until now?
+    </p>
+    <p>
+      Thinking back, I realized I've always been drawn to exploring forgotten
+      ideas and people. Why not log and share it? Why not make it public so more
+      people can enjoy these underrated gems?
+    </p>
+    <p>
+      I am a polymath, so you might find my exploration biased, but that's what
+      attracts me most. Aim is to explore the lives and ideas of the greats who
+      are either forgotten or remain unknown outside their narrow fields of work.
+      I want to understand how they approached everything, from everyday problems
+      to the big questions.
+    </p>
+    <p>
+      We will never know the works that have long since turned to smoke, but
+      let's make the best of whatever is left. Join me as I dig through
+      history's footnotes to find the people and thoughts that deserve a second look.
     </p>
   </div>
 
-  <!-- Introduction -->
-  <div class="prose prose-lg mx-auto text-muted max-w-3xl">
-  <p>
-  On a rather sunny day, I was commuting to work on Bus 30 to Nuremberg. We had just passed the Flughafen while I was reading about the brilliance of Henri Poincaré in <em>Antifragile</em>. I was awestruck, the guy understood chaos theory and relativity before they were even things. How did I not know about him until now?
-</p>
-<p>
-  Thinking back, I realized I've always been drawn to exploring forgotten ideas and people. Why not log and share it? Why not make it public so more people can enjoy these underrated gems?
-</p>
-<p>
-  I am a polymath, so you might find my exploration biased, but that's what attracts me most. Aim is to explore the lives and ideas of the greats who are either forgotten or remain unknown outside their narrow fields of work. I want to understand how they approached everything, from everyday problems to the big questions. Mostly problems, but honestly, I'll write about anything I find interesting or any insight I pick up from them.
-</p>
-<p>
-  We will never know the works that have long since turned to smoke, but let's make the best of whatever is left. Join me as I dig through history's footnotes to find the people and thoughts that deserve a second look.
-</p>
-  </div>
-
-  <!-- List of posts -->
-  <div class="space-y-12">
+  <ol class="index-list list-none m-0 p-0">
     {% for post in collections.reckoningTheDead %}
-      <article class="space-y-2 text-center">
-        <h2 class="text-2xl font-serif hover:underline underline-offset-4 decoration-2 text-primary text-accent capitalize">
-          <a href="{{ post.url }}">{{ post.data.title }}</a>
-        </h2>
-      </article>
+      <li>
+        <a href="{{ post.url }}" class="index-row">
+          <h2 class="index-row__title">{{ post.data.title | smartTitleCase }}</h2>
+          {% if post.data.description %}
+            <p class="index-row__desc">{{ post.data.description }}</p>
+          {% endif %}
+        </a>
+      </li>
     {% endfor %}
-  </div>
+  </ol>
+
 </section>

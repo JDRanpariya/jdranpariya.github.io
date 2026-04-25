@@ -1,75 +1,47 @@
 ---
-title: Projects by JDRanpariya
-description: "AI, Robotics, full-stack apps, and experiments I'm actively building — including Kosha, a personalized content streamer."
+title: Projects
+description: "AI, Robotics, full-stack apps, and experiments I'm actively building."
 layout: layouts/base
 section: "projects index"
 ---
 
-<section class="max-w-6xl mx-auto px-6 py-10 md:py-24 flex flex-col gap-12">
-  <!-- Header -->
-  <div class="text-center space-y-4">
-    <h1 class="text-5xl md:text-6xl font-serif text-accent">Projects</h1>
-    <p class="text-lg md:text-xl text-muted max-w-3xl mx-auto">
-      Things I'm building to understand something I couldn't understand by just reading about it.
+<section class="max-w-wide mx-auto px-6 py-16 md:py-24">
+  <header class="mb-16 space-y-4">
+    <h1 class="font-serif text-display text-ink">Projects</h1>
+    <p class="text-lead text-ink-secondary max-w-xl">
+      Things I'm building to understand what I can't understand by reading.
     </p>
-  </div>
+  </header>
 
-  <!-- Projects Grid -->
-  <div class="space-y-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
     {% for project in collections.projects %}
-      <article class="group">
-        <a href="{{ project.url }}" class="block">
-          <div
-            class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 rounded-xl bg-surface/50 hover:bg-surface transition-all duration-300 hover:shadow-lg"
-          >
-            <div class="lg:col-span-1">
-              {% if project.data.image %}
-                {% image project.data.image, project.data.title, "max-w-sm w-full rounded-lg object-cover aspect-[3/2] shadow-sm group-hover:shadow-md transition-shadow" %}
-              {% endif %}
+      <article>
+        <a href="{{ project.url }}" class="card-media">
+          {% if project.data.image %}
+            <div class="card-media__media">
+              {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
             </div>
-            <div class="flex flex-col justify-between lg:col-span-2 h-full">
-              <div class="space-y-4">
-                <div class="flex items-center gap-3">
-                  <h2
-                    class="text-2xl md:text-3xl font-serif font-medium text-accent group-hover:text-primary transition-colors"
-                  >
-                    {{ project.data.title }}
-                  </h2>
-                  {% if project.data.status %}
-                    <span
-                      class="text-xs font-sans px-2 py-1 rounded-full
-                {% if project.data.status == 'active' %}
-                        bg-accent/20 text-accent
-                      {% else %}
-                        bg-muted/20 text-muted
-                      {% endif %}"
-                    >
-                      {{ project.data.status }}
-                    </span>
-                  {% endif %}
-                </div>
-                {% if project.data.description %}
-                  <p class="text-base md:text-lg text-muted leading-relaxed">
-                    {{ project.data.description }}
-                  </p>
-                {% endif %}
-              </div>
-              <div class="mt-4 flex items-end justify-between">
-                {% if project.data.tech %}
-                  <div class="flex flex-wrap gap-2">
-                    {% for t in project.data.tech %}
-                      <span class="text-sm capitalize font-medium px-2 py-1 bg-surface rounded"
-                        >{{ t }}</span
-                      >
-                    {% endfor %}
-                  </div>
-                {% endif %}
-                {% if project.data.published %}
-                  <span class="text-sm text-muted">{{ project.data.published | formatDate }}</span>
-                {% endif %}
-              </div>
-            </div>
+          {% endif %}
+          <div class="mt-4 flex items-center gap-3">
+            <h2 class="card-media__title !mt-0 text-h3">{{ project.data.title }}</h2>
+            {% if project.data.status %}
+              <span class="badge" data-status="{{ project.data.status }}"
+                >{{ project.data.status }}</span
+              >
+            {% endif %}
           </div>
+          {% if project.data.description %}
+            <p class="mt-2 font-sans text-ui text-ink-muted leading-relaxed">
+              {{ project.data.description }}
+            </p>
+          {% endif %}
+          {% if project.data.tech %}
+            <ul class="chip-list mt-3">
+              {% for t in project.data.tech %}
+                <li><span class="chip">{{ t }}</span></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </a>
       </article>
     {% endfor %}

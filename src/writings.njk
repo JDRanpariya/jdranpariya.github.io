@@ -1,43 +1,39 @@
 ---
-title: Writings By JDRanpariya
-description: "Essays and reflections on AI, learning, neuroscience, and living curiously — by JD Ranpariya."
+title: Writings
+description: "Essays on whatever Jay Ranpariya is thinking through — usually somewhere between science and life."
 layout: layouts/base
 section: "writings index"
 ---
 
-<section class="max-w-3xl mx-auto px-6 py-14 md:py-24">
-  <!-- Header -->
-  <div class="text-center mb-16 space-y-3">
-    <h1 class="text-5xl md:text-6xl font-serif text-accent">Writings</h1>
-    <p class="text-lg text-muted ">
-      Thoughts and explorations across AI, neuroscience, biology, and learning.
+<section class="max-w-content mx-auto px-6 py-16 md:py-24">
+  <header class="mb-16 space-y-4">
+    <h1 class="font-serif text-display text-ink">Writings</h1>
+    <p class="text-lead text-ink-secondary max-w-xl">
+      Essays on whatever I'm thinking through — usually somewhere between science and life.
     </p>
-  </div>
+  </header>
 
-  <!-- List of posts -->
-  <div class="divide-y divide-border">
+  <ol class="index-list list-none m-0 p-0">
     {% for post in collections.writings | sort(true, false, "data.published") %}
-      <article class="py-8 space-y-2">
-        <div class="flex items-center gap-3 text-sm text-muted">
-          <time datetime="{{ post.data.published }}"> {{ post.data.published | formatDate }} </time>
-          {% for tag in post.data.tags %}
-            <a
-              href="/tags/{{ tag | slug }}/"
-              class="bg-accent/10 text-accent px-2 py-0.5 rounded capitalize hover:bg-accent/20 transition-colors"
-            >
-              {{ tag }}
-            </a>
-          {% endfor %}
-        </div>
-
-        <h2 class="text-2xl font-serif text-primary hover:text-accent transition-colors capitalize">
-          <a href="{{ post.url }}">{{ post.data.title }}</a>
-        </h2>
-
-        {% if post.data.description %}
-          <p class="text-muted leading-relaxed">{{ post.data.description }}</p>
-        {% endif %}
-      </article>
+      <li>
+        <a href="{{ post.url }}" class="index-row">
+          <div class="index-row__meta">
+            <time datetime="{{ post.data.published }}">{{ post.data.published | formatDate }}</time>
+            {% if post.data.tags and post.data.tags.length %}
+              <span aria-hidden="true">·</span>
+              <ul class="chip-list">
+                {% for tag in post.data.tags %}
+                  <li><span class="chip">{{ tag }}</span></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          <h2 class="index-row__title">{{ post.data.title | smartTitleCase }}</h2>
+          {% if post.data.description %}
+            <p class="index-row__desc">{{ post.data.description }}</p>
+          {% endif %}
+        </a>
+      </li>
     {% endfor %}
-  </div>
+  </ol>
 </section>
