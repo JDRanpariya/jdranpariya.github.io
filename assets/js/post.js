@@ -3,7 +3,8 @@
 //
 // Responsibilities
 // ----------------
-// 1. Collapsible Table of Contents (desktop sidebar).
+// 1. TOC toggle (desktop sidebar). aria-expanded on the button drives
+//    aria-hidden on the panel; CSS does the rest.
 // 2. Footnote sidebar: on desktop, hoist the default markdown-it-footnote
 //    section out of the flow and position each note next to its reference.
 //    On mobile, leave the default bottom-of-page behaviour untouched.
@@ -11,37 +12,29 @@
 // Known fragility
 // ---------------
 // The footnote positioner is imperative DOM + inline styles. Inline styles
-// are intentional: PurgeCSS strips unused Tailwind classes in prod, so any
-// positioning we express as classes would have to be safelisted. When
-// browser support for CSS anchor positioning stabilises in all targets,
-// the whole renderFootnotes() function can be deleted in favour of a pure
-// CSS solution. Until then, edit with care and retest hover/click + resize.
+// are intentional: PurgeCSS strips unused Tailwind classes in prod. When CSS
+// anchor positioning lands in baseline browsers, renderFootnotes() can be
+// deleted in favour of a pure-CSS solution.
 
 (function () {
   "use strict";
 
   // ---------- TOC ----------
   function initTOC() {
-    const toggle = document.querySelector(".toc-toggle");
-    const content = document.querySelector(".toc-content");
-    if (!toggle || !content) return;
+    const toggles = document.querySelectorAll(".toc-toggle");
+    toggles.forEach(function (toggle) {
+      // <details><summary> handles its own toggling natively; only wire up
+      // free-standing <button> toggles (the desktop sidebar).
+      if (toggle.tagName !== "BUTTON") return;
+      const panelId = toggle.getAttribute("aria-controls");
+      const panel = panelId && document.getElementById(panelId);
+      if (!panel) return;
 
-    // Start open; sync measured height so the transition works on first click.
-    content.style.maxHeight = content.scrollHeight + "px";
-    content.style.opacity = "1";
-    toggle.textContent = "▲";
-
-    toggle.addEventListener("click", function () {
-      const isClosed = content.style.maxHeight === "0px";
-      if (isClosed) {
-        content.style.maxHeight = content.scrollHeight + "px";
-        content.style.opacity = "1";
-        toggle.textContent = "▲";
-      } else {
-        content.style.maxHeight = "0px";
-        content.style.opacity = "0";
-        toggle.textContent = "▼";
-      }
+      toggle.addEventListener("click", function () {
+        const open = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!open));
+        panel.setAttribute("aria-hidden", String(open));
+      });
     });
   }
 
@@ -52,10 +45,8 @@
     const sep = document.querySelector("hr.footnotes-sep");
     if (!section) return;
 
-    // Only forward refs (.footnote-ref > a); backrefs live inside the section,
-    // not in <sup>, so they don't count here.
+    // Only forward refs (.footnote-ref > a); backrefs live inside the section.
     const refs = Array.from(document.querySelectorAll(".footnote-ref > a"));
-    // Only <li>. The old code used 'li, p' which doubled the count.
     const items = Array.from(section.querySelectorAll("li"));
     if (!refs.length || !items.length) return;
 
@@ -70,15 +61,14 @@
       notes.push({ ref: ref, html: clone.innerHTML.trim(), n: i + 1 });
     });
 
-    // footnote-number → its current sidebar DOM element.
     const elMap = new Map();
-    const GAP = 16; // min px between adjacent notes
+    const GAP = 16;
+    const DESKTOP_MQ = window.matchMedia("(min-width: 1024px)");
 
     function render() {
-      const isDesktop = window.innerWidth >= 768 && sidebar;
+      const isDesktop = DESKTOP_MQ.matches && sidebar;
 
       if (!isDesktop) {
-        // Mobile: restore the default footnotes at the bottom.
         section.style.display = "";
         if (sep) sep.style.display = "";
         if (sidebar) sidebar.innerHTML = "";
@@ -86,7 +76,6 @@
         return;
       }
 
-      // Desktop: hide inline footnotes, populate sidebar.
       section.style.display = "none";
       if (sep) sep.style.display = "none";
       sidebar.innerHTML = "";
@@ -100,15 +89,14 @@
         const desired = refY - origin;
         const top = Math.max(desired, floor);
 
-        // Inline styles are load-bearing: PurgeCSS strips unused classes.
         const el = document.createElement("div");
         el.style.cssText =
           "position:absolute;width:100%;top:" +
           top +
           "px;transition:color .2s,font-weight .2s";
-        el.style.color = "var(--color-text-light)";
-        el.style.fontSize = "0.875rem";
-        el.style.lineHeight = "1.625";
+        el.style.color = "var(--color-ink-muted)";
+        el.style.fontSize = "0.8125rem";
+        el.style.lineHeight = "1.5";
 
         const row = document.createElement("div");
         row.style.cssText = "display:flex;align-items:flex-start;gap:0.5rem";
@@ -135,23 +123,22 @@
       });
     }
 
-    // Hover / click interactions. Registered once; closures use elMap.
     notes.forEach(function (fn) {
       fn.ref.addEventListener("mouseenter", function () {
         const el = elMap.get(fn.n);
-        if (el) el.style.color = "var(--color-text)";
+        if (el) el.style.color = "var(--color-ink)";
       });
       fn.ref.addEventListener("mouseleave", function () {
         const el = elMap.get(fn.n);
         if (el) el.style.color = "";
       });
       fn.ref.addEventListener("click", function (e) {
-        if (window.innerWidth < 768) return; // mobile: default jump behavior
+        if (!DESKTOP_MQ.matches) return;
         e.preventDefault();
         const el = elMap.get(fn.n);
         if (!el) return;
         el.scrollIntoView({ behavior: "smooth", block: "center" });
-        el.style.color = "var(--color-text)";
+        el.style.color = "var(--color-ink)";
         el.style.fontWeight = "600";
         setTimeout(function () {
           el.style.color = "";
@@ -163,10 +150,8 @@
     render();
     window.__fnRender = render;
 
-    // Re-layout after fonts/images finish loading (positions may shift).
     window.addEventListener("load", render);
 
-    // Re-layout on resize (desktop ↔ mobile switch, text reflow).
     let timer;
     window.addEventListener("resize", function () {
       clearTimeout(timer);

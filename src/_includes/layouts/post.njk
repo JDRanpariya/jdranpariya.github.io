@@ -3,82 +3,131 @@ layout: layouts/base.njk
 isPostLayout: true
 ---
 
-<section class="max-w-7xl mx-auto px-6 py-16">
-  <div class="grid grid-cols-1 md:grid-cols-10 gap-8">
-    <!-- TOC section -->
-    <aside class="pt-4 pl-8 hidden md:block md:col-span-2 relative ">
-      <div class="sticky top-16 mt-80">
-        <div class="toc-container flex items-center space-x-2 text-lg text-muted cursor-pointer">
-          <span class="font-semibold">Table of Contents</span>
-          <span class="toc-toggle transition-transform duration-300">▲</span>
-        </div>
-        <div
-          class="toc-content mt-2 overflow-hidden transition-all duration-500 ease-in-out opacity-100 max-h-[2000px]"
-        >
-          <nav
-            class="text-muted [&_ol]:list-none [&_ol]:p-0 [&_li]:relative [&_li]:pl-4 [&_li]:mb-1 [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-blue-500 [&_ol_ol]:ml-4 [&_ol_ol]:border-l [&_ol_ol]:border-gray-300 [&_ol_ol]:pl-4 [&_ol_ol_li]:before:content-['◦'] [&_ol_ol_li]:before:text-accent [&_a]:text-muted [&_a]:no-underline [&_a:hover]:text-accent"
-          >
-            {{ content | toc | safe }}
-          </nav>
-        </div>
+<section class="max-w-page mx-auto px-6 md:px-8 py-16 md:py-24">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <!-- ---------------------------------------------------------------- -->
+    <!-- Left: TOC (desktop sidebar, collapsible)                          -->
+    <!-- ---------------------------------------------------------------- -->
+    <aside class="hidden lg:block lg:col-span-2 toc" aria-label="On this page">
+      <div class="sticky top-24">
+        <button type="button" class="toc-toggle" aria-expanded="true" aria-controls="toc-panel">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          On this page
+        </button>
+        <div id="toc-panel" class="toc-content" aria-hidden="false">{{ content | toc | safe }}</div>
       </div>
     </aside>
 
-    <!-- Main Content (<article> is the appropriate landmark; outer <main> is in base.njk) -->
-    <article class="md:col-span-6 space-y-8">
-      <div class="content-start space-y-12">
-        <h1
-          class="text-5xl md:text-7xl font-serif font-bold text-primary mb-4 !leading-[1.2] capitalize"
-        >
-          {{ title }}
-        </h1>
-        <p class="text-3xl text-muted">{{ description }}</p>
-        <div class="text-muted">
-          <hr class="border-t border-border my-2" />
-          <div class="flex justify-between items-center">
-            <p class="text-lg">
-              {% for tag in tags %}
-                <span
-                  class="inline-block bg-accent/20 text-accent px-2 py-1 capitalize hover:text-primary"
-                >
-                  <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>
-                </span>
-              {% endfor %}
-            </p>
-            <div class="text-right">
-              <p class="text-lg">Published: {{ published | formatDate }}</p>
-              {% if lastUpdated %}
-                <p class="text-lg">Last Updated: {{ lastUpdated | formatDate }}</p>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="prose [&_h2]:text-primary text-muted dark:prose-invert text-xl [&_a[href^='#fn']]:text-blue-600 [&_a[href^='#fn']]:font-semibold [&_a[href^='#fn']]:no-underline [&_a[href^='#fn']]:transition-colors [&_a[href^='#fn']]:duration-200 [&_a[href^='#fn']:hover]:text-blue-800 [&_sup_a[href^='#fn']]:text-blue-600 [&_sup_a[href^='#fn']]:font-semibold [&_sup_a[href^='#fn']]:no-underline [&_sup_a[href^='#fn']]:transition-colors [&_sup_a[href^='#fn']]:duration-200 [&_sup_a[href^='#fn']:hover]:text-blue-800"
-      >
-        {{ content | safe }}
-      </div>
-      {% if section == "writings" %}
-        <aside
-          class="max-w-xl mx-auto px-6 py-10 text-center space-y-3 border-t border-border mt-12"
-        >
-          <p class="font-serif text-lg text-secondary">
-            Thoughts on this? I'd genuinely like to hear them.
+    <!-- ---------------------------------------------------------------- -->
+    <!-- Center: article                                                   -->
+    <!-- <article> is the landmark; outer <main> is in base.njk.           -->
+    <!-- ---------------------------------------------------------------- -->
+    <article class="lg:col-span-8 lg:col-start-3 xl:col-start-3">
+      <div class="max-w-reading mx-auto">
+        <!-- Hero -->
+        <header class="post-hero">
+          {# Eyebrow is only shown when a post is part of a series — that's the only
+             case where the label adds information you can't get from the title, the
+             URL, or the page context. Category labels ("Writing", "Book", "Paper")
+             are redundant and removed. #}
+          {% if series and series.name %}
+            <p class="post-hero__eyebrow">{{ series.name }} · Part {{ series.order or 1 }}</p>
+          {% endif %}
+
+          <h1 class="post-hero__title">{{ title | smartTitleCase }}</h1>
+
+          {% if description %}
+            <p class="post-hero__lead">{{ description }}</p>
+          {% endif %}
+
+          <p class="post-hero__meta">
+            {% if published %}
+              <time datetime="{{ published }}">{{ published | formatDate }}</time>
+            {% endif %}
+            {% if lastUpdated and lastUpdated != published %}
+              <span class="whitespace-nowrap"> · Updated {{ lastUpdated | formatDate }}</span>
+            {% endif %}
           </p>
-          <a
-            href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
-            class="inline-block font-sans text-sm text-muted hover:text-accent transition-colors"
-          >
-            Reply by email →
-          </a>
-        </aside>
-      {% endif %}
+
+          <hr class="post-hero__divider" />
+        </header>
+
+        <!-- Mobile TOC (collapsed by default; desktop version is in the sidebar) -->
+        <details class="lg:hidden mt-4 mb-8 toc">
+          <summary class="toc-toggle" style="list-style:none">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            On this page
+          </summary>
+          <div class="toc-content mt-3">{{ content | toc | safe }}</div>
+        </details>
+
+        <!-- Body -->
+        <div class="prose-site">{{ content | safe }}</div>
+
+        <!-- ------------------------------------------------------------ -->
+        <!-- Post footer: tags + reply CTA. Tags live here (not in hero)  -->
+        <!-- so the top of the page stays calm.                            -->
+        <!-- ------------------------------------------------------------ -->
+        {% if tags or section == "writings" %}
+          <footer class="post-footer">
+            {% if tags %}
+              <div class="post-footer__tags">
+                <p class="eyebrow shrink-0">Tagged</p>
+                <ul class="chip-list">
+                  {% for tag in tags %}
+                    <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            {% if section == "writings" %}
+              <div class="post-footer__reply">
+                <p>Thoughts on this? I&rsquo;d genuinely like to hear them.</p>
+                <a
+                  href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
+                  class="btn-link"
+                >
+                  Reply by email
+                  <svg
+                    class="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </a>
+              </div>
+            {% endif %}
+          </footer>
+        {% endif %}
+      </div>
     </article>
 
-    <!-- Right: Sidebar Footnotes (desktop only) -->
-    <aside class="hidden md:block md:col-span-2 pt-4 pr-4">
-      <div id="footnotes-sidebar" class="relative" aria-label="Footnotes"></div>
+    <!-- ---------------------------------------------------------------- -->
+    <!-- Right: sidenote gutter (populated by post.js on                 ) -->
+    <!-- ---------------------------------------------------------------- -->
+    <aside class="hidden lg:block lg:col-span-2" aria-label="Footnotes">
+      <div id="footnotes-sidebar" class="relative pl-2"></div>
     </aside>
   </div>
 </section>
