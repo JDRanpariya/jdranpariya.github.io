@@ -23,9 +23,9 @@ export default function (eleventyConfig) {
     "src/robots.txt": "robots.txt",
   });
 
-  // Serve CSS so it's available in the browser
-  eleventyConfig.addPassthroughCopy("build/css");
-  // makes passthrough files live-reload instead of being copied once
+  // CSS is written directly to build/css/ by PostCSS (see package.json
+  // css:build script) — no passthrough needed. A previous addPassthroughCopy("build/css")
+  // here would copy build/css/ to build/build/css/, creating a ghost directory.
   eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
   // Add Syntax Highlight plugin
