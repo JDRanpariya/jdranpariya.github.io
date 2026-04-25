@@ -16,7 +16,8 @@
     - fonts.googleapis.com, fonts.gstatic.com: Google Fonts (Merriweather)
     - cdn.jsdelivr.net: KaTeX CSS
     - unpkg.com: Prism syntax-highlight theme
-    - images-na.ssl-images-amazon.com, *.gr-assets.com: book covers (Goodreads-hosted)
+    - img-src also allows https: for any remote image that falls back to pass-through
+      if build-time optimization fails (see {% image %} shortcode in .eleventy.js)
 #}
 <meta
   http-equiv="Content-Security-Policy"

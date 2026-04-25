@@ -99,40 +99,64 @@ export default function (eleventyConfig) {
 
   eleventyConfig.setLibrary("md", md);
 
-  // Image optimization shortcode
+  // Image optimization shortcode.
+  //
+  // Accepts:
+  //   - local path under assets/   — optimized to AVIF at original width
+  //   - absolute URL (http/https)  — fetched at build time, cached under .cache/,
+  //                                  emitted as a local AVIF in /img/
+  //
+  // Both paths go through @11ty/eleventy-img so the returned <img> always has
+  // width/height (fixes CLS) and a single AVIF source (smaller than JPEG/PNG).
+  //
+  // On fetch failure (network down, 404) we warn and fall back to the raw src
+  // so the build does not hard-fail. Watch build logs for "image optimization
+  // failed" and fix the source URL in frontmatter if a cover silently breaks.
+  function escapeAttr(s) {
+    return String(s ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
   eleventyConfig.addNunjucksAsyncShortcode("image", async function (src, alt, className = "") {
     if (!src) return "";
 
-    // Remote image - pass through as-is
-    if (src.startsWith("http")) {
-      return `<img src="${src}" alt="${alt}" loading="lazy" class="${className}">`;
+    const isRemote = /^https?:\/\//.test(src);
+    let inputPath = src;
+    if (!isRemote) {
+      if (src.startsWith("/assets/")) {
+        inputPath = path.join(__dirname, "assets", src.slice("/assets/".length));
+      } else if (src.startsWith("assets/")) {
+        inputPath = path.join(__dirname, src);
+      }
     }
 
-    // Local image - optimize
-    let inputPath = src;
-    if (src.startsWith("/assets/")) {
-      inputPath = path.join(__dirname, "assets", src.slice("/assets/".length));
-    } else if (src.startsWith("assets/")) {
-      inputPath = path.join(__dirname, src);
-    }
+    const altAttr = escapeAttr(alt);
+    const classAttr = escapeAttr(className);
 
     try {
-      // Generate AVIF at original size (widths: [null] preserves dimensions)
       const metadata = await Image(inputPath, {
         widths: [null], // null = original width, no resizing
-        formats: ["avif"], // AVIF only for simplicity
+        formats: ["avif"],
         outputDir: "./build/img/",
         urlPath: "/img/",
+        // Remote-only options; ignored for local inputs.
+        cacheOptions: {
+          duration: "30d",
+          directory: ".cache",
+          removeUrlQueryParams: false,
+        },
       });
 
       const avifMetadata = metadata.avif[0];
-
-      // Return simple img tag (not picture element)
-      return `<img src="${avifMetadata.url}" alt="${alt}" loading="lazy" class="${className}" width="${avifMetadata.width}" height="${avifMetadata.height}">`;
+      return `<img src="${avifMetadata.url}" alt="${altAttr}" loading="lazy" class="${classAttr}" width="${avifMetadata.width}" height="${avifMetadata.height}">`;
     } catch (e) {
-      console.error(`Error optimizing image ${src}:`, e.message);
-      // Fallback to original
-      return `<img src="${src}" alt="${alt}" loading="lazy" class="${className}">`;
+      console.warn(
+        `[image] optimization failed for ${src}: ${e.message}. Falling back to raw src.`
+      );
+      return `<img src="${escapeAttr(src)}" alt="${altAttr}" loading="lazy" class="${classAttr}">`;
     }
   });
 
