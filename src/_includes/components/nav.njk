@@ -1,92 +1,57 @@
-<!-- Navigation with Dark Mode Toggle - src/_includes/components/nav.njk -->
-<nav class="top-0 left-0 right-0 z-50">
-  <div class="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
-    <!-- Logo/Brand -->
-    <a href="/" class="group flex items-center p-2 md:p-0">
-      <span
-        class="font-serif
-                         text-2xl
-                         font-bold
-                         text-primary
-                         tracking-wide
-                         group-hover:scale-105
-                         transition-transform
-                         duration-300"
-      >
-        =^.^=
-      </span>
+<!-- Top navigation.
+     Active-state styling is driven by [aria-current="page"] on the link (see
+     .nav-link in src/css/input.css) — no conditional class strings in the
+     template.
+-->
+<nav class="relative z-40" aria-label="Primary">
+  <div class="max-w-page mx-auto px-6 md:px-8 py-6 flex items-center justify-between">
+    <!-- Wordmark -->
+    <a href="/" class="inline-flex items-center font-serif text-2xl text-ink">
+      <span aria-hidden="true">=^.^=</span>
+      <span class="sr-only">Jay Ranpariya — home</span>
     </a>
 
-    <!-- Main Navigation -->
-    <div class="flex items-center space-x-8">
-      <!-- Navigation Links -->
-      <div class="hidden md:flex items-center space-x-6 text-primary">
-        <a
-          href="/now"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/now') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}
-          >Now</a
-        >
-        <a
-          href="/odysseys"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/odysseys') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}
-          >Odysseys</a
-        >
-        <a
-          href="/projects"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/projects') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}
-          >Projects</a
-        >
-        <a
-          href="/writings"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/writings') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}
-          >Writings</a
-        >
-        <a
-          href="/library"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/library') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}
-          >Library</a
-        >
-        <a
-          href="/about"
-          class="link font-sans text-lg font-medium {% if page.url.startsWith('/about') %}
-            underline underline-offset-8 decoration-4 decoration-accent
-          {% endif %}"
-          {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}
-          >About</a
-        >
-      </div>
+    <div class="flex items-center gap-6 md:gap-8">
+      <!-- Primary links -->
+      <ul class="hidden md:flex items-center gap-6 list-none m-0 p-0">
+        {%
+          set primary = [
+            ["/writings", "Writings"],
+            ["/library",  "Library"],
+            ["/odysseys", "Odysseys"],
+            ["/projects", "Projects"],
+            ["/now",      "Now"],
+            ["/about",    "About"]
+          ]
+        %}
+        {% for item in primary %}
+          <li>
+            <a
+              href="{{ item[0] }}"
+              class="nav-link"
+              {% if page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
+              >{{ item[1] }}</a
+            >
+          </li>
+        {% endfor %}
+      </ul>
 
-      <!-- Dark Mode Toggle -->
+      <!-- Theme toggle -->
       <button
         id="theme-toggle"
         type="button"
         data-action="toggle-theme"
-        class="p-2 text-primary
-                                           hover:text-accent
-                                           transition-colors
-                                           duration-300
-                                           hover:bg-surface-alt
-                                           rounded-lg"
-        title="Switch to dark mode"
+        class="p-2 rounded-md text-ink hover:text-accent transition-colors duration-base"
         aria-label="Toggle dark mode"
+        aria-pressed="false"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <!-- Moon icon (default - will be updated by script) -->
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -96,21 +61,23 @@
         </svg>
       </button>
 
-      <!-- Mobile Menu Button -->
+      <!-- Mobile menu toggle -->
       <button
         id="mobile-menu-toggle"
         type="button"
         data-action="toggle-mobile-menu"
-        class="md:hidden
-                                 p-2 text-primary
-                                 hover:text-accent
-                                 transition-colors
-                                 duration-300
-                                 hover:bg-surface-alt
-                                 rounded-lg"
-        aria-label="Toggle mobile menu"
+        class="md:hidden p-2 rounded-md text-ink hover:text-accent transition-colors duration-base"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -123,27 +90,28 @@
   </div>
 </nav>
 
-<!-- Mobile Menu Backdrop -->
+<!-- Mobile sheet backdrop -->
 <div
   id="menu-backdrop"
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden opacity-0 pointer-events-none transition-opacity duration-300"
+  class="fixed inset-0 bg-ink/50 z-40 md:hidden opacity-0 pointer-events-none transition-opacity duration-slow"
+  aria-hidden="true"
 ></div>
 
-<!-- Mobile Menu Panel (Slide from Right) -->
-<div
+<!-- Mobile sheet -->
+<aside
   id="mobile-menu"
-  class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface border-l border-primary/10 shadow-2xl z-50 md:hidden transform translate-x-full transition-transform duration-300 ease-out"
+  class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface shadow-sheet z-50 md:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
+  aria-label="Site navigation"
 >
-  <!-- Menu Header -->
-  <div class="flex items-center justify-between p-6 border-b border-primary/10">
-    <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
+  <div class="flex items-center justify-between p-6 border-b border-border">
+    <span class="font-serif text-lg text-ink" aria-hidden="true">=^.^=</span>
     <button
       type="button"
       data-action="close-mobile-menu"
-      aria-label="Close mobile menu"
-      class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg"
+      aria-label="Close menu"
+      class="p-2 rounded-md text-ink hover:text-accent transition-colors duration-base"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -154,55 +122,27 @@
     </button>
   </div>
 
-  <!-- Menu Items -->
-  <div class="px-6 py-8 space-y-6 text-primary">
-    <a
-      href="/now"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}
-    >
-      Now
-    </a>
-    <a
-      href="/odysseys"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}
-    >
-      Odysseys
-    </a>
-    <a
-      href="/projects"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}
-    >
-      Projects
-    </a>
-    <a
-      href="/writings"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}
-    >
-      Writings
-    </a>
-    <a
-      href="/library"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}
-    >
-      Library
-    </a>
-    <a
-      href="/about"
-      class="block link font-sans font-medium text-lg py-2"
-      data-action="close-mobile-menu"
-      {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}
-    >
-      About
-    </a>
-  </div>
-</div>
+  <ul class="px-6 py-8 space-y-5 list-none m-0">
+    {%
+      set primary = [
+        ["/writings", "Writings"],
+        ["/library",  "Library"],
+        ["/odysseys", "Odysseys"],
+        ["/projects", "Projects"],
+        ["/now",      "Now"],
+        ["/about",    "About"]
+      ]
+    %}
+    {% for item in primary %}
+      <li>
+        <a
+          href="{{ item[0] }}"
+          class="nav-link block py-2 text-lg"
+          data-action="close-mobile-menu"
+          {% if page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
+          >{{ item[1] }}</a
+        >
+      </li>
+    {% endfor %}
+  </ul>
+</aside>
