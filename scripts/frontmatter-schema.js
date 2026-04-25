@@ -116,6 +116,39 @@ function validateItem(item, schema, errors) {
   }
 }
 
+// Detect tags that slug to the same URL but differ in casing or whitespace
+// (e.g. "AI" and "ai" both slug to "ai"). Two posts using different strings
+// would yield phantom duplicates in /tags/ and could collide at pagination.
+function validateTagCasing(collectionApi, errors) {
+  // slug -> Map<original, Set<filepath>>
+  const bySlug = new Map();
+
+  for (const item of collectionApi.getAll()) {
+    const tags = item.data.tags;
+    if (!Array.isArray(tags)) continue;
+    for (const tag of tags) {
+      if (typeof tag !== "string") continue;
+      // Mirror Eleventy's default slug transform (lowercase, hyphenate).
+      const slug = tag.toLowerCase().replace(/\s+/g, "-");
+      if (!bySlug.has(slug)) bySlug.set(slug, new Map());
+      const variants = bySlug.get(slug);
+      if (!variants.has(tag)) variants.set(tag, new Set());
+      variants.get(tag).add(item.inputPath);
+    }
+  }
+
+  for (const [slug, variants] of bySlug) {
+    if (variants.size > 1) {
+      const parts = Array.from(variants.entries())
+        .map(([v, files]) => `"${v}" in ${Array.from(files).join(", ")}`)
+        .join("; ");
+      errors.push(
+        `tag slug collision: ${parts} — all resolve to /tags/${slug}/. Pick one canonical casing and update the outliers.`
+      );
+    }
+  }
+}
+
 export function registerFrontmatterValidation(eleventyConfig) {
   // Run after all collections are built. Throws if invalid.
   eleventyConfig.addCollection("__validateFrontmatter", (collectionApi) => {
@@ -127,6 +160,8 @@ export function registerFrontmatterValidation(eleventyConfig) {
         validateItem(item, schema, errors);
       }
     }
+
+    validateTagCasing(collectionApi, errors);
 
     if (errors.length > 0) {
       console.error("\n\x1b[31m✗ Frontmatter validation failed:\x1b[0m");
