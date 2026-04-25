@@ -106,7 +106,6 @@ section: "now"
                         <li>
                           <a
                             href="#update-{{ dateStringId }}"
-                            onclick="showArchivedUpdate('{{ dateStringId }}'); return false;"
                             class="archive-link text-primary hover:underline"
                             data-date="{{ dateStringId }}"
                           >
@@ -162,7 +161,6 @@ section: "now"
                           <li>
                             <a
                               href="#update-{{ dateStringId }}"
-                              onclick="showArchivedUpdate('{{ dateStringId }}'); return false;"
                               class="archive-link text-primary hover:underline"
                               data-date="{{ dateStringId }}"
                             >
@@ -185,86 +183,4 @@ section: "now"
   </div>
 </section>
 
-<script>
-  function showArchivedUpdate(dateStringId) {
-    // Renamed parameter for clarity
-    const headingEl = document.getElementById("update-heading");
-    const updatesContainer = document.getElementById("updates-container");
-    const allUpdateContentDivs = updatesContainer.querySelectorAll(".now-update-content");
-    const targetUpdateDiv = document.getElementById("update-" + dateStringId); // Use YYYY-MM-DD ID
-    const archiveLinks = document.querySelectorAll(".archive-list .archive-link");
-    const footerNote = document.getElementById("footer-update-note"); // Get footer element
-
-    if (!targetUpdateDiv || !headingEl) {
-      console.error("Target update element or heading not found for date:", dateStringId);
-      return;
-    }
-
-    // 1. Hide all update content blocks
-    allUpdateContentDivs.forEach((div) => {
-      div.classList.add("hidden");
-    });
-
-    // 2. Show the target update content block
-    targetUpdateDiv.classList.remove("hidden");
-
-    // 3. Update the heading using data-formatted-date
-    const formattedDate = targetUpdateDiv.dataset.formattedDate || dateStringId;
-    headingEl.textContent = "Update from " + formattedDate;
-
-    // 4. Update URL hash
-    //window.location.hash = '#update-' + dateStringId;
-
-    // 5. Highlight active archive link
-    archiveLinks.forEach((link) => {
-      const isActive = link.dataset.date === dateStringId;
-      link.classList.toggle("font-bold", isActive);
-      link.classList.toggle("text-accent", isActive);
-      link.classList.toggle("text-primary", !isActive);
-    });
-
-    // 6. Update Footer Note (Optional, if you want it to reflect the *viewed* update)
-    // If you always want it to show the *latest* update, leave the Nunjucks part as is.
-    // If you want it to show the date of the update currently being viewed:
-    // if (footerNote) {
-    //    footerNote.textContent = 'Viewing update from: ' + formattedDate;
-    // }
-  }
-
-  // --- Initial Setup on Page Load ---
-  document.addEventListener("DOMContentLoaded", () => {
-    const initialUpdate = document.querySelector(".now-update-content:not(.hidden)");
-    // Use the YYYY-MM-DD data-date attribute
-    const initialDateStringId = initialUpdate ? initialUpdate.dataset.date : null;
-
-    if (initialDateStringId) {
-      showArchivedUpdate(initialDateStringId); // Call with YYYY-MM-DD
-    } else {
-      const headingEl = document.getElementById("update-heading");
-      if (headingEl) {
-        headingEl.textContent = "Latest Update";
-      }
-      // Ensure footer note reflects no updates
-      const footerNote = document.getElementById("footer-update-note");
-      if (footerNote) footerNote.textContent = "No updates yet.";
-    }
-
-    function handleHashChange() {
-      const hash = window.location.hash;
-      if (hash && hash.startsWith("#update-")) {
-        const dateFromHash = hash.substring(8);
-        const targetUpdateDiv = document.getElementById("update-" + dateFromHash);
-        if (targetUpdateDiv) {
-          showArchivedUpdate(dateFromHash);
-        } else if (initialDateStringId) {
-          showArchivedUpdate(initialDateStringId); // Show latest if hash invalid
-        }
-      } else if (initialDateStringId) {
-        showArchivedUpdate(initialDateStringId); // Show latest if no hash
-      }
-    }
-
-    window.addEventListener("hashchange", handleHashChange);
-    handleHashChange(); // Run on initial load
-  });
-</script>
+<script src="/assets/js/now.js" defer></script>

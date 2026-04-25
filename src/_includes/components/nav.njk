@@ -74,7 +74,8 @@
       <!-- Dark Mode Toggle -->
       <button
         id="theme-toggle"
-        onclick="toggleTheme()"
+        type="button"
+        data-action="toggle-theme"
         class="p-2 text-primary
                                            hover:text-accent
                                            transition-colors
@@ -97,6 +98,9 @@
 
       <!-- Mobile Menu Button -->
       <button
+        id="mobile-menu-toggle"
+        type="button"
+        data-action="toggle-mobile-menu"
         class="md:hidden
                                  p-2 text-primary
                                  hover:text-accent
@@ -104,7 +108,6 @@
                                  duration-300
                                  hover:bg-surface-alt
                                  rounded-lg"
-        onclick="toggleMobileMenu()"
         aria-label="Toggle mobile menu"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +138,9 @@
   <div class="flex items-center justify-between p-6 border-b border-primary/10">
     <span class="font-serif text-lg font-bold text-primary">=^.^=</span>
     <button
-      onclick="closeMobileMenu()"
+      type="button"
+      data-action="close-mobile-menu"
+      aria-label="Close mobile menu"
       class="p-2 text-primary hover:text-accent transition-colors duration-300 hover:bg-surface-alt rounded-lg"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,7 +159,7 @@
     <a
       href="/now"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/now') %}aria-current="page"{% endif %}
     >
       Now
@@ -162,7 +167,7 @@
     <a
       href="/odysseys"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/odysseys') %}aria-current="page"{% endif %}
     >
       Odysseys
@@ -170,7 +175,7 @@
     <a
       href="/projects"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/projects') %}aria-current="page"{% endif %}
     >
       Projects
@@ -178,7 +183,7 @@
     <a
       href="/writings"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/writings') %}aria-current="page"{% endif %}
     >
       Writings
@@ -186,7 +191,7 @@
     <a
       href="/library"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/library') %}aria-current="page"{% endif %}
     >
       Library
@@ -194,7 +199,7 @@
     <a
       href="/about"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/about') %}aria-current="page"{% endif %}
     >
       About
@@ -202,7 +207,7 @@
     <a
       href="/guestbook"
       class="block link font-sans font-medium text-lg py-2"
-      onclick="closeMobileMenu()"
+      data-action="close-mobile-menu"
       {% if page.url.startsWith('/guestbook') %}aria-current="page"{% endif %}
     >
       Guest Book

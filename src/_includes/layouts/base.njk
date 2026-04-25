@@ -270,11 +270,20 @@
   <link rel="stylesheet" href="/css/style.css" />
 
 {% if isPostLayout %}
+{# Third-party CSS is pinned by version AND SRI digest.
+   Regenerate hashes if you bump the versions (see AGENTS.md §14). #}
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
+  integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
+  crossorigin="anonymous"
 />
-<link rel="stylesheet" href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css">
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css"
+  integrity="sha384-WwgFI0JHh6bHV6nQ0NnTmK2gweGZxGFY5GBlfx5yOGVZvUeCP5WoA+QxwI3LDU5Z"
+  crossorigin="anonymous"
+/>
 {% endif %}
 
   <!-- Theme initialization to prevent flash.
@@ -317,105 +326,8 @@
   <!-- Footer -->
   {% include "components/footer.njk" %}
 
-  <!-- Scripts -->
-  <script>
-  // Toggle dark/light theme
-  function toggleTheme() {
-  const html = document.documentElement;
-  const isDark = html.classList.contains('dark');
-  html.classList.toggle('dark');
-  localStorage.setItem('theme', isDark ? 'light' : 'dark');
-  updateThemeButton(!isDark ? 'dark' : 'light');
-  }
-
-  function updateThemeButton(theme) {
-  const button = document.getElementById('theme-toggle');
-  if (!button) return;
-
-  const icon = button.querySelector('svg');
-  if (!icon) return;
-
-  icon.innerHTML = theme === 'dark'
-  ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>`
-  : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>`;
-
-  button.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  // Replace your existing toggleMobileMenu function with this:
-  
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobile-menu');
-  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-  const backdrop = document.getElementById('menu-backdrop');
-  
-  if (!menu || !button) return;
-
-  const isOpen = !menu.classList.contains('translate-x-full');
-  
-  if (isOpen) {
-    // Close menu
-    menu.classList.add('translate-x-full');
-    if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
-    document.body.classList.remove('overflow-hidden');
-  } else {
-    // Open menu
-    menu.classList.remove('translate-x-full');
-    if (backdrop) backdrop.classList.remove('opacity-0', 'pointer-events-none');
-    document.body.classList.add('overflow-hidden'); // Prevent background scrolling
-  }
-
-  // Update hamburger icon
-  const icon = button.querySelector('svg path');
-  if (icon) {
-    icon.setAttribute('d', isOpen 
-      ? 'M4 6h16M4 12h16M4 18h16'  // Hamburger
-      : 'M6 18L18 6M6 6l12 12');    // X
-  }
-}
-
-function closeMobileMenu() {
-  const menu = document.getElementById('mobile-menu');
-  const backdrop = document.getElementById('menu-backdrop');
-  const button = document.querySelector('[onclick="toggleMobileMenu()"]');
-  
-  if (menu) menu.classList.add('translate-x-full');
-  if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
-  document.body.classList.remove('overflow-hidden');
-  
-  // Reset hamburger icon
-  const icon = button?.querySelector('svg path');
-  if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize theme button
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  updateThemeButton(savedTheme || (prefersDark ? 'dark' : 'light'));
-
-  // Close mobile menu when clicking backdrop
-  document.addEventListener('click', function(event) {
-    const backdrop = document.getElementById('menu-backdrop');
-    if (event.target === backdrop) {
-      closeMobileMenu();
-    }
-  });
-
-  // Close menu on escape key
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      const menu = document.getElementById('mobile-menu');
-      if (menu && !menu.classList.contains('translate-x-full')) {
-        closeMobileMenu();
-      }
-    }
-  });
-});
-
-  </script>
+  <!-- Site scripts (theme toggle, mobile menu, delegated clicks). -->
+  <script src="/assets/js/site.js" defer></script>
 
   </body>
   </html>
