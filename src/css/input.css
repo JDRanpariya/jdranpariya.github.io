@@ -210,6 +210,7 @@ button,
   .nav-link {
     @apply font-sans text-[0.9375rem] font-medium text-ink transition-colors;
     transition-duration: var(--duration-base);
+    padding-block: 0.75rem;
   }
   .nav-link:hover {
     color: var(--color-accent);
@@ -1053,6 +1054,9 @@ button,
 .notecard--composer {
   --rotation: 0deg;
   transform: none;
+}
+.notecard--composer button {
+  font-family: inherit;
 }
 .notecard--composer:hover {
   transform: none;
