@@ -39,6 +39,10 @@ package-lock.json
 # build QA reports (lighthouse ci)
 .lighthouseci/
 
+# scratch work (notecard source images, intermediate PNGs/SVGs)
+scratch/
+scripts/__pycache__/
+
 # agent context files
 AGENTS.md
 CONTEXT.md

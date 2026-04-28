@@ -13,7 +13,7 @@
   Origins:
     - self: own site
     - jay-cloud.vercel.app: Umami analytics
-    - fonts.googleapis.com, fonts.gstatic.com: Google Fonts (Merriweather)
+    - fonts.googleapis.com, fonts.gstatic.com: (removed — fonts self-hosted now)
     - cdn.jsdelivr.net: KaTeX CSS
     - unpkg.com: Prism syntax-highlight theme
     - img-src also allows https: for any remote image that falls back to pass-through
@@ -24,8 +24,8 @@
   content="
     default-src 'self';
     script-src 'self' 'unsafe-inline' https://jay-cloud.vercel.app;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com;
-    font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
+    font-src 'self' https://cdn.jsdelivr.net;
     img-src 'self' data: https:;
     connect-src 'self' https://jay-cloud.vercel.app;
     frame-src 'self' https://docs.google.com;
@@ -257,15 +257,11 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
 <link rel="manifest" href="/assets/logo/site.webmanifest">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Self-hosted fonts (Fraunces + Literata) loaded via @font-face in CSS -->
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Umami analytics (preconnect only; script is injected conditionally below) -->
   <link rel="preconnect" href="https://jay-cloud.vercel.app">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap" media="print" onload="this.media='all'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap">
-</noscript>
 
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/css/style.css" />

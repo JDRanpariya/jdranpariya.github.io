@@ -47,6 +47,13 @@ export default {
                 /^toc(-toggle|-content)?$/,
                 /^skip-to-content$/,
                 /^required$/,
+                // Guestbook notecard system (sanctioned exception — see
+                // .notecard block in input.css). Themes are selected via
+                // data-theme attributes, so the selectors won't appear as
+                // class tokens in markup. Safelist defensively.
+                /^notecard(-wall|-empty)?(__.*)?$/,
+                /^composer(__.*)?$/,
+                /^guestbook-credit$/,
               ],
             },
           }),

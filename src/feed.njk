@@ -2,13 +2,10 @@
 permalink: /feed.xml
 eleventyExcludeFromCollections: true
 ---
-
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>JD Ranpariya</title>
-  <subtitle
-    >Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle
-  >
+  <subtitle>Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle>
   <link href="https://jdranpariya.github.io/feed.xml" rel="self" />
   <link href="https://jdranpariya.github.io/" />
   <updated>{{ collections.writings | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
@@ -17,13 +14,13 @@ eleventyExcludeFromCollections: true
     <name>JD Ranpariya</name>
     <email>jaydeepranpariya037@gmail.com</email>
   </author>
-  {% for post in collections.writings | limit(20) %}
-    <entry>
-      <title>{{ post.data.title }}</title>
-      <link href="https://jdranpariya.github.io{{ post.url }}" />
-      <updated>{{ post.data.lastUpdated or post.data.published | dateToRfc3339 }}</updated>
-      <id>https://jdranpariya.github.io{{ post.url }}</id>
-      <summary>{{ post.data.description }}</summary>
-    </entry>
-  {% endfor %}
+  {%- for post in collections.writings | limit(20) %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="https://jdranpariya.github.io{{ post.url }}" />
+    <updated>{{ post.data.lastUpdated or post.data.published | dateToRfc3339 }}</updated>
+    <id>https://jdranpariya.github.io{{ post.url }}</id>
+    <summary>{{ post.data.description }}</summary>
+  </entry>
+  {%- endfor %}
 </feed>

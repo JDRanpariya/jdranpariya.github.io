@@ -3,6 +3,47 @@
 @tailwind utilities;
 
 /* ==========================================================================
+ * Self-hosted variable fonts — Fraunces (headings) + Literata (body)
+ * Both are variable with wght + opsz axes. Files live in /assets/fonts/.
+ * ========================================================================== */
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/assets/fonts/fraunces-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/assets/fonts/fraunces-latin-wght-italic.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Literata';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/assets/fonts/literata-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Literata';
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/assets/fonts/literata-latin-wght-italic.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
  * Design tokens — Golden Peachy Glow
  * Canonical source: DESIGN.md (YAML front matter). Keep these in sync.
  * Tailwind maps these to utility names in tailwind.config.js.
@@ -10,15 +51,15 @@
 
 :root {
   /* color */
-  --color-bg: #fefae0;
-  --color-surface: #f0ead2;
-  --color-card: #e8dfc8;
-  --color-ink: #2d241a;
-  --color-ink-secondary: #4a3d2e;
-  --color-ink-muted: #5a4a34;
-  --color-accent: #8b4513;
-  --color-accent-soft: #f2e3cf;
-  --color-border: #e0d8c3;
+  --color-bg: #fdfbf5;
+  --color-surface: #f4efe4;
+  --color-card: #ede8dc;
+  --color-ink: #2c251d;
+  --color-ink-secondary: #342b21;
+  --color-ink-muted: #786a55;
+  --color-accent: #9b4230;
+  --color-accent-soft: #f5ece1;
+  --color-border: #e2ddd0;
 
   /* semantic (callouts only) */
   --color-success: #57c853;
@@ -40,15 +81,15 @@
 }
 
 .dark {
-  --color-bg: #1a1511;
-  --color-surface: #2d241a;
-  --color-card: #3a2e22;
-  --color-ink: #fefae0;
-  --color-ink-secondary: #e8dcc8;
-  --color-ink-muted: #d1c69a;
-  --color-accent: #d4a574;
-  --color-accent-soft: #3f3224;
-  --color-border: #3a2e22;
+  --color-bg: #1a1611;
+  --color-surface: #2d261c;
+  --color-card: #3a3024;
+  --color-ink: #f5f0e4;
+  --color-ink-secondary: #e0d8c8;
+  --color-ink-muted: #b8ad90;
+  --color-accent: #d4a070;
+  --color-accent-soft: #3f3426;
+  --color-border: #3a3024;
 
   /* Darken shadow tint on dark ground so cards don't disappear. */
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -68,13 +109,23 @@ html {
 }
 
 body {
-  font-family: Merriweather, ui-serif, Georgia, serif;
+  font-family: Literata, ui-serif, Georgia, serif;
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--color-ink);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use Fraunces — characterful display serif with wonky charm.
+   WONK 1 enables the quirky alternate glyphs; SOFT 50 adds warmth. */
+h1, h2, h3, h4, h5, h6,
+.font-heading,
+h1.font-serif, h2.font-serif, h3.font-serif,
+h4.font-serif, h5.font-serif, h6.font-serif {
+  font-family: Fraunces, ui-serif, Georgia, serif;
+  font-variation-settings: "WONK" 1, "SOFT" 50;
 }
 
 /* Sans stack owns nav, buttons, chips, meta — anything scanned. */
@@ -345,7 +396,7 @@ button,
   }
 
   .post-hero__title {
-    @apply font-serif font-bold;
+    @apply font-heading font-bold;
     margin-top: 1rem;
     font-size: clamp(2rem, 2.5vw + 1rem, 2.75rem);
     line-height: 1.15;
@@ -356,7 +407,7 @@ button,
   /* Italic serif, not bold. It reads as a deck/dek — a quiet editor's note
    * under the title, not a second headline competing for attention. */
   .post-hero__lead {
-    font-family: Merriweather, ui-serif, Georgia, serif;
+    font-family: Literata, ui-serif, Georgia, serif;
     font-style: italic;
     font-weight: 400;
     font-size: 1.1875rem;
@@ -408,7 +459,7 @@ button,
   }
   .post-footer__reply {
     text-align: center;
-    font-family: Merriweather, ui-serif, Georgia, serif;
+    font-family: Literata, ui-serif, Georgia, serif;
   }
   .post-footer__reply p {
     color: var(--color-ink-secondary);
@@ -457,7 +508,7 @@ button,
 
   .prose-site {
     max-width: 65ch;
-    font-family: Merriweather, ui-serif, Georgia, serif;
+    font-family: Literata, ui-serif, Georgia, serif;
     font-size: 1.0625rem;
     line-height: 1.75;
     color: var(--color-ink);
@@ -468,7 +519,7 @@ button,
   }
 
   .prose-site h2 {
-    @apply font-serif font-bold;
+    @apply font-heading font-bold;
     font-size: 1.75rem;
     line-height: 1.2;
     letter-spacing: -0.01em;
@@ -477,7 +528,7 @@ button,
     color: var(--color-ink);
   }
   .prose-site h3 {
-    @apply font-serif font-bold;
+    @apply font-heading font-bold;
     font-size: 1.375rem;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -486,7 +537,7 @@ button,
     color: var(--color-ink);
   }
   .prose-site h4 {
-    @apply font-serif font-bold;
+    @apply font-heading font-bold;
     font-size: 1.125rem;
     margin-top: 1.5em;
     margin-bottom: 0.4em;
@@ -891,4 +942,211 @@ button,
 }
 .toc-content a:hover {
   color: var(--color-accent);
+}
+
+/* ========================================================================
+ * Guestbook — notecards + composer
+ * ------------------------------------------------------------------------
+ * This block is a SANCTIONED EXCEPTION to the calm minimalist baseline.
+ * Paper textures, tilts, and pill controls live ONLY here.
+ *
+ * Design lineage: Eva Decker's guestbook (eva.town/guestbook) +
+ * Ky Decker's guestbook (ky.fyi/guestbook).
+ *
+ * All themes are image-kind — a WebP illustration dropped into
+ * assets/images/notecards/ auto-registers via src/_data/notecardThemes.js.
+ * Rendered as a real <img class="notecard__texture"> under content (NOT
+ * CSS background-image — axe-core can't compute contrast through a
+ * background-image, so a real <img> sibling under z-index 0 is the
+ * contrast-safe path).
+ *
+ * Most layout + typography is Tailwind utilities in src/guestbook.njk.
+ * Only these live here:
+ *   - paper/ink/red tokens (light + dark palette, flipped by .dark)
+ *   - per-theme ink overrides for dark papers
+ *   - rotation + hover-settle transform (needs --rotation custom prop)
+ *   - focus-within ring on the composer card
+ *   - sr-only label absolutization (prevents flex row-gaps)
+ *   - .composer__submit-label ghost twin (hover weight without reflow)
+ *   - :has() picker tilt
+ *   - prefers-reduced-motion honour
+ * ======================================================================== */
+
+:root {
+  --notecard-paper: #f6eedd;
+  --notecard-ink: #5a3a24;
+  --notecard-red: #8b2e1f;
+  /* Sepia-tinted 4-layer pill shadow — reads as warm lift on the cream
+   * page. Consumed via tailwind.config.js as the                token. */
+  --notecard-pill-shadow:
+    0 0.6px 0.6px rgba(52, 28, 8, 0.14),
+    0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
+    0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08),
+    0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);
+}
+
+/* Dark-mode page overrides for notecard chrome.
+ *
+ * Only --notecard-paper (loading-state fallback bg) and
+ * --notecard-pill-shadow (depth on the picker/submit pills) change with
+ * the page theme. Ink colour is NOT overridden here — it must track the
+ * WebP texture luminance, not the page dark/light mode. See the
+ * per-theme ink overrides further down (linen, indigo → cream ink). */
+.dark {
+  --notecard-paper: #3a3125;
+  /* Neutral-black pill shadow — the sepia-tinted light-mode version read
+   * as a warm glow behind the cream pills on a dark page. */
+  --notecard-pill-shadow:
+    0 0.6px 0.6px rgba(0, 0, 0, 0.35),
+    0 1.6px 1.6px -1.2px rgba(0, 0, 0, 0.3),
+    0 4.7px 4.6px -2.3px rgba(0, 0, 0, 0.22),
+    0 12.5px 12.2px -3.5px rgba(0, 0, 0, 0.14);
+}
+
+/* Per-theme ink overrides.
+ *
+ * Default --notecard-ink is sepia brown, tuned for cream/ivory paper.
+ * Image themes with genuinely dark paper (navy, deep red, etc.) fail
+ * WCAG AA against sepia ink; switch to warm cream.
+ *
+ * Current heuristic (from scripts/notecard_luminance.py — run it after
+ * adding new themes):
+ *   lum >= 180  default sepia ink is fine
+ *   lum 120-180 borderline, test both; add to either group based on AA
+ *   lum <  120  cream ink group below
+ *
+ * Today's wall: beige (lum~200) + parchment (lum~211) keep the default;
+ * linen (lum~72, warm rust) and navy (lum~70, cool blue) flip to cream
+ * ink. If you later add new image themes, rerun
+ * the luminance script and update the selector list below accordingly.
+ *
+ * Selector uses bare [data-theme] (no .notecard compound) because the
+ * composer splits the two across parent <form class="notecard"> and child
+ * <div id="composerCard" data-theme="…">. Entry <li> cards carry both on
+ * the same element, so the bare attribute still matches them fine. */
+/* purgecss start ignore */
+[data-theme="linen"],
+[data-theme="navy"] {
+  --notecard-ink: #f0e6d2;
+  --notecard-red: #e8b4a8;
+}
+/* purgecss end ignore */
+
+/* The card itself. Everything else (padding, aspect, width, typography)
+ * is Tailwind in the template. We need a class here only for the rotation
+ * custom prop + hover settle. */
+.notecard {
+  --rotation: 0deg;
+  transform: rotate(var(--rotation));
+  transition:
+    transform var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+.notecard:hover {
+  transform: rotate(0deg);
+  box-shadow: theme("boxShadow.notecard-hover");
+  z-index: 2;
+}
+
+/* Composer rotation is LOCKED. Jitter at the edit surface reads as
+ * instability. The submitted entry gets its own scatter on the wall. */
+.notecard--composer {
+  --rotation: 0deg;
+  transform: none;
+}
+.notecard--composer:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* The illustrated paper layer. Positioned absolute under content (z-0),
+ * which keeps axe-core's contrast walk on the card's solid paper color
+ * rather than the <img>. */
+.notecard__texture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* sr-only labels live inside the composer's flex column. A flex child
+ * with row-gap contributes its own gap to either side — so an invisible
+ * label would push the textarea ~24px down. Absolutize them out of flow.
+ * (.sr-only already clips them visually; this just removes them from the
+ * flex row-gap math so top/bottom air on the card stays symmetric.) */
+.notecard--composer .sr-only {
+  position: absolute;
+}
+
+/* Keyboard-only focus indication. Per-field underline is defined inline
+ * in guestbook.njk via focus-visible:[box-shadow:inset_0_-2px_0_0_…].
+ * We deliberately do NOT ring the whole card on :focus-within — the
+ * composer is meant to feel like a paper note, and a solid 2px ring
+ * around the card every time the user clicks into any field makes it
+ * read like a web form again. Keyboard users still see the per-input
+ * underline, so a11y is preserved. */
+
+/* Keyboard focus on posted notes' URL link. */
+.notecard :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---------------- Composer controls pill ------------------------------
+ * Both pills sit over the card's bottom edge, half above / half below.
+ * Background + text are HARDCODED cream-on-sepia in both light and
+ * dark modes — the pills read as physical paper chips tied to the
+ * card, not to page chrome. Do NOT bind to --color-bg / --color-ink. */
+
+.composer__picker {
+  transform: rotateY(0deg);
+  transition: transform 0.1s ease;
+}
+.composer__picker:has(.composer__picker-btn[data-action="prev-theme"]:active) {
+  transform: rotateY(-10deg);
+}
+.composer__picker:has(.composer__picker-btn[data-action="next-theme"]:active) {
+  transform: rotateY(10deg);
+}
+
+/* Hover weight pop on submit WITHOUT reflow.
+ *
+ * The label wrapper renders a bold-weight invisible "ghost" twin via
+ * ::before (using data-label). The ghost contributes intrinsic width,
+ * never paints. The visible <span> overlays it at grid-area: 1/1. Net
+ * effect: the pill is always sized for the bold state, so toggling
+ * weight on hover can't shift pill width. */
+.composer__submit-label {
+  display: inline-grid;
+  text-align: center;
+  transition: font-weight 0.15s ease;
+}
+.composer__submit-label::before {
+  content: attr(data-label);
+  font-weight: 700;
+  visibility: hidden;
+  height: 0;
+  grid-area: 1 / 1;
+}
+.composer__submit-label > span {
+  grid-area: 1 / 1;
+}
+.composer__submit:hover .composer__submit-label {
+  font-weight: 700;
+}
+
+/* ---------------- Reduced motion -------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .notecard,
+  .notecard:hover,
+  .composer__picker,
+  .composer__picker:has(*) {
+    transform: none;
+    transition: none;
+  }
 }

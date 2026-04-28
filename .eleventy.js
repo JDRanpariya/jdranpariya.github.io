@@ -333,6 +333,106 @@ export default function (eleventyConfig) {
     return dt.toFormat(format); // e.g., 2025-10-28
   });
 
+  // ------------------------------------------------------------------
+  // Guestbook helpers — sanitise a user-submitted "URL" field and
+  // render relative dates à la Eva Decker's guestbook. Kept next to
+  // each other so new contributors see them as a pair.
+  // ------------------------------------------------------------------
+
+  // Find an object in an array by matching a property value — a
+  // Nunjucks-friendly replacement for Jinja's                                           (Nunjucks ships neither       nor                 ,
+  // so that Jinja idiom silently returns undefined). Used by the
+  // guestbook template to resolve each entry.theme string into its
+  // notecardThemes registry record.
+  //
+  //   {% set theme = themes | findBy("key", entry.theme) %}
+  eleventyConfig.addFilter("findBy", (arr, key, value) => {
+    if (!Array.isArray(arr)) return null;
+    return arr.find((item) => item && item[key] === value) || null;
+  });
+
+  // Detect messages that contain box-drawing / ASCII art characters.
+  // Returns true if the message likely needs monospace rendering to
+  // preserve alignment (box-drawing, block elements, braille patterns).
+  eleventyConfig.addFilter("isAsciiArt", (str) => {
+    if (!str) return false;
+    // Box-drawing (U+2500–257F), block elements (U+2580–259F),
+    // braille (U+2800–28FF), or 3+ consecutive spaces (alignment trick)
+    return /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/.test(str) ||
+           /   {3,}/.test(str);
+  });
+
+  // Normalise a "URL" form field into { isUrl, href } — Google Form
+  // respondents sometimes paste "example.com", "https://…", a city
+  // name ("Erlangen"), or leave it blank. We want:
+  //   ""            -> { isUrl: false }
+  //   "Erlangen"    -> { isUrl: false } (no dot or scheme -> not a URL)
+  //   "example.com" -> { isUrl: true,  href: "https://example.com" }
+  //   "https://x.y" -> { isUrl: true,  href: "https://x.y" }
+  eleventyConfig.addFilter("toHref", (raw) => {
+    if (!raw) return { isUrl: false };
+    const s = String(raw).trim();
+    if (!s) return { isUrl: false };
+    const lower = s.toLowerCase();
+    if (lower.startsWith("http://") || lower.startsWith("https://")) {
+      return { isUrl: true, href: s };
+    }
+    // Bare domain heuristic — must contain a dot, no spaces, and the
+    // TLD segment must be >= 2 alphanumeric chars. Keeps "Erlangen"
+    // from being promoted to a link while still catching "ky.fyi",
+    // "example.com", "a.bc".
+    if (/^[^\s]+\.[a-z0-9]{2,}$/i.test(s)) {
+      return { isUrl: true, href: "https://" + s };
+    }
+    return { isUrl: false };
+  });
+
+  // Guestbook / notecard date formatter — mirrors Eva Decker's
+  // guestbook phrasing:
+  //   < 1 min            -> "just now"
+  //   < 1 hour           -> "N minutes ago" ("a minute ago" at N=1)
+  //   < 1 day            -> "N hours ago"   ("an hour ago" at N=1)
+  //   < 1 week           -> "N days ago"    ("yesterday" at N=1)
+  //   same calendar year -> "23 Apr"
+  //   past years         -> "23 Apr 2025"
+  //
+  // Input may be an ISO date string ("2026-04-26") or a full ISO
+  // timestamp ("2026-04-26T12:29:02"). Date-only strings are anchored
+  // to local midnight.       is overridable for tests.
+  eleventyConfig.addFilter("relativeDate", (raw, now) => {
+    if (!raw) return "";
+    const dt =
+      raw instanceof Date
+        ? DateTime.fromJSDate(raw)
+        : DateTime.fromISO(String(raw));
+    if (!dt.isValid) return "";
+    const currentTime = now || DateTime.now();
+
+    const diffMin = currentTime.diff(dt, "minutes").minutes;
+    if (diffMin < 1) return "just now";
+    if (diffMin < 60) {
+      const n = Math.round(diffMin);
+      return n === 1 ? "a minute ago" : n + " minutes ago";
+    }
+    const diffH = currentTime.diff(dt, "hours").hours;
+    if (diffH < 24) {
+      const n = Math.round(diffH);
+      return n === 1 ? "an hour ago" : n + " hours ago";
+    }
+    const diffD = currentTime.diff(dt, "days").days;
+    if (diffD < 7) {
+      const n = Math.round(diffD);
+      if (n === 1) return "yesterday";
+      return n + " days ago";
+    }
+    // Absolute date. Include the year only if the entry is from a
+    // previous calendar year — keeps the current year's list visually
+    // light, while older entries still disambiguate.
+    return dt.year === currentTime.year
+      ? dt.toFormat("d LLL")
+      : dt.toFormat("d LLL yyyy");
+  });
+
   // Minify HTML in production
   if (process.env.ELEVENTY_ENV === "prod") {
     eleventyConfig.addTransform("minify-html", async function (content) {

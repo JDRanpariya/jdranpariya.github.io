@@ -44,6 +44,7 @@
     "check:lh": "bunx lhci autorun",
     "format": "bunx prettier --write .",
     "format:check": "bunx prettier --check .",
+    "add-notecard": "./scripts/add-notecard.sh",
     "prepare": "husky"
   },
   "dependencies": {
