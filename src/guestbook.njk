@@ -57,7 +57,7 @@ section: "guest book"
             class="relative z-[1] flex-1 min-h-0 w-full bg-transparent border-0 resize-none overflow-hidden font-inherit text-inherit leading-inherit whitespace-pre-wrap break-words focus:outline-none focus-visible:outline-none placeholder:text-notecard-ink placeholder:opacity-75"
             rows="5"
             maxlength="175"
-            placeholder="Leave a message, a thought, a quote or a tiny poem..."
+            placeholder="Share a thought, ask a question, or leave some encouragement."
             required
             aria-label="Your message"
           ></textarea>
@@ -107,11 +107,10 @@ section: "guest book"
            server-side. Default is the first theme in the registry. #}
         <input type="hidden" id="themeField" name="entry.901424146" value="{{ initialTheme.key }}" />
 
-        {# Controls row overlaps the card's bottom edge. pointer-events:none
-           on the wrapper so clicks on the card edge still reach the
-           textarea; auto on the pills themselves. #}
+        {# Controls row overlaps the card's bottom edge. Sits above the
+           card via z-index so buttons remain tappable on iOS Safari. #}
         <div
-          class="absolute left-0 right-0 bottom-[1.4rem] z-[3] flex flex-wrap items-center justify-center gap-[clamp(1rem,5vw,4rem)] translate-y-1/2 font-serif [pointer-events:none] [&>*]:[pointer-events:auto]"
+          class="absolute left-0 right-0 bottom-[1.4rem] z-[3] flex flex-wrap items-center justify-center gap-[clamp(1rem,5vw,4rem)] translate-y-1/2 font-serif"
           role="group"
           aria-label="Post controls"
         >
