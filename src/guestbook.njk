@@ -4,116 +4,261 @@ layout: layouts/base
 section: "guest book"
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16">
-  <header class="space-y-4">
+<section class="max-w-page mx-auto px-4 md:px-6 py-16 md:py-20 space-y-12">
+  <header class="text-center">
     <h1 class="font-serif text-display text-ink">Guest Book</h1>
-    <p class="text-lead text-ink-secondary max-w-xl">Leave a note. I read every entry.</p>
   </header>
 
-  <!-- Form -->
-  <form
-    action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse"
-    method="POST"
-    target="hidden_iframe"
-    id="guestbookForm"
-    class="space-y-6"
-  >
-    <div class="field">
-      <label for="name" class="field-label"> Your name <span class="required">*</span> </label>
-      <input
-        id="name"
-        name="entry.1611923301"
-        type="text"
-        required
-        class="field-input"
-        placeholder="Jane Doe"
-      />
-    </div>
+  {# Wall: composer lives inside as the first card, so it grid-aligns with
+     the rest of the wall. Every theme is image-kind (a WebP illustration
+     in assets/images/notecards/). See src/_data/notecardThemes.js. #}
+  <ul class="list-none m-0 p-0 pt-8 flex flex-wrap justify-center items-start gap-y-[3.75rem] gap-x-12">
+    {# ----- Composer ----- #}
+    <li class="w-[clamp(18rem,88vw,26.25rem)] max-w-full">
+      {% set initialTheme = notecardThemes.themes[0] %}
+      <form
+        id="guestbookForm"
+        action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse"
+        method="POST"
+        target="hidden_iframe"
+        class="notecard notecard--composer relative pb-[1.4rem]"
+      >
+        <div
+          id="composerCard"
+          class="relative aspect-[4/3] w-full flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)] gap-y-6"
+          data-theme="{{ initialTheme.key }}"
+        >
+          <img
+            id="composerTexture"
+            class="notecard__texture"
+            src="{{ initialTheme.src }}"
+            alt=""
+            role="presentation"
+            aria-hidden="true"
+          />
 
-    <div class="field">
-      <label for="message" class="field-label">
-        Your message <span class="required">*</span>
-      </label>
-      <textarea
-        id="message"
-        name="entry.736310078"
-        rows="5"
-        required
-        class="field-input resize-y"
-        placeholder="Share a thought, ask a question, or leave some encouragement."
-      ></textarea>
-    </div>
+          <label for="message" class="sr-only">Your message</label>
+          {#
+            maxlength="175" is sized for the NARROWEST supported card
+            (18rem / 288px wide at 4:3) on a 375px phone viewport.
 
-    <div class="field">
-      <label for="location" class="field-label">Location or website (optional)</label>
-      <input
-        id="location"
-        name="entry.2008969763"
-        type="text"
-        class="field-input"
-        placeholder="San Francisco, CA, or yourwebsite.com"
-      />
-    </div>
+            At 375px with bumped padding (28px each side):
+              text width  = 282 - 56 = 226px -> ~28 chars/line
+              text height = 5 lines -> ~140 chars dense
+              175 is snug but fits; overflow-wrap absorbs edge cases.
 
-    <div class="flex items-center gap-4">
-      <button type="submit" class="btn btn-primary">Leave your mark</button>
-      <p class="field-help">Entries appear within a few days.</p>
-    </div>
-  </form>
+            At desktop (420x315, 52px padding):
+              text width = 316px -> ~40 chars/line x 6 lines = ~240
+              175 leaves comfortable breathing room.
+          #}
+          <textarea
+            id="message"
+            name="entry.736310078"
+            class="relative z-[1] flex-1 min-h-0 w-full bg-transparent border-0 resize-none overflow-hidden font-inherit text-inherit leading-inherit whitespace-pre-wrap break-words focus:outline-none focus-visible:outline-none placeholder:text-notecard-ink placeholder:opacity-75"
+            rows="5"
+            maxlength="175"
+            placeholder="Leave a message, a thought, a quote or a tiny poem..."
+            required
+            aria-label="Your message"
+          ></textarea>
 
-  <div id="successMessage" class="hidden p-4 rounded-md bg-accent-soft border border-accent">
-    <p class="font-sans text-accent">Thank you — your message has been received.</p>
-  </div>
+          <div class="relative z-[1] flex flex-col items-end gap-1">
+            <label for="name" class="sr-only">Your name</label>
+            <input
+              id="name"
+              name="entry.1611923301"
+              class="w-3/5 max-w-[240px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              type="text"
+              placeholder="Your name"
+              required
+              maxlength="40"
+              autocomplete="name"
+            />
+            <label for="url" class="sr-only">Your URL (optional)</label>
+            <input
+              id="url"
+              name="entry.2008969763"
+              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              type="text"
+              placeholder="URL (optional)"
+              autocomplete="url"
+            />
+            <label for="email" class="sr-only">Email (optional, so I can reply)</label>
+            {#
+              Placeholder kept short ("email (optional)") because the
+              longer "so I can reply" clips on ~330px mobile cards. The
+              full context lives in the sr-only <label> for screen
+              readers.
+            #}
+            <input
+              id="email"
+              name="entry.1366435166"
+              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              type="email"
+              placeholder="email (optional)"
+              autocomplete="email"
+              maxlength="80"
+            />
+          </div>
+        </div>
 
-  <!-- Past entries -->
-  <section aria-labelledby="past-entries" class="space-y-6">
-    <h2 id="past-entries" class="eyebrow">Messages from visitors</h2>
+        {# Hidden field carries chosen theme. Google Forms keys every
+           answer on entry.<id> — a plain name="theme" is dropped
+           server-side. Default is the first theme in the registry. #}
+        <input type="hidden" id="themeField" name="entry.901424146" value="{{ initialTheme.key }}" />
 
-    {% if guestbook.length > 0 %}
-      <ol class="index-list list-none m-0 p-0">
-        {% for entry in guestbook %}
-          <li class="py-8">
-            <div class="flex items-baseline justify-between gap-4">
-              <div>
-                <p class="font-serif text-h4 text-ink">{{ entry.name }}</p>
-                {% if entry.location %}
-                  <p class="font-sans text-ui-sm text-ink-muted mt-1">{{ entry.location }}</p>
-                {% endif %}
-              </div>
-              <time class="font-sans text-ui-sm text-ink-muted shrink-0">{{ entry.date }}</time>
-            </div>
-            <p class="mt-4 font-serif text-body text-ink-secondary leading-relaxed">
-              {{ entry.message }}
-            </p>
-          </li>
-        {% endfor %}
-      </ol>
-    {% else %}
-      <div class="py-12 space-y-2">
-        <p class="font-serif text-h4 text-ink">Be the first to sign.</p>
-        <p class="font-sans text-ui text-ink-muted">No entries yet. Leave your mark above.</p>
-      </div>
-    {% endif %}
-  </section>
+        {# Controls row overlaps the card's bottom edge. pointer-events:none
+           on the wrapper so clicks on the card edge still reach the
+           textarea; auto on the pills themselves. #}
+        <div
+          class="absolute left-0 right-0 bottom-[1.4rem] z-[3] flex items-center justify-center gap-[clamp(1.5rem,5vw,4rem)] translate-y-1/2 font-serif [pointer-events:none] [&>*]:[pointer-events:auto]"
+          role="group"
+          aria-label="Post controls"
+        >
+          {# Style picker. prev/next buttons cycle through themes.
+             Keyboard: left/right arrows while focus is inside the
+             picker. The label in the middle stays static ("Style");
+             the theme name is conveyed by the card illustration. JS
+             keeps the button aria-labels updated with the current
+             theme name. #}
+          <div
+            class="composer__picker inline-flex items-stretch rounded-full bg-notecard-pill text-notecard-pill-ink shadow-notecard-pill"
+            aria-label="Notecard style"
+          >
+            <button
+              type="button"
+              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.55rem] px-3 rounded-l-full rounded-r-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
+              data-action="prev-theme"
+              aria-label="Previous style"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <span class="inline-flex items-center justify-center whitespace-nowrap text-base font-medium pointer-events-none" aria-hidden="true">Style</span>
+            <button
+              type="button"
+              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.55rem] px-3 rounded-r-full rounded-l-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
+              data-action="next-theme"
+              aria-label="Next style"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            class="composer__submit inline-flex items-center justify-center gap-2 rounded-full bg-notecard-pill text-notecard-pill-ink shadow-notecard-pill border-0 py-[0.55rem] px-5 text-base font-medium leading-none cursor-pointer active:scale-[0.96] transition-transform duration-fast focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[3px]"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0">
+              <path d="M3 12.9999H9V10.9999H3V1.84558C3 1.56944 3.22386 1.34558 3.5 1.34558C3.58425 1.34558 3.66714 1.36687 3.74096 1.40747L22.2034 11.5618C22.4454 11.6949 22.5337 11.9989 22.4006 12.2409C22.3549 12.324 22.2865 12.3924 22.2034 12.4381L3.74096 22.5924C3.499 22.7255 3.19497 22.6372 3.06189 22.3953C3.02129 22.3214 3 22.2386 3 22.1543V12.9999Z"/>
+            </svg>
+            {# Label wrapper reserves the BOLD width of "Submit" via an
+               invisible ::before twin (see .composer__submit-label in
+               input.css). Without this, the hover font-weight swap
+               would widen the glyph metrics and shift pill layout. #}
+            <span class="composer__submit-label" data-label="Submit"><span>Submit</span></span>
+          </button>
+        </div>
+
+      </form>
+      <p
+        id="composerStatus"
+        class="mt-8 text-center font-serif italic text-ink-secondary"
+        role="status"
+        hidden
+      >
+        Thanks — I read every note myself. Give me a day, then come back.
+      </p>
+    </li>
+
+    {# ----- Posted notes ----- #}
+    {% for entry in guestbook %}
+      {# Look up the theme. Unknown / missing / retired themes fall back
+         to the first theme in the registry (alphabetically first image
+         theme, currently "beige") so old Google Form responses keep
+         rendering even if their theme key is blank or renamed. #}
+      {% set entryKey = entry.theme or notecardThemes.themes[0].key %}
+      {% set entryTheme = notecardThemes.themes | findBy("key", entryKey) %}
+      {% if not entryTheme %}{% set entryTheme = notecardThemes.themes[0] %}{% endif %}
+
+      {% set seed = loop.index0 %}
+      {% set rot  = (((seed * 73 + 11) % 41) - 20) / 10 %}
+      <li
+        class="notecard relative aspect-[4/3] w-[clamp(18rem,88vw,26.25rem)] max-w-full flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)]"
+        data-theme="{{ entryTheme.key }}"
+        style="--rotation: {{ rot }}deg"
+      >
+        <img
+          class="notecard__texture"
+          src="{{ entryTheme.src }}"
+          alt=""
+          role="presentation"
+          aria-hidden="true"
+          loading="lazy"
+        />
+
+        <p class="relative z-[1] flex-1 m-0 text-base whitespace-pre-wrap break-words" dir="auto">{{ entry.message }}</p>
+
+        {# Signature
+           - If entry.url resolves to a real URL (http(s) or bare domain),
+             render the name as a link. Otherwise render as plain text.
+           - Date renders as a relative phrase via the            filter;
+             the raw ISO date stays in datetime="…" for a11y / schema.
+           - See .eleventy.js for       ,       , and              . #}
+        {% set linkInfo = entry.url | toHref %}
+        <div class="relative z-[1] self-end text-right mt-4 italic text-notecard-ink" dir="auto">
+          <span class="block text-base font-semibold before:content-none">
+            {% if linkInfo.isUrl %}
+              <a
+                href="{{ linkInfo.href }}"
+                class="text-inherit underline underline-offset-2 decoration-1 hover:decoration-2 hover:font-semibold"
+                rel="ugc nofollow noopener noreferrer"
+                target="_blank"
+                >{{ entry.name }}</a
+              >
+            {% else %}
+              {{ entry.name }}
+            {% endif %}
+          </span>
+          {% if entry.date %}
+            <time class="block mt-[0.2rem] font-serif not-italic text-[0.8rem] opacity-75 tracking-[0.02em] text-notecard-ink" datetime="{{ entry.date }}"
+              >{{ entry.date | relativeDate }}</time
+            >
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="mt-16 text-center font-serif italic text-[0.85rem] text-ink-muted">
+    Inspired by
+    <a
+      href="https://ky.fyi/guestbook"
+      rel="noopener noreferrer"
+      target="_blank"
+      class="text-inherit underline underline-offset-2 decoration-1 hover:text-accent"
+      >Ky Decker</a
+    >.
+  </p>
 
   <iframe
     name="hidden_iframe"
     id="hidden_iframe"
     title="Guestbook form target"
-    style="display:none"
+    aria-hidden="true"
+    tabindex="-1"
+    sandbox="allow-forms allow-same-origin"
+    class="hidden"
   ></iframe>
 </section>
 
+{# Theme list is injected so assets/js/guestbook.js doesn't need to
+   hard-code filenames. Drop a webp into assets/images/notecards/ and
+   it shows up here automatically on next build. #}
 <script>
-  (function () {
-    var form = document.getElementById("guestbookForm");
-    if (!form) return;
-    form.addEventListener("submit", function () {
-      setTimeout(function () {
-        var msg = document.getElementById("successMessage");
-        if (msg) msg.classList.remove("hidden");
-        form.style.display = "none";
-      }, 0);
-    });
-  })();
+  window.NOTECARD_THEMES = {{ notecardThemes.themes | dump | safe }};
 </script>
+<script src="/assets/js/guestbook.js" defer></script>
