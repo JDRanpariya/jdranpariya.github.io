@@ -46,13 +46,30 @@
     return match ? match[1] : "";
   }
 
-  // Pick a random stamp and apply it to the composer
+  // Pick a random stamp and apply it to the composer.
+  // Preloads the next stamp so switching feels instant.
+  var nextStampImg = null;
+
+  function preloadNextStamp() {
+    if (!STAMPS.length) return;
+    var idx = Math.floor(Math.random() * STAMPS.length);
+    nextStampImg = new Image();
+    nextStampImg.src = STAMPS[idx];
+  }
+
   function randomizeStamp() {
     if (!STAMPS.length || !stampEl) return;
-    var idx = Math.floor(Math.random() * STAMPS.length);
-    var src = STAMPS[idx];
+    // Use preloaded image if available, otherwise pick fresh
+    var src;
+    if (nextStampImg && nextStampImg.src) {
+      src = nextStampImg.src;
+    } else {
+      src = STAMPS[Math.floor(Math.random() * STAMPS.length)];
+    }
     stampEl.src = src;
     if (stampField) stampField.value = stampSlug(src);
+    // Preload the next one for instant swap
+    preloadNextStamp();
   }
 
   // "paper-warm" -> "Paper Warm". Used for aria-labels announcing the
