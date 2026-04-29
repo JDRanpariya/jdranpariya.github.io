@@ -37,6 +37,18 @@ section: "guest book"
             aria-hidden="true"
           />
 
+          {# Stamp preview — randomized by JS on load and theme change #}
+          {% if notecardStamps.length %}
+            <img
+              id="composerStamp"
+              class="notecard__stamp"
+              src="{{ notecardStamps[0] }}"
+              alt=""
+              role="presentation"
+              aria-hidden="true"
+            />
+          {% endif %}
+
           <label for="message" class="sr-only">Your message</label>
           {#
             maxlength="175" is sized for the NARROWEST supported card
@@ -106,6 +118,10 @@ section: "guest book"
            answer on entry.<id> — a plain name="theme" is dropped
            server-side. Default is the first theme in the registry. #}
         <input type="hidden" id="themeField" name="entry.901424146" value="{{ initialTheme.key }}" />
+
+        {# Hidden field carries chosen stamp slug. Updated by JS on
+           randomization. Uses a new Google Forms entry ID. #}
+        <input type="hidden" id="stampField" name="entry.2085794500" value="" />
 
         {# Controls row overlaps the card's bottom edge. Sits above the
            card via z-index so buttons remain tappable on iOS Safari. #}
@@ -199,6 +215,22 @@ section: "guest book"
           loading="lazy"
         />
 
+        {# Corner illustration stamp.
+           Only rendered if entry has a saved stamp slug. #}
+        {% if entry.stamp and notecardStamps.length %}
+          {% set stampPath = "/assets/images/stamps/stamp-" + entry.stamp + ".png" %}
+          {% if stampPath in notecardStamps %}
+            <img
+              class="notecard__stamp"
+              src="{{ stampPath }}"
+              alt=""
+              role="presentation"
+              aria-hidden="true"
+              loading="lazy"
+            />
+          {% endif %}
+        {% endif %}
+
         <p class="relative z-[1] flex-1 m-0 text-base whitespace-pre-wrap break-words" dir="auto">{{ entry.message }}</p>
 
         {# Signature
@@ -259,5 +291,6 @@ section: "guest book"
    it shows up here automatically on next build. #}
 <script>
   window.NOTECARD_THEMES = {{ notecardThemes.themes | dump | safe }};
+  window.NOTECARD_STAMPS = {{ notecardStamps | dump | safe }};
 </script>
 <script src="/assets/js/guestbook.js" defer></script>

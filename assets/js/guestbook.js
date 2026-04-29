@@ -22,16 +22,38 @@
       ? window.NOTECARD_THEMES
       : [];
 
+  const STAMPS =
+    Array.isArray(window.NOTECARD_STAMPS) && window.NOTECARD_STAMPS.length > 0
+      ? window.NOTECARD_STAMPS
+      : [];
+
   const form = document.getElementById("guestbookForm");
   if (!form || THEMES.length === 0) return;
 
   const card = document.getElementById("composerCard");
   const textureEl = document.getElementById("composerTexture");
   const themeField = document.getElementById("themeField");
+  const stampEl = document.getElementById("composerStamp");
+  const stampField = document.getElementById("stampField");
   const status = document.getElementById("composerStatus");
   const picker = form.querySelector(".composer__picker");
   const prevBtn = form.querySelector('[data-action="prev-theme"]');
   const nextBtn = form.querySelector('[data-action="next-theme"]');
+
+  // Extract slug from stamp path: "/assets/images/stamps/stamp-peony.png" -> "peony"
+  function stampSlug(src) {
+    var match = src && src.match(/stamp-([a-z0-9-]+)\.png$/i);
+    return match ? match[1] : "";
+  }
+
+  // Pick a random stamp and apply it to the composer
+  function randomizeStamp() {
+    if (!STAMPS.length || !stampEl) return;
+    var idx = Math.floor(Math.random() * STAMPS.length);
+    var src = STAMPS[idx];
+    stampEl.src = src;
+    if (stampField) stampField.value = stampSlug(src);
+  }
 
   // "paper-warm" -> "Paper Warm". Used for aria-labels announcing the
   // theme about to become active after a prev/next click.
@@ -51,6 +73,9 @@
     card.setAttribute("data-theme", theme.key);
     themeField.value = theme.key;
     textureEl.src = theme.src;
+
+    // Randomize stamp on every theme change
+    randomizeStamp();
 
     // Keep the visible pill label static ("Style", by design — the theme
     // is conveyed by the card illustration). Update the prev/next

@@ -8,39 +8,47 @@
  * ========================================================================== */
 
 @font-face {
-  font-family: 'Fraunces';
+  font-family: "Fraunces";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('/assets/fonts/fraunces-latin-wght-normal.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("/assets/fonts/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Fraunces';
+  font-family: "Fraunces";
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url('/assets/fonts/fraunces-latin-wght-italic.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("/assets/fonts/fraunces-latin-wght-italic.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Literata';
+  font-family: "Literata";
   font-style: normal;
   font-weight: 200 900;
   font-display: swap;
-  src: url('/assets/fonts/literata-latin-wght-normal.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("/assets/fonts/literata-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Literata';
+  font-family: "Literata";
   font-style: italic;
   font-weight: 200 900;
   font-display: swap;
-  src: url('/assets/fonts/literata-latin-wght-italic.woff2') format('woff2-variations');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("/assets/fonts/literata-latin-wght-italic.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ==========================================================================
@@ -120,12 +128,23 @@ body {
 
 /* Headings use Fraunces — characterful display serif with wonky charm.
    WONK 1 enables the quirky alternate glyphs; SOFT 50 adds warmth. */
-h1, h2, h3, h4, h5, h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .font-heading,
-h1.font-serif, h2.font-serif, h3.font-serif,
-h4.font-serif, h5.font-serif, h6.font-serif {
+h1.font-serif,
+h2.font-serif,
+h3.font-serif,
+h4.font-serif,
+h5.font-serif,
+h6.font-serif {
   font-family: Fraunces, ui-serif, Georgia, serif;
-  font-variation-settings: "WONK" 1, "SOFT" 50;
+  font-variation-settings:
+    "WONK" 1,
+    "SOFT" 50;
 }
 
 /* Sans stack owns nav, buttons, chips, meta — anything scanned. */
@@ -980,10 +999,8 @@ button,
   /* Sepia-tinted 4-layer pill shadow — reads as warm lift on the cream
    * page. Consumed via tailwind.config.js as the                token. */
   --notecard-pill-shadow:
-    0 0.6px 0.6px rgba(52, 28, 8, 0.14),
-    0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
-    0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08),
-    0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);
+    0 0.6px 0.6px rgba(52, 28, 8, 0.14), 0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
+    0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08), 0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);
 }
 
 /* Dark-mode page overrides for notecard chrome.
@@ -998,10 +1015,8 @@ button,
   /* Neutral-black pill shadow — the sepia-tinted light-mode version read
    * as a warm glow behind the cream pills on a dark page. */
   --notecard-pill-shadow:
-    0 0.6px 0.6px rgba(0, 0, 0, 0.35),
-    0 1.6px 1.6px -1.2px rgba(0, 0, 0, 0.3),
-    0 4.7px 4.6px -2.3px rgba(0, 0, 0, 0.22),
-    0 12.5px 12.2px -3.5px rgba(0, 0, 0, 0.14);
+    0 0.6px 0.6px rgba(0, 0, 0, 0.35), 0 1.6px 1.6px -1.2px rgba(0, 0, 0, 0.3),
+    0 4.7px 4.6px -2.3px rgba(0, 0, 0, 0.22), 0 12.5px 12.2px -3.5px rgba(0, 0, 0, 0.14);
 }
 
 /* Per-theme ink overrides.
@@ -1077,6 +1092,36 @@ button,
   pointer-events: none;
   z-index: 0;
 }
+
+/* Corner illustration stamp — small decorative PNG overlaid on posted
+ * notes, bottom-left. Blends into the paper texture via multiply +
+ * moderate opacity so it reads like a faded print, never competing
+ * with the note text (which sits at z-[1]).
+ *
+ * Natural colors are preserved — colorful illustrations (butterflies,
+ * roses, birds) show their hues through the blend mode.
+ * Light cards (beige, parchment): multiply darkens naturally
+ * Dark cards (navy, linen): screen lightens naturally */
+.notecard__stamp {
+  position: absolute;
+  bottom: clamp(1.25rem, 2vw, 1.5rem);
+  left: clamp(1.25rem, 2vw, 1.5rem);
+  width: clamp(5.5rem, 10vw, 7rem);
+  height: auto;
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+
+/* purgecss start ignore */
+/* Hide stamps on dark-textured themes — they don't suit dark cards. */
+[data-theme="navy"] .notecard__stamp,
+[data-theme="linen"] .notecard__stamp {
+  display: none;
+}
+/* purgecss end ignore */
 
 /* sr-only labels live inside the composer's flex column. A flex child
  * with row-gap contributes its own gap to either side — so an invisible

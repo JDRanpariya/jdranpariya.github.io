@@ -23,6 +23,9 @@ assets/
 # has JSON-LD inside {% if %} branches, breaks the jinja parser
 src/_includes/layouts/base.njk
 
+# has Nunjucks {{ }} inside <script> tags, breaks the jinja parser
+src/guestbook.njk
+
 # XML feed + sitemap — prettier adds a blank line between the frontmatter
 # fence and <?xml?>, which breaks XML parsers (declaration must be byte 0).
 src/feed.njk
