@@ -79,8 +79,7 @@ export default {
         // Notecard card lift on hover — warm-biased, matches the paper
         // palette. Same recipe for light + dark; the rgba channel stays
         // sepia because the card itself is always paper-coloured.
-        "notecard-hover":
-          "0 1px 2px rgba(52, 28, 8, 0.06), 0 8px 20px rgba(52, 28, 8, 0.1)",
+        "notecard-hover": "0 1px 2px rgba(52, 28, 8, 0.06), 0 8px 20px rgba(52, 28, 8, 0.1)",
         // Ky.fyi-style 4-layer pill shadow, defined as a CSS variable in
         // input.css so it can flip between sepia-on-cream (light mode)
         // and neutral-black (dark mode). Previously this was a hardcoded

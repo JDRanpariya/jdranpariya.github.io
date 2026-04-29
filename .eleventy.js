@@ -358,8 +358,7 @@ export default function (eleventyConfig) {
     if (!str) return false;
     // Box-drawing (U+2500–257F), block elements (U+2580–259F),
     // braille (U+2800–28FF), or 3+ consecutive spaces (alignment trick)
-    return /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/.test(str) ||
-           /   {3,}/.test(str);
+    return /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/.test(str) || /   {3,}/.test(str);
   });
 
   // Normalise a "URL" form field into { isUrl, href } — Google Form
@@ -401,10 +400,7 @@ export default function (eleventyConfig) {
   // to local midnight.       is overridable for tests.
   eleventyConfig.addFilter("relativeDate", (raw, now) => {
     if (!raw) return "";
-    const dt =
-      raw instanceof Date
-        ? DateTime.fromJSDate(raw)
-        : DateTime.fromISO(String(raw));
+    const dt = raw instanceof Date ? DateTime.fromJSDate(raw) : DateTime.fromISO(String(raw));
     if (!dt.isValid) return "";
     const currentTime = now || DateTime.now();
 
@@ -428,9 +424,7 @@ export default function (eleventyConfig) {
     // Absolute date. Include the year only if the entry is from a
     // previous calendar year — keeps the current year's list visually
     // light, while older entries still disambiguate.
-    return dt.year === currentTime.year
-      ? dt.toFormat("d LLL")
-      : dt.toFormat("d LLL yyyy");
+    return dt.year === currentTime.year ? dt.toFormat("d LLL") : dt.toFormat("d LLL yyyy");
   });
 
   // Minify HTML in production

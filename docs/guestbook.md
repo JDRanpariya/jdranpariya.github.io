@@ -7,25 +7,25 @@ themes and guestbook entries.
 
 ## File map
 
-| File | Role |
-|------|------|
-| `assets/images/notecards/` | Texture images (the actual cards) |
-| `src/_data/notecardThemes.js` | Build-time scan; produces the theme list |
-| `src/_data/guestbook.json` | Manually curated entry data |
-| `src/guestbook.njk` | Page template (composer + entry cards) |
-| `assets/js/guestbook.js` | Client-side: theme picker + form submit |
-| `src/css/input.css` | Notecard styles, per-theme ink overrides |
-| `scripts/add-notecard.sh` | CLI: JPG/PNG to resized WebP |
+| File                            | Role                                      |
+| ------------------------------- | ----------------------------------------- |
+| `assets/images/notecards/`      | Texture images (the actual cards)         |
+| `src/_data/notecardThemes.js`   | Build-time scan; produces the theme list  |
+| `src/_data/guestbook.json`      | Manually curated entry data               |
+| `src/guestbook.njk`             | Page template (composer + entry cards)    |
+| `assets/js/guestbook.js`        | Client-side: theme picker + form submit   |
+| `src/css/input.css`             | Notecard styles, per-theme ink overrides  |
+| `scripts/add-notecard.sh`       | CLI: JPG/PNG to resized WebP              |
 | `scripts/notecard_luminance.py` | Measures texture brightness for ink color |
-| `docs/notecard-sources.md` | Where to find CC0/PD illustrations |
+| `docs/notecard-sources.md`      | Where to find CC0/PD illustrations        |
 
 ### Dead code (safe to delete)
 
-| File | Why |
-|------|-----|
-| `scripts/build-notecards.py` | Old SVG ornament card generator (retired Apr 2026) |
-| `scripts/notecard_illustrations.py` | SVG motif library for the above |
-| `scripts/__pycache__/build-notecards.cpython-312.pyc` | Bytecode cache for the above |
+| File                                                  | Why                                                |
+| ----------------------------------------------------- | -------------------------------------------------- |
+| `scripts/build-notecards.py`                          | Old SVG ornament card generator (retired Apr 2026) |
+| `scripts/notecard_illustrations.py`                   | SVG motif library for the above                    |
+| `scripts/__pycache__/build-notecards.cpython-312.pyc` | Bytecode cache for the above                       |
 
 ---
 
@@ -46,13 +46,13 @@ themes and guestbook entries.
 
 ### Current themes
 
-| Theme | Luminance | Ink | Notes |
-|-------|-----------|-----|-------|
-| paper | 166 (mid) | `#5a3a24` sepia | Default on composer |
-| cream | 200 (light) | `#5a3a24` sepia | |
-| ivory | 220 (light) | `#5a3a24` sepia | |
-| indigo | 108 (dark) | `#f0e6d2` cream | CSS override needed |
-| linen | 72 (dark) | `#f0e6d2` cream | CSS override needed |
+| Theme  | Luminance   | Ink             | Notes               |
+| ------ | ----------- | --------------- | ------------------- |
+| paper  | 166 (mid)   | `#5a3a24` sepia | Default on composer |
+| cream  | 200 (light) | `#5a3a24` sepia |                     |
+| ivory  | 220 (light) | `#5a3a24` sepia |                     |
+| indigo | 108 (dark)  | `#f0e6d2` cream | CSS override needed |
+| linen  | 72 (dark)   | `#f0e6d2` cream | CSS override needed |
 
 ---
 
@@ -82,7 +82,8 @@ python3 scripts/notecard_luminance.py
 /* purgecss start ignore */
 [data-theme="linen"],
 [data-theme="indigo"],
-[data-theme="sunset"] {   /* <-- add here */
+[data-theme="sunset"] {
+  /* <-- add here */
   --notecard-ink: #f0e6d2;
   --notecard-red: #e8b4a8;
 }
@@ -127,7 +128,7 @@ To archive instead of deleting: `mv ... scratch/notecard-sources/`
 Edit `DEFAULT_KEY` in `src/_data/notecardThemes.js`:
 
 ```js
-const DEFAULT_KEY = "cream";  // was "paper"
+const DEFAULT_KEY = "cream"; // was "paper"
 ```
 
 Then `bun run build`. The composer opens with the new theme and
@@ -184,11 +185,10 @@ fails if stray files (JPG, PNG, etc.) are present. Keep raw sources in
 
 ## Quick-reference cheat sheet
 
-| Task | Commands |
-|------|----------|
-| Add theme | `bun run add-notecard <file> <slug>`, `python3 scripts/notecard_luminance.py`, `bun run build` |
-| Remove theme | `rm assets/images/notecards/notecard-<slug>.webp`, `bun run build` |
-| Change default | Edit `DEFAULT_KEY` in `src/_data/notecardThemes.js`, `bun run build` |
-| Add entry | Edit `src/_data/guestbook.json`, `bun run build` |
-| Validate | `bun run build:prod && bun run check:smoke` |
-
+| Task           | Commands                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| Add theme      | `bun run add-notecard <file> <slug>`, `python3 scripts/notecard_luminance.py`, `bun run build` |
+| Remove theme   | `rm assets/images/notecards/notecard-<slug>.webp`, `bun run build`                             |
+| Change default | Edit `DEFAULT_KEY` in `src/_data/notecardThemes.js`, `bun run build`                           |
+| Add entry      | Edit `src/_data/guestbook.json`, `bun run build`                                               |
+| Validate       | `bun run build:prod && bun run check:smoke`                                                    |

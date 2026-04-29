@@ -155,7 +155,7 @@ try {
   if (bad.length > 0) {
     fail(
       `stray notecard asset(s) shipped: ${bad.join(", ")}` +
-        " (only notecard-<slug>.webp and README.md are allowed)",
+        " (only notecard-<slug>.webp and README.md are allowed)"
     );
   } else {
     const webps = entries.filter((n) => n.endsWith(".webp"));
