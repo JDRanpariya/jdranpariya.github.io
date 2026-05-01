@@ -557,6 +557,50 @@ button,
     transform: translateX(4px);
   }
 
+  /* ---------------- Webmentions --------------------------------------- */
+
+  .webmentions__reactions {
+    @apply flex flex-wrap gap-8 mb-8;
+  }
+  .webmentions__group {
+    @apply flex flex-col gap-2;
+  }
+  .webmentions__faces {
+    @apply flex flex-wrap gap-1 list-none m-0 p-0;
+  }
+  .webmentions__avatar {
+    @apply rounded-full object-cover;
+    width: 36px;
+    height: 36px;
+  }
+  .webmentions__replies {
+    @apply mt-8;
+  }
+  .webmentions__reply {
+    @apply flex flex-col gap-2 p-4 rounded-lg;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+  .webmentions__reply-header {
+    @apply flex items-center gap-3;
+  }
+  .webmentions__reply-author {
+    @apply flex items-center gap-2 font-medium text-ink no-underline;
+  }
+  .webmentions__reply-author img {
+    width: 32px;
+    height: 32px;
+  }
+  .webmentions__reply-text {
+    @apply text-sm text-ink-secondary m-0;
+  }
+  .webmentions__reply-source {
+    @apply text-ink-muted no-underline;
+  }
+  .webmentions__reply-source:hover {
+    @apply text-accent;
+  }
+
   /* ---------------- Forms ----------------------------------------------- */
 
   .field {

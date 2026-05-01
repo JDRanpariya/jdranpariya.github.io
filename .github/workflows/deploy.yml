@@ -63,6 +63,8 @@ jobs:
         run: pip install Pillow
       - name: Production build
         run: bun run build:prod
+        env:
+          WEBMENTION_API_KEY: ${{ secrets.WEBMENTION_API_KEY }}
       - name: Smoke test
         run: bun run check:smoke
       - name: Link check

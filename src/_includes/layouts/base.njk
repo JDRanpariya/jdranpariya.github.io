@@ -26,7 +26,7 @@
     script-src 'self' 'unsafe-inline' https://jay-cloud.vercel.app;
     style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
     font-src 'self' https://cdn.jsdelivr.net;
-    img-src 'self' data: https:;
+    img-src 'self' data: https: https://webmention.io;
     connect-src 'self' https://jay-cloud.vercel.app;
     frame-src 'self' https://docs.google.com;
     base-uri 'self';
@@ -129,7 +129,7 @@
   "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
 }
 
-{%- elif section == "odysseys" or section == "odyssey" %}
+{%- elif section == "odyssey" %}
 {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -295,6 +295,8 @@
 <meta name="description" content="{% if description %}{{ description }}{% else %}A polymath building understanding of intelligence from molecules to minds. I love reading, cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of what I build and write starts there.{% endif %}" />
 <link rel="canonical" href="https://jdranpariya.github.io{{ page.url }}" />
 <link rel="alternate" type="application/atom+xml" title="JD Ranpariya" href="/feed.xml" />
+<link rel="webmention" href="https://webmention.io/jdranpariya.github.io/webmention" />
+<link rel="pingback" href="https://webmention.io/jdranpariya.github.io/xmlrpc" />
 
 <!-- Open Graph (LinkedIn, Discord, WhatsApp previews) -->
 <meta property="og:type" content="{% if layout == 'layouts/post.njk' %}article{% else %}website{% endif %}" />
@@ -312,7 +314,7 @@
   {%- set ogImagePath = "/assets/og/paper-" + page.fileSlug + ".png" -%}
 {%- elif section == "lectures" and layout == "layouts/post.njk" -%}
   {%- set ogImagePath = "/assets/og/lecture-" + page.fileSlug + ".png" -%}
-{%- elif section == "odyssey" or section == "odysseys" -%}
+{%- elif section == "odyssey" -%}
   {%- set ogImagePath = "/assets/og/default.png" -%}
 {%- elif section == "projects" and layout == "layouts/post.njk" -%}
   {%- set ogImagePath = "/assets/og/default.png" -%}

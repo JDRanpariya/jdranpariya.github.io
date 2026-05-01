@@ -1,0 +1,126 @@
+{% set mentions = webmentions[page.url] or [] %}
+{% set likes    = mentions | selectattr('wm-property', 'equalto', 'like-of')    | list %}
+{% set reposts  = mentions | selectattr('wm-property', 'equalto', 'repost-of')  | list %}
+{% set replies  = mentions | selectattr('wm-property', 'in', ['in-reply-to', 'mention-of']) | list %}
+
+{% if mentions | length %}
+  <section
+    class="webmentions max-w-prose mt-16 pt-8 border-t border-border"
+    aria-label="Webmentions"
+  >
+    {# Likes + reposts as avatar faces #}
+    {% if likes | length or reposts | length %}
+      <div class="webmentions__reactions">
+        {% if likes | length %}
+          <div class="webmentions__group">
+            <p class="eyebrow">{{ likes | length }} Like{{ 's' if likes | length != 1 }}</p>
+            <ul class="webmentions__faces">
+              {% for m in likes %}
+                {% if m.author and m.author.photo %}
+                  <li>
+                    <a
+                      href="{{ m.author.url or m.url }}"
+                      title="{{ m.author.name }}"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <img
+                        src="{{ m.author.photo }}"
+                        alt="{{ m.author.name }}"
+                        width="36"
+                        height="36"
+                        class="webmentions__avatar"
+                        loading="lazy"
+                      />
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if reposts | length %}
+          <div class="webmentions__group">
+            <p class="eyebrow">{{ reposts | length }} Repost{{ 's' if reposts | length != 1 }}</p>
+            <ul class="webmentions__faces">
+              {% for m in reposts %}
+                {% if m.author and m.author.photo %}
+                  <li>
+                    <a
+                      href="{{ m.author.url or m.url }}"
+                      title="{{ m.author.name }}"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <img
+                        src="{{ m.author.photo }}"
+                        alt="{{ m.author.name }}"
+                        width="36"
+                        height="36"
+                        class="webmentions__avatar"
+                        loading="lazy"
+                      />
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Replies / mentions as comment cards #}
+    {% if replies | length %}
+      <div class="webmentions__replies">
+        <p class="eyebrow mb-4">
+          {{ replies | length }} Reply/Mention{{ 's' if replies | length != 1 }}
+        </p>
+        <ol class="list-none m-0 p-0 space-y-6">
+          {% for m in replies %}
+            <li class="webmentions__reply">
+              <div class="webmentions__reply-header">
+                {% if m.author %}
+                  <a
+                    href="{{ m.author.url or m.url }}"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    class="webmentions__reply-author"
+                  >
+                    {% if m.author.photo %}
+                      <img
+                        src="{{ m.author.photo }}"
+                        alt="{{ m.author.name }}"
+                        width="32"
+                        height="32"
+                        class="webmentions__avatar"
+                        loading="lazy"
+                      />
+                    {% endif %}
+                    <span>{{ m.author.name }}</span>
+                  </a>
+                {% endif %}
+                {% if m.published %}
+                  <time datetime="{{ m.published }}" class="text-sm text-ink-muted"
+                    >{{ m.published | formatDate }}</time
+                  >
+                {% endif %}
+              </div>
+              {% if m.content and m.content.text %}
+                <p class="webmentions__reply-text">{{ m.content.text | truncate(300) }}</p>
+              {% endif %}
+              <a
+                href="{{ m.url }}"
+                class="webmentions__reply-source text-sm"
+                rel="noopener noreferrer"
+                target="_blank"
+                >View source &rarr;</a
+              >
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    {% endif %}
+  </section>
+{% endif %}

@@ -121,6 +121,11 @@ isPostLayout: true
           </footer>
         {% endif %}
 
+        {# --- Webmentions --- #}
+        {% if section == "writings" or section == "odyssey" %}
+          {% include "components/webmentions.njk" %}
+        {% endif %}
+
         {# --- Read next --- #}
         {% set sectionCollection = collections[section] if collections[section] else collections.writings %}
         {% set related = sectionCollection | relatedPosts(page.url, tags, series, readNext, collections.all) %}
