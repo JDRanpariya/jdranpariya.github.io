@@ -346,6 +346,38 @@ export default function (eleventyConfig) {
     });
   });
 
+  // Helper: normalize diverse date fields (published / date / year) to a Date for sorting
+  function getPostDate(item) {
+    const raw = item.data.published || item.data.date || item.data.year;
+    if (!raw) return null;
+    if (typeof raw === "number") return new Date(raw, 0, 1); // e.g. year: 1972
+    if (raw instanceof Date) return raw;
+    return new Date(raw);
+  }
+
+  // Unified feed collection — all published content, sorted reverse-chronological
+  eleventyConfig.addCollection("feedEntries", function (collectionApi) {
+    return [
+      ...collectionApi
+        .getFilteredByGlob("src/writings/*.md")
+        .filter((item) => item.data.status !== "draft"),
+      ...collectionApi.getFilteredByGlob("src/library/books/*.md"),
+      ...collectionApi.getFilteredByGlob("src/library/lectures/*.md"),
+      ...collectionApi.getFilteredByGlob("src/projects/**/*.md"),
+      ...collectionApi.getFilteredByGlob("src/odysseys/**/*.md"),
+    ]
+      .filter((item) => getPostDate(item) !== null)
+      .sort((a, b) => getPostDate(b) - getPostDate(a));
+  });
+
+  // Normalize year-only entries (e.g. papers with year: 1972) to a Date
+  // so the RSS plugin's dateToRfc3339 filter receives a proper Date object
+  eleventyConfig.addFilter("yearToDate", function (year) {
+    if (!year) return null;
+    if (typeof year === "number") return new Date(year, 0, 1);
+    return new Date(year);
+  });
+
   // Helper filter to group by year/month for the archive
   eleventyConfig.addFilter("groupUpdatesByYearMonth", (updates) => {
     const grouped = {};

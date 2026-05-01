@@ -3,24 +3,46 @@ permalink: /feed.xml
 eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en" xml:base="https://jdranpariya.github.io/">
   <title>JD Ranpariya</title>
-  <subtitle>Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle>
-  <link href="https://jdranpariya.github.io/feed.xml" rel="self" />
-  <link href="https://jdranpariya.github.io/" />
-  <updated>{{ collections.writings | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
-  <id>https://jdranpariya.github.io/</id>
+  <subtitle type="text">Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle>
+  <link href="https://jdranpariya.github.io/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="https://jdranpariya.github.io/" rel="alternate" type="text/html" />
+  <updated>{{ collections.feedEntries | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <id>https://jdranpariya.github.io/feed.xml</id>
   <author>
     <name>JD Ranpariya</name>
     <email>jaydeepranpariya037@gmail.com</email>
   </author>
-  {%- for post in collections.writings | limit(20) %}
+  <generator>Eleventy</generator>
+  <rights>© 2025–2026 JD Ranpariya</rights>
+  {%- for post in collections.feedEntries | limit(20) %}
+  {%- set postPublished = post.data.published or post.data.date %}
+  {%- if not postPublished and post.data.year %}
+  {%- set postPublished = post.data.year | yearToDate %}
+  {%- endif %}
   <entry>
-    <title>{{ post.data.title }}</title>
-    <link href="https://jdranpariya.github.io{{ post.url }}" />
-    <updated>{{ post.data.lastUpdated or post.data.published | dateToRfc3339 }}</updated>
+    <title>{{ (post.data.fullTitle or post.data.title) | escape }}</title>
+    <link href="https://jdranpariya.github.io{{ post.url }}" rel="alternate" type="text/html" />
     <id>https://jdranpariya.github.io{{ post.url }}</id>
-    <summary>{{ post.data.description }}</summary>
+    {%- if postPublished %}
+    <published>{{ postPublished | dateToRfc3339 }}</published>
+    {%- endif %}
+    <updated>{{ (post.data.lastUpdated or postPublished) | dateToRfc3339 }}</updated>
+    {%- if post.data.author %}
+    <author>
+      <name>{{ post.data.author }}</name>
+    </author>
+    {%- endif %}
+    {%- if post.data.description %}
+    <summary>{{ post.data.description | escape }}</summary>
+    {%- endif %}
+    <content type="html" src="https://jdranpariya.github.io{{ post.url }}" />
+    {%- if post.data.tags %}
+    {%- for tag in post.data.tags %}
+    <category term="{{ tag }}" />
+    {%- endfor %}
+    {%- endif %}
   </entry>
   {%- endfor %}
 </feed>
