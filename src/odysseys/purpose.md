@@ -2,10 +2,12 @@
 title: Purpose
 fullTitle: "Purpose: Compass of my life"
 layout: layouts/post
+section: "odyssey"
 description: This are my thoughts on having purpose in life, how I approch it and what does it mean for me.
 tags: ["life", "purpose"]
 published: 2025-10-09
 lastUpdated: 2025-10-09
+readNext: "/writings/dont-be-the-drunken-sailor/"
 ---
 
 **Note:** This are my raw notes directly from obsidian, I'm working on making them bit more polished for easy reading. work in progress!!

@@ -9,6 +9,7 @@ link: "https://www.science.org/doi/10.1126/science.177.4047.393"  # optional
 section: "papers"
 tags: ["emergence", "science"]
 layout: layouts/post
+readNext: "/odysseys/the-codex-of-understanding/"
 ---
 
 

@@ -143,19 +143,6 @@ export default function (eleventyConfig) {
       },
     });
 
-  // Filter to extract footnotes from rendered Markdown
-  eleventyConfig.addFilter("extractFootnotes", function (content) {
-    const footnoteMatch = content.match(/<ol class="footnotes-list">[\s\S]*<\/ol>/);
-    return footnoteMatch ? footnoteMatch[0] : "";
-  });
-
-  // Filter to remove footnotes from main content
-  eleventyConfig.addFilter("removeFootnotes", function (content) {
-    return content
-      .replace(/<hr class="footnote-sep">/, "")
-      .replace(/<ol class="footnotes-list">[\s\S]*<\/ol>/, "");
-  });
-
   eleventyConfig.setLibrary("md", md);
 
   // Image optimization shortcode.
@@ -258,6 +245,58 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
+  // Return the single best related post from a collection.
+  // Priority: manual readNext override > same-series next > Jaccard tag similarity.
+  // Called from templates as: collection | relatedPosts(page.url, tags, series, readNext, allCollection)
+  eleventyConfig.addFilter(
+    "relatedPosts",
+    function (collection, pageUrl, tags, series, readNext, allCollection) {
+      if (!collection || !pageUrl) return [];
+
+      // 1. Manual override — search all content since readNext can cross sections
+      if (readNext) {
+        const searchIn = allCollection || collection;
+        const manual = searchIn.find((item) => item.url === readNext);
+        if (manual) return [manual];
+      }
+
+      // 2. Algorithmic fallback
+      const postTags = new Set(tags || []);
+      const postSeries = series && series.name;
+      const postSeriesOrder = series && series.order;
+
+      const scored = collection
+        .filter((item) => item.url !== pageUrl)
+        .map((item) => {
+          const itemTags = new Set(item.data.tags || []);
+          const intersection = [...postTags].filter((t) => itemTags.has(t)).length;
+          const union = new Set([...postTags, ...itemTags]).size;
+          const jaccard = union > 0 ? intersection / union : 0;
+
+          let score = jaccard;
+
+          // Strong boost for same-series; prefer the next post in sequence
+          if (postSeries && item.data.series && item.data.series.name === postSeries) {
+            score += 1;
+            // Prefer the immediately next entry in the series
+            if (postSeriesOrder && item.data.series.order === postSeriesOrder + 1) {
+              score += 0.5;
+            }
+          }
+
+          return { item, score };
+        })
+        .filter(({ score }) => score > 0)
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          // Tiebreak: more recent first
+          return new Date(b.item.data.published || 0) - new Date(a.item.data.published || 0);
+        });
+
+      return scored.length ? [scored[0].item] : [];
+    }
+  );
+
   eleventyConfig.addCollection("writings", function (collection) {
     return collection
       .getFilteredByGlob("src/writings/*.md")
@@ -276,12 +315,18 @@ export default function (eleventyConfig) {
       if ("tags" in item.data) {
         let tags = item.data.tags;
         tags = tags.filter((tag) => {
-          // Filter out template tags and nav
+          // Filter out template tags, nav, and internal collection names
+          // that aren't real content tags (eleventy auto-tags items with
+          // their collection name — we want only the tags authors wrote).
           switch (tag) {
             case "all":
             case "nav":
             case "post":
             case "posts":
+            case "nowUpdates":
+            case "reckoningTheDead":
+            case "alchemistsHearth":
+            case "__validateFrontmatter":
               return false;
           }
           return true;

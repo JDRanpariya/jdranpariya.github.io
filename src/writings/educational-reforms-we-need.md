@@ -6,6 +6,7 @@ tags: ["education", "learning"]
 section: "writings"
 layout: layouts/post.njk
 description: "What reading about sleep, maturity, and emotions made me think schools should do differently."
+readNext: "/library/books/school-of-life/"
 ---
 
 For me education means to build a better model of the world — one that

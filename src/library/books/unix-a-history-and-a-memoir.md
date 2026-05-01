@@ -7,8 +7,10 @@ link: "https://www.amazon.de/UNIX-History-Memoir-Brian-Kernighan/dp/1695978552"
 section: "books"
 tags: ["unix", "research", "science"]
 published: 2025-09-28 
+lastUpdated: 2025-09-28 
 layout: layouts/post.njk
 description: "It's great book about rise and fall of research at AT&T and Unix."
+readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
 Currently it's rough bookmarks, I'm working on providing insights kind of notes where I tag paras with what I learned form it.

@@ -7,8 +7,10 @@ link: "https://www.amazon.de/Outliers-Story-Success-Malcolm-Gladwell/dp/03160249
 section: "books"
 tags: ["psychology", "non-fiction"]
 published: 2026-03-15            # Optional, when you read it or publication date
+lastUpdated: 2026-03-15
 layout: layouts/post.njk
 description: "Just as researchers had to look beyond the individual to explain health in Roseto, Gladwell looks beyond the individual to explain success."
+readNext: "/writings/educational-reforms-we-need/"
 ---
 
 ## Actionalbe Insights

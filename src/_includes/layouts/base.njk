@@ -119,10 +119,20 @@
   }
 }
 
+{%- elif section == "odysseys" and not published %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Odysseys of JD Ranpariya",
+  "description": "Long-term explorations into AI, biology, philosophy, and the mapping of human knowledge.",
+  "url": "https://jdranpariya.github.io/odysseys/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
 {%- elif section == "odysseys" or section == "odyssey" %}
 {
   "@context": "https://schema.org",
-  "@type": "TechArticle",
+  "@type": "Article",
   "headline": "{{ fullTitle or title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
@@ -135,6 +145,26 @@
     "url": "https://jdranpariya.github.io/about"
   },
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://jdranpariya.github.io{{ page.url }}" }
+}
+
+{%- elif section == "writings index" %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Writings by JD Ranpariya",
+  "description": "Essays and reflections on AI, learning, neuroscience, and living curiously.",
+  "url": "https://jdranpariya.github.io/writings/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+}
+
+{%- elif section == "projects index" %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Projects by JD Ranpariya",
+  "description": "Things I'm building, tweaking, or just playing around with.",
+  "url": "https://jdranpariya.github.io/projects/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
 }
 
 {%- elif section == "projects" %}
@@ -155,24 +185,27 @@
   }
 }
 
-{%- elif section == "writings index" %}
+{%- elif section == "papers" %}
 {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Writings by JD Ranpariya",
-  "description": "Essays and reflections on AI, learning, neuroscience, and living curiously.",
-  "url": "https://jdranpariya.github.io/writings/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
-}
-
-{%- elif section == "projects" and not published %}
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Projects by JD Ranpariya",
-  "description": "Things I'm building, tweaking, or just playing around with.",
-  "url": "https://jdranpariya.github.io/projects/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "@type": "Review",
+  "name": "Notes: {{ fullTitle or title }}",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "datePublished": "{{ published }}",
+  "dateModified": "{{ lastUpdated or published }}",
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about"
+  },
+  "itemReviewed": {
+    "@type": "ScholarlyArticle",
+    "name": "{{ fullTitle or title }}",
+    "author": { "@type": "Person", "name": "{{ author }}" },
+    {% if link %}"url": "{{ link }}",{% endif %}
+    "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+  }
 }
 
 {%- elif section == "library" %}
@@ -185,13 +218,53 @@
   "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
 }
 
-{%- elif section == "odysseys" and not published %}
+{%- elif section == "about" %}
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "JD Ranpariya",
+  "url": "https://jdranpariya.github.io/about",
+  "description": "{{ description }}",
+  "jobTitle": "Physical AI Researcher",
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Friedrich-Alexander-Universität Erlangen-Nürnberg"
+  },
+  "sameAs": [
+    "https://github.com/jdranpariya",
+    "https://linkedin.com/in/jdranpariya",
+    "https://x.com/jdranpariya",
+    "https://www.goodreads.com/user/show/161877825-jay"
+  ]
+}
+
+{%- elif section == "home" %}
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "name": "Jaydeep Ranpariya — Physical AI Researcher & Builder",
+  "description": "{{ description }}",
+  "url": "https://jdranpariya.github.io",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "https://jdranpariya.github.io/about",
+    "sameAs": [
+      "https://github.com/jdranpariya",
+      "https://linkedin.com/in/jdranpariya",
+      "https://x.com/jdranpariya",
+      "https://www.goodreads.com/user/show/161877825-jay"
+    ]
+  }
+}
+
+{%- elif section == "tags index" %}
 {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Odysseys of JD Ranpariya",
-  "description": "Long-term explorations into AI, biology, philosophy, and the mapping of human knowledge.",
-  "url": "https://jdranpariya.github.io/odysseys/",
+  "name": "All Tags — JD Ranpariya",
+  "description": "Browse all topics across Jay Ranpariya's writings, library, odysseys, and projects.",
+  "url": "https://jdranpariya.github.io/tags/",
   "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
 }
 
@@ -229,9 +302,26 @@
 <meta property="og:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
 <meta property="og:url" content="https://jdranpariya.github.io{{page.url}}" />
 <meta property="og:site_name" content="JD Ranpariya" />
-{% if image %}
-<meta property="og:image" content="https://jdranpariya.github.io{{ image }}" />
-{% endif %}
+{# Compute OG image path from section + slug #}
+{%- set ogImagePath = "/assets/og/default.png" -%}
+{%- if section == "writings" and layout == "layouts/post.njk" -%}
+  {%- set ogImagePath = "/assets/og/" + page.fileSlug + ".png" -%}
+{%- elif section == "books" and layout == "layouts/post.njk" -%}
+  {%- set ogImagePath = "/assets/og/book-" + page.fileSlug + ".png" -%}
+{%- elif section == "papers" and layout == "layouts/post.njk" -%}
+  {%- set ogImagePath = "/assets/og/paper-" + page.fileSlug + ".png" -%}
+{%- elif section == "lectures" and layout == "layouts/post.njk" -%}
+  {%- set ogImagePath = "/assets/og/lecture-" + page.fileSlug + ".png" -%}
+{%- elif section == "odyssey" or section == "odysseys" -%}
+  {%- set ogImagePath = "/assets/og/default.png" -%}
+{%- elif section == "projects" and layout == "layouts/post.njk" -%}
+  {%- set ogImagePath = "/assets/og/default.png" -%}
+{%- elif section == "guest book" -%}
+  {%- set ogImagePath = "/assets/og/guestbook.png" -%}
+{%- endif -%}
+<meta property="og:image" content="https://jdranpariya.github.io{{ ogImagePath }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 <!-- Article-specific meta -->
 {% if published %}
@@ -247,9 +337,10 @@
 {% endif %}
 
 <!-- Twitter/X Card -->
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="{% if title %}{{ title | smartTitleCase }}{% else %}JD Ranpariya{% endif %}" />
 <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
+<meta name="twitter:image" content="https://jdranpariya.github.io{{ ogImagePath }}" />
 
   <!-- Favicon --->
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
@@ -259,7 +350,9 @@
 
   <!-- Self-hosted fonts (Fraunces + Literata) loaded via @font-face in CSS -->
   <link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/literata-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Umami analytics (preconnect only; script is injected conditionally below) -->
   <link rel="preconnect" href="https://jay-cloud.vercel.app">
 

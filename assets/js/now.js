@@ -47,13 +47,11 @@
       link.classList.toggle("text-ink-muted", !isActive);
     });
 
-    // Only move focus when the user explicitly activated this change (e.g.
-    // clicked an archive link). Don't steal focus on initial render or
-    // hash-change routing — those shouldn't draw a focus ring around the
-    // heading.
+    // Scroll to the heading so the user starts reading from the top.
     if (opts && opts.moveFocus) {
       if (heading.tabIndex < 0) heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 

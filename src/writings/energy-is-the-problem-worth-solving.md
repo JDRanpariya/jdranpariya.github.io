@@ -6,6 +6,7 @@ tags: ["ideas", "science", "engineering"]
 section: "writings"
 layout: layouts/post.njk
 description: "The highest-impact problem you can work on right now. Solve energy, and everything else leaps forward."
+readNext: "/library/papers/life-force-biology-wheels/"
 ---
 
 While reading Sapiens it occurred to me that we have grown 

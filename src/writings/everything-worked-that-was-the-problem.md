@@ -9,6 +9,7 @@ series:
   order: 3
 layout: layouts/post.njk
 description: "A wrong simulation is most dangerous when it still produces working behavior. Lessons from a year of sim2real on a real balancing system."
+readNext: "/writings/energy-is-the-problem-worth-solving/"
 ---
 
 I remember the first time I deployed an RL policy on the actual hardware. Cart moving, ball rolling, the thing was balancing. I stood there watching it and I should've been happy — months of work, first real deployment, ball is staying on the cart. Except something felt wrong. The cart was jerking back and forth like it was panicking. Ball would drift towards one end, cart would slam in that direction, overshoot, ball rolls back, cart slams the other way. Never settled, never looked graceful, just barely surviving each moment. It took about 8 seconds to stabilize when simulation references suggest a decent controller should need about 2.

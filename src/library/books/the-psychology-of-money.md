@@ -7,8 +7,10 @@ link: "https://www.amazon.de/-/en/Psychology-Money-Timeless-Lessons-Happiness/dp
 section: "books"
 tags: ["psychology", "money"]
 published: 2025-09-13            # Optional, when you read it or publication date
+lastUpdated: 2025-09-13
 layout: layouts/post.njk
 description: "Really neat ideas about money and people's mindset around it woven in stories."
+readNext: "/library/books/outliers/"
 eleventyExcludeFromCollections: true
 ---
 

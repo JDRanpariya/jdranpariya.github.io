@@ -8,6 +8,7 @@ status: "finished"
 published: 2025-09-24
 lastUpdated: 2026-03-21
 layout: layouts/post
+section: "projects"
 tags: ["tech"]
 ---
 

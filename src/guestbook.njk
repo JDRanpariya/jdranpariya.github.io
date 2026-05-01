@@ -4,7 +4,7 @@ layout: layouts/base
 section: "guest book"
 ---
 
-<section class="max-w-page mx-auto px-4 md:px-6 py-16 md:py-20 space-y-12">
+<section class="max-w-page mx-auto px-6 md:px-8 py-16 md:py-20 space-y-12">
   <header class="text-center">
     <h1 class="font-serif text-display text-ink">Guest Book</h1>
   </header>
@@ -79,7 +79,7 @@ section: "guest book"
             <input
               id="name"
               name="entry.1611923301"
-              class="w-3/5 max-w-[240px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              class="w-3/5 max-w-[240px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="text"
               placeholder="Your name"
               required
@@ -90,7 +90,7 @@ section: "guest book"
             <input
               id="url"
               name="entry.2008969763"
-              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="text"
               placeholder="URL (optional)"
               autocomplete="url"
@@ -105,7 +105,7 @@ section: "guest book"
             <input
               id="email"
               name="entry.1366435166"
-              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)]"
+              class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="email"
               placeholder="email (optional)"
               autocomplete="email"
@@ -142,7 +142,7 @@ section: "guest book"
           >
             <button
               type="button"
-              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.55rem] px-3 rounded-l-full rounded-r-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
+              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.7rem] px-3 rounded-l-full rounded-r-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
               data-action="prev-theme"
               aria-label="Previous style"
             >
@@ -153,7 +153,7 @@ section: "guest book"
             <span class="inline-flex items-center justify-center whitespace-nowrap text-base font-medium pointer-events-none" aria-hidden="true">Style</span>
             <button
               type="button"
-              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.55rem] px-3 rounded-r-full rounded-l-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
+              class="composer__picker-btn inline-flex items-center justify-center border-0 bg-transparent text-inherit cursor-pointer leading-none py-[0.7rem] px-3 rounded-r-full rounded-l-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:[outline-offset:-2px]"
               data-action="next-theme"
               aria-label="Next style"
             >
@@ -165,7 +165,7 @@ section: "guest book"
 
           <button
             type="submit"
-            class="composer__submit inline-flex items-center justify-center gap-2 rounded-full bg-notecard-pill text-notecard-pill-ink shadow-notecard-pill border-0 py-[0.55rem] px-5 text-base font-medium leading-none cursor-pointer active:scale-[0.96] transition-transform duration-fast focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[3px]"
+            class="composer__submit inline-flex items-center justify-center gap-2 rounded-full bg-notecard-pill text-notecard-pill-ink shadow-notecard-pill border-0 py-[0.7rem] px-5 text-base font-medium leading-none cursor-pointer active:scale-[0.96] transition-transform duration-fast focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[3px]"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0">
               <path d="M3 12.9999H9V10.9999H3V1.84558C3 1.56944 3.22386 1.34558 3.5 1.34558C3.58425 1.34558 3.66714 1.36687 3.74096 1.40747L22.2034 11.5618C22.4454 11.6949 22.5337 11.9989 22.4006 12.2409C22.3549 12.324 22.2865 12.3924 22.2034 12.4381L3.74096 22.5924C3.499 22.7255 3.19497 22.6372 3.06189 22.3953C3.02129 22.3214 3 22.2386 3 22.1543V12.9999Z"/>
@@ -218,7 +218,7 @@ section: "guest book"
         {# Corner illustration stamp.
            Only rendered if entry has a saved stamp slug. #}
         {% if entry.stamp and notecardStamps.length %}
-          {% set stampPath = "/assets/images/stamps/stamp-" + entry.stamp + ".png" %}
+          {% set stampPath = "/assets/images/stamps/stamp-" + entry.stamp + ".webp" %}
           {% if stampPath in notecardStamps %}
             <img
               class="notecard__stamp"

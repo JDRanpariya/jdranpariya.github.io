@@ -10,6 +10,7 @@ published: 2026-04-11
 lastUpdated: 2026-04-11
 layout: layouts/post.njk
 description: "An emotional education for the challenges of modern life."
+readNext: "/library/books/the-handbook-of-emotion-regulation/"
 ---
 
 ## Actionable Insights

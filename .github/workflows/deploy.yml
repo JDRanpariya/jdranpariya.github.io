@@ -27,6 +27,7 @@ jobs:
       - uses: oven-sh/setup-bun@v1
       - name: Regenerate bun.lock
         run: |
+          bun install --frozen-lockfile || true
           rm -f bun.lock
           bun install
       - name: Commit lockfile if changed

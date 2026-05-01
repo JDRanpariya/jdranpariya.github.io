@@ -2,10 +2,12 @@
 title: The Codex of Understanding
 fullTitle: "Codex: Compass of my learning"
 layout: layouts/post
+section: "odyssey"
 description: A personal quest to build the most complete, connected understanding of existence - uniting the scientific, philosophical, and humanistic worldviews.
 tags: ["learning"]
 published: 2025-10-13
 lastUpdated: 2025-10-13
+readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
 **Note:** Work in progress.

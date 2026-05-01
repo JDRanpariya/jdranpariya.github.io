@@ -7,8 +7,10 @@ link: "https://www.amazon.de/-/en/Surely-Youre-Joking-Feynman-Adventures/dp/0099
 section: "books"
 tags: ["memoir", "life", "science", "entertaining", "non-fiction"]
 published: 2026-03-01            # Optional, when you read it or publication date
+lastUpdated: 2026-03-01
 layout: layouts/post.njk
 description: "If you're curious about many things, you will enjoy this book immensely!"
+readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
 ## Actionable Insights

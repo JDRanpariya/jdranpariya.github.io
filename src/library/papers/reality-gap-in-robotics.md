@@ -9,4 +9,5 @@ link: "https://arxiv.org/pdf/2510.20808"  # optional
 section: "papers"
 tags: ["AI", "robotics"]
 layout: layouts/post
+readNext: "/writings/everything-worked-that-was-the-problem/"
 ---

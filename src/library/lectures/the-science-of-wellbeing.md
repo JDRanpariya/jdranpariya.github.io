@@ -7,8 +7,10 @@ link: "https://www.coursera.org/learn/the-science-of-well-being"
 section: "lectures"
 tags: ["life", "practical", "health"]
 published: 2025-09-13            # Optional, when you read it or publication date
+lastUpdated: 2025-09-13
 layout: layouts/post.njk
 description: "She's an absolute delight to listen to and watch. For an introvert like me, this was insanely eye-opening!"
+readNext: "/library/books/school-of-life/"
 ---
 
 > [!info] 

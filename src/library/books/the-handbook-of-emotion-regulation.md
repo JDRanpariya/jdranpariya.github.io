@@ -7,8 +7,10 @@ link: "https://www.amazon.de/-/en/Handbook-Emotion-Regulation-Third-James/dp/146
 section: "books"
 tags: ["psychology", "non-fiction"]
 published: 2026-03-07            # Optional, when you read it or publication date
+lastUpdated: 2026-03-07
 layout: layouts/post.njk
 description: "I've only read first chapter, just curious about emotions"
+readNext: "/library/lectures/the-science-of-wellbeing/"
 ---
 
 ## Actionalbe Insights

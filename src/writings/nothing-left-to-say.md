@@ -6,6 +6,7 @@ tags: ["ideas", "writing"]
 section: "writings"
 layout: layouts/post.njk
 description: "On the feeling that everything worth saying has already been said — and writing anyway."
+readNext: "/writings/dont-be-the-drunken-sailor/"
 ---
 
 Since childhood I had a feeling that there is nothing left for me to invent. After learning about

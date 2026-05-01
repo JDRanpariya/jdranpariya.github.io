@@ -6,6 +6,7 @@ tags: ["skills", "life"]
 section: "writings"
 layout: layouts/post.njk
 description: "Having different tools matters more than having superior ones."
+readNext: "/library/books/surely-you-are-joking-mr-feynman/"
 ---
 
 > If he's been trying the same thing for a week, and I'm trying it and can't do it, it ain't the way to do it!

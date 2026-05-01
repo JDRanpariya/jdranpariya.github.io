@@ -2,6 +2,7 @@
 title: The First Fires
 fullTitle: "The First Fires: Zucchini & Cauliflower"
 layout: layouts/post
+section: "odyssey"
 description: "My first logged cooking experiments" 
 tags: ["hobby", "cooking"]
 published: 2026-02-07

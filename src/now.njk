@@ -2,6 +2,7 @@
 title: Now
 layout: layouts/base
 section: "now"
+description: "What Jay's actually up to — a running log of life, work, and whatever's on his mind."
 ---
 
 {% set groupedUpdates = collections.nowUpdates | groupUpdatesByYearMonth %}
@@ -71,16 +72,15 @@ section: "now"
             Archive
           </summary>
           <div class="mt-4 space-y-3">
-            {% include "now-archive-list.njk" ignore missing %}
             {% if collections.nowUpdates | length %}
               {% for yearData in groupedUpdates %}
                 {% set year = yearData[0] %}
                 {% set months = yearData[1] %}
-                <details {% if loop.first %}open{% endif %} class="text-ui-sm">
+                <details {% if loop.first %}open{% endif %} class="archive-details text-ui-sm">
                   <summary class="font-sans text-ui text-ink cursor-pointer">{{ year }}</summary>
                   <div class="mt-2 pl-4 border-l border-border space-y-2">
                     {% for month, updates in months %}
-                      <details {% if loop.first %}open{% endif %}>
+                      <details {% if loop.first %}open{% endif %} class="archive-details">
                         <summary class="font-sans text-ui text-ink-muted cursor-pointer">
                           {{ month }}
                         </summary>
@@ -117,7 +117,7 @@ section: "now"
           {% for yearData in groupedUpdates %}
             {% set year = yearData[0] %}
             {% set months = yearData[1] %}
-            <details class="mb-3" {% if loop.first %}open{% endif %}>
+            <details class="archive-details mb-3" {% if loop.first %}open{% endif %}>
               <summary
                 class="font-sans text-ui font-medium text-ink cursor-pointer hover:text-accent transition-colors duration-base"
               >
@@ -125,7 +125,7 @@ section: "now"
               </summary>
               <div class="mt-2 pl-3 border-l border-border space-y-1">
                 {% for month, updates in months %}
-                  <details {% if loop.first %}open{% endif %}>
+                  <details class="archive-details" {% if loop.first %}open{% endif %}>
                     <summary
                       class="font-sans text-ui-sm text-ink-muted cursor-pointer hover:text-accent transition-colors duration-base"
                     >

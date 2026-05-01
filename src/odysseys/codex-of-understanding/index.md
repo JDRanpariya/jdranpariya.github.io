@@ -2,6 +2,7 @@
 title: Codex Index
 fullTitle: "Index: The Codex of Understanding"
 layout: layouts/post
+section: "odyssey"
 description: The structured map of all domains within the Codex of Understanding.
 tags: ["knowledge"]
 published: 2025-10-13

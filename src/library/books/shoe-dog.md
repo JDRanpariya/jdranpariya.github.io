@@ -10,6 +10,7 @@ published: 2025-09-13            # Optional, when you read it or publication dat
 lastUpdated: 2026-03-01            # Optional, when you read it or publication date
 layout: layouts/post.njk
 description: "This book is very dear to me, I never thought I would enjoy reading a memoire!"
+readNext: "/library/books/alchemist/"
 ---
 
 #### Actionable Insights

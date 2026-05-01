@@ -40,9 +40,9 @@
   const prevBtn = form.querySelector('[data-action="prev-theme"]');
   const nextBtn = form.querySelector('[data-action="next-theme"]');
 
-  // Extract slug from stamp path: "/assets/images/stamps/stamp-peony.png" -> "peony"
+  // Extract slug from stamp path: "/assets/images/stamps/stamp-peony.webp" -> "peony"
   function stampSlug(src) {
-    var match = src && src.match(/stamp-([a-z0-9-]+)\.png$/i);
+    var match = src && src.match(/stamp-([a-z0-9-]+)\.webp$/i);
     return match ? match[1] : "";
   }
 

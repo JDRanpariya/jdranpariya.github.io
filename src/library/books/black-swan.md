@@ -10,6 +10,7 @@ published: 2025-09-13
 lastUpdated: 2026-03-22 
 layout: layouts/post.njk
 description: "It's phenomeneal book, I like taleb's writing style and sheer practicality of it."
+readNext: "/writings/nothing-left-to-say/"
 ---
 
 ## Actionable Insights

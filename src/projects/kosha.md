@@ -9,6 +9,7 @@ status: "active"
 published: 2025-10-03
 lastUpdated: 2026-03-21
 layout: layouts/post
+section: "projects"
 tags: ["tech"]
 ---
 

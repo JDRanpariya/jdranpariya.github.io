@@ -7,8 +7,10 @@ link: "https://www.youtube.com/playlist?list=PL2FF649D0C4407B30"
 section: "lectures"
 tags: ["life", "practical", "science", "meta-learning"]
 published: 2025-09-13            # Optional, when you read it or publication date
+lastUpdated: 2025-09-13
 layout: layouts/post.njk
 description: "Boy, what a brilliant mind! How come more people haven't dedicated precious hours of their life listening to this man?"
+readNext: "/writings/building-different-box-of-tools/"
 ---
 
 By **Richard Hamming**

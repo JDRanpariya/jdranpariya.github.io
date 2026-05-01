@@ -6,6 +6,7 @@ tags: ["life", "growth"]
 section: "writings"
 layout: layouts/post.njk
 description: "on living intentionally, or what to do when everything's going fine but something still feels off."
+readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
 Have you ever felt lost even though nothing is actually wrong? Studies going well, making friends, career has some direction — but there's this hollow feeling underneath. Like you're going through motions that someone else set up for you.

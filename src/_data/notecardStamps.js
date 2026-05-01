@@ -1,23 +1,23 @@
 // src/_data/notecardStamps.js
 //
 // Build-time scan of assets/images/stamps/. Each
-//   stamp-<slug>.png
+//   stamp-<slug>.webp
 // becomes a corner illustration for posted guestbook notes.
 //
 // Output: array of src paths, e.g.
-//   ["/assets/images/stamps/stamp-peony.png", ...]
+//   ["/assets/images/stamps/stamp-peony.webp", ...]
 //
 // Consumed by src/guestbook.njk — each posted note gets one stamp
 // assigned deterministically via loop.index0 % stamps.length.
 //
-// Drop a new PNG in assets/images/stamps/ and rebuild. No code
+// Drop a new WebP in assets/images/stamps/ and rebuild. No code
 // changes needed.
 
 import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const STAMP_DIR = "assets/images/stamps";
-const FILE_RE = /^stamp-([a-z0-9][a-z0-9-]*)\.png$/i;
+const FILE_RE = /^stamp-([a-z0-9][a-z0-9-]*)\.webp$/i;
 
 function scanStamps() {
   let entries;

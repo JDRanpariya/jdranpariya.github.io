@@ -10,6 +10,7 @@ published: 2025-09-13            # Optional, when you read it or publication dat
 lastUpdated: 2026-03-19            # Optional, when you read it or publication date
 layout: layouts/post.njk
 description: "I had decided I would never read this, being a bit of a snob about popular classics, but bought it and completely fell in love with it."
+readNext: "/writings/dont-be-the-drunken-sailor/"
 ---
 
 
