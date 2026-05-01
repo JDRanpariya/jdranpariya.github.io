@@ -117,7 +117,7 @@ html {
 }
 
 body {
-  font-family: Literata, ui-serif, Georgia, serif;
+  font-family: "Literata", ui-serif, Georgia, serif;
   font-size: 1.25rem;
   line-height: 1.85;
   color: var(--color-ink);
@@ -438,8 +438,8 @@ button,
   /* Italic serif, not bold. It reads as a deck/dek — a quiet editor's note
    * under the title, not a second headline competing for attention. */
   .post-hero__lead {
-    font-family: Literata, ui-serif, Georgia, serif;
-    font-style: italic;
+    font-family: "Literata", ui-serif, Georgia, serif;
+    font-style: normal;
     font-weight: 400;
     font-size: 1.125rem; /* 18px — sits between body (16px) and H4 (22px) */
     line-height: 1.6;
@@ -495,7 +495,7 @@ button,
   }
   .post-footer__reply {
     text-align: center;
-    font-family: Literata, ui-serif, Georgia, serif;
+    font-family: "Literata", ui-serif, Georgia, serif;
   }
   .post-footer__reply p {
     color: var(--color-ink-secondary);
@@ -511,7 +511,7 @@ button,
     border-top: 1px solid var(--color-border);
   }
   .read-next__eyebrow {
-    font-family: Literata, ui-serif, Georgia, serif;
+    font-family: "Literata", ui-serif, Georgia, serif;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -535,12 +535,12 @@ button,
     gap: 0.5rem;
   }
   .read-next__title {
-    font-family: Literata, ui-serif, Georgia, serif;
+    font-family: "Literata", ui-serif, Georgia, serif;
     font-size: 1.25rem;
     font-weight: 500;
   }
   .read-next__desc {
-    font-family: Literata, ui-serif, Georgia, serif;
+    font-family: "Literata", ui-serif, Georgia, serif;
     font-size: 0.875rem;
     color: var(--color-ink-muted);
     line-height: 1.4;
@@ -598,7 +598,7 @@ button,
 
   .prose-site {
     max-width: 65ch;
-    font-family: Literata, ui-serif, Georgia, serif;
+    font-family: "Literata", ui-serif, Georgia, serif;
     font-size: 1rem; /* 16px — comfortable on phone screens */
     line-height: 1.85;
     color: var(--color-ink);
@@ -643,9 +643,9 @@ button,
   .prose-site a {
     color: inherit;
     text-decoration: underline;
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: 1.5px;
     text-underline-offset: 3px;
-    text-decoration-color: var(--color-border);
+    text-decoration-color: var(--color-accent);
     transition:
       color var(--duration-base) var(--ease-standard),
       text-decoration-color var(--duration-base) var(--ease-standard);
@@ -687,7 +687,8 @@ button,
     border-left: 3px solid var(--color-accent);
     padding: 0.25rem 0 0.25rem 1.25rem;
     margin: 1.75rem 0;
-    font-style: italic;
+    font-style: normal;
+    font-weight: 500;
     color: var(--color-ink);
     quotes: none;
   }
@@ -793,6 +794,27 @@ button,
   .prose-site a.footnote-ref:hover {
     text-decoration: underline;
   }
+}
+
+/* ==========================================================================
+ * Sidenotes & inline footnotes — rendered by post.js outside .prose-site.
+ * Links inside them need the same accent underline treatment.
+ * ========================================================================== */
+
+.sidenote-item a,
+.fn-inline a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--color-accent);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    text-decoration-color var(--duration-base) var(--ease-standard);
+}
+.sidenote-item a:hover,
+.fn-inline a:hover {
+  color: var(--color-accent);
 }
 
 /* ==========================================================================
@@ -909,7 +931,8 @@ button,
   --callout-color: 237, 217, 162;
 }
 .callout[data-callout="quote"] .callout-content {
-  font-style: italic;
+  font-style: normal;
+  font-weight: 500;
 }
 
 /* Custom markdown container: collapsible references. */
