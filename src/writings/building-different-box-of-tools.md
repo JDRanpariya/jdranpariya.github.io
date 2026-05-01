@@ -15,35 +15,35 @@ readNext: "/library/books/surely-you-are-joking-mr-feynman/"
 
 Article is inspired by the Feynman, he tells a story...
 
-I had learned to do integrals by various methods shown in a book that my high school 
+>I had learned to do integrals by various methods shown in a book that my high school 
 physics teacher Mr. Bader had given me.
-
-One day he told me to stay after class."Feynman," he said, "you talk too much and 
+>
+>One day he told me to stay after class."Feynman," he said, "you talk too much and 
 you make too much noise. I know why. You're bored. So I'm going to give you a book. 
 You go up there in the back, in the corner, and study this book, and when you know 
 everything that's in this book, you can talk again."
-
-So every physics class, I paid no attention to what was going on with Pascal's Law or 
+>
+>So every physics class, I paid no attention to what was going on with Pascal's Law or 
 whatever they were doing. I was up in the back with this book: Advanced Calculus, by Woods. 
 Bader knew I had studied Calculus for the Practical Man a little bit, so he gave me the 
 real works - it was for a junior or senior course in college. 
 It had Fourier series, Bessel functions, determinants, elliptic functions - all kinds of wonderful stuff I didn't know anything about.
-
-**That book also showed how to differentiate parameters under the integral sign** - 
+>
+>**That book also showed how to differentiate parameters under the integral sign** - 
 it's a certain operation. 
 It turns out that's not taught much in the universities; they don't emphasize it. 
 **But I caught on how to use that method, and I used that one damn tool again and again.**
 So because I was self-taught using that book, I had peculiar methods of doing integrals.
-
-The result was, when the guys at MIT or Princeton had trouble doing a certain integral, 
+>
+>The result was, when the guys at MIT or Princeton had trouble doing a certain integral, 
 it was because they couldn't do it with the standard methods they had learned in school. 
 If it was contour integration, they would have found it; if it was a simple series expansion, 
 they would have found it. Then I come along and try differentiating under the integral sign, 
 and often it worked. **So I got a great reputation for doing integrals, only because my box of 
 tool was different from everybody else's, and they had tries all their tools on it before giving 
 the problem to me.**
-
-In Chicago, when I went to gather information on problems they were working on. When
+>
+>In Chicago, when I went to gather information on problems they were working on. When
 the guy was explaining a problem, I said, "why don't you do it by differentiating under
 the integral sign?". **In half and hour he had it solved, and they had been working on it for 3 months!**
 
