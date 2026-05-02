@@ -29,7 +29,7 @@ const required = [
   "now/index.html",
   "guestbook/index.html",
   "404.html",
-  "sitemap_index.xml",
+  "sitemap.xml",
   "feed.xml",
   "robots.txt",
 ];
@@ -43,9 +43,9 @@ for (const p of required) {
 }
 
 // 2. Sitemap is valid XML and contains expected URLs
-console.log("\n[2] sitemap_index.xml");
+console.log("\n[2] sitemap.xml");
 try {
-  const sitemap = readFileSync(join(BUILD, "sitemap_index.xml"), "utf8");
+  const sitemap = readFileSync(join(BUILD, "sitemap.xml"), "utf8");
   if (!sitemap.trimStart().startsWith("<?xml")) fail("sitemap missing XML declaration");
   else ok("has <?xml declaration");
 
@@ -63,16 +63,16 @@ try {
     fail("sitemap contains /now/updates/ (should be filtered)");
   else ok("no /now/updates/ leakage");
 } catch (e) {
-  fail(`could not read sitemap_index.xml: ${e.message}`);
+  fail(`could not read sitemap.xml: ${e.message}`);
 }
 
-// 3. Feed is valid Atom XML and sitemap_index.xml has no leading whitespace
+// 3. Feed is valid Atom XML and sitemap.xml has no leading whitespace
 //
 // Historically this block used feed.trimStart().startsWith("<?xml") which
 // silently passed when the feed had a leading newline before the XML
 // declaration — a real bug that browsers caught and we didn't. Always
 // check the raw string.
-console.log("\n[3] feed.xml and sitemap_index.xml structure");
+console.log("\n[3] feed.xml and sitemap.xml structure");
 try {
   const feed = readFileSync(join(BUILD, "feed.xml"), "utf8");
   if (!feed.startsWith("<?xml"))
@@ -90,11 +90,11 @@ try {
   if (!feed.includes("<entry>"))
     console.log("  WARN: no <entry> elements (OK if no published writings)");
 
-  const sitemapRaw = readFileSync(join(BUILD, "sitemap_index.xml"), "utf8");
+  const sitemapRaw = readFileSync(join(BUILD, "sitemap.xml"), "utf8");
   if (!sitemapRaw.startsWith("<?xml")) fail("sitemap has whitespace before <?xml?> declaration");
   else ok("sitemap starts with <?xml declaration (no leading whitespace)");
 } catch (e) {
-  fail(`could not read feed.xml or sitemap_index.xml: ${e.message}`);
+  fail(`could not read feed.xml or sitemap.xml: ${e.message}`);
 }
 
 // 4. No unrendered template tokens leaked into HTML

@@ -1,0 +1,21 @@
+---
+permalink: /sitemap/
+eleventyExcludeFromCollections: true
+layout: layouts/base.njk
+title: Sitemap
+description: All pages on this site
+---
+
+<main class="wrapper readable prose">
+  <h1>Sitemap</h1>
+  <p>All discoverable pages on this site, listed for search engines.</p>
+  <ul>
+    {%- set site = "https://jdranpariya.github.io" %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") %}
+        <li><a href="{{ site }}{{ item.url }}">{{ site }}{{ item.url }}</a></li>
+      {%- endif %}
+    {%- endfor %}
+  </ul>
+</main>
