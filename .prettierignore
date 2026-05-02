@@ -30,3 +30,6 @@ src/guestbook.njk
 # fence and <?xml?>, which breaks XML parsers (declaration must be byte 0).
 src/feed.njk
 src/sitemap.njk
+
+# Nunjucks control flow with conditional </ol> inside {% if %} confuses the jinja parser
+src/sitemap.html.njk

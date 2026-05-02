@@ -3,19 +3,150 @@ permalink: /sitemap/
 eleventyExcludeFromCollections: true
 layout: layouts/base.njk
 title: Sitemap
-description: All pages on this site
+description: All discoverable pages on this site, listed for search engines.
 ---
 
-<main class="wrapper readable prose">
-  <h1>Sitemap</h1>
-  <p>All discoverable pages on this site, listed for search engines.</p>
-  <ul>
-    {%- set site = "https://jdranpariya.github.io" %}
+{%- set site = "https://jdranpariya.github.io" %}
+
+<main>
+  <section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16 md:space-y-20">
+    <header class="space-y-4">
+      <h1 class="font-serif text-display text-ink">Sitemap</h1>
+      <p class="text-lead text-ink-secondary max-w-xl">
+        Every discoverable page on this site. Listed here so search engines can find everything.
+      </p>
+    </header>
+
+    {%- macro sectionHeading(icon, label) %}
+      <h2 class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
+    {%- endmacro %}
+
+    {# Home / top-level pages #}
+    {%- set found = false %}
     {%- for item in collections.all %}
       {%- set d = item.data %}
-      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") %}
-        <li><a href="{{ site }}{{ item.url }}">{{ site }}{{ item.url }}</a></li>
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") and not item.url.startsWith("/writings/") and not item.url.startsWith("/library/") and not item.url.startsWith("/projects/") and not item.url.startsWith("/odysseys/") and not item.url.startsWith("/tags/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          {{ sectionHeading("⌂", "Pages") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ "jdranpariya.github.io" if item.url == "/" else d.title or item.url }}</h3>
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
       {%- endif %}
     {%- endfor %}
-  </ul>
+    {%- if found %}</ol>{%- endif %}
+
+    {# Writings #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/writings/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-writings">
+          {{ sectionHeading("✎", "Writings") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            {%- if d.published %}<p class="index-row__meta">{{ d.published | formatDate }}</p>{%- endif %}
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+    {# Library #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/library/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-library">
+          {{ sectionHeading("◈", "Library") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            {%- if d.author %}<p class="index-row__meta">{{ d.author }}</p>{%- endif %}
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+    {# Projects #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/projects/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-projects">
+          {{ sectionHeading("⊞", "Projects") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+    {# Odysseys #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/odysseys/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-odysseys">
+          {{ sectionHeading("◇", "Odysseys") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+    {# Tags #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/tags/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-tags">
+          {{ sectionHeading("#", "Tags") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+  </section>
 </main>
