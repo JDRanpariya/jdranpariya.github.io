@@ -88,7 +88,7 @@
           "px;" +
           "transition:color 0.2s;" +
           "color:var(--color-ink-secondary);" +
-          "font-size:0.875rem;" +
+          "font-size:0.9375rem;" +
           "line-height:1.55;";
 
         const row = document.createElement("div");
@@ -98,7 +98,7 @@
         const num = document.createElement("span");
         num.style.cssText =
           "flex-shrink:0;color:var(--color-accent);" +
-          "font-weight:600;font-size:0.8125rem;padding-top:0.15em;";
+          "font-weight:600;font-size:0.875rem;padding-top:0.15em;";
         num.textContent = fn.n + ".";
 
         const body = document.createElement("div");
@@ -195,7 +195,7 @@
           "border-left:2px solid var(--color-accent);" +
           "background:var(--color-surface);" +
           "border-radius:0 6px 6px 0;" +
-          "font-size:0.875rem;" +
+          "font-size:0.9375rem;" +
           "line-height:1.55;" +
           "color:var(--color-ink-secondary);";
 
@@ -204,7 +204,7 @@
         badge.style.cssText =
           "display:inline-block;" +
           "font-weight:600;color:var(--color-accent);" +
-          "font-size:0.8125rem;margin-right:0.5rem;";
+          "font-size:0.875rem;margin-right:0.5rem;";
         badge.textContent = id.replace("#fn", "") + ".";
 
         inline.appendChild(badge);

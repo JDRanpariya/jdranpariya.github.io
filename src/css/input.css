@@ -651,7 +651,7 @@ button,
 
   @media (min-width: 768px) {
     .prose-site {
-      font-size: 1.125rem; /* 18px */
+      font-size: 1.25rem; /* 20px */
     }
   }
   .prose-site > * + * {
