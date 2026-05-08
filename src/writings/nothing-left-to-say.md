@@ -64,7 +64,7 @@ I've renewed my personal site, I found a bit of motivation — it aligns with my
 vision.
 
 Then I learned interesting things about randomness while reading
-[The Black Swan](/library/books/black-swan). Increasing your exposure to the world is one way of
+[The Black Swan](/library/books/black-swan/). Increasing your exposure to the world is one way of
 creating more luck. A personal site is a neat way to achieve that. Writing about things that fancy
 me, learning in public, sharing notes — I do it either way in Obsidian. Why not make it public?
 
