@@ -30,6 +30,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
   eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  eleventyConfig.addPassthroughCopy({ "public/data": "data" });
 
   // CSS is written directly to build/css/ by PostCSS (see package.json
   // css:build script) — no passthrough needed. A previous addPassthroughCopy("build/css")
@@ -439,10 +440,12 @@ export default function (eleventyConfig) {
     }
   );
 
+  const isDev = process.env.ELEVENTY_ENV !== "prod";
+
   eleventyConfig.addCollection("writings", function (collection) {
     return collection
       .getFilteredByGlob("src/writings/*.md")
-      .filter((item) => item.data.status !== "draft")
+      .filter((item) => isDev || item.data.status !== "draft")
       .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
   });
 
@@ -502,7 +505,7 @@ export default function (eleventyConfig) {
     return [
       ...collectionApi
         .getFilteredByGlob("src/writings/*.md")
-        .filter((item) => item.data.status !== "draft"),
+        .filter((item) => isDev || item.data.status !== "draft"),
       ...collectionApi.getFilteredByGlob("src/library/books/*.md"),
       ...collectionApi.getFilteredByGlob("src/library/lectures/*.md"),
       ...collectionApi.getFilteredByGlob("src/projects/**/*.md"),

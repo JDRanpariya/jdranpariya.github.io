@@ -36,6 +36,9 @@ isPostLayout: true
              case where the label adds information you can't get from the title, the
              URL, or the page context. Category labels ("Writing", "Book", "Paper")
              are redundant and removed. #}
+          {% if status == "draft" %}
+            <p class="post-hero__eyebrow text-warning">⚠ DRAFT — not visible in production</p>
+          {% endif %}
           {% if series and series.name %}
             <p class="post-hero__eyebrow">{{ series.name }} · Part {{ series.order or 1 }}</p>
           {% endif %}
