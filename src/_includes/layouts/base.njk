@@ -16,8 +16,8 @@
     - fonts.googleapis.com, fonts.gstatic.com: (removed — fonts self-hosted now)
     - cdn.jsdelivr.net: KaTeX CSS
     - unpkg.com: Prism syntax-highlight theme
-    - img-src also allows https: for any remote image that falls back to pass-through
-      if build-time optimization fails (see {% image %} shortcode in .eleventy.js)
+    - img-src allows webmention.io for avatar images in webmentions.
+      All content images are processed at build time via eleventy-img.
 #}
 <meta
   http-equiv="Content-Security-Policy"
@@ -26,7 +26,7 @@
     script-src 'self' 'unsafe-inline' https://jay-cloud.vercel.app;
     style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
     font-src 'self' https://cdn.jsdelivr.net;
-    img-src 'self' data: https: https://webmention.io;
+    img-src 'self' data: https://webmention.io;
     connect-src 'self' https://jay-cloud.vercel.app;
     frame-src 'self' https://docs.google.com;
     base-uri 'self';
@@ -58,8 +58,8 @@
   "headline": "{{ title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   {% if series %}"isPartOf": { "@type": "CreativeWorkSeries", "name": "{{ series.name }}", "position": {{ series.order }} },{% endif %}
   "author": {
@@ -79,8 +79,8 @@
   "name": "Review: {{ fullTitle or title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
@@ -103,8 +103,8 @@
   "name": "Notes: {{ fullTitle or title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
@@ -136,8 +136,8 @@
   "headline": "{{ fullTitle or title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   "author": {
     "@type": "Person",
@@ -174,8 +174,8 @@
   "name": "{{ title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   {% if url %}"codeRepository": "{{ url }}",{% endif %}
   "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   "author": {
@@ -192,8 +192,8 @@
   "name": "Notes: {{ fullTitle or title }}",
   "description": "{{ description }}",
   "url": "https://jdranpariya.github.io{{ page.url }}",
-  "datePublished": "{{ published }}",
-  "dateModified": "{{ lastUpdated or published }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
@@ -327,10 +327,10 @@
 
 <!-- Article-specific meta -->
 {% if published %}
-<meta property="article:published_time" content="{{ published }}" />
+<meta property="article:published_time" content="{{ published | isoDateTime }}" />
 {% endif %}
 {% if lastUpdated %}
-<meta property="article:modified_time" content="{{ lastUpdated }}" />
+<meta property="article:modified_time" content="{{ lastUpdated | isoDateTime }}" />
 {% endif %}
 {% if tags %}
 {% for tag in tags %}
@@ -343,6 +343,8 @@
 <meta name="twitter:title" content="{% if title %}{{ title | smartTitleCase }}{% else %}JD Ranpariya{% endif %}" />
 <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
 <meta name="twitter:image" content="https://jdranpariya.github.io{{ ogImagePath }}" />
+<meta name="twitter:site" content="@jdranpariya" />
+<meta name="twitter:creator" content="@jdranpariya" />
 
   <!-- Favicon --->
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
@@ -350,32 +352,40 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
 <link rel="manifest" href="/assets/logo/site.webmanifest">
 
-  <!-- Self-hosted fonts (Fraunces + Literata) loaded via @font-face in CSS -->
+  <!-- Self-hosted fonts (Fraunces + Literata) loaded via @font-face in CSS.
+       Only normal-weight variants are preloaded (used above the fold).
+       Italic variants load on demand via font-display:swap — avoids ~97 KB
+       of eagerly-fetched bytes that are rarely needed on first paint. -->
   <link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/fraunces-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/literata-latin-wght-italic.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Umami analytics (preconnect only; script is injected conditionally below) -->
   <link rel="preconnect" href="https://jay-cloud.vercel.app">
 
   <!-- Tailwind CSS -->
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/style.css{{ '/css/style.css' | cacheBust }}" />
 
 {% if isPostLayout %}
 {# Third-party CSS is pinned by version AND SRI digest.
-   Regenerate hashes if you bump the versions (see AGENTS.md §14). #}
+   Regenerate hashes if you bump the versions (see AGENTS.md §14).
+   KaTeX is only loaded when hasMath is true (set in frontmatter).
+   Prism is only loaded when hasCode is true (set in frontmatter).
+   This avoids ~30 KB of CSS on posts that don't use math or code. #}
+{% if hasMath %}
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
   integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
   crossorigin="anonymous"
 />
+{% endif %}
+{% if hasCode %}
 <link
   rel="stylesheet"
   href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css"
   integrity="sha384-WwgFI0JHh6bHV6nQ0NnTmK2gweGZxGFY5GBlfx5yOGVZvUeCP5WoA+QxwI3LDU5Z"
   crossorigin="anonymous"
 />
+{% endif %}
 {% endif %}
 
   <!-- Theme initialization to prevent flash.

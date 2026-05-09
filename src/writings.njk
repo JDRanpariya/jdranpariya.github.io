@@ -18,7 +18,7 @@ section: "writings index"
       <li>
         <a href="{{ post.url }}" class="index-row">
           <div class="index-row__meta">
-            <time datetime="{{ post.data.published }}">{{ post.data.published | formatDate }}</time>
+            <time datetime="{{ post.data.published | isoDate }}">{{ post.data.published | formatDate }}</time>
             {% if post.data.tags and post.data.tags.length %}
               <span aria-hidden="true">·</span>
               <ul class="chip-list">

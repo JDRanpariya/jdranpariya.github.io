@@ -11,6 +11,8 @@ import markdownItContainer from "markdown-it-container";
 import Image from "@11ty/eleventy-img";
 import path from "path";
 import { fileURLToPath } from "url";
+import { createHash } from "crypto";
+import { readFileSync, existsSync } from "fs";
 import { DateTime } from "luxon";
 import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 
@@ -142,6 +144,73 @@ export default function (eleventyConfig) {
         }
       },
     });
+
+  // Override the default markdown-it image renderer to process images through
+  // @11ty/eleventy-img at build time. This ensures that ![alt](src) in markdown
+  // produces optimized AVIF with width/height/loading="lazy" — matching the
+  // {% image %} shortcode output. Without this, markdown images bypass the
+  // pipeline and ship as unoptimized raw files.
+  const defaultImageRender =
+    md.renderer.rules.image ||
+    function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+
+  md.renderer.rules.image = function (tokens, idx, options, env, self) {
+    const token = tokens[idx];
+    const src = token.attrGet("src") || "";
+    const alt = token.content || "";
+
+    // Skip external URLs and data URIs — only optimize local assets
+    if (/^(https?:\/\/|data:)/.test(src)) {
+      return defaultImageRender(tokens, idx, options, env, self);
+    }
+
+    // Resolve relative paths (e.g. ../../assets/images/projects/kosha_demo.jpg)
+    // to absolute paths from the project root.
+    let resolvedPath = src;
+    if (src.startsWith("/assets/")) {
+      resolvedPath = path.join(__dirname, "assets", src.slice("/assets/".length));
+    } else if (src.startsWith("assets/")) {
+      resolvedPath = path.join(__dirname, src);
+    } else if (src.startsWith("../../assets/")) {
+      resolvedPath = path.join(__dirname, src.replace(/^\.\.\/\.\.\//, ""));
+    } else if (src.startsWith("../")) {
+      // Generic relative — resolve from project root assuming assets/ prefix
+      resolvedPath = path.join(__dirname, src.replace(/^(\.\.\/)+/, ""));
+    }
+
+    // We can't use async here (markdown-it render is sync), so we check if the
+    // file was already processed by eleventy-img in a previous run (output exists
+    // in build/img/). If not, return a lazy <img> with the original src and let
+    // the passthrough copy handle it. The {% image %} shortcode handles async
+    // properly — this is a best-effort fallback for markdown content.
+    //
+    // For a fully async solution we'd need eleventy-img's sync API or a
+    // pre-processing step. Use Image.statsSync for sync processing:
+    try {
+      const metadata = Image.statsSync(resolvedPath, {
+        widths: [null],
+        formats: ["avif"],
+        outputDir: "./build/img/",
+        urlPath: "/img/",
+      });
+      const avif = metadata.avif[0];
+
+      // Also run the actual generation (sync won't write files, just stats)
+      Image(resolvedPath, {
+        widths: [null],
+        formats: ["avif"],
+        outputDir: "./build/img/",
+        urlPath: "/img/",
+      });
+
+      return `<img src="${avif.url}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" width="${avif.width}" height="${avif.height}">`;
+    } catch (e) {
+      console.warn(`[md-image] optimization failed for ${src}: ${e.message}. Using raw src.`);
+      return `<img src="${src}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy">`;
+    }
+  };
 
   eleventyConfig.setLibrary("md", md);
 
@@ -403,6 +472,31 @@ export default function (eleventyConfig) {
     return DateTime.fromJSDate(date).toFormat("LLL d, yyyy"); // Sep 15, 2025
   });
 
+  // Cache-busting: appends a short content hash as a query string to asset URLs.
+  // Usage in templates: href="/css/style.css{{ '/css/style.css' | cacheBust }}"
+  eleventyConfig.addFilter("cacheBust", (filePath) => {
+    const fullPath = path.join(__dirname, "build", filePath);
+    if (!existsSync(fullPath)) return "";
+    const content = readFileSync(fullPath);
+    const hash = createHash("md5").update(content).digest("hex").slice(0, 8);
+    return "?v=" + hash;
+  });
+
+  // ISO 8601 date string for <time datetime>, structured data, and meta tags.
+  // Outputs YYYY-MM-DD (date-only) which is valid for datetime attrs and Schema.org.
+  eleventyConfig.addFilter("isoDate", (dateInput) => {
+    if (!dateInput) return "";
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    return DateTime.fromJSDate(date).toISODate(); // 2026-02-15
+  });
+
+  // Full ISO 8601 with time + offset for Open Graph article:published_time.
+  eleventyConfig.addFilter("isoDateTime", (dateInput) => {
+    if (!dateInput) return "";
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    return DateTime.fromJSDate(date).toISO(); // 2026-02-15T00:00:00.000+01:00
+  });
+
   eleventyConfig.addFilter("dateToFormat", (dateObj, format = "yyyy-MM-dd") => {
     // Corrected to handle potential string inputs
     const dt =
@@ -508,7 +602,7 @@ export default function (eleventyConfig) {
   if (process.env.ELEVENTY_ENV === "prod") {
     eleventyConfig.addTransform("minify-html", async function (content) {
       if (this.outputPath && this.outputPath.endsWith(".html")) {
-        const { minify } = await import("html-minifier");
+        const { minify } = await import("html-minifier-terser");
         return minify(content, {
           collapseWhitespace: true,
           conservativeCollapse: true, // Preserve at least one space between inline elements

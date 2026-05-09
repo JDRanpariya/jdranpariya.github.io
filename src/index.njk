@@ -34,7 +34,7 @@ section: "home"
         <li>
           <a href="{{ post.url }}" class="index-row">
             <div class="index-row__meta">
-              <time datetime="{{ post.data.published }}"
+              <time datetime="{{ post.data.published | isoDate }}"
                 >{{ post.data.published | formatDate }}</time
               >
             </div>

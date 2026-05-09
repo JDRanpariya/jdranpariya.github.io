@@ -48,7 +48,7 @@ isPostLayout: true
 
           <p class="post-hero__meta">
             {% if published %}
-              <time datetime="{{ published }}">{{ published | formatDate }}</time>
+              <time datetime="{{ published | isoDate }}">{{ published | formatDate }}</time>
             {% endif %}
             {% if lastUpdated and lastUpdated != published %}
               <span class="whitespace-nowrap"> · Updated {{ lastUpdated | formatDate }}</span>

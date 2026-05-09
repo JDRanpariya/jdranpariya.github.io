@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-# Fail fast on broken builds or unformatted code.
+# Fail fast on unformatted code and basic build sanity.
+# The full check suite (a11y, lighthouse, links) runs in CI.
 # Skip with: git commit --no-verify
 
 set -e
@@ -10,9 +11,11 @@ bun run format:check || {
   exit 1
 }
 
-echo "→ build:prod"
-bun run build:prod > /dev/null 2>&1 || {
-  echo "✗ production build failed — run: bun run build:prod"
+# Quick dev build (no OG images, no prod optimizations) to catch syntax errors.
+# Full build:prod + smoke/a11y/lighthouse tests happen in CI.
+echo "→ build (dev)"
+bun run build > /dev/null 2>&1 || {
+  echo "✗ build failed — run: bun run build"
   exit 1
 }
 

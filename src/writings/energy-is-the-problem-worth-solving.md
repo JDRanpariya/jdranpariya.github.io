@@ -1,7 +1,7 @@
 ---
 title: energy is the problem worth solving
 published: 2026-03-26
-lastUpdated: 2026-01-29
+lastUpdated: 2026-04-20
 tags: ["ideas", "science", "engineering"]
 section: "writings"
 layout: layouts/post.njk

@@ -1,0 +1,5 @@
+# Python dependencies for build scripts (OG image generation, notecard processing).
+# Install: pip install -r requirements.txt
+# Used in: scripts/generate-og-images.py, scripts/build-notecards.py,
+#          scripts/notecard_illustrations.py, scripts/notecard_luminance.py
+Pillow>=10.0.0,<12.0.0

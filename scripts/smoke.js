@@ -166,6 +166,28 @@ try {
   else ok("no notecards directory (OK if none added yet)");
 }
 
+// 6. readNext frontmatter links resolve to actual build pages
+console.log("\n[6] readNext links resolve");
+{
+  const { execSync } = await import("node:child_process");
+  const grepOut = execSync("grep -rh \"readNext:\" src/ 2>/dev/null || true", { encoding: "utf8" });
+  const grepLines = grepOut.trim().split("\n").filter(Boolean);
+  let count = 0;
+  for (const ln of grepLines) {
+    const match = ln.match(/readNext:\s*["']?(\/[^"'\s]+)["']?/);
+    if (!match) continue;
+    count++;
+    const target = match[1].replace(/\/$/, "");
+    const buildPath = join(BUILD, target, "index.html");
+    if (existsSync(buildPath)) {
+      ok(`readNext ${target} → exists`);
+    } else {
+      fail(`readNext ${target} → MISSING in build`);
+    }
+  }
+  if (count === 0) ok("no readNext links found (OK)");
+}
+
 // Summary
 console.log("");
 if (failures > 0) {

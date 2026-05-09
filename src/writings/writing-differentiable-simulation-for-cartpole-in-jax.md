@@ -1,4 +1,6 @@
 ---
+hasMath: true
+hasCode: true
 title: "Building a Differentiable Cart-Pole World in JAX" 
 published: 2026-01-23
 lastUpdated: 2026-01-27
