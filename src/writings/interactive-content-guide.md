@@ -62,15 +62,6 @@ code: graph LR; Env-->|obs|Policy; Policy-->|action|Env; Env-->|reward|Loss; Los
 caption: "Differentiable simulation training loop — gradients flow end-to-end through the physics engine."
 :::
 
-### State Machine
-
-Perfect for documenting controller behavior:
-
-::: interactive mermaid
-code: stateDiagram-v2; [*]-->Idle; Idle-->Balancing: start; Balancing-->Recovering: disturbance; Recovering-->Balancing: stabilized; Recovering-->Fallen: timeout; Fallen-->[*]
-caption: "Cart-pole controller state machine — the system I built for my sim2real project."
-:::
-
 ---
 
 ## 3D Content
@@ -102,18 +93,6 @@ height: 400
 gravity: 1
 interactive: true
 caption: "A double pendulum showing chaotic motion. Drag the bobs to disturb them."
-:::
-
----
-
-## Gamified Explorables (Ncase-style)
-
-Inspired by Nicky Case. For emotional posts, storytelling, or when I want readers to *feel* a concept rather than just read about it:
-
-::: interactive ncase
-src: /interactive/components/energy-choices.js
-height: 400
-caption: "An interactive design tradeoff exploration. Make a choice and see the consequences."
 :::
 
 ---
