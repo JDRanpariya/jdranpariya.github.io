@@ -93,9 +93,21 @@ export async function mount(el, config, theme) {
     controls.maxPolarAngle = Math.PI * 0.85;
   }
 
-  // Load model if src provided
+  // Load model or custom scene module
   const src = el.dataset.src;
-  if (src) {
+  let userSetup = null;
+  if (src && src.endsWith('.js')) {
+    // Custom scene module — exports setup({ scene, THREE, camera, controls, theme })
+    try {
+      const module = await import(/* webpackIgnore: true */ src);
+      if (module.setup) {
+        userSetup = await module.setup({ scene, THREE, camera, controls, theme, config, el });
+      }
+    } catch (e) {
+      console.warn('[threejs] Failed to load scene module:', e);
+    }
+  } else if (src) {
+    // GLB/GLTF model
     const loader = new GLTFLoader();
     const gltf = await new Promise((resolve, reject) => {
       loader.load(src, resolve, undefined, reject);
@@ -116,8 +128,13 @@ export async function mount(el, config, theme) {
 
   // Animation loop
   let animationId;
+  let lastTime = performance.now();
   function animate() {
     animationId = requestAnimationFrame(animate);
+    const now = performance.now();
+    const dt = (now - lastTime) / 1000;
+    lastTime = now;
+    if (userSetup?.update) userSetup.update(dt);
     if (controls) controls.update();
     renderer.render(scene, camera);
   }

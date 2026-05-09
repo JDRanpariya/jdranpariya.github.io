@@ -2,7 +2,7 @@
  * D3 module — custom data visualizations.
  *
  * For research-grade charts, custom graph layouts, force-directed networks,
- * and pi.ai-style warm data presentations.
+ * and Physical Intelligence (π)-style warm data presentations.
  *
  * Config:
  *   height: number (default 400)

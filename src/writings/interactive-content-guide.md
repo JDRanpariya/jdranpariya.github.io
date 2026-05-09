@@ -39,8 +39,6 @@ height: 450
 caption: "Force density vs bandwidth across actuator technologies. The tradeoff between power and speed defines what robots can do."
 :::
 
-This is the kind of chart I'd use when writing about physical AI hardware — mapping the design space, showing where biology sits vs engineered systems.
-
 ### Sim-to-Real Transfer
 
 Filled area charts to show gaps and convergence over time:
@@ -77,87 +75,46 @@ caption: "Cart-pole controller state machine — the system I built for my sim2r
 
 ## 3D Content
 
-### Three.js
+### Three.js: Custom 3D Scene
 
-For rendering mechanisms, robots, and physical systems. Orbit controls let readers inspect from any angle. To use, reference a .glb model:
+For rendering mechanisms, robots, and physical systems. Orbit controls let readers inspect from any angle:
 
-    ::: interactive threejs
-    src: /models/your-model.glb
-    height: 500
-    autoRotate: true
-    camera: orbit
-    caption: "Drag to rotate, scroll to zoom."
-    :::
-
-### Model Viewer (Zero Config)
-
-For simple model display without custom scenes, Google's model-viewer web component:
-
-    ::: interactive model-viewer
-    src: /models/robot-arm.glb
-    height: 400
-    autoRotate: true
-    caption: "A 6-DOF robot arm."
-    :::
+::: interactive threejs
+src: /interactive/components/spinning-cube.js
+height: 400
+autoRotate: true
+camera: orbit
+ground: true
+caption: "A procedural spinning cube with wireframe overlay. Drag to rotate, scroll to zoom."
+:::
 
 ---
 
 ## Physics Simulations
 
-### Cannon-es: 3D Physics
-
-For robotics posts — simulate rigid bodies, joints, actuators, and control systems in full 3D. Provide a scene module that exports a setup function:
-
-    ::: interactive cannon
-    src: /interactive/components/cartpole-3d.js
-    height: 500
-    gravity: [0, -9.82, 0]
-    ground: true
-    caption: "3D cart-pole with physics. Drag to rotate view."
-    :::
-
-The scene module receives                                          and returns                      for the animation loop.
-
 ### Matter.js: 2D Physics
 
 For simpler demonstrations — pendulums, particles, springs, collisions:
 
-    ::: interactive matter
-    src: /interactive/components/pendulum.js
-    height: 400
-    gravity: 1
-    interactive: true
-    caption: "Drag the pendulum. Watch energy transfer."
-    :::
+::: interactive matter
+src: /interactive/components/pendulum-demo.js
+height: 400
+gravity: 1
+interactive: true
+caption: "A double pendulum showing chaotic motion. Drag the bobs to disturb them."
+:::
 
 ---
 
 ## Gamified Explorables (Ncase-style)
 
-Inspired by Nicky Case. For emotional posts, storytelling, or when I want readers to *feel* a concept rather than just read about it.
+Inspired by Nicky Case. For emotional posts, storytelling, or when I want readers to *feel* a concept rather than just read about it:
 
-The ncase module provides helpers for choice-based narratives and interactive controls:
-
-    ::: interactive ncase
-    src: /interactive/components/energy-choices.js
-    height: 500
-    caption: "What would you prioritize? Make your choice."
-    :::
-
-The module gets utilities like                 ,                 ,                , and             — everything needed to build a small game inside a post.
-
----
-
-## Scroll-Driven Stories
-
-Inspired by pudding.cool. Content animates and transforms as the reader scrolls:
-
-    ::: interactive scrollama
-    src: /interactive/components/evolution-of-control.js
-    height: 600
-    offset: 0.5
-    caption: "Scroll to see how control theory evolved."
-    :::
+::: interactive ncase
+src: /interactive/components/energy-choices.js
+height: 400
+caption: "An interactive design tradeoff exploration. Make a choice and see the consequences."
+:::
 
 ---
 
@@ -165,11 +122,11 @@ Inspired by pudding.cool. Content animates and transforms as the reader scrolls:
 
 For research-grade custom charts, network graphs, force-directed layouts:
 
-    ::: interactive d3
-    src: /interactive/components/knowledge-graph.js
-    height: 500
-    caption: "My reading network — books, papers, and concepts connected."
-    :::
+::: interactive d3
+src: /interactive/components/knowledge-graph.js
+height: 500
+caption: "My concept network for physical AI — drag nodes to rearrange. Each color is a topic cluster."
+:::
 
 ---
 
@@ -179,14 +136,14 @@ For research-grade custom charts, network graphs, force-directed layouts:
 
 1. Add                        to frontmatter
 2. Use                          blocks in markdown
-3. The loader script (                        ) hydrates blocks when scrolled into view
+3. The loader script hydrates blocks when scrolled into view
 4. Each module lazy-loads its library from CDN on first use
 5. All modules pull colors from                            which reads CSS variables
 
 ### Color Philosophy
 
-Inspired by pi.ai's warm, intentional data colors. The palette is:
-- **Earthy and warm** — burnt sienna, forest green, terra cotta, amber
+Inspired by Physical Intelligence's warm, archival data colors. The palette is:
+- **Earthy and warm** — burnt sienna, forest green, amber/ochre, steel blue
 - **Calibrated for both modes** — each color has a light and dark variant
 - **Accessible** — all pass WCAG contrast against the chart background
 - **Sequential** — ordered so adjacent series are always distinguishable
@@ -214,4 +171,4 @@ Inspired by pi.ai's warm, intentional data colors. The palette is:
 
 ---
 
-*This post is a living document. As I build more interactives for real posts, I'll add them here as working examples.*
+*This post is a living document. As I build more interactives for real posts, I'll add working examples here.*

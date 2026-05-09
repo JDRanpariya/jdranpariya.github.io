@@ -4,7 +4,7 @@
  * diagrams, and 3D scenes match the site's "Golden Peachy Glow" palette
  * and respond to dark mode automatically.
  *
- * Inspired by pi.ai's warm, intentional color usage in data visualizations.
+ * Inspired by Physical Intelligence (π)'s warm, archival color usage in data visualizations.
  *
  * Usage:
  *   import { getTheme } from '/interactive/theme.js';
