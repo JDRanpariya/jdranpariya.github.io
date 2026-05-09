@@ -15,7 +15,7 @@
     "baseline-browser-mapping": "^2.10.28",
     "browserslist": "^4.28.2",
     "concurrently": "^9.2.1",
-    "del-cli": "^5.1.0",
+    "del-cli": "^7.0.0",
     "html-minifier-terser": "^7.2.0",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
