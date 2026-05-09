@@ -36,29 +36,30 @@ export function getTheme() {
     danger: get('--color-danger') || '#e24856',
     info: get('--color-info') || '#47a2bb',
 
-    // Chart palette — warm, earthy, distinguishable.
+    // Chart palette — inspired by Physical Intelligence (π) website's
+    // muted, earthy, archival aesthetic. Warm but restrained.
     // Ordered for sequential use in multi-series plots.
     // Works in both light and dark mode (calibrated for contrast).
     palette: isDark
       ? [
-          '#d4a070', // accent (warm gold)
-          '#7ec4a5', // sage green
-          '#e2857b', // terracotta rose
+          '#d4a070', // warm gold (accent)
+          '#9CBE70', // sage green
+          '#E5C65B', // archival gold
           '#8bb4d9', // dusty blue
+          '#B7C8C9', // muted teal-grey
+          '#e2857b', // terracotta rose
           '#c9a8e2', // lavender
-          '#e6c468', // golden yellow
           '#6bc5c2', // teal
-          '#d4847a', // muted coral
         ]
       : [
-          '#9b4230', // accent (burnt sienna)
-          '#3d7a5f', // forest green
-          '#b85c4a', // terra cotta
+          '#9b4230', // burnt sienna (accent)
+          '#4C7E4D', // forest green
+          '#C4882D', // amber/ochre
           '#4a7fa8', // steel blue
           '#7a5b9e', // plum
-          '#c4882d', // amber
+          '#A8A179', // warm grey-olive
           '#2a8a87', // dark teal
-          '#a0513e', // rust
+          '#b85c4a', // terra cotta
         ],
 
     // Grid/axis styling
