@@ -16,9 +16,9 @@
 
 import { getTheme } from '../theme.js';
 
-const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js';
-const ORBIT_CDN = 'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/controls/OrbitControls.js';
-const CANNON_CDN = 'https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js';
+const THREE_CDN = 'https://esm.sh/three@0.169.0';
+const ORBIT_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+const CANNON_CDN = 'https://esm.sh/cannon-es@0.20.0';
 
 export async function mount(el, config, theme) {
   const [THREE, { OrbitControls }, CANNON] = await Promise.all([

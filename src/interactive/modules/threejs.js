@@ -19,9 +19,9 @@
 
 import { getTheme } from '../theme.js';
 
-const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js';
-const ORBIT_CDN = 'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/controls/OrbitControls.js';
-const GLTF_CDN = 'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+const THREE_CDN = 'https://esm.sh/three@0.169.0';
+const ORBIT_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
+const GLTF_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
 
 export async function mount(el, config, theme) {
   const [THREE, { OrbitControls }, { GLTFLoader }] = await Promise.all([
@@ -153,7 +153,7 @@ export async function mount(el, config, theme) {
   return { renderer, scene, camera, controls, animationId, resizeObserver };
 }
 
-export function onThemeChange(el, instance, config, newTheme) {
+export async function onThemeChange(el, instance, config, newTheme) {
   if (!instance) return;
   const { scene } = instance;
   // Update lighting
@@ -164,8 +164,10 @@ export function onThemeChange(el, instance, config, newTheme) {
   });
   // Update background
   if (config.background === 'surface') {
-    scene.background = new (await import(THREE_CDN)).Color(newTheme.surface);
+    const THREE = await import(/* webpackIgnore: true */ THREE_CDN);
+    scene.background = new THREE.Color(newTheme.surface);
   } else if (config.background === 'card') {
-    scene.background = new (await import(THREE_CDN)).Color(newTheme.card);
+    const THREE = await import(/* webpackIgnore: true */ THREE_CDN);
+    scene.background = new THREE.Color(newTheme.card);
   }
 }

@@ -37,8 +37,10 @@ async function loadMermaid(theme) {
       clusterBorder: theme.border,
       titleColor: theme.ink,
       edgeLabelBackground: theme.bg,
-      fontSize: '14px',
+      fontSize: '13px',
       fontFamily: theme.fontSans,
+      stateFontSize: '12px',
+      stateLabelFontSize: '11px',
     },
   });
 
@@ -49,9 +51,15 @@ async function loadMermaid(theme) {
 export async function mount(el, config, theme) {
   const mermaid = await loadMermaid(theme);
   const canvas = el.querySelector('.interactive__canvas');
-  const code = el.dataset.code || '';
+  // Semicolons in data-code serve as line separators (HTML attributes can't
+  // contain newlines). For graph/flowchart types, semicolons are native Mermaid
+  // syntax. For other diagram types (stateDiagram, sequence, etc.) we need
+  // to convert them to actual newlines.
+  const rawCode = el.dataset.code || '';
+  const isGraph = /^(graph|flowchart)\s/i.test(rawCode.trim());
+  const code = isGraph ? rawCode : rawCode.replace(/;\s*/g, '\n');
 
-  if (!code) {
+  if (!code.trim()) {
     canvas.innerHTML = '<p class="text-ink-muted">No diagram source provided.</p>';
     return null;
   }
