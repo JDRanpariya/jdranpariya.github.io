@@ -37,10 +37,8 @@ async function loadMermaid(theme) {
       clusterBorder: theme.border,
       titleColor: theme.ink,
       edgeLabelBackground: theme.bg,
-      fontSize: '13px',
+      fontSize: '12px',
       fontFamily: theme.fontSans,
-      stateFontSize: '12px',
-      stateLabelFontSize: '11px',
     },
   });
 
@@ -69,13 +67,15 @@ export async function mount(el, config, theme) {
   const { svg } = await mermaid.render(id, code);
   canvas.innerHTML = svg;
 
-  // Make SVG responsive
+  // Make SVG responsive but constrain size
   const svgEl = canvas.querySelector('svg');
   if (svgEl) {
     svgEl.removeAttribute('height');
     svgEl.style.width = '100%';
-    svgEl.style.maxWidth = '100%';
+    svgEl.style.maxWidth = '600px';
     svgEl.style.height = 'auto';
+    svgEl.style.margin = '0 auto';
+    svgEl.style.display = 'block';
   }
 
   return { id, code };
