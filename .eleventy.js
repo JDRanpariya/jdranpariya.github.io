@@ -161,14 +161,23 @@ export default function (eleventyConfig) {
           const match = token.info.trim().match(/^interactive\s+(.+)$/);
           const type = match ? match[1].trim() : "custom";
 
-          // Collect content between ::: markers as config
+          // Collect content between ::: markers as config, and HIDE those tokens
+          // so markdown-it doesn't also render them as paragraphs.
           const configLines = [];
           let i = idx + 1;
           while (i < tokens.length && tokens[i].nesting !== -1) {
             if (tokens[i].type === "inline" && tokens[i].content) {
               configLines.push(tokens[i].content);
+              // Hide the token and its wrapping paragraph
+              tokens[i].content = "";
+              tokens[i].children = [];
+              tokens[i].hidden = true;
+            } else if (tokens[i].type === "paragraph_open" || tokens[i].type === "paragraph_close") {
+              tokens[i].hidden = true;
             } else if (tokens[i].type === "fence" && tokens[i].content) {
               configLines.push("code:" + encodeURIComponent(tokens[i].content.trim()));
+              tokens[i].content = "";
+              tokens[i].hidden = true;
             }
             i++;
           }
@@ -197,6 +206,11 @@ export default function (eleventyConfig) {
           html += '</figure>';
           return html;
         } else {
+          // Closing token — check if the next token is a stray paragraph_close
+          // that wraps the container and hide it.
+          if (idx + 1 < tokens.length && tokens[idx + 1].type === "paragraph_close") {
+            tokens[idx + 1].hidden = true;
+          }
           return '';
         }
       },
@@ -284,6 +298,24 @@ export default function (eleventyConfig) {
       console.warn(`[md-image] optimization failed for ${src}: ${e.message}. Using raw src.`);
       return `<img src="${src}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy">`;
     }
+  };
+
+  // Suppress hidden paragraph tokens (used by ::: interactive to consume
+  // config lines without rendering them as <p> tags).
+  const origParagraphOpen = md.renderer.rules.paragraph_open || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
+  const origParagraphClose = md.renderer.rules.paragraph_close || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
+
+  md.renderer.rules.paragraph_open = function(tokens, idx, options, env, self) {
+    if (tokens[idx].hidden) return '';
+    return origParagraphOpen(tokens, idx, options, env, self);
+  };
+  md.renderer.rules.paragraph_close = function(tokens, idx, options, env, self) {
+    if (tokens[idx].hidden) return '';
+    return origParagraphClose(tokens, idx, options, env, self);
   };
 
   eleventyConfig.setLibrary("md", md);
@@ -672,6 +704,16 @@ export default function (eleventyConfig) {
     // previous calendar year — keeps the current year's list visually
     // light, while older entries still disambiguate.
     return dt.year === currentTime.year ? dt.toFormat("d LLL") : dt.toFormat("d LLL yyyy");
+  });
+
+  // Fix stray </p> tags that markdown-it-container leaves after block-level
+  // elements like <figure>. This happens because the container's inner content
+  // tokens are hidden but their wrapping paragraph structure persists.
+  eleventyConfig.addTransform("fix-interactive-html", function (content) {
+    if (this.outputPath && this.outputPath.endsWith(".html")) {
+      return content.replace(/<\/figure><\/p>/g, "</figure>");
+    }
+    return content;
   });
 
   // Minify HTML in production
