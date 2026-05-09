@@ -67,15 +67,16 @@ export async function mount(el, config, theme) {
   const { svg } = await mermaid.render(id, code);
   canvas.innerHTML = svg;
 
-  // Make SVG responsive but constrain size
+  // Make SVG responsive — shrink if it overflows, but never stretch beyond
+  // its natural size (which would make text appear huge).
   const svgEl = canvas.querySelector('svg');
   if (svgEl) {
     svgEl.removeAttribute('height');
-    svgEl.style.width = '100%';
-    svgEl.style.maxWidth = '600px';
+    svgEl.removeAttribute('width');
+    svgEl.style.maxWidth = '100%';
     svgEl.style.height = 'auto';
-    svgEl.style.margin = '0 auto';
     svgEl.style.display = 'block';
+    svgEl.style.margin = '0 auto';
   }
 
   return { id, code };
