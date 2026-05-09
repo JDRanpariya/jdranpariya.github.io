@@ -19,11 +19,16 @@ import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default function (eleventyConfig) {
-  // In .eleventy.js
-  eleventyConfig.addPassthroughCopy({
-    assets: "assets",
-    "src/robots.txt": "robots.txt",
-  });
+  // Passthrough copy — only ship assets that are directly referenced in HTML.
+  // Source images in assets/images/{projects,lectures}/ are NOT copied because
+  // they're processed by eleventy-img into build/img/ as optimized AVIF.
+  eleventyConfig.addPassthroughCopy({ "assets/fonts": "assets/fonts" });
+  eleventyConfig.addPassthroughCopy({ "assets/logo": "assets/logo" });
+  eleventyConfig.addPassthroughCopy({ "assets/js": "assets/js" });
+  eleventyConfig.addPassthroughCopy({ "assets/og": "assets/og" });
+  eleventyConfig.addPassthroughCopy({ "assets/images/notecards": "assets/images/notecards" });
+  eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
+  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
 
   // CSS is written directly to build/css/ by PostCSS (see package.json
   // css:build script) — no passthrough needed. A previous addPassthroughCopy("build/css")
