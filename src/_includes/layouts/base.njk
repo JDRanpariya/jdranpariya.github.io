@@ -23,11 +23,11 @@
   http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://jay-cloud.vercel.app;
+    script-src 'self' 'unsafe-inline' https://jay-cloud.vercel.app https://cdn.jsdelivr.net https://cdn.plot.ly;
     style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
     font-src 'self' https://cdn.jsdelivr.net;
     img-src 'self' data: https://webmention.io;
-    connect-src 'self' https://jay-cloud.vercel.app;
+    connect-src 'self' https://jay-cloud.vercel.app https://cdn.jsdelivr.net https://cdn.plot.ly;
     frame-src 'self' https://docs.google.com;
     base-uri 'self';
     form-action 'self' https://docs.google.com;
@@ -426,6 +426,9 @@
 
   <!-- Site scripts (theme toggle, mobile menu, delegated clicks). -->
   <script src="/assets/js/site.js" defer></script>
+  {% if hasInteractive %}
+  <script type="module" src="/interactive/loader.js"></script>
+  {% endif %}
 
   </body>
   </html>

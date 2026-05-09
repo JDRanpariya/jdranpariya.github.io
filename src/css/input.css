@@ -1374,3 +1374,117 @@ details:not([open]) > .toc-toggle svg {
     transition: none;
   }
 }
+
+/* ==========================================================================
+ * Interactive components — styles for ::: interactive blocks.
+ * Hydrated by src/interactive/loader.js.
+ * ========================================================================== */
+
+.interactive {
+  @apply my-12 mx-0;
+}
+
+.interactive__canvas {
+  @apply relative w-full rounded-md overflow-hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: border-color var(--duration-base) var(--ease-standard);
+}
+
+.interactive__canvas[aria-busy="true"] {
+  @apply flex items-center justify-center;
+  min-height: 200px;
+}
+
+.interactive__canvas[aria-busy="true"]::after {
+  content: "";
+  @apply w-6 h-6 border-2 border-ink-muted rounded-full;
+  border-top-color: var(--color-accent);
+  animation: interactive-spin 0.8s linear infinite;
+}
+
+.interactive--loaded {
+  background: transparent;
+  border-color: transparent;
+}
+
+.interactive--error {
+  border-color: rgba(226, 72, 86, 0.3);
+}
+
+.interactive figcaption {
+  @apply mt-3 text-center font-sans text-ui-sm text-ink-muted;
+}
+
+@keyframes interactive-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Ncase explorable styles --- */
+.interactive--ncase {
+  @apply p-6 bg-surface rounded-lg;
+}
+
+.ncase-choices {
+  @apply my-6;
+}
+
+.ncase-prompt {
+  @apply font-serif text-body text-ink mb-4;
+}
+
+.ncase-btn-group {
+  @apply flex flex-wrap gap-3;
+}
+
+.ncase-btn {
+  @apply px-5 py-3 rounded-md font-sans text-ui;
+  @apply bg-accent-soft text-ink border border-border;
+  @apply hover:border-accent hover:text-accent;
+  @apply transition-all duration-base;
+  @apply cursor-pointer;
+}
+
+.ncase-btn:disabled {
+  @apply opacity-50 cursor-default;
+}
+
+.ncase-btn--active {
+  @apply bg-accent text-white border-accent opacity-100;
+}
+
+.ncase-slider {
+  @apply flex items-center gap-4 my-4;
+}
+
+.ncase-slider__label {
+  @apply font-sans text-ui text-ink-secondary min-w-[8rem];
+}
+
+.ncase-slider__input {
+  @apply flex-1 h-2 rounded-full appearance-none;
+  @apply bg-border;
+  accent-color: var(--color-accent);
+}
+
+.ncase-slider__value {
+  @apply font-mono text-ui-sm text-ink-muted min-w-[3rem] text-right;
+}
+
+.ncase-emoji {
+  @apply absolute transition-all duration-slow;
+  line-height: 1;
+}
+
+/* --- Scrollama --- */
+.scroll-step {
+  @apply min-h-[60vh] flex items-center py-12;
+}
+
+.scroll-step.is-active {
+  @apply opacity-100;
+}
+
+.scroll-step:not(.is-active) {
+  @apply opacity-40 transition-opacity duration-slow;
+}

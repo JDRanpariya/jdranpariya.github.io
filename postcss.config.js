@@ -53,6 +53,11 @@ export default {
                 // class tokens in markup. Safelist defensively.
                 /^notecard(-wall|-empty)?(__.*)?$/,
                 /^composer(__.*)?$/,
+                // Interactive system — classes are set by JS loader at
+                // runtime, so PurgeCSS won't see them in templates.
+                /^interactive/,
+                /^ncase/,
+                /^scroll-step/,
                 /^guestbook-credit$/,
               ],
             },

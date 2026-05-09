@@ -28,6 +28,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/og": "assets/og" });
   eleventyConfig.addPassthroughCopy({ "assets/images/notecards": "assets/images/notecards" });
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
+  eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
 
   // CSS is written directly to build/css/ by PostCSS (see package.json
@@ -148,7 +149,74 @@ export default function (eleventyConfig) {
           return `</details>\n`;
         }
       },
+    })
+    .use(markdownItContainer, "interactive", {
+      validate(params) {
+        return params.trim().match(/^interactive\s+(.+)$/);
+      },
+      render(tokens, idx) {
+        const token = tokens[idx];
+        if (token.nesting === 1) {
+          const match = token.info.trim().match(/^interactive\s+(.+)$/);
+          const type = match ? match[1].trim() : "custom";
+
+          // Collect content between ::: markers as config
+          const configLines = [];
+          let i = idx + 1;
+          while (i < tokens.length && tokens[i].nesting !== -1) {
+            if (tokens[i].type === "inline" && tokens[i].content) {
+              configLines.push(tokens[i].content);
+            } else if (tokens[i].type === "fence" && tokens[i].content) {
+              configLines.push("code:" + encodeURIComponent(tokens[i].content.trim()));
+            }
+            i++;
+          }
+
+          const config = parseInteractiveConfig(configLines.join("\n"));
+          const { id, src, caption, fallback, code, ...rest } = config;
+          const configJson = JSON.stringify(rest).replace(/"/g, "&quot;");
+          const esc = (s) => String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+
+          let html = '<figure class="interactive"';
+          if (id) html += ' id="' + esc(id) + '"';
+          html += ' data-interactive="' + esc(type) + '"';
+          if (src) html += ' data-src="' + esc(src) + '"';
+          if (code) html += ' data-code="' + esc(decodeURIComponent(code)) + '"';
+          html += ' data-config="' + configJson + '"';
+          if (rest.height) html += ' style="min-height:' + rest.height + 'px"';
+          html += '>';
+          html += '<div class="interactive__canvas" aria-busy="true">';
+          if (fallback) {
+            html += '<noscript><img src="' + esc(fallback) + '" alt="' + esc(caption || '') + '" loading="lazy"></noscript>';
+          } else {
+            html += '<noscript><p class="text-ink-muted italic">This interactive requires JavaScript.</p></noscript>';
+          }
+          html += '</div>';
+          if (caption) html += '<figcaption>' + caption + '</figcaption>';
+          html += '</figure>';
+          return html;
+        } else {
+          return '';
+        }
+      },
     });
+
+  // Helper for parsing ::: interactive config blocks
+  function parseInteractiveConfig(text) {
+    const config = {};
+    for (const line of text.split("\n")) {
+      const match = line.match(/^\s*([\w-]+):\s*(.+)\s*$/);
+      if (match) {
+        let [, key, value] = match;
+        value = value.replace(/^["']|["']$/g, "");
+        if (/^\d+(\.\d+)?$/.test(value)) value = Number(value);
+        if (value === "true") value = true;
+        if (value === "false") value = false;
+        config[key] = value;
+      }
+    }
+    return config;
+  }
 
   // Override the default markdown-it image renderer to process images through
   // @11ty/eleventy-img at build time. This ensures that ![alt](src) in markdown
