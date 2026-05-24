@@ -17,11 +17,11 @@
  *   physics: boolean (default false) — enable Cannon-es physics
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const THREE_CDN = 'https://esm.sh/three@0.169.0';
-const ORBIT_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
-const GLTF_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js';
+const THREE_CDN = "https://esm.sh/three@0.169.0";
+const ORBIT_CDN = "https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js";
+const GLTF_CDN = "https://esm.sh/three@0.169.0/examples/jsm/loaders/GLTFLoader.js";
 
 export async function mount(el, config, theme) {
   const [THREE, { OrbitControls }, { GLTFLoader }] = await Promise.all([
@@ -30,7 +30,7 @@ export async function mount(el, config, theme) {
     import(/* webpackIgnore: true */ GLTF_CDN),
   ]);
 
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const height = config.height || 500;
   const width = canvas.clientWidth || el.clientWidth || 800;
 
@@ -45,9 +45,9 @@ export async function mount(el, config, theme) {
 
   // Scene
   const scene = new THREE.Scene();
-  if (config.background === 'surface') {
+  if (config.background === "surface") {
     scene.background = new THREE.Color(theme.surface);
-  } else if (config.background === 'card') {
+  } else if (config.background === "card") {
     scene.background = new THREE.Color(theme.card);
   }
   // else transparent
@@ -84,7 +84,7 @@ export async function mount(el, config, theme) {
 
   // Controls
   let controls = null;
-  if (config.camera !== 'static') {
+  if (config.camera !== "static") {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -96,7 +96,7 @@ export async function mount(el, config, theme) {
   // Load model or custom scene module
   const src = el.dataset.src;
   let userSetup = null;
-  if (src && src.endsWith('.js')) {
+  if (src && src.endsWith(".js")) {
     // Custom scene module — exports setup({ scene, THREE, camera, controls, theme })
     try {
       const module = await import(/* webpackIgnore: true */ src);
@@ -104,7 +104,7 @@ export async function mount(el, config, theme) {
         userSetup = await module.setup({ scene, THREE, camera, controls, theme, config, el });
       }
     } catch (e) {
-      console.warn('[threejs] Failed to load scene module:', e);
+      console.warn("[threejs] Failed to load scene module:", e);
     }
   } else if (src) {
     // GLB/GLTF model
@@ -163,10 +163,10 @@ export async function onThemeChange(el, instance, config, newTheme) {
     }
   });
   // Update background
-  if (config.background === 'surface') {
+  if (config.background === "surface") {
     const THREE = await import(/* webpackIgnore: true */ THREE_CDN);
     scene.background = new THREE.Color(newTheme.surface);
-  } else if (config.background === 'card') {
+  } else if (config.background === "card") {
     const THREE = await import(/* webpackIgnore: true */ THREE_CDN);
     scene.background = new THREE.Color(newTheme.card);
   }

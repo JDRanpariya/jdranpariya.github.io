@@ -16,9 +16,9 @@
  *   OR inline data via data-code attribute
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const CDN = 'https://cdn.plot.ly/plotly-2.35.0.min.js';
+const CDN = "https://cdn.plot.ly/plotly-2.35.0.min.js";
 let Plotly = null;
 
 async function loadPlotly() {
@@ -26,7 +26,7 @@ async function loadPlotly() {
   // Load from CDN as a global (Plotly doesn't export ESM)
   if (!window.Plotly) {
     await new Promise((resolve, reject) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = CDN;
       script.onload = resolve;
       script.onerror = reject;
@@ -40,8 +40,8 @@ async function loadPlotly() {
 function applyTheme(layout, theme) {
   return {
     ...layout,
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
     font: {
       family: theme.fontSans,
       color: theme.ink,
@@ -66,7 +66,7 @@ function applyTheme(layout, theme) {
     legend: {
       ...layout.legend,
       font: { color: theme.inkSecondary },
-      bgcolor: 'rgba(0,0,0,0)',
+      bgcolor: "rgba(0,0,0,0)",
     },
     colorway: theme.palette,
   };
@@ -74,7 +74,7 @@ function applyTheme(layout, theme) {
 
 export async function mount(el, config, theme) {
   const plotly = await loadPlotly();
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const height = config.height || 400;
 
   let plotData;
@@ -104,7 +104,11 @@ export async function mount(el, config, theme) {
   });
 
   const layout = applyTheme(
-    { ...plotData.layout, height, margin: { t: 30, r: 20, b: 50, l: 60, ...plotData.layout?.margin } },
+    {
+      ...plotData.layout,
+      height,
+      margin: { t: 30, r: 20, b: 50, l: 60, ...plotData.layout?.margin },
+    },
     theme
   );
 

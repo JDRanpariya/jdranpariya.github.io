@@ -5,7 +5,7 @@ description: "Personal AI-powered content aggregator and recommender for article
 image: "/assets/images/projects/lotus_2.jpg"
 url: "https://github.com/jdranpariya/kosha.git"
 tech: ["react", "python", "RAG", "RLHF", "open-source"]
-status: "active"
+status: "on-hold"
 published: 2025-10-03
 lastUpdated: 2026-03-21
 layout: layouts/post

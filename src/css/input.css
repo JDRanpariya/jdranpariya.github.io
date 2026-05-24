@@ -336,15 +336,23 @@ button,
 
   .badge {
     @apply inline-block font-sans text-[0.75rem] font-medium;
-    @apply px-2 py-0.5 rounded-sm;
+    @apply py-0.5 rounded-sm;
+    padding-left: calc(0.5rem + 0.05em);
+    padding-right: 0.5rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+    text-align: center;
     background-color: var(--color-accent-soft);
     color: var(--color-accent);
   }
-  .badge[data-status="archived"] {
+  .badge[data-status="archived"],
+  .badge[data-status="on-hold"] {
     background-color: var(--color-surface);
     color: var(--color-ink-muted);
+  }
+  .badge[data-status="under-review"] {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
   }
 
   /* ---------------- UI eyebrow ------------------------------------------- */
@@ -820,7 +828,7 @@ button,
     font-weight: 700;
   }
   .prose-site tr:nth-child(even) td {
-    background-color: rgba(240, 234, 210, 0.4); /* surface at 40% */
+    background-color: var(--color-surface);
   }
 
   /* Footnote back/forward refs inside prose — use accent, not blue. */
@@ -1417,7 +1425,9 @@ details:not([open]) > .toc-toggle svg {
 }
 
 @keyframes interactive-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* --- Ncase explorable styles --- */
@@ -1487,4 +1497,110 @@ details:not([open]) > .toc-toggle svg {
 
 .scroll-step:not(.is-active) {
   @apply opacity-40 transition-opacity duration-slow;
+}
+
+/* ==========================================================================
+ * Project modal (for under-review projects)
+ * Uses <dialog> for accessibility (focus trap, Escape key, backdrop).
+ * ========================================================================== */
+
+.project-modal {
+  @apply fixed inset-0 z-50 m-0 max-w-none max-h-none w-full h-full;
+  @apply bg-transparent p-4 md:p-8;
+  border: none;
+}
+
+.project-modal[open] {
+  @apply flex items-center justify-center;
+}
+
+.project-modal::backdrop {
+  background: rgba(44, 37, 29, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.project-modal__backdrop {
+  @apply absolute inset-0;
+}
+
+.project-modal__content {
+  @apply relative rounded-lg p-8 md:p-10;
+  @apply max-w-lg w-full;
+  @apply shadow-sheet border border-border;
+  @apply overflow-y-auto;
+  background: var(--color-bg);
+  max-height: 85vh;
+  animation: modal-in 0.25s ease;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.project-modal__close {
+  @apply absolute top-4 right-4;
+  @apply text-ink-muted hover:text-ink transition-colors;
+  @apply p-1 rounded-sm;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.project-modal__badge {
+  @apply inline-block mb-4;
+  @apply font-sans text-[0.8rem] font-semibold;
+  @apply px-3 py-1 rounded-full;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.project-modal__title {
+  @apply font-heading text-h2 mb-3;
+  color: var(--color-ink);
+}
+
+.project-modal__notice {
+  @apply p-4 rounded-md mb-6;
+  @apply font-sans text-ui;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.project-modal__notice p {
+  @apply mb-1 last:mb-0;
+  color: var(--color-ink-secondary);
+}
+
+.project-modal__notice p:last-child {
+  color: var(--color-ink-muted);
+}
+
+.project-modal__read-more {
+  @apply mb-4;
+}
+
+.project-modal__read-more p {
+  @apply font-sans text-ui mb-3;
+  color: var(--color-ink-muted);
+}
+
+.project-modal__read-more a {
+  @apply inline-flex items-center gap-2;
+  @apply font-sans text-ui font-medium;
+  @apply px-4 py-2 rounded-md;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.project-modal__read-more a:hover {
+  opacity: 0.88;
 }

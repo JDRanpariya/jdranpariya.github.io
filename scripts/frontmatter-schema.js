@@ -53,7 +53,7 @@ const SCHEMAS = {
     // projects/<sub>/*.md exists too; this catches the top-level project entries
     required: [...COMMON_REQUIRED, "published", "tags", "layout"],
     enums: {
-      status: ["active", "finished", "archived", "idea", undefined],
+      status: ["active", "finished", "archived", "idea", "under-review", "on-hold", undefined],
     },
     types: {
       tags: "array",

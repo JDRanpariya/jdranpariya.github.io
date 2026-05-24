@@ -16,14 +16,14 @@
  * Data: scene definition in data-src (JSON) or data-code (inline JS module path)
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const CDN = 'https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js';
+const CDN = "https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js";
 
 async function loadMatter() {
   if (window.Matter) return window.Matter;
   await new Promise((resolve, reject) => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = CDN;
     script.onload = resolve;
     script.onerror = reject;
@@ -34,7 +34,7 @@ async function loadMatter() {
 
 export async function mount(el, config, theme) {
   const Matter = await loadMatter();
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const height = config.height || 400;
   const width = canvas.clientWidth || el.clientWidth || 800;
 
@@ -52,13 +52,13 @@ export async function mount(el, config, theme) {
       width,
       height,
       wireframes: config.wireframe || false,
-      background: 'transparent',
+      background: "transparent",
       pixelRatio: Math.min(window.devicePixelRatio, 2),
     },
   });
 
   // Apply theme colors to the render
-  render.options.wireframeBackground = 'transparent';
+  render.options.wireframeBackground = "transparent";
 
   // Load scene from src if provided
   const src = el.dataset.src;
@@ -69,7 +69,7 @@ export async function mount(el, config, theme) {
         await module.setup({ engine, render, Matter, theme, config, el });
       }
     } catch (e) {
-      console.warn('[matter] Failed to load scene:', e);
+      console.warn("[matter] Failed to load scene:", e);
     }
   } else {
     // Default: ground + some objects

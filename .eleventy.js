@@ -26,6 +26,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/logo": "assets/logo" });
   eleventyConfig.addPassthroughCopy({ "assets/js": "assets/js" });
   eleventyConfig.addPassthroughCopy({ "assets/og": "assets/og" });
+  eleventyConfig.addPassthroughCopy({ "assets/models": "assets/models" });
   eleventyConfig.addPassthroughCopy({ "assets/images/notecards": "assets/images/notecards" });
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
   eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
@@ -172,7 +173,10 @@ export default function (eleventyConfig) {
               tokens[i].content = "";
               tokens[i].children = [];
               tokens[i].hidden = true;
-            } else if (tokens[i].type === "paragraph_open" || tokens[i].type === "paragraph_close") {
+            } else if (
+              tokens[i].type === "paragraph_open" ||
+              tokens[i].type === "paragraph_close"
+            ) {
               tokens[i].hidden = true;
             } else if (tokens[i].type === "fence" && tokens[i].content) {
               configLines.push("code:" + encodeURIComponent(tokens[i].content.trim()));
@@ -185,7 +189,10 @@ export default function (eleventyConfig) {
           const config = parseInteractiveConfig(configLines.join("\n"));
           const { id, src, caption, fallback, code, ...rest } = config;
           const configJson = JSON.stringify(rest).replace(/"/g, "&quot;");
-          const esc = (s) => String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+          const esc = (s) =>
+            String(s || "")
+              .replace(/&/g, "&amp;")
+              .replace(/"/g, "&quot;");
 
           let html = '<figure class="interactive"';
           if (id) html += ' id="' + esc(id) + '"';
@@ -194,16 +201,22 @@ export default function (eleventyConfig) {
           if (code) html += ' data-code="' + esc(decodeURIComponent(code)) + '"';
           html += ' data-config="' + configJson + '"';
           if (rest.height) html += ' style="min-height:' + rest.height + 'px"';
-          html += '>';
+          html += ">";
           html += '<div class="interactive__canvas" aria-busy="true">';
           if (fallback) {
-            html += '<noscript><img src="' + esc(fallback) + '" alt="' + esc(caption || '') + '" loading="lazy"></noscript>';
+            html +=
+              '<noscript><img src="' +
+              esc(fallback) +
+              '" alt="' +
+              esc(caption || "") +
+              '" loading="lazy"></noscript>';
           } else {
-            html += '<noscript><p class="text-ink-muted italic">This interactive requires JavaScript.</p></noscript>';
+            html +=
+              '<noscript><p class="text-ink-muted italic">This interactive requires JavaScript.</p></noscript>';
           }
-          html += '</div>';
-          if (caption) html += '<figcaption>' + caption + '</figcaption>';
-          html += '</figure>';
+          html += "</div>";
+          if (caption) html += "<figcaption>" + caption + "</figcaption>";
+          html += "</figure>";
           return html;
         } else {
           // Closing token — check if the next token is a stray paragraph_close
@@ -211,7 +224,7 @@ export default function (eleventyConfig) {
           if (idx + 1 < tokens.length && tokens[idx + 1].type === "paragraph_close") {
             tokens[idx + 1].hidden = true;
           }
-          return '';
+          return "";
         }
       },
     });
@@ -293,28 +306,32 @@ export default function (eleventyConfig) {
         urlPath: "/img/",
       });
 
-      return `<img src="${avif.url}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" width="${avif.width}" height="${avif.height}">`;
+      return `<img src="${avif.url}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy" width="${avif.width}" height="${avif.height}">`;
     } catch (e) {
       console.warn(`[md-image] optimization failed for ${src}: ${e.message}. Using raw src.`);
-      return `<img src="${src}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy">`;
+      return `<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy">`;
     }
   };
 
   // Suppress hidden paragraph tokens (used by ::: interactive to consume
   // config lines without rendering them as <p> tags).
-  const origParagraphOpen = md.renderer.rules.paragraph_open || function(tokens, idx, options, env, self) {
-    return self.renderToken(tokens, idx, options);
-  };
-  const origParagraphClose = md.renderer.rules.paragraph_close || function(tokens, idx, options, env, self) {
-    return self.renderToken(tokens, idx, options);
-  };
+  const origParagraphOpen =
+    md.renderer.rules.paragraph_open ||
+    function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+  const origParagraphClose =
+    md.renderer.rules.paragraph_close ||
+    function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
 
-  md.renderer.rules.paragraph_open = function(tokens, idx, options, env, self) {
-    if (tokens[idx].hidden) return '';
+  md.renderer.rules.paragraph_open = function (tokens, idx, options, env, self) {
+    if (tokens[idx].hidden) return "";
     return origParagraphOpen(tokens, idx, options, env, self);
   };
-  md.renderer.rules.paragraph_close = function(tokens, idx, options, env, self) {
-    if (tokens[idx].hidden) return '';
+  md.renderer.rules.paragraph_close = function (tokens, idx, options, env, self) {
+    if (tokens[idx].hidden) return "";
     return origParagraphClose(tokens, idx, options, env, self);
   };
 

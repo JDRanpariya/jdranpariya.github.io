@@ -7,12 +7,12 @@ export function setup({ engine, render, Matter, theme, config, el }) {
   const width = render.options.width;
   const height = render.options.height;
   const cx = width / 2;
-  const palette = theme.palette || ['#9b4230', '#4C7E4D', '#C4882D'];
+  const palette = theme.palette || ["#9b4230", "#4C7E4D", "#C4882D"];
 
   // Anchor point (fixed)
   const anchor = Bodies.circle(cx, 80, 8, {
     isStatic: true,
-    render: { fillStyle: theme.text || '#1a1410' },
+    render: { fillStyle: theme.text || "#1a1410" },
   });
 
   // First pendulum bob
@@ -35,7 +35,7 @@ export function setup({ engine, render, Matter, theme, config, el }) {
     bodyB: bob1,
     length: 120,
     stiffness: 1,
-    render: { strokeStyle: theme.border || '#d4c8b0', lineWidth: 2 },
+    render: { strokeStyle: theme.border || "#d4c8b0", lineWidth: 2 },
   });
 
   const rod2 = Constraint.create({
@@ -43,7 +43,7 @@ export function setup({ engine, render, Matter, theme, config, el }) {
     bodyB: bob2,
     length: 100,
     stiffness: 1,
-    render: { strokeStyle: theme.border || '#d4c8b0', lineWidth: 2 },
+    render: { strokeStyle: theme.border || "#d4c8b0", lineWidth: 2 },
   });
 
   Composite.add(engine.world, [anchor, bob1, bob2, rod1, rod2]);

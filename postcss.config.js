@@ -39,6 +39,7 @@ export default {
                 /^nav-link$/,
                 /^index-(list|row)(__.*)?$/,
                 /^card-media(__.*)?$/,
+                /^project-modal(__.*)?$/,
                 /^post-hero(__.*)?$/,
                 /^field(-label|-input|-help)?$/,
                 /^callout/,

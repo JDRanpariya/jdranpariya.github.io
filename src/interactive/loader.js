@@ -11,20 +11,20 @@
  * Size budget: this file should stay under 2 KB.
  */
 
-import { getTheme, onThemeChange } from './theme.js';
+import { getTheme, onThemeChange } from "./theme.js";
 
 const registry = {
-  plotly: () => import('./modules/plotly.js'),
-  threejs: () => import('./modules/threejs.js'),
-  'model-viewer': () => import('./modules/model-viewer.js'),
-  mermaid: () => import('./modules/mermaid.js'),
-  matter: () => import('./modules/matter.js'),
-  cannon: () => import('./modules/cannon.js'),
+  plotly: () => import("./modules/plotly.js"),
+  threejs: () => import("./modules/threejs.js"),
+  "model-viewer": () => import("./modules/model-viewer.js"),
+  mermaid: () => import("./modules/mermaid.js"),
+  matter: () => import("./modules/matter.js"),
+  cannon: () => import("./modules/cannon.js"),
   custom: (el) => import(el.dataset.src),
-  ncase: () => import('./modules/ncase.js'),
-  scrollama: () => import('./modules/scrollama.js'),
-  observable: () => import('./modules/observable.js'),
-  d3: () => import('./modules/d3.js'),
+  ncase: () => import("./modules/ncase.js"),
+  scrollama: () => import("./modules/scrollama.js"),
+  observable: () => import("./modules/observable.js"),
+  d3: () => import("./modules/d3.js"),
 };
 
 // Track mounted instances for theme-change re-rendering
@@ -32,7 +32,7 @@ const mounted = [];
 
 function parseConfig(el) {
   try {
-    return JSON.parse(el.dataset.config || '{}');
+    return JSON.parse(el.dataset.config || "{}");
   } catch {
     return {};
   }
@@ -46,8 +46,8 @@ async function hydrate(el) {
     return;
   }
 
-  const canvas = el.querySelector('.interactive__canvas');
-  if (canvas) canvas.setAttribute('aria-busy', 'true');
+  const canvas = el.querySelector(".interactive__canvas");
+  if (canvas) canvas.setAttribute("aria-busy", "true");
 
   try {
     const module = await loader(el);
@@ -56,20 +56,20 @@ async function hydrate(el) {
     const instance = await module.mount(el, config, theme);
     mounted.push({ el, module, instance, config });
     if (canvas) {
-      canvas.removeAttribute('aria-busy');
-      canvas.classList.add('interactive--loaded');
+      canvas.removeAttribute("aria-busy");
+      canvas.classList.add("interactive--loaded");
     }
   } catch (e) {
     console.error(`[interactive] Failed to mount ${type}:`, e);
     if (canvas) {
-      canvas.removeAttribute('aria-busy');
-      canvas.classList.add('interactive--error');
+      canvas.removeAttribute("aria-busy");
+      canvas.classList.add("interactive--error");
     }
   }
 }
 
 // Observe all interactive elements
-const elements = document.querySelectorAll('[data-interactive]');
+const elements = document.querySelectorAll("[data-interactive]");
 
 if (elements.length > 0) {
   const observer = new IntersectionObserver(
@@ -81,7 +81,7 @@ if (elements.length > 0) {
         }
       }
     },
-    { rootMargin: '200px' }
+    { rootMargin: "200px" }
   );
 
   elements.forEach((el) => observer.observe(el));

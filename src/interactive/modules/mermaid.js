@@ -10,9 +10,9 @@
  * Data: diagram source in data-code attribute
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const CDN = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const CDN = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
 let mermaidModule = null;
 
 async function loadMermaid(theme) {
@@ -21,7 +21,7 @@ async function loadMermaid(theme) {
 
   mermaid.initialize({
     startOnLoad: false,
-    theme: 'base',
+    theme: "base",
     themeVariables: {
       primaryColor: theme.accentSoft,
       primaryTextColor: theme.ink,
@@ -37,7 +37,7 @@ async function loadMermaid(theme) {
       clusterBorder: theme.border,
       titleColor: theme.ink,
       edgeLabelBackground: theme.bg,
-      fontSize: '12px',
+      fontSize: "12px",
       fontFamily: theme.fontSans,
     },
   });
@@ -48,14 +48,14 @@ async function loadMermaid(theme) {
 
 export async function mount(el, config, theme) {
   const mermaid = await loadMermaid(theme);
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   // Semicolons in data-code serve as line separators (HTML attributes can't
   // contain newlines). For graph/flowchart types, semicolons are native Mermaid
   // syntax. For other diagram types (stateDiagram, sequence, etc.) we need
   // to convert them to actual newlines.
-  const rawCode = el.dataset.code || '';
+  const rawCode = el.dataset.code || "";
   const isGraph = /^(graph|flowchart)\s/i.test(rawCode.trim());
-  const code = isGraph ? rawCode : rawCode.replace(/;\s*/g, '\n');
+  const code = isGraph ? rawCode : rawCode.replace(/;\s*/g, "\n");
 
   if (!code.trim()) {
     canvas.innerHTML = '<p class="text-ink-muted">No diagram source provided.</p>';
@@ -63,20 +63,20 @@ export async function mount(el, config, theme) {
   }
 
   // Mermaid needs a unique ID
-  const id = 'mermaid-' + Math.random().toString(36).slice(2, 9);
+  const id = "mermaid-" + Math.random().toString(36).slice(2, 9);
   const { svg } = await mermaid.render(id, code);
   canvas.innerHTML = svg;
 
   // Make SVG responsive — shrink if it overflows, but never stretch beyond
   // its natural size (which would make text appear huge).
-  const svgEl = canvas.querySelector('svg');
+  const svgEl = canvas.querySelector("svg");
   if (svgEl) {
-    svgEl.removeAttribute('height');
-    svgEl.removeAttribute('width');
-    svgEl.style.maxWidth = '100%';
-    svgEl.style.height = 'auto';
-    svgEl.style.display = 'block';
-    svgEl.style.margin = '0 auto';
+    svgEl.removeAttribute("height");
+    svgEl.removeAttribute("width");
+    svgEl.style.maxWidth = "100%";
+    svgEl.style.height = "auto";
+    svgEl.style.display = "block";
+    svgEl.style.margin = "0 auto";
   }
 
   return { id, code };

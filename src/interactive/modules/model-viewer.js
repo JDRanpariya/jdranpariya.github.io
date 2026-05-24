@@ -14,14 +14,14 @@
  * Data: model URL in data-src (.glb or .gltf)
  */
 
-const CDN = 'https://cdn.jsdelivr.net/npm/@google/model-viewer@3/dist/model-viewer.min.js';
+const CDN = "https://cdn.jsdelivr.net/npm/@google/model-viewer@3/dist/model-viewer.min.js";
 
 export async function mount(el, config, theme) {
   // Load the web component
-  if (!customElements.get('model-viewer')) {
+  if (!customElements.get("model-viewer")) {
     await new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.type = 'module';
+      const script = document.createElement("script");
+      script.type = "module";
       script.src = CDN;
       script.onload = resolve;
       script.onerror = reject;
@@ -29,7 +29,7 @@ export async function mount(el, config, theme) {
     });
   }
 
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const src = el.dataset.src;
   const height = config.height || 400;
 
@@ -39,27 +39,27 @@ export async function mount(el, config, theme) {
   }
 
   // Create <model-viewer> element
-  const viewer = document.createElement('model-viewer');
-  viewer.setAttribute('src', src);
-  viewer.setAttribute('camera-controls', '');
-  viewer.setAttribute('touch-action', 'pan-y');
-  viewer.style.width = '100%';
-  viewer.style.height = height + 'px';
-  viewer.style.borderRadius = '6px';
+  const viewer = document.createElement("model-viewer");
+  viewer.setAttribute("src", src);
+  viewer.setAttribute("camera-controls", "");
+  viewer.setAttribute("touch-action", "pan-y");
+  viewer.style.width = "100%";
+  viewer.style.height = height + "px";
+  viewer.style.borderRadius = "6px";
   viewer.style.backgroundColor = theme.isDark ? theme.surface : theme.card;
 
   if (config.autoRotate !== false) {
-    viewer.setAttribute('auto-rotate', '');
+    viewer.setAttribute("auto-rotate", "");
   }
   if (config.ar) {
-    viewer.setAttribute('ar', '');
+    viewer.setAttribute("ar", "");
   }
   if (config.poster) {
-    viewer.setAttribute('poster', config.poster);
+    viewer.setAttribute("poster", config.poster);
   }
 
   // Interaction prompt
-  viewer.setAttribute('interaction-prompt', 'auto');
+  viewer.setAttribute("interaction-prompt", "auto");
 
   canvas.appendChild(viewer);
   return { viewer };

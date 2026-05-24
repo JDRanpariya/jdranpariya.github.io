@@ -14,11 +14,11 @@
  * Data: scene module in data-src that exports setup({ world, scene, THREE, CANNON, theme })
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const THREE_CDN = 'https://esm.sh/three@0.169.0';
-const ORBIT_CDN = 'https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js';
-const CANNON_CDN = 'https://esm.sh/cannon-es@0.20.0';
+const THREE_CDN = "https://esm.sh/three@0.169.0";
+const ORBIT_CDN = "https://esm.sh/three@0.169.0/examples/jsm/controls/OrbitControls.js";
+const CANNON_CDN = "https://esm.sh/cannon-es@0.20.0";
 
 export async function mount(el, config, theme) {
   const [THREE, { OrbitControls }, CANNON] = await Promise.all([
@@ -27,7 +27,7 @@ export async function mount(el, config, theme) {
     import(/* webpackIgnore: true */ CANNON_CDN),
   ]);
 
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const height = config.height || 500;
   const width = canvas.clientWidth || el.clientWidth || 800;
 
@@ -54,7 +54,7 @@ export async function mount(el, config, theme) {
 
   // Controls
   let controls = null;
-  if (config.camera !== 'static') {
+  if (config.camera !== "static") {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -101,7 +101,7 @@ export async function mount(el, config, theme) {
         userSetup = await module.setup({ world, scene, camera, THREE, CANNON, theme, config, el });
       }
     } catch (e) {
-      console.warn('[cannon] Failed to load scene:', e);
+      console.warn("[cannon] Failed to load scene:", e);
     }
   }
 
@@ -148,7 +148,7 @@ export function onThemeChange(el, instance, config, newTheme) {
     if (child.isAmbientLight) {
       child.color.set(newTheme.isDark ? 0xd4a070 : 0xfdfbf5);
     }
-    if (child.isMesh && child.geometry.type === 'PlaneGeometry') {
+    if (child.isMesh && child.geometry.type === "PlaneGeometry") {
       child.material.color.set(newTheme.isDark ? 0x2d261c : 0xf4efe4);
     }
   });

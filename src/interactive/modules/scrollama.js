@@ -16,14 +16,14 @@
  *   - destroy()
  */
 
-import { getTheme } from '../theme.js';
+import { getTheme } from "../theme.js";
 
-const CDN = 'https://cdn.jsdelivr.net/npm/scrollama@3/build/scrollama.min.js';
+const CDN = "https://cdn.jsdelivr.net/npm/scrollama@3/build/scrollama.min.js";
 
 async function loadScrollama() {
   if (window.scrollama) return window.scrollama;
   await new Promise((resolve, reject) => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = CDN;
     script.onload = resolve;
     script.onerror = reject;
@@ -34,7 +34,7 @@ async function loadScrollama() {
 
 export async function mount(el, config, theme) {
   const scrollama = await loadScrollama();
-  const canvas = el.querySelector('.interactive__canvas');
+  const canvas = el.querySelector(".interactive__canvas");
   const src = el.dataset.src;
 
   if (!src) {
@@ -50,7 +50,7 @@ export async function mount(el, config, theme) {
     const scroller = scrollama();
     scroller
       .setup({
-        step: canvas.querySelectorAll('.scroll-step'),
+        step: canvas.querySelectorAll(".scroll-step"),
         offset: config.offset || 0.5,
       })
       .onStepEnter((response) => {
@@ -61,11 +61,11 @@ export async function mount(el, config, theme) {
       });
 
     // Handle resize
-    window.addEventListener('resize', scroller.resize);
+    window.addEventListener("resize", scroller.resize);
 
     return { scroller, instance };
   } catch (e) {
-    console.warn('[scrollama] Failed to load:', e);
+    console.warn("[scrollama] Failed to load:", e);
     canvas.innerHTML = '<p class="text-ink-muted italic">Failed to load scroll story.</p>';
     return null;
   }

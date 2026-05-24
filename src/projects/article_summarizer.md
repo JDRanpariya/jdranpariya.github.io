@@ -5,7 +5,7 @@ image: "/assets/images/projects/article_summarizer.jpg"
 url: "https://github.com/jdranpariya/Article_Summarizer.git"
 tech: ["Next.JS", "Django", "Hugging face", "Tailwind CSS", "GraphQL"]
 status: "finished"
-published: 2025-09-24
+published: 2022-09-24
 lastUpdated: 2026-03-21
 layout: layouts/post
 section: "projects"

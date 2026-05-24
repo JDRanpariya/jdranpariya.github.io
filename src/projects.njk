@@ -8,42 +8,124 @@ section: "projects index"
 <section class="max-w-wide mx-auto px-6 py-16 md:py-24">
   <header class="mb-16 space-y-4">
     <h1 class="font-serif text-display text-ink">Projects</h1>
-    <p class="text-lead text-ink-secondary max-w-xl">
+    <p class="text-lead text-ink-secondary">
       Things I'm building to understand what I can't understand by reading.
     </p>
   </header>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-    {% for project in collections.projects %}
+    {% for project in collections.projects | sort(true, false, 'data.published') %}
       <article>
-        <a href="{{ project.url }}" class="card-media">
-          {% if project.data.image %}
-            <div class="card-media__media">
-              {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
+        {% if project.data.status == "under-review" %}
+          {# Under-review projects open a popup instead of navigating #}
+          <div
+            class="card-media cursor-pointer"
+            onclick="document.getElementById('modal-{{ project.data.title | slug }}').showModal()"
+          >
+            {% if project.data.image %}
+              <div class="card-media__media">
+                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
+              </div>
+            {% endif %}
+            <div class="mt-4 flex items-center gap-3">
+              <h2 class="card-media__title !mt-0 text-h3">{{ project.data.title }}</h2>
+              <span class="badge" data-status="under-review">under review</span>
             </div>
-          {% endif %}
-          <div class="mt-4 flex items-center gap-3">
-            <h2 class="card-media__title !mt-0 text-h3">{{ project.data.title }}</h2>
-            {% if project.data.status %}
-              <span class="badge" data-status="{{ project.data.status }}"
-                >{{ project.data.status }}</span
-              >
+            {% if project.data.description %}
+              <p class="mt-2 font-sans text-ui text-ink-muted leading-relaxed">
+                {{ project.data.description }}
+              </p>
+            {% endif %}
+            {% if project.data.tech %}
+              <ul class="chip-list mt-3">
+                {% for t in project.data.tech %}
+                  <li><span class="chip">{{ t }}</span></li>
+                {% endfor %}
+              </ul>
             {% endif %}
           </div>
-          {% if project.data.description %}
-            <p class="mt-2 font-sans text-ui text-ink-muted leading-relaxed">
-              {{ project.data.description }}
-            </p>
-          {% endif %}
-          {% if project.data.tech %}
-            <ul class="chip-list mt-3">
-              {% for t in project.data.tech %}
-                <li><span class="chip">{{ t }}</span></li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        </a>
+        {% else %}
+          <a href="{{ project.url }}" class="card-media">
+            {% if project.data.image %}
+              <div class="card-media__media">
+                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
+              </div>
+            {% endif %}
+            <div class="mt-4 flex items-center gap-3">
+              <h2 class="card-media__title !mt-0 text-h3">{{ project.data.title }}</h2>
+              {% if project.data.status %}
+                <span class="badge" data-status="{{ project.data.status }}"
+                  >{{ project.data.status }}</span
+                >
+              {% endif %}
+            </div>
+            {% if project.data.description %}
+              <p class="mt-2 font-sans text-ui text-ink-muted leading-relaxed">
+                {{ project.data.description }}
+              </p>
+            {% endif %}
+            {% if project.data.tech %}
+              <ul class="chip-list mt-3">
+                {% for t in project.data.tech %}
+                  <li><span class="chip">{{ t }}</span></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </a>
+        {% endif %}
       </article>
     {% endfor %}
   </div>
 </section>
+
+{# ========== Modals for under-review projects ========== #}
+{% for project in collections.projects %}
+  {% if project.data.status == "under-review" %}
+    <dialog id="modal-{{ project.data.title | slug }}" class="project-modal">
+      <div class="project-modal__backdrop" onclick="this.closest('dialog').close()"></div>
+      <div class="project-modal__content">
+        <button
+          class="project-modal__close"
+          onclick="this.closest('dialog').close()"
+          aria-label="Close"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="w-5 h-5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="project-modal__badge">
+          <span>📄 Paper Under Review</span>
+        </div>
+
+        <h2 class="project-modal__title">{{ project.data.title }}</h2>
+
+        <div class="project-modal__notice">
+          <p><strong>This project and associated paper are currently under peer review.</strong></p>
+          <p>Full technical details, code, and results will be made available upon publication.</p>
+        </div>
+
+        <div class="project-modal__read-more">
+          <p>In the meantime, I've written about the journey:</p>
+          <a href="/writings/everything-worked-that-was-the-problem/" class="btn-primary">
+            Read: Everything Worked. That Was the Problem.
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </dialog>
+  {% endif %}
+{% endfor %}
