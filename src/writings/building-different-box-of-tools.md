@@ -13,7 +13,7 @@ readNext: /library/books/surely-you-are-joking-mr-feynman/
 >
 > *— Feynman*
 
-Article is inspired by the Feynman, he tells a story...
+Article is inspired by Feynman, he tells a story...
 
 > I had learned to do integrals by various methods shown in a book that my high school
 > physics teacher Mr. Bader had given me.
@@ -49,26 +49,26 @@ Article is inspired by the Feynman, he tells a story...
 
 ______________________________________________________________________
 
-For all I know Reputation and Time both are of great importance to a men. I've heard cases of this
-before and some personal experience as well. I believe it's important to spend sometime
-thinking and reflecting about how can we build a set of toolbox that gives you edge in all
-areas of your life not just career. This is my attempt to do so. It's important to understand
-that it's personal, me showing mine or feynman telling his doesn't mean you would be able to
-relate and apply them in your life, It would be great pleasure if reading this makes you
-think about how to approch this problem.
+For all I know reputation and time both are of great importance to a man. I've heard cases of this
+before and some personal experience as well. I believe it's important to spend some time
+thinking and reflecting about how we can build a set of tools that gives you an edge in all
+areas of your life, not just career. This is my attempt to do so. It's important to understand
+that it's personal — me showing mine or Feynman telling his doesn't mean you would be able to
+relate and apply them in your life. It would be great pleasure if reading this makes you
+think about how to approach this problem.
 
 ### Coding Error
 
-I've a colleuge who tried to run code from the youtube tutorial but failed, it was a small repo
-but error was generic `Class Robot has no method from_url`. I told him there is no way tutorial
+I've a colleague who tried to run code from a YouTube tutorial but failed. It was a small repo
+but the error was generic `Class Robot has no method from_url`. I told him there is no way the tutorial
 doesn't work. I tried it myself and got the same error. Given my computer science background and
-understanding of git and codebases, I just looked up the code for class in the git repo, in the comments and
-documentation they had mentioned the use of `from_url` method but wasn't implemented. So I searched around
-in the code base and found a file which mentioned other way of doing the same thing, and it worked. I looked back
-at youtube video comments and found that rolling out older version also works.
+understanding of git and codebases, I just looked up the code for the class in the git repo — in the comments and
+documentation they had mentioned the use of `from_url` method but it wasn't implemented. So I searched around
+in the codebase and found a file which mentioned another way of doing the same thing, and it worked. I looked back
+at YouTube video comments and found that rolling out an older version also works.
 
-1. **you can be little more curious and find easy fixes(like in comments).**
-1. **Having deeper understanding and being thorough gives you an edge.**
+1. **You can be a little more curious and find easy fixes (like in comments).**
+1. **Having a deeper understanding and being thorough gives you an edge.**
 
 ### Building Heuristics Via Analogy
 
