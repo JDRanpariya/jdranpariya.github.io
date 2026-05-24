@@ -8,7 +8,7 @@ layout: layouts/post.njk
 description: "A living reference for the interactive content system — charts, 3D models, physics sims, gamified explorables, and more."
 hasInteractive: true
 hasCode: true
-readNext: "/writings/writing-differentiable-simulation-for-cartpole-in-jax/"
+readNext: "/writings/everything-worked-that-was-the-problem/"
 ---
 
 This post documents the full suite of interactive capabilities available for my technical writing. Every interactive below is lazy-loaded (only fetched when you scroll to it), theme-aware (switches with dark mode), and progressive (falls back gracefully without JavaScript).
