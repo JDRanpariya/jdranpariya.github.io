@@ -19,7 +19,7 @@ original and new ideas or inventions of my own.
 I feel the same when I want to write about something, at core I believe it's
 about ideas and not inventions anymore.
 
-## Two false starts
+## False Beginnings
 
 In high school I wanted to have a blog that would provide me with some side
 income. It was just around when I found out about the deep web, and was jumping
@@ -40,7 +40,7 @@ Both times I tried to write, I wasn't able to sustain it. Probably because I
 didn't believe I had anything worth saying that someone else hadn't already said
 better.
 
-## Feeling like a fraud
+## Feeling Like A Fraud
 
 I'm a perfectionist. That hurts when you want to just start something or sustain
 it.
@@ -68,7 +68,7 @@ writing anything else felt like fraud, how unique my ideas could be??
 It's very hard to believe I wrote this much while saying that. **Magic is in
 doing without thinking much.**
 
-## A few nudges
+## A Few Nudges
 
 It was during covid that I learned about the idea of creating luck for yourself
 while reading Naval Ravikant. All I knew it meant was cold emailing. I later
@@ -102,7 +102,7 @@ pressing issue — the one that makes me hesitant to write anything at all:
 **Would I ever be able to write something original? Something of value? Or would
 it just be a repeated dump of already existing information?**
 
-## The mix
+## The Mix
 
 I think I had it backwards. Creativity is not about having ideas out of thin
 air, although it feels like it. It's about having enough experience of doing
@@ -144,7 +144,7 @@ the shoulders of giants and it's a privilege to be able to see further than they
 did. I'll do my best to cite where things came from — if you ever find a gap,
 write to me. Credit shall never be due.
 
-## What I want from this
+## What I Am Hoping For
 
 I have very clear goals: to develop clear thinking and persuasive writing,
 increase my exposure to the world, and create greater luck surface area for
