@@ -103,8 +103,25 @@ export default function (eleventyConfig) {
       .map((token, i) => {
         if (!/\S/.test(token)) return token;
         // Preserve all-caps tokens (AI, UNIX, RL, NMPC).
+        // Also normalize known lowercase acronyms to uppercase.
+        const ACRONYMS = new Set([
+          "ai",
+          "rl",
+          "pid",
+          "nmpc",
+          "lqr",
+          "mpc",
+          "vlms",
+          "llms",
+          "gpu",
+          "cpu",
+          "cad",
+          "ar",
+          "vr",
+        ]);
         if (/^[A-Z0-9]{2,}$/.test(token)) return token;
         const lower = token.toLowerCase();
+        if (ACRONYMS.has(lower)) return token.toUpperCase();
         const bare = lower.replace(/[^a-z]/g, "");
         if (i !== firstIdx && i !== lastIdx && SMALL_WORDS.has(bare)) {
           return lower;

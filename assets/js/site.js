@@ -91,8 +91,37 @@
     if (menu && !menu.classList.contains("translate-x-full")) closeMobileMenu();
   });
 
+  // ---------- engagement heartbeat ----------
+  // Fallback for when Umami's performance event (keepalive fetch on page
+  // leave) fails silently. Sends a "reading" event every 30s while the
+  // tab is visible, giving Umami a usable timestamp to measure duration.
+  (function () {
+    var HEARTBEAT_MS = 30000;
+    var IDLE_MS = 60000;
+    var lastActivity = Date.now();
+    var timer = null;
+
+    function trackActivity() { lastActivity = Date.now(); }
+    var events = ["scroll", "mousemove", "keydown", "touchstart", "click"];
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], trackActivity, { passive: true });
+    }
+
+    function sendHeartbeat() {
+      if (document.visibilityState === "hidden") return;
+      var idle = Date.now() - lastActivity;
+      if (idle > IDLE_MS) { timer = null; return; }
+      if (typeof umami !== "undefined" && umami.track) {
+        umami.track("reading", { page: window.location.pathname });
+      }
+      timer = setTimeout(sendHeartbeat, HEARTBEAT_MS);
+    }
+
+    setTimeout(sendHeartbeat, 10000);
+  })();
+
   // ---------- boot ----------
-  // This file is loaded with        , so the DOM is already parsed on execution.
+  // This file is loaded with defer, so the DOM is already parsed on execution.
   // Sync the theme-toggle icon with the theme applied by the inline head script.
   let savedTheme = null;
   try {
