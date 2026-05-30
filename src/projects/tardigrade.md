@@ -2,7 +2,7 @@
 title: Tardigrade
 fullTitle: 'Tardigrade: A Palm-Sized Quadruped'
 description: A full-stack physical AI project — from custom brushless actuators and PCB design to sim2real reinforcement learning — inspired by nature's most indestructible micro-animal.
-image: /assets/images/projects/tardigrade.png
+image: /assets/images/projects/tardigrade/tardigrade.png
 url: https://github.com/jdranpariya/tardigrade
 tech: [Robotics, BLDC/FOC, PCB Design, CAD, RL, Sim2Real, MuJoCo, World Models]
 status: active
@@ -64,6 +64,10 @@ caption: "Tardigrade body shell. Drag to rotate, scroll to zoom. <a href='https:
 :::
 
 <!-- mdformat-on -->
+
+## Initial Motor Experiments
+
+![Basic brushless motor test](/assets/images/projects/tardigrade/basic_motor.jpg)
 
 ## Architecture
 
