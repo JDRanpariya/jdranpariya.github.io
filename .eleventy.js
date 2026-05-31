@@ -544,6 +544,7 @@ export default function (eleventyConfig) {
             case "nowUpdates":
             case "reckoningTheDead":
             case "alchemistsHearth":
+            case "notes":
             case "__validateFrontmatter":
               return false;
           }
