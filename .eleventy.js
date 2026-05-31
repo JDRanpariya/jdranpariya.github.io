@@ -515,6 +515,13 @@ export default function (eleventyConfig) {
       .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
   });
 
+  eleventyConfig.addCollection("notes", function (collection) {
+    return collection
+      .getFilteredByGlob("src/notes/*.md")
+      .filter((item) => isDev || item.data.status !== "draft")
+      .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
+  });
+
   eleventyConfig.addFilter("filterByTag", function (collection, tag) {
     return collection.filter((item) => (item.data.tags || []).includes(tag));
   });

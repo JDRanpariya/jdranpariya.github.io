@@ -1105,8 +1105,13 @@ details:not([open]) > .toc-toggle svg {
 }
 
 .toc-content {
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 8rem);
+  scrollbar-width: none;
   transition: opacity var(--duration-slow) var(--ease-standard);
+}
+.toc-content::-webkit-scrollbar {
+  display: none;
 }
 .toc-content[aria-hidden="true"] {
   opacity: 0;
