@@ -1,12 +1,13 @@
 # dependencies (bun install)
 node_modules
 /build
-/public
 
 # output
 out
 dist
 *.tgz
+/public/*
+!/public/data
 
 # code coverage
 coverage

@@ -12,7 +12,8 @@
 // Composer card has a FIXED rotation (CSS). Jitter at the edit surface
 // reads as instability. Posted notes scatter on the wall, not here.
 //
-// Motion: respects prefers-reduced-motion (CSS + the submit scroll).
+// Motion: respects prefers-reduced-motion via CSS (no JS-driven scrolling
+// or animation in this file).
 
 (function () {
   "use strict";

@@ -32,15 +32,17 @@ section: "library"
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 gap-y-10 list-none m-0 p-0"
     >
       {% for book in collections.books %}
-        <li>
-          <a href="{{ book.url }}" class="card-media">
-            <div class="card-media__media">
-              {% image book.data.cover, book.data.title, "w-full aspect-[2/3] object-cover" %}
-            </div>
-            <h3 class="card-media__title">{{ book.data.title }}</h3>
-            <p class="card-media__author">{{ book.data.author }}</p>
-          </a>
-        </li>
+        {% if not book.data.unlisted %}
+          <li>
+            <a href="{{ book.url }}" class="card-media">
+              <div class="card-media__media">
+                {% image book.data.cover, book.data.title, "w-full aspect-[2/3] object-cover", "(min-width: 1024px) 180px, (min-width: 768px) 23vw, (min-width: 640px) 29vw, 45vw" %}
+              </div>
+              <h3 class="card-media__title">{{ book.data.title }}</h3>
+              <p class="card-media__author">{{ book.data.author }}</p>
+            </a>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   </section>
@@ -58,7 +60,7 @@ section: "library"
         <li>
           <a href="{{ lecture.url }}" class="card-media">
             <div class="card-media__media">
-              {% image lecture.data.cover, lecture.data.title, "w-full h-56 object-cover" %}
+              {% image lecture.data.cover, lecture.data.title, "w-full h-56 object-cover", "(min-width: 1024px) 304px, (min-width: 640px) 46vw, 100vw" %}
             </div>
             <h3 class="card-media__title">{{ lecture.data.title }}</h3>
             <p class="card-media__author">{{ lecture.data.author }}</p>

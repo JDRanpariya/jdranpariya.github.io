@@ -14,8 +14,10 @@
     - self: own site
     - jay-cloud.vercel.app: Umami analytics
     - fonts.googleapis.com, fonts.gstatic.com: (removed — fonts self-hosted now)
-    - cdn.jsdelivr.net: KaTeX CSS
-    - unpkg.com: Prism syntax-highlight theme
+    - cdn.jsdelivr.net (script-src/connect-src only): interactive/ modules
+      dynamically import mermaid, d3, matter-js, scrollama, model-viewer.
+      KaTeX + Prism CSS are self-hosted now (assets/vendor/), so jsdelivr and
+      unpkg are no longer needed in style-src/font-src.
     - img-src allows webmention.io for avatar images in webmentions.
       All content images are processed at build time via eleventy-img.
 #}
@@ -24,8 +26,8 @@
   content="
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://jay-cloud.vercel.app https://cdn.jsdelivr.net https://cdn.plot.ly https://esm.sh;
-    style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
-    font-src 'self' https://cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline';
+    font-src 'self';
     img-src 'self' data: https://webmention.io;
     connect-src 'self' https://jay-cloud.vercel.app https://cdn.jsdelivr.net https://cdn.plot.ly https://esm.sh;
     worker-src 'self' blob:;
@@ -58,7 +60,7 @@
   "@type": "Article",
   "headline": "{{ title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
@@ -66,11 +68,11 @@
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about",
+    "url": "{{ site.url }}/about",
     "sameAs": ["https://github.com/jdranpariya", "https://linkedin.com/in/jdranpariya"]
   },
-  "publisher": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io" },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://jdranpariya.github.io{{ page.url }}" }
+  "publisher": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" }
 }
 
 {%- elif section == "books" %}
@@ -79,13 +81,13 @@
   "@type": "Review",
   "name": "Review: {{ fullTitle or title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about"
+    "url": "{{ site.url }}/about"
   },
   "itemReviewed": {
     "@type": "Book",
@@ -103,13 +105,13 @@
   "@type": "Review",
   "name": "Notes: {{ fullTitle or title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about"
+    "url": "{{ site.url }}/about"
   },
   "itemReviewed": {
     "@type": "Course",
@@ -126,8 +128,8 @@
   "@type": "CollectionPage",
   "name": "Odysseys of JD Ranpariya",
   "description": "Long-term explorations into AI, biology, philosophy, and the mapping of human knowledge.",
-  "url": "https://jdranpariya.github.io/odysseys/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "url": "{{ site.url }}/odysseys/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- elif section == "odyssey" %}
@@ -136,16 +138,44 @@
   "@type": "Article",
   "headline": "{{ fullTitle or title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about"
+    "url": "{{ site.url }}/about"
   },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://jdranpariya.github.io{{ page.url }}" }
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" }
+}
+
+{%- elif section == "notes" %}
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ fullTitle or title }}",
+  "description": "{{ description }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "datePublished": "{{ published | isoDateTime }}",
+  "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
+  "keywords": [{% for tag in tags %}"{{ tag }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "author": {
+    "@type": "Person",
+    "name": "JD Ranpariya",
+    "url": "{{ site.url }}/about"
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" }
+}
+
+{%- elif section == "notes index" %}
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Notes by JD Ranpariya",
+  "description": "Short-form notes, references, and living documents.",
+  "url": "{{ site.url }}/notes/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- elif section == "writings index" %}
@@ -154,8 +184,8 @@
   "@type": "CollectionPage",
   "name": "Writings by JD Ranpariya",
   "description": "Essays and reflections on AI, learning, neuroscience, and living curiously.",
-  "url": "https://jdranpariya.github.io/writings/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "url": "{{ site.url }}/writings/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- elif section == "projects index" %}
@@ -164,8 +194,8 @@
   "@type": "CollectionPage",
   "name": "Projects by JD Ranpariya",
   "description": "Things I'm building, tweaking, or just playing around with.",
-  "url": "https://jdranpariya.github.io/projects/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "url": "{{ site.url }}/projects/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- elif section == "projects" %}
@@ -174,7 +204,7 @@
   "@type": "SoftwareSourceCode",
   "name": "{{ title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   {% if url %}"codeRepository": "{{ url }}",{% endif %}
@@ -182,7 +212,7 @@
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about"
+    "url": "{{ site.url }}/about"
   }
 }
 
@@ -192,13 +222,13 @@
   "@type": "Review",
   "name": "Notes: {{ fullTitle or title }}",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io{{ page.url }}",
+  "url": "{{ site.url }}{{ page.url }}",
   "datePublished": "{{ published | isoDateTime }}",
   "dateModified": "{{ (lastUpdated or published) | isoDateTime }}",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about"
+    "url": "{{ site.url }}/about"
   },
   "itemReviewed": {
     "@type": "ScholarlyArticle",
@@ -215,8 +245,8 @@
   "@type": "CollectionPage",
   "name": "Library of JD Ranpariya",
   "description": "Books, lectures, and papers that shaped my thinking.",
-  "url": "https://jdranpariya.github.io/library/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "url": "{{ site.url }}/library/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- elif section == "about" %}
@@ -224,7 +254,7 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "JD Ranpariya",
-  "url": "https://jdranpariya.github.io/about",
+  "url": "{{ site.url }}/about",
   "description": "{{ description }}",
   "jobTitle": "Physical AI Researcher",
   "alumniOf": {
@@ -245,11 +275,11 @@
   "@type": "ProfilePage",
   "name": "Jaydeep Ranpariya — Physical AI Researcher & Builder",
   "description": "{{ description }}",
-  "url": "https://jdranpariya.github.io",
+  "url": "{{ site.url }}",
   "mainEntity": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about",
+    "url": "{{ site.url }}/about",
     "sameAs": [
       "https://github.com/jdranpariya",
       "https://linkedin.com/in/jdranpariya",
@@ -265,8 +295,8 @@
   "@type": "CollectionPage",
   "name": "All Tags — JD Ranpariya",
   "description": "Browse all topics across Jay Ranpariya's writings, library, odysseys, and projects.",
-  "url": "https://jdranpariya.github.io/tags/",
-  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "https://jdranpariya.github.io/about" }
+  "url": "{{ site.url }}/tags/",
+  "author": { "@type": "Person", "name": "JD Ranpariya", "url": "{{ site.url }}/about" }
 }
 
 {%- else %}
@@ -274,12 +304,12 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "JD Ranpariya",
-  "url": "https://jdranpariya.github.io",
+  "url": "{{ site.url }}",
   "description": "Exploring the intersection of AI, biology, neuroscience, and embodied cognition.",
   "author": {
     "@type": "Person",
     "name": "JD Ranpariya",
-    "url": "https://jdranpariya.github.io/about",
+    "url": "{{ site.url }}/about",
     "sameAs": [
       "https://github.com/jdranpariya",
       "https://linkedin.com/in/jdranpariya",
@@ -292,9 +322,13 @@
 
 
   <!-- Title and Meta -->
-<title>{% if title %}{{title | smartTitleCase}} — Jaydeep Ranpariya{% else %}Jaydeep Ranpariya — Physical AI Researcher & Builder{% endif %}</title>
+<title>{% if title %}{{title | smartTitleCase}} · Jaydeep Ranpariya{% else %}Jaydeep Ranpariya · Physical AI Researcher & Builder{% endif %}</title>
 <meta name="description" content="{% if description %}{{ description }}{% else %}A polymath building understanding of intelligence from molecules to minds. I love reading, cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of what I build and write starts there.{% endif %}" />
-<link rel="canonical" href="https://jdranpariya.github.io{{ page.url }}" />
+{% if noindex %}
+<meta name="robots" content="noindex" />
+{% else %}
+<link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+{% endif %}
 <link rel="alternate" type="application/atom+xml" title="JD Ranpariya" href="/feed.xml" />
 <link rel="webmention" href="https://webmention.io/jdranpariya.github.io/webmention" />
 <link rel="pingback" href="https://webmention.io/jdranpariya.github.io/xmlrpc" />
@@ -303,7 +337,7 @@
 <meta property="og:type" content="{% if layout == 'layouts/post.njk' %}article{% else %}website{% endif %}" />
 <meta property="og:title" content="{% if title %}{{title | smartTitleCase}}{% else %}JD Ranpariya{% endif %}" />
 <meta property="og:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
-<meta property="og:url" content="https://jdranpariya.github.io{{page.url}}" />
+<meta property="og:url" content="{{ site.url }}{{page.url}}" />
 <meta property="og:site_name" content="JD Ranpariya" />
 {# Compute OG image path from section + slug #}
 {%- set ogImagePath = "/assets/og/default.png" -%}
@@ -322,7 +356,7 @@
 {%- elif section == "guest book" -%}
   {%- set ogImagePath = "/assets/og/guestbook.png" -%}
 {%- endif -%}
-<meta property="og:image" content="https://jdranpariya.github.io{{ ogImagePath }}" />
+<meta property="og:image" content="{{ site.url }}{{ ogImagePath }}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
@@ -343,7 +377,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="{% if title %}{{ title | smartTitleCase }}{% else %}JD Ranpariya{% endif %}" />
 <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}Exploring the intersection of AI, biology, neuroscience, and embodied cognition{% endif %}" />
-<meta name="twitter:image" content="https://jdranpariya.github.io{{ ogImagePath }}" />
+<meta name="twitter:image" content="{{ site.url }}{{ ogImagePath }}" />
 <meta name="twitter:site" content="@jdranpariya" />
 <meta name="twitter:creator" content="@jdranpariya" />
 
@@ -366,26 +400,16 @@
   <link rel="stylesheet" href="/css/style.css{{ '/css/style.css' | cacheBust }}" />
 
 {% if isPostLayout %}
-{# Third-party CSS is pinned by version AND SRI digest.
-   Regenerate hashes if you bump the versions (see AGENTS.md §14).
+{# Self-hosted (previously CDN-loaded from jsdelivr/unpkg — see git history
+   for the version-pinned CDN URLs + SRI digests if reverting).
    KaTeX is only loaded when hasMath is true (set in frontmatter).
    Prism is only loaded when hasCode is true (set in frontmatter).
    This avoids ~30 KB of CSS on posts that don't use math or code. #}
 {% if hasMath %}
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css"
-  integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
-  crossorigin="anonymous"
-/>
+<link rel="stylesheet" href="/assets/vendor/katex/katex.min.css" />
 {% endif %}
 {% if hasCode %}
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.css"
-  integrity="sha384-WwgFI0JHh6bHV6nQ0NnTmK2gweGZxGFY5GBlfx5yOGVZvUeCP5WoA+QxwI3LDU5Z"
-  crossorigin="anonymous"
-/>
+<link rel="stylesheet" href="/assets/vendor/prism/prism-gruvbox-dark.css" />
 {% endif %}
 {% endif %}
 

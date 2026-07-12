@@ -16,7 +16,7 @@ and ask what we can do better.
 
 When I started reading *[The School of Life](/library/books/school-of-life/)* I
 felt this is something I actually miss and want to learn properly. Attachment
-styles, emotional intelligence, how we lead our social lives — a big chunk of life
+styles, emotional intelligence, how we lead our social lives, a big chunk of life
 apart from the usual technical education we get. We're expected to figure this
 out on our own. The more I read, the more I realize that we're failing at this in
 ways which are obvious and entirely fixable. Research exists but I've no clue why
@@ -24,13 +24,13 @@ in the hell authorities and people responsible don't take it seriously.
 
 ______________________________________________________________________
 
-### Confusing Maturity For Ability
+## Confusing Maturity For Ability
 
 Gladwell documents in *[Outliers](/library/books/outliers/)* how physical maturity affects the trajectory of a child.
 In Canadian hockey, the eligibility cutoff is January 1 and if you look at
 stats, in elite groups, 40% of
 players are born January through March and 10% are born October through December. A
-twelve-month age gap at age five or six is enormous — the older kids aren't
+twelve-month age gap at age five or six is enormous: the older kids aren't
 necessarily more talented, they're physically more mature. They get picked for better
 teams, get better coaching.
 
@@ -47,7 +47,7 @@ found the relative age effect holds strong until at least sixteen, which is an
 argument for tracking students as late as possible, not as early as we do.[^1]
 
 Here's what concerns me beyond the academic side. From what I've learned about
-psychology and attachment — when a child is young and falling behind, they don't
+psychology and attachment: when a child is young and falling behind, they don't
 have the tools to understand why. They develop coping mechanisms. They
 internalize beliefs: *I'm not enough, everyone else is just better.* Those
 beliefs stretch through their entire life. We're passing on cumulative disadvantage
@@ -58,13 +58,13 @@ every state should at least audit whether birth date effects show up in their
 student populations. The methodology exists. Denmark has shown what works.
 Figure out when maturity levels even out and don't have kids go through major
 selection processes before that point.
-It might not be easy — cultural traditions, economic logistics, existing
+It might not be easy: cultural traditions, economic logistics, existing
 calendars all push back. But we have to ask ourselves: is short-term convenience
 worth writing off children before they've had a fair chance? Definitely a big NO!
 
 ______________________________________________________________________
 
-### Importance of Sleep
+## Importance of Sleep
 
 Walker's *Why We Sleep* has changed how I think about sleep entirely. Sleep is crucial
 for learning and brain development.
@@ -87,13 +87,13 @@ friends. What chance does a teenager have when the system is working against the
 Districts that have pushed school start times later in the US saw improvements in
 attendance, grades, and mental health. We know this works (and better, I feel,
 is to carry out studies locally to know the actual impact it has on the
-lives of kids instead of extrapolating — how much budget is even allocated to this
+lives of kids instead of extrapolating. How much budget is even allocated to this
 kind of study??). I can't fathom what policy makers are doing at this point;
 it's being ignored like it's nothing.
 
 ______________________________________________________________________
 
-### Are We Doing Exams Right?
+## Are We Doing Exams Right?
 
 Walker[^2] changed his own practice after realizing that end-loading exams forces
 students into sleep deprivation which directly opposes the goal of teaching. He
@@ -105,12 +105,12 @@ Then there is the problem of understanding:
 > A Greek scholar who loves the Greek language,
 > who knows that in his own country there aren't many children studying Greek.
 > But he comes to another country, where he is delighted to find everybody
-> studying Greek—even the smaller kids in the elementary schools. He goes to the
+> studying Greek, even the smaller kids in the elementary schools. He goes to the
 > examination of a student who is coming to get his degree in Greek, and asks
 > him, "What were Socrates' ideas on the relationship between Truth and
-> Beauty?"—and the student can't answer. Then he asks the student, "What did
+> Beauty?" And the student can't answer. Then he asks the student, "What did
 > Socrates say to Plato in the Third Symposium?" the student lights up and goes,
-> "Brrrrrrrr-up"—he tells you everything, word for word, that Socrates said, in
+> "Brrrrrrrr-up", he tells you everything, word for word, that Socrates said, in
 > beautiful Greek.
 >
 > But what Socrates was talking about in the Third Symposium was the
@@ -119,17 +119,17 @@ Then there is the problem of understanding:
 From Greece to Brazil (where Feynman addressed this to students and officials) to
 now, I don't think much has changed[^3]. Exams don't test for true understanding; the
 way we do it currently seems to mask reality, giving us the illusion that we understand
-something but actually don't. It's getting worse with AI in the loop — we're
+something but actually don't. It's getting worse with AI in the loop: we're
 outsourcing more than we realise.
 
 Policies should be informed by how memory and learning actually work. And
 we need better ways to evaluate our understanding of a given subject. Spaced
-retrieval, sleep between study sessions, non-cumulative assessment — much has
+retrieval, sleep between study sessions, non-cumulative assessment: much has
 been studied but is never implemented.
 
 ______________________________________________________________________
 
-### Swimming In Unknown Waters
+## Swimming In Unknown Waters
 
 Our current systems focus much on technical and career aspects but very little
 on regulating emotions, psychology, understanding others, and how to lead life.
@@ -138,7 +138,7 @@ on regulating emotions, psychology, understanding others, and how to lead life.
 > minds, "a move as striking as suggesting that each generation should rediscover
 > the laws of physics by themselves."
 >
-> — Alain De Botton
+> Alain De Botton
 
 We're moving toward nuclear families and digital isolation. Where I come from, we used to
 have joint families where emotional knowledge was transmitted
@@ -148,19 +148,19 @@ particularly for men, who are often never taught a thing about how to express
 and regulate emotions.
 
 Goleman wrote in 1995 that each generation of children was more troubled
-emotionally than the last — more lonely, depressed, angry, impulsive. The trend
+emotionally than the last: more lonely, depressed, angry, impulsive. The trend
 has only accelerated; diagnosed mental health conditions among US adolescents
 rose 35 percent between 2016 and 2023.[^4] We should spend less time ranking
 children and more time helping them identify their natural competencies and
 gifts.
 
-Emotional literacy — including self-awareness, empathy, conflict resolution,
-and understanding attachment patterns — should be part of school curricula from early on. Not
+Emotional literacy (including self-awareness, empathy, conflict resolution,
+and understanding attachment patterns) should be part of school curricula from early on. Not
 as an elective but something we take seriously.
 
 ______________________________________________________________________
 
-### Dawn of Generalists
+## Dawn of Generalists
 
 I'm a big fan of interdisciplinary thinking and believe in having a systems-level
 picture first and then categorizing aspects within to have a comprehensive
@@ -175,7 +175,7 @@ generalists who can solve problems by switching fields, reading
 papers, or consulting experts in other fields effectively (being able to communicate
 the problem is quite necessary).
 
-We don't teach children to see how parts relate to wholes — to think in systems.
+We don't teach children to see how parts relate to wholes: to think in systems.
 
 Hamming argued that the ability to see the larger context
 of your work is what separates people who contribute from people who perform
@@ -188,12 +188,12 @@ and big projects that changed the world, and research at grad and upper levels s
 to be more about publishing than doing real science. There is a big debate about
 incentive structure in academia which I don't want to get into, but in schools we
 can tell the tales of what changed the world to bring us where we
-are today[^7] — which would give kids perspective on how big problems were solved,
+are today[^7], which would give kids perspective on how big problems were solved,
 how it's done now, and how the process has evolved.
 
 ______________________________________________________________________
 
-### Illusion of Narratives
+## Illusion of Narratives
 
 The gap I feel most personally lacking is critical thinking, more specifically,
 empirical skepticism. I'd been watching Huberman and other podcasts for a
@@ -206,7 +206,7 @@ it is to fool ourselves with narratives. We get swayed. It's very much possible
 that when a guest(expert in their field) arrives on (even a very credible) podcast
 they can make mistakes they don't know they're making. Do they
 read the methodology of the paper they're citing? Are they nitpicking data points? Do they know if the results
-are generalizable — if the study was done on animals, or on a specific culture?
+are generalizable, if the study was done on animals, or on a specific culture?
 We need transparency so the listener knows how things are being
 extrapolated, but is never garenteed. We live in a world where information overload is getting a bigger
 and bigger problem. It's crucial to be able to tell sense from nonsense and
@@ -236,7 +236,7 @@ adults running the system, convenience wins.
 
 Maybe that's always been true. But the children growing up right now under
 arbitrary cutoff dates, sleep-deprived schedules, exam systems that punish their
-biology, and zero education about their own emotions — it isn't fair and is
+biology, and zero education about their own emotions: it isn't fair and is
 disheartening. It might not be easy to change things, but the fact that
 this research hasn't been converted to policy says a lot about who our systems
 are actually designed to serve.

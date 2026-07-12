@@ -14,6 +14,7 @@
   function updateThemeButton(theme) {
     const button = document.getElementById("theme-toggle");
     if (!button) return;
+    button.setAttribute("aria-pressed", String(theme === "dark"));
     const path = button.querySelector("svg path");
     if (!path) return;
     path.setAttribute("d", theme === "dark" ? SUN_D : MOON_D);
@@ -40,18 +41,33 @@
   function openMobileMenu() {
     const menu = document.getElementById("mobile-menu");
     const backdrop = document.getElementById("menu-backdrop");
+    const toggle = document.getElementById("mobile-menu-toggle");
     if (!menu) return;
     menu.classList.remove("translate-x-full");
+    menu.removeAttribute("inert");
     if (backdrop) backdrop.classList.remove("opacity-0", "pointer-events-none");
     document.body.classList.add("overflow-hidden");
+    if (toggle) toggle.setAttribute("aria-expanded", "true");
+    const closeButton = menu.querySelector('[data-action="close-mobile-menu"]');
+    if (closeButton) closeButton.focus();
   }
 
   function closeMobileMenu() {
     const menu = document.getElementById("mobile-menu");
     const backdrop = document.getElementById("menu-backdrop");
-    if (menu) menu.classList.add("translate-x-full");
+    const toggle = document.getElementById("mobile-menu-toggle");
+    if (menu) {
+      menu.classList.add("translate-x-full");
+      menu.setAttribute("inert", "");
+    }
     if (backdrop) backdrop.classList.add("opacity-0", "pointer-events-none");
     document.body.classList.remove("overflow-hidden");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", "false");
+      // Always restore focus to the toggle. For nav-link closes this fires
+      // right before the browser navigates away, which is harmless.
+      toggle.focus();
+    }
   }
 
   function toggleMobileMenu() {

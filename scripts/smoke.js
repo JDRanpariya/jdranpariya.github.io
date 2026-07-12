@@ -166,8 +166,21 @@ try {
   else ok("no notecards directory (OK if none added yet)");
 }
 
-// 6. readNext frontmatter links resolve to actual build pages
-console.log("\n[6] readNext links resolve");
+// 6. public/data passthrough copied into build/data — this directory is
+// tracked in git but the passthrough copy is easy to silently break (e.g.
+// if the gitignore pattern regresses and the source directory disappears).
+console.log("\n[6] public/data passthrough");
+try {
+  const dir = join(BUILD, "data");
+  const jsonFiles = readdirSync(dir).filter((n) => n.endsWith(".json"));
+  if (jsonFiles.length === 0) fail("build/data has no .json files");
+  else ok(`${jsonFiles.length} data file(s) in build/data`);
+} catch (e) {
+  fail(`build/data missing: ${e.message}`);
+}
+
+// 7. readNext frontmatter links resolve to actual build pages
+console.log("\n[7] readNext links resolve");
 {
   const { execSync } = await import("node:child_process");
   const grepOut = execSync('grep -rh "readNext:" src/ 2>/dev/null || true', { encoding: "utf8" });

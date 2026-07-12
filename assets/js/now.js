@@ -16,6 +16,10 @@
 (function () {
   "use strict";
 
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
   function showUpdate(dateStringId, opts) {
     const heading = document.getElementById("update-heading");
     const container = document.getElementById("updates-container");
@@ -51,7 +55,10 @@
     if (opts && opts.moveFocus) {
       if (heading.tabIndex < 0) heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
-      heading.scrollIntoView({ behavior: "smooth", block: "start" });
+      heading.scrollIntoView({
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+        block: "start",
+      });
     }
   }
 

@@ -9,15 +9,15 @@ tags: ["memoir", "life"]
 published: 2025-09-13            # Optional, when you read it or publication date
 lastUpdated: 2026-03-01            # Optional, when you read it or publication date
 layout: layouts/post.njk
-description: "This book is very dear to me, I never thought I would enjoy reading a memoire!"
+description: "This book is very dear to me, I never thought I would enjoy reading a memoir!"
 readNext: "/library/books/alchemist/"
 ---
 
-#### Actionable Insights
+## Actionable Insights
 - Just Do It!
 - Seek a calling
 
-#### Highlights
+## Highlights
 
 > [!quote] 
 > In the beginner's mind there are many possibilities, but in the expert's mind there are few.

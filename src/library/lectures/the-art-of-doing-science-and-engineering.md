@@ -31,14 +31,14 @@ Things you did to become great might not be appropriate for next generations.
 
 Education is what, when and why we do things. Training is how to do it. You need both theory to guide you and skills to do it.
 
-The modern era in science and engineering began with Sir Issac Newton roughly around 1642 and from there to Hamming's time around 1995 the knowledge doubled every 17 years. The 90% of scientist who ever lived are alive today. 
+The modern era in science and engineering began with Sir Isaac Newton roughly around 1642 and from there to Hamming's time around 1995 the knowledge doubled every 17 years. The 90% of scientists who ever lived are alive today. 
 
 > [!todo] 
 > For the publication and journals I would have to get numbers myself..
 
 Hamming goes on predicting the future with those number of 90% and double at 17 years with integration to see what would it look like after 340 years. At the time of newton there was only one field in science natural philosophy and after 340 years according to math it's gonna be 10 billion which isn't possible and neither all humans can be scientist. So we can see past is not too good a guide to the future.
 
-Although what can learn form the "back of the envelop method" will help you practice quick modelling. 
+Although what you can learn from the "back-of-the-envelope method" will help you practice quick modelling. 
 
 > [!important] 
 > Rate of change is proportional to how much you have.
@@ -94,7 +94,7 @@ Do I believe that guy of not? I told you he is a famous and all. But how many fa
 
 Fortran was designed psychologically and Algol was designed logically. Programmers who design logical languages don't get their language to last long. The tremendous survival of fortran tells you the value of psychological design of language as against logical.
 
-#### The person who discovers something rarely understands it
+### The person who discovers something rarely understands it
 > The person who discovers something rarely understands it. They had their feet so far in the back and all the trouble they had they don't see the
 >
 > light. Whereas the people who come afterwards see it much more clearly the person who did it.
@@ -108,11 +108,11 @@ Fortran was designed psychologically and Algol was designed logically. Programme
 >You don't really understand what you did. Now I started that method with four rules: easy to learn, easy to use, easy to debug, and easy to use subroutines. Now let's skip the fourth one because it's tied up with the crazy ideas we had about subroutines which are of no use to you whatsoever. It would appear that I was doing top-down programming.
 >
 
-#### Programming is closer to novel writing then it is to engineering
+### Programming is closer to novel writing then it is to engineering
 > Because the engineer is bound by a large number of hard laws of physics and the programmer is much more bound by his mind. Any ingenious thing they can think up just like a novelist. The novelist is bound by their imagination to a great extent.
 > The programmer is bound by their imagination much more than they are bound by hard rules. Therefore it's not so likely that you're going to be able to produce engineered software. It isn't the same problem. It's more like novel writing, as far as I can see.
 
-#### Think before you write
+### Think before you write
 > Don't write one line of code until you have decided what your acceptance test will be.
 
 Although there are exceptions, Some problems we don't know what the problem is and so we start programming to find out the problem and there are lot of those and I warn you about those.
@@ -640,10 +640,10 @@ One of the things you need to do to be  a systems engineer is be some successive
 
 Hamming's 3 rules of systems engineering (paraphrased):
     1. optimizing individual components will probably hurt the system as a whole
-    2. prepare for changes — flexible, modular designs
-    3. build in buffers for graceful degradation when overloaded — exactly meeting the specifications makes the system less robust.
+    2. prepare for changes: flexible, modular designs
+    3. build in buffers for graceful degradation when overloaded: exactly meeting the specifications makes the system less robust.
 
-- Systems and solutions change each other — a continual evolution.
+- Systems and solutions change each other: a continual evolution.
     - Presence of a solution changes the environment and produces new problems.
     - A solution to the original problem usually produces both deeper insight and dissatisfactions in the engineers.
 

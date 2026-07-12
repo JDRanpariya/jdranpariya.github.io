@@ -10,9 +10,7 @@ lastUpdated: 2025-10-13
 readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
-**Note:** Work in progress.
-
-### General Idea
+## General Idea
 I firmly believe that the reason we seek more knowledge is to build a better model of the
 world - one that helps us predict, adapt, and thrive. For me, **Education** means understanding
 everything there is to know about existence itself. And since humanity has already gathered
@@ -46,7 +44,7 @@ and **human civilization**.
 >
 > Now everything is very intermixed, I can't say I will study physics first and then Cosmology. To begin with this are the constructs of human brain and have been developed over time in kinda following manner.
 
-### What Should I Do? (Efficient Learning Strategy)
+## What Should I Do? (Efficient Learning Strategy)
 
 1. **Find the Best "Top 5-10" First**
     
@@ -54,7 +52,7 @@ and **human civilization**.
     - Check **citations, reviews, or expert opinions**.
 2. **Skim & Identify Core Ideas Quickly**
     
-    - Not all books need a full read—skim to extract **unique insights**.
+    - Not all books need a full read, just skim to extract **unique insights**.
     - Look for **overlapping principles** across multiple books.
 3. **Use "Meta-Learning" to Save Time**
     
@@ -64,53 +62,7 @@ and **human civilization**.
     - Engage in **practical application, discussions, or real-world projects**.
     - Books give **theory**, but **mastery** comes from **doing**.
 
-### Archive
-#### Prehistoric Knowledge (Before 3,000 BCE):
-- Early tools and fire use
-- Cave art and early forms of communication
-#### Ancient Knowledge (3,000 BCE - 500 CE):
-- Agriculture and animal domestication
-- Writing systems (cuneiform, hieroglyphics)
-- Mathematics (early counting, geometry)
-- Astronomy and the calendar
-- Philosophy (early Greek, Chinese, and Indian philosophies)
-- Early medicine and herbal remedies
-#### Classical Knowledge (Antiquity) (500 BCE - 500 CE):
-- Greek and Roman contributions to philosophy, mathematics, and science
-- Euclidean geometry
-- Early developments in physics and astronomy
-- Early theories of ethics and politics
-#### Medieval Knowledge (500 CE - 1500 CE):
-- Islamic Golden Age contributions to mathematics, astronomy, and medicine
-- Scholastic philosophy in Europe
-- Advances in medieval science and alchemy
-- Development of universities and formal education
-
-#### Renaissance and Enlightenment (Early Modern Period) (14th - 18th centuries):
-- Revival of interest in classical knowledge
-- Advances in natural philosophy (precursor to modern science)
-- Scientific revolution (e.g., Copernicus, Galileo, Newton)
-- Enlightenment philosophy and political theory (e.g., Locke, Rousseau, Voltaire)
-#### Industrial Revolution and Modern Era (18th century - early 20th century):
-- Rapid advancements in science and technology
-- Evolutionary biology (Darwin)
-- Physics (Einstein's theory of relativity)
-- Quantum mechanics
-- Modern psychology
-- Advances in computer science and information technology
-
-#### Contemporary Knowledge (20th century - present):
-- Recent developments in genetics and genomics
-- Space exploration and astrophysics
-- Environmental science and climate change research
-- Neuroscience and artificial intelligence
-
-
-I like the above given chart by ChatGpt and I will keep on updating as I learn more and more to make more accurate timeline to get bigger picture on how we have evolved as species and learned things to become what we are today.
-
-Let's first define how are we going to refere to Timeline in years. Well guess what I don't know much about calanders and time keeping. Let's learn about  [[Calendars]] first.
-
-I feel like we don't know much about time at all and the way we should have our calendars and spans out our history.
+I'm keeping a [timeline of how human knowledge evolved](/odysseys/the-codex-of-understanding/archive/), from prehistoric tools to now, updated as I learn more.
 
 Current Science can be branched into following
 - Formal Sciences [wiki](https://en.wikipedia.org/wiki/Formal_science#Branches)
@@ -119,7 +71,7 @@ Current Science can be branched into following
 - Social Sciences [wiki](https://en.wikipedia.org/wiki/Outline_of_social_science#Branches_of_social_science)
 - Philosophy [wiki](https://en.wikipedia.org/wiki/Philosophy#Indian)
 
-Out of all I think I will start with [[Cosmology]] 
+Out of all I think I will start with [Cosmology](/odysseys/the-codex-of-understanding/cosmology/)
 > I'm realizing learning is going to be haywire no fixed path to be followed
 
 
@@ -132,49 +84,51 @@ Anyway will stick to cosmology and add Space Science as tag.
 I think I should start learning about the subject with it's history and origin. 
 1. Learn origins and History
 2. Find some good compendium and look through
-3. Course from Top University or online platforms, classcentral.org
+3. Course from Top University or online platforms, [classcentral.com](https://www.classcentral.com)
 
-### 🛠️ Principles to Guide in the Journey
+## 🛠️ Principles to Guide in the Journey
 
 - Start with Universals, Move to Particulars
 	- Begin with the most fundamental ideas that explain the widest range of phenomena (e.g., logic, math, and physical laws).
 - Embrace a Recursive Learning Approach
-	- You will revisit core concepts repeatedly, each time with new depth and clarity. This reflects the way real discovery works—by spiraling deeper into the unknown.
+	- You will revisit core concepts repeatedly, each time with new depth and clarity. This reflects the way real discovery works, by spiraling deeper into the unknown.
 - Balance Theory with Experimentation
 	- Knowledge without application is incomplete. As you learn, create models, test ideas, and engage with real-world phenomena.
 - Think Across Domains
 	- Many breakthroughs arise at intersections (e.g., the birth of AI from neuroscience and mathematics).
 
-###  [[Engineering]]
+## [Engineering](/odysseys/the-codex-of-understanding/engineering/)
 > Make your own stuff with 3d printing, electronics and software.
 - [How to make almost anything](https://fab.cba.mit.edu/classes/MAS.863/) [Fab Academy 2025 lectures](https://www.youtube.com/playlist?list=PLJKO2oCNL0eQ-QEKi29eV8BoWbmB1g9Xw) [Neil Gershenfeld](https://www.youtube.com/playlist?list=PLhSkX0eBPxupcctI8QfQpieo82r1o3EtM)
 - [Building Prototypes Dan Gelbart](https://www.youtube.com/playlist?list=PLSGA1wWSdWaTXNhz_YkoPADUUmF1L5x2F)
 - [Physical Computing](https://makeabilitylab.github.io/physcomp/)
 - [Pocket Notebooks](https://www.youtube.com/watch?v=H6A1VB99eRo&pp=ygUSbWFrZSB5b3VyIG93biBzdGZm)
 - [Awesome Electronics](https://github.com/kitspace/awesome-electronics)
-- [[Radio]]
-- [[STEM Hacking]]
+- [Radio](/odysseys/the-codex-of-understanding/radio/)
+- [STEM Hacking](/odysseys/the-codex-of-understanding/stem-hacking/)
         
-### History
+## History
 - **Big History**
-	- [[Theory of Existence]]
-	- Astrology from Big bang to solar system
+	- Theory of Existence
+	- Astronomy from Big bang to solar system
 	- Geology - Plate Techtonics
-	- [[Origin of Life]]
-	- [[Evolution]]
+	- [Origin of Life](/odysseys/the-codex-of-understanding/origin-of-life/)
+	- Evolution
 	- Anthropocene
 	- Future
 - **Intellectual History** -> Evolution of Ideas
 
-### Languages
+## Languages
 > I want to learn languages.
 - Origin and Evolution of language
+- [German](/odysseys/the-codex-of-understanding/german/)
+- [Sanskrit](/odysseys/the-codex-of-understanding/sanskrit/)
 
-### [[Philosophy]]
+## [Philosophy](/odysseys/the-codex-of-understanding/philosophy/)
 > The roots of Inquiry -> how to ask questions, break down concepts, and understand the limits of human thought.
 
 - **Epistemology** -> What are landmark thinkers, books and papers?
-- **Philosophy of Science**
+- **[Philosophy of Science](/odysseys/the-codex-of-understanding/philosophy-of-science/)**
 - **Philosophy of Mathematics**
 - **Logic & Reasoning**
 - **Metaphysics**
@@ -187,9 +141,9 @@ I think I should start learning about the subject with it's history and origin.
 	- How can we **model the unknown**?
 
 > Learn to ask questions that matter.
-### Formal Sciences
+## Formal Sciences
 > The language of reality -> Math is the most **generalizable framework** for understanding reality.
-- **[[Mathematics]]**
+- **[Mathematics](/odysseys/the-codex-of-understanding/mathematics/)**
 	- **Set Theory & Foundations** → Cantor, Zermelo-Fraenkel, Gödel
 	- **Abstract Algebra & Group Theory** → Galois, Lie
 	- **Topology & Geometry** → Euler, Riemann, Klein
@@ -204,40 +158,41 @@ I think I should start learning about the subject with it's history and origin.
 	- **Complex Systems & Network Theory** → Barabási, Newman
 	- **Emergent Phenomena** → Anderson, Crutchfield
 	- **Artificial Life & Evolutionary Computation** → Langton, Holland
-- **Logic & [[Systems Science]]**
+- **Logic & Systems Science**
 			- **Logic** → Boole, Russell, Frege
 	- **Automata Theory & Formal Languages** → Turing, Chomsky
 	- **Cybernetics & Systems Theory** → Wiener, Ashby, von Neumann
 	- **Game Theory & Decision Theory** → Nash, von Neumann, Kahneman
+	- **[Systems Thinking](/odysseys/the-codex-of-understanding/systems-thinking/)** → Meadows, Wiener, Bateson
 - **Computational Science**
 	- **Algorithms & Computational Complexity** → Turing, Cook
 	- **Artificial Intelligence & Neural Networks** → Hinton, LeCun, Russell
-	- **Deep Learning & Reinforcement Learning** → Goodfellow, Sutton
-	- **Robotics & Cognitive Systems** → Brooks, Minsky, Dreyfus
+	- **Deep Learning & [Reinforcement Learning](/odysseys/the-codex-of-understanding/reinforcement-learning/)** → Goodfellow, Sutton
+	- **[Robotics](/odysseys/the-codex-of-understanding/robotics/) & Cognitive Systems** → Brooks, Minsky, Dreyfus
 
 > Learn the ability to abstract, model, and simulate anything.
-### Natural Sciences
+## Natural Sciences
 > Understanding the physical universe
 
-- **[[Physics]]** -> Rules of reality, Understand the physical fabric of reality at every scale.
+- **[Physics](/odysseys/the-codex-of-understanding/physics/)** -> Rules of reality, Understand the physical fabric of reality at every scale.
 	- **Classical Mechanics** → Newton, Lagrange
 	- **Electromagnetism** → Maxwell
 	- **Thermodynamics & Statistical Mechanics** → Boltzmann, Gibbs
 	- **Relativity (Space & Time)** → Einstein
 	- **Quantum Mechanics** → Schrödinger, Heisenberg, Dirac
 	- **Quantum Field Theory & Particle Physics** → Feynman, Weinberg
-	- **[[Cosmology]] & Astrophysics** → Hawking, Penrose
+	- **[Cosmology](/odysseys/the-codex-of-understanding/cosmology/) & Astrophysics** → Hawking, Penrose
 	- **Theoretical Frontiers** → String Theory, Loop Quantum Gravity
 - **Chemistry** -> Structure of Matter, Understand how matter organizes into complex, life-supporting systems.
-- **[[Biology]]** -> Science of Life, universe learning to **self-organize**. Understand the principles of emergence, adaptation, and intelligence.
+- **[Biology](/odysseys/the-codex-of-understanding/biology/)** -> Science of Life, universe learning to **self-organize**. Understand the principles of emergence, adaptation, and intelligence.
 	- [ ] [Virology](https://www.youtube.com/watch?v=XlLgaHZpZS4&list=PLGhmZX2NKiNkAKAp3BynockFLUiCkZ8aJ&index=1)
 	- **Evolution & Natural Selection** → Darwin, Wallace
 	- **Genetics & Molecular Biology** → Mendel, Watson & Crick
-	- **Neuroscience & Consciousness** → Hebb, Edelman, Friston
+	- **[Neuroscience](/odysseys/the-codex-of-understanding/neuroscience/) & Consciousness** → Hebb, Edelman, Friston
 	- **Ecology & Systems Biology**
 
-### Study of Intelligence
-- **[[Psychology]] & Cognitive Science**
+## Study of Intelligence
+- **Psychology & Cognitive Science**
 	- **Emotions & Rationality** → Damasio, Lazarus
 	- **Decision Theory** → Simon, Gigerenzer
 	- **Neuroeconomics & Motivation** → Phelps, Loewenstein
@@ -249,20 +204,19 @@ I think I should start learning about the subject with it's history and origin.
 - **Learning Algorithms (Biological & Artificial)** → Rescorla, Sutherland
 - **Consciousness Studies** → Dennett, Chalmers, Koch
 - **Embodied Cognition** → Clark, Varela
-- **AGI Foundations** → Goertzel, Yudkowsky
+- **[AGI](/odysseys/the-codex-of-understanding/agi/) Foundations** → Goertzel, Yudkowsky
 
-### Social Sciences
-> Understanding human systems -> To shape the future, you must understand how **people think, behave, and organize**—this is crucial for ethical decisions and civilization-building.
+## Social Sciences
+> Understanding human systems -> To shape the future, you must understand how **people think, behave, and organize**. This is crucial for ethical decisions and civilization-building.
 
 - **Human History**
-	- [[Civilizations]]
+	- [Civilizations](/odysseys/the-codex-of-understanding/civilizations/)
 - **Anthropology**
 - **Sociology**
 - **Sociology of Knowledge** → Mannheim, Foucault
 - **Complexity of Social Systems** → Castells, Luhmann
-- [[Lifestyle]]
+- Lifestyle
 
 > how collective intelligence and civilization evolve.
 
 ---
-

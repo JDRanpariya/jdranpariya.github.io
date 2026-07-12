@@ -219,8 +219,8 @@ button,
 
 /* ==========================================================================
  * Layer: components — DESIGN.md §8
- * Every pattern the templates reach for. Tailwind          where possible;
- * bare CSS where          can't express it.
+ * Every pattern the templates reach for. Tailwind `@apply` where possible;
+ * bare CSS where `@apply` can't express it.
  * ========================================================================== */
 
 @layer components {
@@ -735,6 +735,32 @@ button,
     color: var(--color-accent);
   }
 
+  .prose-site .contains-task-list {
+    list-style: none;
+    padding-left: 0.25em;
+  }
+  .prose-site .task-list-item {
+    padding-left: 0;
+  }
+  .prose-site .task-list-item::marker {
+    content: none;
+  }
+  /* markdown-it-task-lists wraps the checkbox + text in a <label> so the
+   * checkbox has an accessible name (axe "Form elements must have labels"). */
+  .prose-site .task-list-item > label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5em;
+    cursor: default;
+  }
+  .prose-site .task-list-item-checkbox {
+    margin-top: 0.4em;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    accent-color: var(--color-accent);
+  }
+
   .prose-site blockquote {
     border-left: 3px solid var(--color-accent);
     padding: 0.25rem 0 0.25rem 1.25rem;
@@ -1185,7 +1211,8 @@ details:not([open]) > .toc-toggle svg {
   --notecard-ink: #5a3a24;
   --notecard-red: #8b2e1f;
   /* Sepia-tinted 4-layer pill shadow — reads as warm lift on the cream
-   * page. Consumed via tailwind.config.js as the                token. */
+   * page. Consumed via tailwind.config.js as the `shadow-notecard-pill`
+   * token. */
   --notecard-pill-shadow:
     0 0.6px 0.6px rgba(52, 28, 8, 0.14), 0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
     0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08), 0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);

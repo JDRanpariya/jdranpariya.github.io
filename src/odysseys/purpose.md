@@ -3,14 +3,14 @@ title: Purpose
 fullTitle: "Purpose: Compass of my life"
 layout: layouts/post
 section: "odyssey"
-description: This are my thoughts on having purpose in life, how I approch it and what does it mean for me.
+description: These are my thoughts on having purpose in life, how I approach it and what does it mean for me.
 tags: ["life", "purpose"]
 published: 2025-10-09
 lastUpdated: 2025-10-09
 readNext: "/writings/dont-be-the-drunken-sailor/"
 ---
 
-**Note:** This are my raw notes directly from obsidian, I'm working on making them bit more polished for easy reading. work in progress!!
+**Note:** These are my raw notes directly from obsidian, I'm working on making them a bit more polished for easy reading. work in progress!!
 Callouts don't look nice either :(
 > [!success] Squeezing every bit of enjoyment out of life.
 
@@ -22,8 +22,8 @@ Callouts don't look nice either :(
 > [!important] Mission
 > **To cultivate a life of continuous learning, open-minded exploration, and honest communication, fostering growth and connection with myself and others while enjoying every bit of life.**
 
-### [[Lifebook]]
-#### To-do
+## [[Lifebook]]
+### To-do
 - [x] [Life Advice by Hunter S. Thompson](https://fs.blog/hunter-s-thompson-to-hume-logan/)
 - [x] Finish wiki on purushartha [finish wiki](https://en.wikipedia.org/wiki/Puru%E1%B9%A3%C4%81rtha)
 - [x] Finish making list of books you want to read to learn more about purusharth, have them all downloaded if you don't find it make a decision and have it removed or if you really deep down believe that can have significant impact leave link here.
@@ -41,7 +41,7 @@ Callouts don't look nice either :(
 
 	4. Yoga & Ayurveda way of living <- [[Ancient Indian Knowledge]]
 
-#### Tips
+### Tips
 1. Find like minded people, who are interesting in building life
 2. Train with masters, Rapid Feedback, Smart cuts, Super Connectors, Bigger or Better
 3. Have a mastermind with like minded people. Have one session a week with someone sharing what you done this week.
@@ -70,7 +70,7 @@ Callouts don't look nice either :(
 		1. **Building Meaningful Relationships
 		2. **Find people to Inspire you**
 	
-#### Evaluating your interests
+### Evaluating your interests
 
 - who you are currently? 
 	- I'm son to my parents, brother to my sibling. A friend to few. And unknown relation to others.
@@ -99,7 +99,7 @@ Callouts don't look nice either :(
 
 > [!attention] 
 >  I have to try new things without worrying about them becoming my passion or successful, just do it for the fun of it and see what happens.
-### [[Pranav Abraham]]
+## [[Pranav Abraham]]
 - Figure out better way to ask feedback from people. make it easier.
 - Don't leave things too open ended, make things easier for other people.
 	- Try out form or something.

@@ -19,28 +19,28 @@ readNext: "/library/books/school-of-life/"
 > I don't know what happened to hamza, haven't been following him since then. But it's June, 2025 and I'm doing Well Being for Teens.
 
 
-### Week 1
+## Week 1
 
 > Oct 30, 22
 
 - My Authentic Happiness score after using psychological Instrument came about 2/5 which I predicted to be 4/5 
 - Rewirement: Find you signature Strengths |  [[My Core Values]]
 
-### Week 2
+## Week 2
 
 > 19 Nov, 22
 
 - [[Savouring]] Rewirement
 - Daily [[Gratitude]] journal Rewirement
 
-### Week 3
+## Week 3
 
 > 24 Jan, 23
 
 - Random acts of Kindness
 - Social connection
 
-### Week 4
+## Week 4
 
 > 05 Feb, 23
 
@@ -49,37 +49,37 @@ readNext: "/library/books/school-of-life/"
 ![[05 Feb, 23#Science of well being]]
 ![[07 Feb, 23#Science of well being]]
 
-### Week 5 - Stuff that really makes us happy
+## Week 5 - Stuff that really makes us happy
 
 > 13 Feb, 23
 
 Better Wanting
-#### Good Job
+### Good Job
 - Job that activates your [[My Core Values]] | [[Character Strengths]](VIA survey)
 - being in [[Flow]] (checkout book)
 	- ![[Pasted image 20230214094741.png]]
 
-#### Good Grades
+### Good Grades
 - What to focus on? Grades are not good to focus on.
 - Having External Motivation like being paid is killing your Intrinsic motivation. DECI 1971.
 - A focus on grades can undermine a growth mindset.([[Mindset]] by Carol Dweck).
 - Get a good mindset
 
-#### Kindness
+### Kindness
 - Increase random acts of kindness
 - [[Wealth]] Science of smarter spending
 
-#### Social Connection
+### Social Connection
 - [[Mind Wise]] 
 > _This book explores more of our mispredictions and introduces us to more research on the surprising mistakes humans so routinely make_ 
 - Talk to people around you it will make you and them both happier.
 - sharing experiences with another person makes them better.
 
-#### Time Affluence
+### Time Affluence
 - [[Priming]]
 - Time over money will make you more happy.
 
-#### Mind Control
+### Mind Control
 - Mind Wandering (study by Gilbert)
 - [[Default Mode Network]] 
 - A wandering mind is an unhappy mind
@@ -89,7 +89,7 @@ Better Wanting
 - [[Exercise]]
 - [[Sleep]]
 
-### Week 6 - Putting strategies into practice
+## Week 6 - Putting strategies into practice
 
 > 20 Feb, 23
 
@@ -121,7 +121,7 @@ Strategy 2
 	1. Create if obstacle than action/plan
 - Can also be used for feasibility checking.
 
-### Week 7 - Final Rewirement
+## Week 7 - Final Rewirement
 
 > 27 Feb, 2023
 
@@ -168,7 +168,7 @@ Plan: I will do it everyday, Just after waking up on floor after I make my bed.
 
 
 
-### Next up
+## Next up
 
 - **Seligman (2004).** [Authentic Happiness: Using the New Positive Psychology to Realize Your Potential for Lasting Fulfillment.](https://www.amazon.com/Authentic-Happiness-Psychology-Potential-Fulfillment/dp/0743222989) New York, NY: Simon and Schuster.
 

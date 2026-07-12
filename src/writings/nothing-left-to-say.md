@@ -11,7 +11,7 @@ readNext: /writings/dont-be-the-drunken-sailor/
 
 Since childhood I had a feeling that there is nothing left for me to invent.
 After learning about Newton's laws, models of atoms and more physics, I often
-used to ask myself — how do I invent something new? Everything seems to be
+used to ask myself: how do I invent something new? Everything seems to be
 already invented. Some of my friends shared the same thought. It was very
 frustrating to comprehend and accept that I'm not able to come up with any
 original and new ideas or inventions of my own.
@@ -33,7 +33,7 @@ exposure. I had then, recently started dipping my toes into Linux and was deep
 into rabbit holes, so I wrote about my dilemma on what I should spend my time
 on. I just checked and it doesn't exist anymore on Hashnode. Lol, what better
 argument for having your own site. Fortunately, the Wayback Machine saves the
-day — you can still find it
+day. You can still find it
 [here](https://web.archive.org/web/20220518185417/https://jdranpariya.hashnode.dev/jds-dilemma).
 
 Both times I tried to write, I wasn't able to sustain it. Probably because I
@@ -47,7 +47,7 @@ it.
 
 I never believed I could do something creative. It didn't feel natural. It
 doesn't come naturally to me, that's what I used to tell myself. When people say
-they do art or write books, I couldn't comprehend it — how the fuck do you do
+they do art or write books, I couldn't comprehend it: how the fuck do you do
 something out of nothing that's original or even close? I have a moral roadblock
 stopping me from just restating work that already exists.
 
@@ -58,7 +58,7 @@ and lots of them. Take for example,
 [Science of Well Being](/library/lectures/the-science-of-wellbeing/), best in
 class!! I can't convince myself to write about something without feeling like
 I'm scamming people. Best I thought I could do was to share my
-[self-learning curriculums](/odysseys/the-codex-of-understanding/) — roadmaps
+[self-learning curriculums](/odysseys/the-codex-of-understanding/): roadmaps
 for learning subjects that fancy me; I organize them after reviewing an
 exhaustive amount of resources. I'm extremely thorough.
 
@@ -80,7 +80,7 @@ leverage in the long term. Writing surfaced to the top, it was already helping
 me think clearly. And I believe it's important to articulate and present your
 thoughts in a clear and concise way. In the back of my mind I always wanted to
 learn it but never did. Now that I've renewed my personal site, I found a bit of
-motivation — now it aligns with my current mindset and vision.
+motivation, now it aligns with my current mindset and vision.
 
 Then I learned interesting things about randomness while reading
 [The Black Swan](/library/books/black-swan/). Increasing your exposure to the
@@ -98,7 +98,7 @@ daydreams where I'd start thinking about an idea, how it fits into an article,
 how cool it could look.
 
 Finally I decided to write multiple pieces but start by addressing the most
-pressing issue — the one that makes me hesitant to write anything at all:
+pressing issue, the one that makes me hesitant to write anything at all:
 **Would I ever be able to write something original? Something of value? Or would
 it just be a repeated dump of already existing information?**
 
@@ -141,7 +141,7 @@ in the act. Not before it.
 
 Which means the ideas and examples I share might not be my own. I too stand on
 the shoulders of giants and it's a privilege to be able to see further than they
-did. I'll do my best to cite where things came from — if you ever find a gap,
+did. I'll do my best to cite where things came from. If you ever find a gap,
 write to me. Credit shall never be due.
 
 ## What I Am Hoping For
@@ -149,7 +149,7 @@ write to me. Credit shall never be due.
 I have very clear goals: to develop clear thinking and persuasive writing,
 increase my exposure to the world, and create greater luck surface area for
 surprising opportunities in life. And I want to practice a skill I've been
-doubling down on — bias for action. Starting things when I feel I'm not ready
+doubling down on: bias for action. Starting things when I feel I'm not ready
 yet and shipping when I believe it's not perfect yet is the only way I see to
 move forward. This serves as a catalog too. I want to look back in a year and
 see how my writing and ideas have evolved.

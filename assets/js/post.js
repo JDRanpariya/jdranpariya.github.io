@@ -12,6 +12,10 @@
 (function () {
   "use strict";
 
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
   // ---------- TOC ----------
   function initTOC() {
     const toggles = document.querySelectorAll(".toc-toggle");
@@ -25,6 +29,11 @@
         const open = toggle.getAttribute("aria-expanded") === "true";
         toggle.setAttribute("aria-expanded", String(!open));
         panel.setAttribute("aria-hidden", String(open));
+        // aria-hidden alone doesn't remove the links from tab order — the
+        // panel only visually collapses via opacity/max-height. `inert`
+        // does that removal without killing the collapse transition (which
+        // `hidden`/display:none would).
+        panel.inert = open;
       });
     });
   }
@@ -48,6 +57,13 @@
       clone.querySelectorAll(".footnote-backref").forEach(function (el) {
         el.remove();
       });
+      // The sidebar is aria-hidden (its content is the sr-only bottom list's
+      // duplicate, kept for sighted mouse users) — links inside an
+      // aria-hidden container must not be sequentially focusable. tabindex=-1
+      // pulls them out of Tab order while leaving mouse clicks working.
+      clone.querySelectorAll("a").forEach(function (a) {
+        a.setAttribute("tabindex", "-1");
+      });
       notes.push({ ref: ref, html: clone.innerHTML.trim(), n: i + 1 });
     });
 
@@ -66,10 +82,14 @@
         return;
       }
 
-      // Desktop: hide bottom footnotes, render in sidebar.
-      section.style.display = "none";
+      // Desktop: visually hide bottom footnotes (sidebar is the visible
+      // rendering) but keep them in the accessibility tree — sr-only,
+      // not display:none — so in-text refs still land somewhere for
+      // keyboard/SR users instead of jumping at a non-rendered target.
+      section.classList.add("sr-only");
       if (sep) sep.style.display = "none";
       sidebar.innerHTML = "";
+      sidebar.setAttribute("aria-hidden", "true");
       elMap.clear();
 
       const origin = sidebar.getBoundingClientRect().top + window.scrollY;
@@ -137,8 +157,10 @@
     const sep = document.querySelector("hr.footnotes-sep");
     if (!section) return;
 
-    // Hide bottom footnote list — inline expansion replaces it.
-    section.style.display = "none";
+    // Visually hide bottom footnote list — inline expansion replaces it —
+    // but keep it sr-only rather than display:none so it's still reachable
+    // for assistive tech that doesn't trigger the tap-to-expand handler.
+    section.classList.add("sr-only");
     if (sep) sep.style.display = "none";
 
     const refs = document.querySelectorAll(".footnote-ref > a");
@@ -220,7 +242,10 @@
         activeInline = inline;
 
         // Scroll the note into view smoothly.
-        inline.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        inline.scrollIntoView({
+          behavior: prefersReducedMotion() ? "auto" : "smooth",
+          block: "nearest",
+        });
 
         // Close on tap outside (anywhere except another footnote ref).
         setTimeout(function () {

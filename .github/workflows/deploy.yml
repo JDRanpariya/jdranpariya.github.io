@@ -24,12 +24,16 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
       - name: Regenerate bun.lock
+        # --ignore-scripts: this step only needs to resolve the dependency
+        # graph to regenerate the lockfile, not build anything. Skipping
+        # lifecycle scripts avoids running arbitrary postinstall code from
+        # a dependency bump (this job holds a contents:write token).
         run: |
-          bun install --frozen-lockfile || true
+          bun install --frozen-lockfile --ignore-scripts || true
           rm -f bun.lock
-          bun install
+          bun install --ignore-scripts
       - name: Commit lockfile if changed
         run: |
           if [[ -n "$(git status --porcelain bun.lock)" ]]; then
@@ -56,7 +60,7 @@ jobs:
         with:
           # Pick up the lockfile commit from refresh-lockfile when present.
           ref: ${{ github.event.pull_request.head.ref || github.ref }}
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Python dependencies

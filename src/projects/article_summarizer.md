@@ -22,7 +22,7 @@ Tech Stack
 * AI: Hugging Face Transformers
  
 Notes
-* Summarization uses facebook/bart-large-cnn locally — responses are slow 
+* Summarization uses facebook/bart-large-cnn locally, responses are slow 
   without a GPU. This is expected, not a bug.
 * Built as a learning project to explore full-stack development with a 
   Django/GraphQL backend and Next.js frontend.

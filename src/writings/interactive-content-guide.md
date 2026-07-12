@@ -5,7 +5,7 @@ status: "draft"
 tags: ["tech", "writing"]
 section: "writings"
 layout: layouts/post.njk
-description: "A living reference for the interactive content system — charts, 3D models, physics sims, gamified explorables, and more."
+description: "A living reference for the interactive content system: charts, 3D models, physics sims, gamified explorables, and more."
 hasInteractive: true
 hasCode: true
 readNext: "/writings/everything-worked-that-was-the-problem/"
@@ -27,7 +27,7 @@ height: 420
 caption: "Training convergence for differentiable simulation of a cart-pole. Hover for values, drag to zoom."
 :::
 
-The chart above shows how a differentiable simulator converges during gradient-based optimization. Unlike reinforcement learning (which needs millions of rollouts), gradients through the physics engine give us direct supervision — hence the smooth, monotonic descent.
+The chart above shows how a differentiable simulator converges during gradient-based optimization. Unlike reinforcement learning (which needs millions of rollouts), gradients through the physics engine give us direct supervision, hence the smooth, monotonic descent.
 
 ### The Actuator Landscape
 
@@ -46,7 +46,7 @@ Filled area charts to show gaps and convergence over time:
 ::: interactive plotly
 src: /data/sim2real-gap.json
 height: 420
-caption: "As domain randomization increases, simulation performance drops but real hardware improves — the gap closes around iteration 5."
+caption: "As domain randomization increases, simulation performance drops but real hardware improves. The gap closes around iteration 5."
 :::
 
 ---
@@ -55,11 +55,11 @@ caption: "As domain randomization increases, simulation performance drops but re
 
 ### Mermaid: System Architecture
 
-For control loops, data pipelines, and system design. No images needed — just text:
+For control loops, data pipelines, and system design. No images needed, just text:
 
 ::: interactive mermaid
 code: graph LR; Env-->|obs|Policy; Policy-->|action|Env; Env-->|reward|Loss; Loss-->|grad|Policy
-caption: "Differentiable simulation training loop — gradients flow end-to-end through the physics engine."
+caption: "Differentiable simulation training loop: gradients flow end-to-end through the physics engine."
 :::
 
 ---
@@ -85,7 +85,7 @@ caption: "A procedural spinning cube with wireframe overlay. Drag to rotate, scr
 
 ### Matter.js: 2D Physics
 
-For simpler demonstrations — pendulums, particles, springs, collisions:
+For simpler demonstrations (pendulums, particles, springs, collisions):
 
 ::: interactive matter
 src: /interactive/components/pendulum-demo.js
@@ -104,7 +104,7 @@ For research-grade custom charts, network graphs, force-directed layouts:
 ::: interactive d3
 src: /interactive/components/knowledge-graph.js
 height: 500
-caption: "My concept network for physical AI — drag nodes to rearrange. Each color is a topic cluster."
+caption: "My concept network for physical AI. Drag nodes to rearrange. Each color is a topic cluster."
 :::
 
 ---
@@ -122,17 +122,17 @@ caption: "My concept network for physical AI — drag nodes to rearrange. Each c
 ### Color Philosophy
 
 Inspired by Physical Intelligence's warm, archival data colors. The palette is:
-- **Earthy and warm** — burnt sienna, forest green, amber/ochre, steel blue
-- **Calibrated for both modes** — each color has a light and dark variant
-- **Accessible** — all pass WCAG contrast against the chart background
-- **Sequential** — ordered so adjacent series are always distinguishable
+- **Earthy and warm**: burnt sienna, forest green, amber/ochre, steel blue
+- **Calibrated for both modes**: each color has a light and dark variant
+- **Accessible**: all pass WCAG contrast against the chart background
+- **Sequential**: ordered so adjacent series are always distinguishable
 
 ### Performance
 
 - **Zero JS** on pages without                       
 - **Lazy loading** via IntersectionObserver (200px rootMargin for pre-fetch)
-- **Per-module bundles** — a page with only Mermaid never loads Three.js
-- **CDN-hosted libraries** — no bundle bloat in the site's own assets
+- **Per-module bundles**: a page with only Mermaid never loads Three.js
+- **CDN-hosted libraries**: no bundle bloat in the site's own assets
 
 ### Available Modules
 

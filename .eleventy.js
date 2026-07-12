@@ -4,6 +4,7 @@ import markdownIt from "markdown-it";
 import mk from "@vscode/markdown-it-katex";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import markdownItObsidianCallouts from "markdown-it-obsidian-callouts";
+import markdownItTaskLists from "markdown-it-task-lists";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItLinkAttributes from "markdown-it-link-attributes";
@@ -18,11 +19,47 @@ import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Names that show up as keys in Eleventy's `collections` object but aren't
+// real content tags an author wrote — either internal markers ("all",
+// "__validateFrontmatter") or the names of collections defined via
+// addCollection() ("books", "library", ...). Shared between the tagList
+// collection filter below and src/tags/index.njk (as `nonContentTags`) so
+// the two can't drift out of sync — see the addGlobalData call below.
+const NON_CONTENT_TAGS = [
+  "all",
+  "nav",
+  "post",
+  "posts",
+  "nowUpdates",
+  "tagList",
+  "tagListMulti",
+  "odysseys",
+  "library",
+  "lectures",
+  "books",
+  "writings",
+  "papers",
+  "paper",
+  "projects",
+  "reckoningTheDead",
+  "alchemistsHearth",
+  "odyssey",
+  "notes",
+  "feedEntries",
+  "__validateFrontmatter",
+];
+
 export default function (eleventyConfig) {
+  eleventyConfig.addGlobalData("nonContentTags", NON_CONTENT_TAGS);
+
   // Passthrough copy — only ship assets that are directly referenced in HTML.
   // Source images in assets/images/{projects,lectures}/ are NOT copied because
   // they're processed by eleventy-img into build/img/ as optimized AVIF.
-  eleventyConfig.addPassthroughCopy({ "assets/fonts": "assets/fonts" });
+  // Only the webfont woff2 files are shipped — assets/fonts/og-static/ holds
+  // OTF files used solely by scripts/generate-og-images.py at build time.
+  eleventyConfig.addPassthroughCopy({ "assets/fonts/*.woff2": "assets/fonts" });
+  // Self-hosted KaTeX + Prism theme CSS (was CDN-loaded from jsdelivr/unpkg).
+  eleventyConfig.addPassthroughCopy({ "assets/vendor": "assets/vendor" });
   eleventyConfig.addPassthroughCopy({ "assets/logo": "assets/logo" });
   eleventyConfig.addPassthroughCopy({ "assets/js": "assets/js" });
   eleventyConfig.addPassthroughCopy({ "assets/og": "assets/og" });
@@ -49,12 +86,6 @@ export default function (eleventyConfig) {
     tags: ["h2", "h3"], // Include h2, h3 in TOC
     wrapper: "nav", // Wrap TOC in <nav>
     wrapperClass: "toc-list", // Add class for styling
-  });
-
-  // Legacy filter — kept for back-compat during template migration.
-  eleventyConfig.addFilter("titlecase", function (str) {
-    if (!str) return "";
-    return str.replace(/\b\w/g, (c) => c.toUpperCase());
   });
 
   /**
@@ -90,6 +121,23 @@ export default function (eleventyConfig) {
     "vs",
     "via",
   ]);
+  // Preserve all-caps tokens (AI, UNIX, RL, NMPC) as-is, and normalize
+  // known lowercase acronyms to uppercase.
+  const ACRONYMS = new Set([
+    "ai",
+    "rl",
+    "pid",
+    "nmpc",
+    "lqr",
+    "mpc",
+    "vlms",
+    "llms",
+    "gpu",
+    "cpu",
+    "cad",
+    "ar",
+    "vr",
+  ]);
   eleventyConfig.addFilter("smartTitleCase", function (str) {
     if (!str) return "";
     const words = String(str).split(/(\s+)/); // keep whitespace tokens
@@ -102,23 +150,6 @@ export default function (eleventyConfig) {
     return words
       .map((token, i) => {
         if (!/\S/.test(token)) return token;
-        // Preserve all-caps tokens (AI, UNIX, RL, NMPC).
-        // Also normalize known lowercase acronyms to uppercase.
-        const ACRONYMS = new Set([
-          "ai",
-          "rl",
-          "pid",
-          "nmpc",
-          "lqr",
-          "mpc",
-          "vlms",
-          "llms",
-          "gpu",
-          "cpu",
-          "cad",
-          "ar",
-          "vr",
-        ]);
         if (/^[A-Z0-9]{2,}$/.test(token)) return token;
         const lower = token.toLowerCase();
         if (ACRONYMS.has(lower)) return token.toUpperCase();
@@ -139,6 +170,7 @@ export default function (eleventyConfig) {
     .use(markdownItAnchor, { permalink: false })
     .use(markdownItFootnote)
     .use(markdownItObsidianCallouts)
+    .use(markdownItTaskLists, { label: true })
     .use(mk.default)
     .use(markdownItLinkAttributes, {
       // Apply only to external links
@@ -307,23 +339,28 @@ export default function (eleventyConfig) {
     // For a fully async solution we'd need eleventy-img's sync API or a
     // pre-processing step. Use Image.statsSync for sync processing:
     try {
-      const metadata = Image.statsSync(resolvedPath, {
-        widths: [null],
+      const imageOpts = {
+        widths: [400, 800, 1600, null],
         formats: ["avif"],
         outputDir: "./build/img/",
         urlPath: "/img/",
-      });
-      const avif = metadata.avif[0];
+      };
+      const metadata = Image.statsSync(resolvedPath, imageOpts);
+      const avifs = metadata.avif;
+      const largest = avifs[avifs.length - 1];
+      const srcset = avifs.map((img) => `${img.url} ${img.width}w`).join(", ");
 
-      // Also run the actual generation (sync won't write files, just stats)
-      Image(resolvedPath, {
-        widths: [null],
-        formats: ["avif"],
-        outputDir: "./build/img/",
-        urlPath: "/img/",
+      // Also run the actual generation (sync won't write files, just stats).
+      // Fire-and-forget: statsSync already computed the URLs this render
+      // returns, so this call is purely to trigger the file write. An
+      // unhandled rejection here would otherwise crash the whole build.
+      Image(resolvedPath, imageOpts).catch((err) => {
+        console.warn(`[md-image] background generation failed for ${src}: ${err.message}`);
       });
 
-      return `<img src="${avif.url}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy" width="${avif.width}" height="${avif.height}">`;
+      // Prose content sits in a column capped at 42.5rem (680px) — see the
+      // grid-cols-[1fr_min(42.5rem,100%)_1fr] layout in post.njk.
+      return `<img src="${largest.url}" srcset="${srcset}" sizes="(min-width: 1024px) 680px, 100vw" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy" width="${largest.width}" height="${largest.height}">`;
     } catch (e) {
       console.warn(`[md-image] optimization failed for ${src}: ${e.message}. Using raw src.`);
       return `<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy">`;
@@ -375,45 +412,51 @@ export default function (eleventyConfig) {
       .replace(/>/g, "&gt;");
   }
 
-  eleventyConfig.addNunjucksAsyncShortcode("image", async function (src, alt, className = "") {
-    if (!src) return "";
+  eleventyConfig.addNunjucksAsyncShortcode(
+    "image",
+    async function (src, alt, className = "", sizes = "100vw") {
+      if (!src) return "";
 
-    const isRemote = /^https?:\/\//.test(src);
-    let inputPath = src;
-    if (!isRemote) {
-      if (src.startsWith("/assets/")) {
-        inputPath = path.join(__dirname, "assets", src.slice("/assets/".length));
-      } else if (src.startsWith("assets/")) {
-        inputPath = path.join(__dirname, src);
+      const isRemote = /^https?:\/\//.test(src);
+      let inputPath = src;
+      if (!isRemote) {
+        if (src.startsWith("/assets/")) {
+          inputPath = path.join(__dirname, "assets", src.slice("/assets/".length));
+        } else if (src.startsWith("assets/")) {
+          inputPath = path.join(__dirname, src);
+        }
+      }
+
+      const altAttr = escapeAttr(alt);
+      const classAttr = escapeAttr(className);
+      const sizesAttr = escapeAttr(sizes);
+
+      try {
+        const metadata = await Image(inputPath, {
+          widths: [400, 800, 1600, null],
+          formats: ["avif"],
+          outputDir: "./build/img/",
+          urlPath: "/img/",
+          // Remote-only options; ignored for local inputs.
+          cacheOptions: {
+            duration: "30d",
+            directory: ".cache",
+            removeUrlQueryParams: false,
+          },
+        });
+
+        const avifs = metadata.avif;
+        const largest = avifs[avifs.length - 1];
+        const srcset = avifs.map((img) => `${img.url} ${img.width}w`).join(", ");
+        return `<img src="${largest.url}" srcset="${srcset}" sizes="${sizesAttr}" alt="${altAttr}" loading="lazy" class="${classAttr}" width="${largest.width}" height="${largest.height}">`;
+      } catch (e) {
+        console.warn(
+          `[image] optimization failed for ${src}: ${e.message}. Falling back to raw src.`
+        );
+        return `<img src="${escapeAttr(src)}" alt="${altAttr}" loading="lazy" class="${classAttr}">`;
       }
     }
-
-    const altAttr = escapeAttr(alt);
-    const classAttr = escapeAttr(className);
-
-    try {
-      const metadata = await Image(inputPath, {
-        widths: [null], // null = original width, no resizing
-        formats: ["avif"],
-        outputDir: "./build/img/",
-        urlPath: "/img/",
-        // Remote-only options; ignored for local inputs.
-        cacheOptions: {
-          duration: "30d",
-          directory: ".cache",
-          removeUrlQueryParams: false,
-        },
-      });
-
-      const avifMetadata = metadata.avif[0];
-      return `<img src="${avifMetadata.url}" alt="${altAttr}" loading="lazy" class="${classAttr}" width="${avifMetadata.width}" height="${avifMetadata.height}">`;
-    } catch (e) {
-      console.warn(
-        `[image] optimization failed for ${src}: ${e.message}. Falling back to raw src.`
-      );
-      return `<img src="${escapeAttr(src)}" alt="${altAttr}" loading="lazy" class="${classAttr}">`;
-    }
-  });
+  );
 
   eleventyConfig.addCollection("books", (collection) => {
     return collection.getFilteredByGlob("src/library/books/*.md").sort((a, b) => {
@@ -450,6 +493,13 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("alchemistsHearth", function (collectionApi) {
     return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
+  });
+
+  // Powers the "Read Next" fallback in post.njk, which looks up
+  // collections[section] — odyssey subpages set section: "odyssey" (singular),
+  // so without this the lookup silently fell through to collections.writings.
+  eleventyConfig.addCollection("odyssey", function (collectionApi) {
+    return collectionApi.getFilteredByGlob("src/odysseys/**/*.md");
   });
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
@@ -508,6 +558,17 @@ export default function (eleventyConfig) {
 
   const isDev = process.env.ELEVENTY_ENV !== "prod";
 
+  // Draft pages are already filtered out of collections (listings, tags,
+  // sitemap, feed) below, but Eleventy still writes the HTML file for any
+  // input that isn't explicitly skipped — so a draft was reachable by
+  // direct URL and indexable in prod. Skip the write entirely instead.
+  eleventyConfig.addGlobalData("eleventyComputed", {
+    permalink: (data) => {
+      if (!isDev && data.status === "draft") return false;
+      return data.permalink;
+    },
+  });
+
   eleventyConfig.addCollection("writings", function (collection) {
     return collection
       .getFilteredByGlob("src/writings/*.md")
@@ -532,30 +593,34 @@ export default function (eleventyConfig) {
     collections.getAll().forEach((item) => {
       if ("tags" in item.data) {
         let tags = item.data.tags;
-        tags = tags.filter((tag) => {
-          // Filter out template tags, nav, and internal collection names
-          // that aren't real content tags (eleventy auto-tags items with
-          // their collection name — we want only the tags authors wrote).
-          switch (tag) {
-            case "all":
-            case "nav":
-            case "post":
-            case "posts":
-            case "nowUpdates":
-            case "reckoningTheDead":
-            case "alchemistsHearth":
-            case "notes":
-            case "__validateFrontmatter":
-              return false;
-          }
-          return true;
-        });
+        tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));
         for (const tag of tags) {
           tagSet.add(tag);
         }
       }
     });
     return Array.from(tagSet).sort();
+  });
+
+  // Tags with only one tagged item make a thin, low-value dedicated page —
+  // the item is already reachable through normal browsing. Used by
+  // tags.njk (pagination) and src/tags/index.njk (listing) so a tag never
+  // shows a link with no page behind it.
+  eleventyConfig.addCollection("tagListMulti", function (collections) {
+    const tagCounts = new Map();
+    collections.getAll().forEach((item) => {
+      if ("tags" in item.data) {
+        let tags = item.data.tags;
+        tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));
+        for (const tag of tags) {
+          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+        }
+      }
+    });
+    return Array.from(tagCounts.entries())
+      .filter(([, count]) => count >= 2)
+      .map(([tag]) => tag)
+      .sort();
   });
 
   // Add this within your module.exports = function(eleventyConfig) { ... };
@@ -579,6 +644,9 @@ export default function (eleventyConfig) {
     return [
       ...collectionApi
         .getFilteredByGlob("src/writings/*.md")
+        .filter((item) => isDev || item.data.status !== "draft"),
+      ...collectionApi
+        .getFilteredByGlob("src/notes/*.md")
         .filter((item) => isDev || item.data.status !== "draft"),
       ...collectionApi.getFilteredByGlob("src/library/books/*.md"),
       ...collectionApi.getFilteredByGlob("src/library/lectures/*.md"),
@@ -616,10 +684,14 @@ export default function (eleventyConfig) {
     return sortedYears;
   });
 
+  // Dates are parsed with `new Date(str)`, which treats a bare YYYY-MM-DD
+  // string as UTC midnight. Formatting that with the local zone (Luxon's
+  // default) shifts the displayed date back a day in any negative-UTC-offset
+  // environment. Pin the zone to "utc" so formatting matches parsing.
   eleventyConfig.addFilter("formatDate", (published) => {
     if (!published) return "";
     const date = published instanceof Date ? published : new Date(published);
-    return DateTime.fromJSDate(date).toFormat("LLL d, yyyy"); // Sep 15, 2025
+    return DateTime.fromJSDate(date, { zone: "utc" }).toFormat("LLL d, yyyy"); // Sep 15, 2025
   });
 
   // Cache-busting: appends a short content hash as a query string to asset URLs.
@@ -637,20 +709,22 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("isoDate", (dateInput) => {
     if (!dateInput) return "";
     const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-    return DateTime.fromJSDate(date).toISODate(); // 2026-02-15
+    return DateTime.fromJSDate(date, { zone: "utc" }).toISODate(); // 2026-02-15
   });
 
   // Full ISO 8601 with time + offset for Open Graph article:published_time.
   eleventyConfig.addFilter("isoDateTime", (dateInput) => {
     if (!dateInput) return "";
     const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-    return DateTime.fromJSDate(date).toISO(); // 2026-02-15T00:00:00.000+01:00
+    return DateTime.fromJSDate(date, { zone: "utc" }).toISO(); // 2026-02-15T00:00:00.000Z
   });
 
   eleventyConfig.addFilter("dateToFormat", (dateObj, format = "yyyy-MM-dd") => {
     // Corrected to handle potential string inputs
     const dt =
-      dateObj instanceof Date ? DateTime.fromJSDate(dateObj) : DateTime.fromISO(dateObj.toString());
+      dateObj instanceof Date
+        ? DateTime.fromJSDate(dateObj, { zone: "utc" })
+        : DateTime.fromISO(dateObj.toString(), { zone: "utc" });
     return dt.toFormat(format); // e.g., 2025-10-28
   });
 
@@ -661,8 +735,10 @@ export default function (eleventyConfig) {
   // ------------------------------------------------------------------
 
   // Find an object in an array by matching a property value — a
-  // Nunjucks-friendly replacement for Jinja's                                           (Nunjucks ships neither       nor                 ,
-  // so that Jinja idiom silently returns undefined). Used by the
+  // Nunjucks-friendly replacement for Jinja's `selectattr(attr, "equalto",
+  // value) | first` idiom. Nunjucks' `selectattr` only takes a 2-argument
+  // truthy check, not Jinja's 3-argument test form, so that idiom silently
+  // returns the wrong item instead of the match. Used by the
   // guestbook template to resolve each entry.theme string into its
   // notecardThemes registry record.
   //
@@ -670,16 +746,6 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("findBy", (arr, key, value) => {
     if (!Array.isArray(arr)) return null;
     return arr.find((item) => item && item[key] === value) || null;
-  });
-
-  // Detect messages that contain box-drawing / ASCII art characters.
-  // Returns true if the message likely needs monospace rendering to
-  // preserve alignment (box-drawing, block elements, braille patterns).
-  eleventyConfig.addFilter("isAsciiArt", (str) => {
-    if (!str) return false;
-    // Box-drawing (U+2500–257F), block elements (U+2580–259F),
-    // braille (U+2800–28FF), or 3+ consecutive spaces (alignment trick)
-    return /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/.test(str) || /   {3,}/.test(str);
   });
 
   // Normalise a "URL" form field into { isUrl, href } — Google Form
@@ -718,7 +784,7 @@ export default function (eleventyConfig) {
   //
   // Input may be an ISO date string ("2026-04-26") or a full ISO
   // timestamp ("2026-04-26T12:29:02"). Date-only strings are anchored
-  // to local midnight.       is overridable for tests.
+  // to local midnight. `now` is overridable for tests.
   eleventyConfig.addFilter("relativeDate", (raw, now) => {
     if (!raw) return "";
     const dt = raw instanceof Date ? DateTime.fromJSDate(raw) : DateTime.fromISO(String(raw));
@@ -776,7 +842,6 @@ export default function (eleventyConfig) {
 
   return {
     dir: { input: "src", output: "build" },
-    dataTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
   };
 }

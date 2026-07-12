@@ -79,7 +79,7 @@ to any part of the kosha they're interested in.
 
 ## What's with the Name?
 On name kosha, it means a outer information layer in addition to 5 layers we have according to panchkosha.
-I’m still exploring how best to convey the meaning and relevance of the name — or whether another might fit better.
+I’m still exploring how best to convey the meaning and relevance of the name, or whether another might fit better.
 
 I liked the name *Thalamus*, it has similar function of filtering the information in
 brain but AI model I envision is doing more. Curation based on my evolving interest

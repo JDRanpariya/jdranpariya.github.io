@@ -11,9 +11,9 @@ lastUpdated: 2025-09-13
 layout: layouts/post.njk
 description: "Really neat ideas about money and people's mindset around it woven in stories."
 readNext: "/library/books/outliers/"
-eleventyExcludeFromCollections: true
+unlisted: true # hidden from the /library/ grid but still in sitemap/feed
 ---
 
-# Notes
+## Notes
 
 

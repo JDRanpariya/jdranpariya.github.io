@@ -1,6 +1,7 @@
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import purgecss from "@fullhuman/postcss-purgecss";
+import cssnano from "cssnano";
 
 export default {
   plugins: [
@@ -43,6 +44,9 @@ export default {
                 /^post-hero(__.*)?$/,
                 /^field(-label|-input|-help)?$/,
                 /^callout/,
+                // markdown-it-task-lists injects these at markdown-render
+                // time — never a literal class token in template source.
+                /task-list/,
                 /^references-block$/,
                 /^subtitle-note$/,
                 /^toc(-toggle|-content)?$/,
@@ -63,6 +67,7 @@ export default {
               ],
             },
           }),
+          cssnano({ preset: "default" }),
         ]
       : []),
   ],

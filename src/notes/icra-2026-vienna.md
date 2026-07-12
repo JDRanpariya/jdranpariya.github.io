@@ -17,11 +17,11 @@ Within each day, parallel events are grouped by their start time. If three thing
 
 |           | Morning                          | Midday                   | Afternoon            | Evening                 |
 | --------- | -------------------------------- | ------------------------ | -------------------- | ----------------------- |
-| **Mon 1** | Workshops · Badge 07:00          | —                        | Workshops            | Welcome Reception 18:00 |
+| **Mon 1** | Workshops · Badge 07:00          | -                        | Workshops            | Welcome Reception 18:00 |
 | **Tue 2** | Panels · Tech Talks · Innovation | Keynote 1 · Awards       | Plenary · Tech Talks | SAC Social 19:15        |
 | **Wed 3** | Panels · Tech Talks · Innovation | Keynote 3 · Awards       | Plenary · Tech Talks | Lightwheel Party 19:00  |
 | **Thu 4** | Panels · Tech Talks · Innovation | Keynote 5 · Awards Lunch | Robot Parade 15:00   | Community Dinner 19:00  |
-| **Fri 5** | Workshops                        | —                        | Workshops            | —                       |
+| **Fri 5** | Workshops                        | -                        | Workshops            | -                       |
 
 ---
 
@@ -125,7 +125,7 @@ Main conference day 1. Exhibition opens. Two industry stages (Tech Talks in C7, 
 
 | Where | Event             |
 | ----- | ----------------- |
-| —     | ☕ Morning coffee |
+| -     | ☕ Morning coffee |
 
 Stages continue through the break:
 
@@ -133,7 +133,7 @@ Stages continue through the break:
 | ----- | ----------- | ------------------ | -------------------------------------------------------------------------------- |
 | C7    | 10:30–10:42 | TARS               | Foundations for General Physical Intelligence                                    |
 | C7    | 10:45–10:57 | PNDbotics (Ningbo) | From Developer Kits to Real Work: Full-Scale Humanoid for Industrial Embodied AI |
-| C6    | 10:30–10:42 | Allonic            | —                                                                                |
+| C6    | 10:30–10:42 | Allonic            | -                                                                                |
 | C6    | 10:45–10:57 | Needleye Robotics  | Academia to MedTech: Myths and Realities of DeepTech Startups                    |
 
 ### 11:00–12:30
@@ -229,7 +229,7 @@ Stages keep running through lunch (good time to catch talks if you skip formal l
 
 | Where                           | Event                                                      |
 | ------------------------------- | ---------------------------------------------------------- |
-| —                               | ☕ Afternoon coffee (16:30–16:45)                          |
+| -                               | ☕ Afternoon coffee (16:30–16:45)                          |
 | Hall A1                         | **Keynote 2**: Medical & Healthcare Robotics (16:45–18:15) |
 | Hall A2                         | **Award Session**: Best Paper Finalists (16:45–18:15)      |
 | Hall A3, Lehar 1–4, Strauss 1–2 | Regular Sessions (Orals) (16:45–18:15)                     |
@@ -277,8 +277,8 @@ Main conference day 2. Density of good tech talks peaks today.
 | ----------- | ----------------- | ------------------------------------------------------------ |
 | 09:00–09:12 | Waterlinked       | Optimizing real-time 3D sonar on minimal FPGA resources      |
 | 09:15–09:27 | Agrocolia         | Scalable Architectures                                       |
-| 09:30–09:42 | RideScan          | —                                                            |
-| 09:45–09:57 | NeuraLoc          | —                                                            |
+| 09:30–09:42 | RideScan          | -                                                            |
+| 09:45–09:57 | NeuraLoc          | -                                                            |
 | 10:00–10:12 | Vaanfly           | Plug-and-Play Intelligence for the Next Generation of Robots |
 | 10:15–10:27 | Semaphor Surgical | AI infrastructure for surgical systems                       |
 
@@ -288,7 +288,7 @@ Main conference day 2. Density of good tech talks peaks today.
 
 | Where | Event             |
 | ----- | ----------------- |
-| —     | ☕ Morning coffee |
+| -     | ☕ Morning coffee |
 
 | Stage | Time        | Company | Topic                                                              |
 | ----- | ----------- | ------- | ------------------------------------------------------------------ |
@@ -338,7 +338,7 @@ Main conference day 2. Density of good tech talks peaks today.
 | 13:00–13:12 | CUSHYBOTS               | Robots for Protecting Humans                                     |
 | 13:15–13:27 | Dexterous Endoscopes    | From Publications to Users: The Pivot Academia Never Teaches You |
 | 13:30–13:42 | Robostaffer             | What the market is looking for                                   |
-| 13:45–13:57 | Rexin Dynamics          | —                                                                |
+| 13:45–13:57 | Rexin Dynamics          | -                                                                |
 
 </details>
 
@@ -393,7 +393,7 @@ Main conference day 2. Density of good tech talks peaks today.
 
 | Where                           | Event                                                                 |
 | ------------------------------- | --------------------------------------------------------------------- |
-| —                               | ☕ Afternoon coffee (16:30–16:45)                                     |
+| -                               | ☕ Afternoon coffee (16:30–16:45)                                     |
 | Hall A1                         | **Keynote 4**: Manipulation, Humanoids, Embodied Design (16:45–18:15) |
 | Hall A2                         | **Award Session**: Best Paper Finalists (16:45–18:15)                 |
 | Hall A3, Lehar 1–4, Strauss 1–2 | Regular Sessions (Orals) (16:45–18:15)                                |
@@ -443,8 +443,8 @@ Awards, Robot Parade, community building. **Thursday is a public holiday**[^4] (
 | Time        | Company                              | Topic                                                                  |
 | ----------- | ------------------------------------ | ---------------------------------------------------------------------- |
 | 09:00–09:12 | Silicon Valley Robotics              | Manufacturing for the first time (Andra Keay)                          |
-| 09:15–09:27 | Sensmore                             | —                                                                      |
-| 09:30–09:42 | NFM Robotics                         | —                                                                      |
+| 09:15–09:27 | Sensmore                             | -                                                                      |
+| 09:30–09:42 | NFM Robotics                         | -                                                                      |
 | 10:00–10:12 | International Federation of Robotics | The Global Robotics Landscape: Where It Is, Who Builds It, What's Next |
 | 10:15–10:42 | IEEE RAS IAB                         | Robotics Global Funding Report (Ali Shehadi)                           |
 
@@ -487,7 +487,7 @@ Awards, Robot Parade, community building. **Thursday is a public holiday**[^4] (
 
 | Where                           | Event                                                |
 | ------------------------------- | ---------------------------------------------------- |
-| —                               | ☕ Afternoon coffee (16:30–16:45)                    |
+| -                               | ☕ Afternoon coffee (16:30–16:45)                    |
 | Hall C5                         | **Competitions Award Ceremony** (16:45–18:15)        |
 | Hall A1                         | **Keynote 6**: Human-Robot Interaction (16:45–18:15) |
 | Hall A3, Lehar 1–4, Strauss 1–2 | Regular Sessions (Orals) (16:45–18:15)               |
@@ -531,10 +531,10 @@ Workshops & tutorials.
 | Event                        | When            | Where                                                      | Notes                                 |
 | ---------------------------- | --------------- | ---------------------------------------------------------- | ------------------------------------- |
 | Welcome Reception            | Mon 18:00–20:00 | Halls A+B+C                                                | Included in ticket. Nebius-sponsored. |
-| SAC & YRP Social Hour        | Tue 19:15–20:30 | Restaurant D (Riesenrad)                                   | —                                     |
+| SAC & YRP Social Hour        | Tue 19:15–20:30 | Restaurant D (Riesenrad)                                   | -                                     |
 | Lightwheel Physical AI Party | Wed 19:00–23:00 | [via Luma](https://luma.com/d0qhit0f?pk=g-UBWbbvzPCFcfdXe) | Pending approval                      |
 | Awards Lunch                 | Thu 12:30–14:00 | Hall A1                                                    | Lunch boxes (public holiday)          |
-| Community Building Dinner    | Thu 19:00–21:00 | Rathauskeller                                              | —                                     |
+| Community Building Dinner    | Thu 19:00–21:00 | Rathauskeller                                              | -                                     |
 
 ---
 

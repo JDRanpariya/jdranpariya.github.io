@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "y": [0.95, 0.92, 0.88, 0.82, 0.74, 0.65, 0.55, 0.48, 0.45, 0.44],
+      "name": "Simulation Performance",
+      "type": "scatter",
+      "mode": "lines+markers",
+      "line": { "width": 3 },
+      "marker": { "size": 6 }
+    },
+    {
+      "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "y": [0.45, 0.52, 0.58, 0.63, 0.66, 0.64, 0.60, 0.58, 0.57, 0.56],
+      "name": "Real Hardware",
+      "type": "scatter",
+      "mode": "lines+markers",
+      "line": { "width": 3 },
+      "marker": { "size": 6 }
+    },
+    {
+      "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "y": [0.50, 0.40, 0.30, 0.19, 0.08, -0.01, -0.05, -0.10, -0.12, -0.12],
+      "name": "Gap (Sim − Real)",
+      "type": "scatter",
+      "mode": "lines",
+      "line": { "width": 2, "dash": "dash" },
+      "fill": "tozeroy",
+      "fillcolor": "rgba(155, 66, 48, 0.1)"
+    }
+  ],
+  "layout": {
+    "title": { "text": "The Sim-to-Real Gap Over Training Iterations", "font": { "size": 14 } },
+    "xaxis": { "title": { "text": "Domain Randomization Iterations" } },
+    "yaxis": { "title": { "text": "Task Success Rate" }, "range": [-0.2, 1.0] },
+    "showlegend": true,
+    "legend": { "x": 0.6, "y": 0.3 },
+    "shapes": [
+      {
+        "type": "line",
+        "x0": 0, "x1": 10, "y0": 0, "y1": 0,
+        "line": { "color": "rgba(120,106,85,0.3)", "width": 1, "dash": "dot" }
+      }
+    ]
+  }
+}

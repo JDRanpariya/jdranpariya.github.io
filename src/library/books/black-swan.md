@@ -1,6 +1,6 @@
 ---
 title: "Black Swan"
-fullTitle: "The Black Swan: The Impact of the Hihgly Improbable"
+fullTitle: "The Black Swan: The Impact of the Highly Improbable"
 author: "Nassim Nicholas Taleb"
 cover: "https://www.penguin.co.uk/_next/image?url=https%3A%2F%2Fcdn.penguin.co.uk%2Fdam-assets%2Fbooks%2F9780141906201%2F9780141906201-jacket-large.jpg&w=819&q=100"
 link: "https://www.penguin.co.uk/books/56380/the-black-swan-by-taleb-nassim-nicholas/9780141034591"
@@ -9,7 +9,7 @@ tags: ["uncertainty", "practical", "non-fiction"]
 published: 2025-09-13 
 lastUpdated: 2026-03-22 
 layout: layouts/post.njk
-description: "It's phenomeneal book, I like taleb's writing style and sheer practicality of it."
+description: "It's a phenomenal book, I like taleb's writing style and sheer practicality of it."
 readNext: "/writings/nothing-left-to-say/"
 ---
 

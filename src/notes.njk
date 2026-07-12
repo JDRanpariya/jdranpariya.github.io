@@ -1,0 +1,41 @@
+---
+title: Notes
+description: "Short-form notes, references, and living documents, lighter and less polished than writings."
+layout: layouts/base
+section: "notes index"
+---
+
+<section class="max-w-content mx-auto px-6 py-16 md:py-24">
+  <header class="mb-16 space-y-4">
+    <h1 class="font-serif text-display text-ink">Notes</h1>
+    <p class="text-lead text-ink-secondary max-w-xl">
+      Short-form notes, references, and living documents, lighter and less polished than writings.
+    </p>
+  </header>
+
+  <ol class="index-list list-none m-0 p-0">
+    {% for post in collections.notes | sort(true, false, "data.published") %}
+      <li>
+        <a href="{{ post.url }}" class="index-row">
+          <div class="index-row__meta">
+            <time datetime="{{ post.data.published | isoDate }}"
+              >{{ post.data.published | formatDate }}</time
+            >
+            {% if post.data.tags and post.data.tags.length %}
+              <span aria-hidden="true">·</span>
+              <ul class="chip-list">
+                {% for tag in post.data.tags %}
+                  <li><span class="chip">{{ tag }}</span></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          <h2 class="index-row__title">{{ post.data.title | smartTitleCase }}</h2>
+          {% if post.data.description %}
+            <p class="index-row__desc">{{ post.data.description }}</p>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+</section>

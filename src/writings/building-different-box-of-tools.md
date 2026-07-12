@@ -11,7 +11,7 @@ readNext: /library/books/surely-you-are-joking-mr-feynman/
 
 > If he's been trying the same thing for a week, and I'm trying it and can't do it, it ain't the way to do it!
 >
-> *— Feynman*
+> *Feynman*
 
 Article is inspired by Feynman, he tells a story...
 
@@ -53,16 +53,16 @@ For all I know reputation and time both are of great importance to a man. I've h
 before and some personal experience as well. I believe it's important to spend some time
 thinking and reflecting about how we can build a set of tools that gives you an edge in all
 areas of your life, not just career. This is my attempt to do so. It's important to understand
-that it's personal — me showing mine or Feynman telling his doesn't mean you would be able to
+that it's personal: me showing mine or Feynman telling his doesn't mean you would be able to
 relate and apply them in your life. It would be great pleasure if reading this makes you
 think about how to approach this problem.
 
-### Coding Error
+## Coding Error
 
 I've a colleague who tried to run code from a YouTube tutorial but failed. It was a small repo
 but the error was generic `Class Robot has no method from_url`. I told him there is no way the tutorial
 doesn't work. I tried it myself and got the same error. Given my computer science background and
-understanding of git and codebases, I just looked up the code for the class in the git repo — in the comments and
+understanding of git and codebases, I just looked up the code for the class in the git repo: in the comments and
 documentation they had mentioned the use of `from_url` method but it wasn't implemented. So I searched around
 in the codebase and found a file which mentioned another way of doing the same thing, and it worked. I looked back
 at YouTube video comments and found that rolling out an older version also works.
@@ -70,9 +70,9 @@ at YouTube video comments and found that rolling out an older version also works
 1. **You can be a little more curious and find easy fixes (like in comments).**
 1. **Having a deeper understanding and being thorough gives you an edge.**
 
-### Building Heuristics Via Analogy
+## Building Heuristics Via Analogy
 
-“Don’t you know how to square numbers near 50?” he says. “You square 50—that’s 2500—and subtract 100 times the difference of your number from 50 (in this case it’s 2), so you have 2300. If you want the correction, square the difference and add it on. That makes 2304.”
+“Don’t you know how to square numbers near 50?” he says. “You square 50, that’s 2500, and subtract 100 times the difference of your number from 50 (in this case it’s 2), so you have 2300. If you want the correction, square the difference and add it on. That makes 2304.”
 
 Later, Feynman talks about squaring the number 28. I stopped reading right there and tried to do it in my head, figuring that if for 50 he is subtracting 100, maybe it's about subtracting double the number, and you should have a similar rule for numbers near 30 or any other number. So I tried it for 28: you square 30, get 900, and for 28 you subtract 60 times the difference, which is 120. Now we have 780. At this point I thought it should be around there, and accounting for 2², it's 784.
 

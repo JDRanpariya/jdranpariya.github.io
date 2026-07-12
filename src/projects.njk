@@ -18,13 +18,14 @@ section: "projects index"
       <article>
         {% if project.data.status == "under-review" %}
           {# Under-review projects open a popup instead of navigating #}
-          <div
-            class="card-media cursor-pointer"
+          <button
+            type="button"
+            class="card-media cursor-pointer w-full text-left bg-transparent border-0 p-0"
             onclick="document.getElementById('modal-{{ project.data.title | slug }}').showModal()"
           >
             {% if project.data.image %}
               <div class="card-media__media">
-                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
+                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover", "(min-width: 768px) 464px, 100vw" %}
               </div>
             {% endif %}
             <div class="mt-4 flex items-center gap-3">
@@ -43,12 +44,12 @@ section: "projects index"
                 {% endfor %}
               </ul>
             {% endif %}
-          </div>
+          </button>
         {% else %}
           <a href="{{ project.url }}" class="card-media">
             {% if project.data.image %}
               <div class="card-media__media">
-                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover" %}
+                {% image project.data.image, project.data.title, "w-full aspect-[3/2] object-cover", "(min-width: 768px) 464px, 100vw" %}
               </div>
             {% endif %}
             <div class="mt-4 flex items-center gap-3">

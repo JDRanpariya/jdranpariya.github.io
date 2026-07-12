@@ -31,4 +31,4 @@ This is my personal roadmap and how i think we should approach physical ai, ther
 
 This guide will also act as overview to the field who has no STEM background but are curious enough to look things up and big picture for those who usually work with few layers or 1 but not all, for them to see how everything connects, systems engineering perspective.
 
-This is not a robotics primer — please checkout [robotics primer](https://pages.ucsd.edu/~ehutchins/cogs8/mataric-primer.pdf) for that.
+This is not a robotics primer. Please checkout [robotics primer](https://pages.ucsd.edu/~ehutchins/cogs8/mataric-primer.pdf) for that.

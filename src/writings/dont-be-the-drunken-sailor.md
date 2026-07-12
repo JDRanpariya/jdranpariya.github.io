@@ -18,20 +18,20 @@ fine and still it felt empty. That feeling sent me searching for what, I didn't 
 ## The Life You Didn't Choose
 
 When you're a child, parents take care of things for you. Which school you go
-to, what food you eat, what festivals you celebrate. It's not just parents — to a certain
+to, what food you eat, what festivals you celebrate. It's not just parents, to a certain
 extent it's cultural. You acquire beliefs about how to deal with situations and
-people before you can think through any of it. Society, parents, and peers — they
+people before you can think through any of it. Society, parents, and peers, they
 all shape to a big degree what we call "ourselves".
 
-We never truly ask ourselves when going to school — why this particular school
+We never truly ask ourselves when going to school: why this particular school
 or board of education? We trust our parents to make the right choice. That's
 fair. But there comes a time when you're capable of making decisions on your
 own, when you can actually think through the consequences of the choices you
 make and own them and that's what makes you really independent.
 
 It's easy to move through life when decisions are being made for you that
-roughly align with what you want. I had to do undergrad like everybody in India
-— education is the thing your whole life supposedly depends on. I'd been into
+roughly align with what you want. I had to do undergrad like everybody in India.
+Education is the thing your whole life supposedly depends on. I'd been into
 computers since secondary school so CS was a no-brainer. I chose the university
 where I'd get the best shot at jobs in software, hence ended up in Bangalore.
 Yeah, I had clarity. Most of us do to some extent. But it was narrow and highly
@@ -95,12 +95,12 @@ Richard Hamming tells this in his lectures:[^1]
 
 > It is well known the drunken sailor who staggers to the left or right with n independent random steps will, on the average, end up about √n steps from the origin. But if there is a pretty girl in one direction, then his steps will tend to go in that direction and he will go a distance proportional to n. In a lifetime of many, many independent choices, small and large, a career with a vision will get you a distance proportional to n, while no vision will get you only the distance √n. In a sense, the main difference between those who go far and those who do not is some people have a vision and the others do not and therefore can only react to the current events as they happen.
 >
-> You will probably object that if you try to get a vision now it is likely to be wrong — and my reply is from observation I have seen the accuracy of the vision matters less than you might suppose, getting anywhere is better than drifting, there are potentially many paths to greatness for you. No vision, not much of a future.
+> You will probably object that if you try to get a vision now it is likely to be wrong, and my reply is from observation I have seen the accuracy of the vision matters less than you might suppose, getting anywhere is better than drifting, there are potentially many paths to greatness for you. No vision, not much of a future.
 
 Hamming talks about an excellent career. I want to talk about an **excellent
 life**.
 
-When it comes to career you need understanding of the external world — science, engineering, how things are moving globally — and you analyse and figure out how to reach wherever you're aiming at. The subject of an excellent life on the other hand requires the ability to introspect, to understand your feelings and inner self deeply enough to figure out what makes you happy and what you're going to do about it. That's a different kind of work entirely.
+When it comes to career you need understanding of the external world (science, engineering, how things are moving globally) and you analyse and figure out how to reach wherever you're aiming at. The subject of an excellent life on the other hand requires the ability to introspect, to understand your feelings and inner self deeply enough to figure out what makes you happy and what you're going to do about it. That's a different kind of work entirely.
 
 And unlike a great career where you can think of something like a Nobel prize or
 having greater impact on society; **an excellent life doesn't have an absolute
@@ -125,7 +125,7 @@ that one obsession. By my measure of "balanced" it wasn't a balanced life at all
 There's no absolute recipe for your excellent life, you have to find it for
 yourself. I'm merely trying to nudge you to be intentional about it and want to show how I approached things. Hopefully it nudges you to explore different frameworks or build your own.
 
-Given my thoroughness and perfectionist mindset, I wanted to learn every framework that existed for leading a good life. I looked at a lot — Maslow's hierarchy, the Indian framework of artha, dharma, kama, moksha, Scott Young's Foundations, and more. I'd suggest exploring a few yourself and seeing what resonates, or build your own.
+Given my thoroughness and perfectionist mindset, I wanted to learn every framework that existed for leading a good life. I looked at a lot: Maslow's hierarchy, the Indian framework of artha, dharma, kama, moksha, Scott Young's Foundations, and more. I'd suggest exploring a few yourself and seeing what resonates, or build your own.
 
 I ended up sticking with Lifebook, which divides life into 12 areas, as I find it
 comprehensive enough for what I want. What I liked about it was that it forced
@@ -141,7 +141,7 @@ it and take what resonates with you from anywhere else.**
 
 ## Knowing Isn't Enough
 
-After all this, what I've realised is actions are what actually matter. The [GI Joe fallacy](https://youarenotsosmart.com/2023/02/12/yanss-271-the-g-i-joe-fallacy/) is real — even though you know what to do to get what you want in life, it's difficult to carry it into real life. I know this personally because I'm terrible at it.
+After all this, what I've realised is actions are what actually matter. The [GI Joe fallacy](https://youarenotsosmart.com/2023/02/12/yanss-271-the-g-i-joe-fallacy/) is real: even though you know what to do to get what you want in life, it's difficult to carry it into real life. I know this personally because I'm terrible at it.
 
 If you need self-awareness and mature prefrontal cortex to figure out what you
 want in life, you need to be good at regulating your emotional brain Amygdala to
@@ -183,10 +183,10 @@ I'm still learning. Still figuring things out. Still staggering left and right h
 > Living well is the art of balancing a mature prefrontal cortex with a
 > regulated amygdala.
 >
-> — Jay
+> Jay
 
 [^3]: Last edited December 2023. Looking back at it, a lot of what I wrote has come to pass in ways I didn't expect.
 
 [^2]: You can see how I think about this on my [purpose](/odysseys/purpose/) page.
 
-[^1]: From Hamming's [The Art of Doing Science and Engineering](/library/lectures/the-art-of-doing-science-and-engineering/) lectures. He was talking about vision for career — I've adapted the idea for life. The math is the same: random steps get you √n, directed steps get you n. Over a lifetime the difference is almost everything.
+[^1]: From Hamming's [The Art of Doing Science and Engineering](/library/lectures/the-art-of-doing-science-and-engineering/) lectures. He was talking about vision for career. I've adapted the idea for life. The math is the same: random steps get you √n, directed steps get you n. Over a lifetime the difference is almost everything.

@@ -8,7 +8,7 @@
     <!-- Wordmark -->
     <a href="/" class="inline-flex items-center font-heading text-2xl text-ink min-h-[44px]">
       <span aria-hidden="true">=^.^=</span>
-      <span class="sr-only">Jay Ranpariya — home</span>
+      <span class="sr-only">Jay Ranpariya, home</span>
     </a>
 
     <div class="flex items-center gap-6 md:gap-8">
@@ -29,7 +29,7 @@
             <a
               href="{{ item[0] }}"
               class="nav-link"
-              {% if page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
+              {% if page.url and page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
               >{{ item[1] }}</a
             >
           </li>
@@ -97,11 +97,14 @@
   aria-hidden="true"
 ></div>
 
-<!-- Mobile sheet -->
+<!-- Mobile sheet. `inert` keeps its links out of the tab order and
+     accessibility tree while off-screen; site.js toggles it alongside the
+     transform so it stays correct even if JS hasn't run yet. -->
 <aside
   id="mobile-menu"
   class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface shadow-sheet z-50 md:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
   aria-label="Site navigation"
+  inert
 >
   <div class="flex items-center justify-between p-6 border-b border-border">
     <span class="font-serif text-lg text-ink" aria-hidden="true">=^.^=</span>
@@ -126,6 +129,7 @@
     {%
       set primary = [
         ["/writings/", "Writings"],
+        ["/notes/",    "Notes"],
         ["/library/",  "Library"],
         ["/odysseys/", "Odysseys"],
         ["/projects/", "Projects"],
@@ -140,7 +144,7 @@
           href="{{ item[0] }}"
           class="nav-link block py-2 text-lg"
           data-action="close-mobile-menu"
-          {% if page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
+          {% if page.url and page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
           >{{ item[1] }}</a
         >
       </li>

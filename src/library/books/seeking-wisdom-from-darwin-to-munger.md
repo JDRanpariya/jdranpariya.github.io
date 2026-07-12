@@ -1,6 +1,6 @@
 ---
 title: "Seeking Wisdom"
-fullTitle: "Seeking Wisdom: From Darwing to Munger"
+fullTitle: "Seeking Wisdom: From Darwin to Munger"
 author: "Peter Bevelin"
 cover: "https://m.media-amazon.com/images/I/61qbFGP2sFL._SL1234_.jpg"
 link: "https://www.amazon.de/-/en/Seeking-Wisdom-Darwin-Munger-3rd/dp/1578644283"
@@ -9,12 +9,12 @@ tags: ["life", "decision-making", "practical"]
 published: 2025-09-17 
 lastUpdated: 2025-09-17 
 layout: layouts/post.njk
-description: "It's one of the most exiciting books I ever had my hands on!"
+description: "It's one of the most exciting books I ever had my hands on!"
 readNext: "/library/books/black-swan/"
 ---
 
 >A man who has committed a mistake and doesn't correct it, is committing another mistake.
-> — Confucius
+> Confucius
 
 What do we want out of life? To be healthy, happy with our families, in our
 work, etc? What interferes with this? Isn't it often emotions like fear, anger, worry,

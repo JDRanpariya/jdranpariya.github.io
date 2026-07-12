@@ -1,7 +1,7 @@
 ---
 title: Tardigrade
 fullTitle: 'Tardigrade: A Palm-Sized Quadruped'
-description: A full-stack physical AI project — from custom brushless actuators and PCB design to sim2real reinforcement learning — inspired by nature's most indestructible micro-animal.
+description: A full-stack physical AI project (from custom brushless actuators and PCB design to sim2real reinforcement learning) inspired by nature's most indestructible micro-animal.
 image: /assets/images/projects/tardigrade/tardigrade.png
 url: https://github.com/jdranpariya/tardigrade
 tech: [Robotics, BLDC/FOC, PCB Design, CAD, RL, Sim2Real, MuJoCo, World Models]
@@ -21,15 +21,15 @@ it's using scripted behaviours.
 
 I wanted to do an action figure type open-source humanoid inspired by
 [Asimov](https://github.com/asimovinc), because I don't have 20k to spare. And
-at the same time the idea clicked — why not build something simpler like KT2?
+at the same time the idea clicked: why not build something simpler like KT2?
 Something like Asimov at action figure scale is more complex than it looks, so I
-decided to go for the KT2 form factor — it can do cool things while still
+decided to go for the KT2 form factor: it can do cool things while still
 helping me build the skillset. Although it might sound simple, there are grave
 challenges in deploying policies on such a tiny form factor.
 
 My aim is to get a foundational understanding of layers in the physical AI
 stack. I want to rebuild it from scratch, understand every layer, and replace
-the scripted behaviours with something that actually *learns* — like how animals
+the scripted behaviours with something that actually *learns*, like how animals
 and insects figure things out on their own.
 
 ## Why I'm Building This
@@ -37,22 +37,22 @@ and insects figure things out on their own.
 This is the new fullstack. Every layer is something I either want to learn or
 get significantly better at:
 
-- **Actuators** — very hyped to learn more and build from scratch, yeah firmware
+- **Actuators**: very hyped to learn more and build from scratch, yeah firmware
   and low-level control included
-- **PCB design** — for quite some time I've wanted to get my hands dirty on this
-- **CAD design** — I've worked a bit with Onshape and liked it, now I want to
+- **PCB design**: for quite some time I've wanted to get my hands dirty on this
+- **CAD design**: I've worked a bit with Onshape and liked it, now I want to
   improve it even further
-- **FEA and CFD** — sounds cool to explore, always wanted to learn how they do
+- **FEA and CFD**: sounds cool to explore, always wanted to learn how they do
   this in aerodynamics and maybe we also make our Tardy learn to swim (would be
   fun to do structural analysis) :)
-- **System identification** — I've partially done this but want to get a better
+- **System identification**: I've partially done this but want to get a better
   idea of it
-- **Simulation** — I've worked on this but there exists a plethora of things I
+- **Simulation**: I've worked on this but there exists a plethora of things I
   still haven't figured out, particularly making USD and MJCF properly
-- **Learning** — sim2real, world models, and downstream behaviours would be
+- **Learning**: sim2real, world models, and downstream behaviours would be
   interesting to play with once I have foundations set up
 
-## Body Shell — 3D Model
+## Body Shell: 3D Model
 
 <!-- mdformat-off -->
 
@@ -73,14 +73,14 @@ caption: "Tardigrade body shell. Drag to rotate, scroll to zoom. <a href='https:
 
 | Layer                  | Purpose                              |
 | ---------------------- | ------------------------------------ |
-| Electrical — Actuator  | FOC driver PCB (KiCad)               |
-| Electrical — Mainboard | ESP32 main board                     |
-| Mechanical — Actuator  | Motor housing, gearbox CAD           |
-| Mechanical — Body      | Frame, legs, feet                    |
-| Firmware — STM32       | FOC controller per actuator          |
-| Firmware — ESP32       | Main control loop, comms, safety     |
-| Simulation — Model     | MJCF + meshes                        |
-| Simulation — Envs      | Gymnasium environments               |
+| Electrical: Actuator  | FOC driver PCB (KiCad)               |
+| Electrical: Mainboard | ESP32 main board                     |
+| Mechanical: Actuator  | Motor housing, gearbox CAD           |
+| Mechanical: Body      | Frame, legs, feet                    |
+| Firmware: STM32       | FOC controller per actuator          |
+| Firmware: ESP32       | Main control loop, comms, safety     |
+| Simulation: Model     | MJCF + meshes                        |
+| Simulation: Envs      | Gymnasium environments               |
 | Training               | RL training scripts + configs        |
 | Deployment             | Policy → weights → MCU inference (C) |
 
@@ -91,7 +91,7 @@ matter for learning-based policies. FOC-driven BLDC motors give direct torque
 control, multiple operating modes, and hopefully silent operation.
 
 **Learning over scripting.** Scripted gaits are brittle. An animal doesn't have
-a lookup table for every terrain — it has a nervous system that adapts. The
+a lookup table for every terrain. It has a nervous system that adapts. The
 robot should build a repertoire of skills through interaction, not through my
 engineering effort.
 

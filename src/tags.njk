@@ -1,13 +1,15 @@
 ---
 pagination:
-  data: collections.tagList
+  data: collections.tagListMulti
   size: 1
   alias: tag
+  addAllPagesToCollections: true
 permalink: /tags/{{ tag | slugify }}/
 layout: layouts/base
 section: "tag"
 eleventyComputed:
   title: "Items tagged with {{ tag }}"
+  description: "{{ collections[tag].length }} item{% if collections[tag].length != 1 %}s{% endif %} tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
 ---
 
 <section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">

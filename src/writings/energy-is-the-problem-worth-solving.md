@@ -37,7 +37,7 @@ Oh my ai slop, this post needs lot of rewriting :(, utterly frustrating.
 ## the number that reframes everything
 
 173,000 terawatts of solar energy hit Earth continuously.
-Global human energy consumption is roughly 18 terawatts —
+Global human energy consumption is roughly 18 terawatts,
 about 0.01% of what arrives. The total solar energy hitting
 Earth in a single hour is roughly equal to what all of
 humanity consumed in the entire year 2017.
@@ -46,8 +46,8 @@ We are sitting inside an ocean of energy. The scarcity
 isn't the sun. The scarcity is our ability to capture,
 convert, and store what's already arriving.
 
-Plants by all means convert it for their own use — which
-the whole ecosystem then uses — at somewhere between 0.1%
+Plants by all means convert it for their own use (which
+the whole ecosystem then uses) at somewhere between 0.1%
 and 2% efficiency under real field conditions. Solar panels
 commercially hit 15–26%. Advanced lab systems exceed 40%.
 
@@ -58,7 +58,7 @@ I wonder how much money is poured into research which is
 constantly trying to find new interdisciplinary ways to
 have better efficiency than plants. Where is the comparison
 between plants and artificial methods that we have? Because
-plants didn't win on efficiency — they won on something
+plants didn't win on efficiency: they won on something
 else entirely. They package energy into storable, portable,
 chemically dense fuel. Photosynthesis is inefficient at
 capturing light but extraordinarily good at making
@@ -71,7 +71,7 @@ Data centers running large AI models are already one of the
 fastest growing energy consumers on the planet. Inference
 is expensive. Training is enormously expensive. The current
 trajectory of AI development assumes access to cheap,
-abundant, reliable electricity — and that assumption is
+abundant, reliable electricity, and that assumption is
 going to get tested.
 
 For cloud-based AI systems this is mostly a grid problem.
@@ -82,13 +82,13 @@ For physical AI it is a different problem entirely.
 ## the physical AI problem specifically
 
 Robots can't run on a cloud connection. A robot operating
-in the real world needs local energy — on-board, dense,
+in the real world needs local energy: on-board, dense,
 reliable.
 
 We got a LiPo battery for our LeKiwi mobile manipulator.
-It runs for an hour or two. Add more load — good cameras
+It runs for an hour or two. Add more load (good cameras
 for running vision-language-action models, heavier
-actuators, more compute on the edge — and I genuinely
+actuators, more compute on the edge) and I genuinely
 wonder how long it would last. For research it's fine, you
 connect to a static power board. But the future is mobile
 robots doing autonomous meaningful work, and they are going
@@ -104,7 +104,7 @@ eventually other planets.
 
 The tradeoff is always: either we spend our time optimizing
 for what we've got, or we ask and dig for more. I like the
-idea of maxing the usage of what we have — there is a lot
+idea of maxing the usage of what we have: there is a lot
 of room to get better at energy efficiency in actuators,
 compute, and energy recovery. But if there is a lot of room
 for us to harness more energy, why not pursue both in
@@ -132,14 +132,14 @@ disciplines to do it.
 ## what I'm trying to do about it
 
 I'm trying to write a proper survey on this. The idea came
-from a conference call for papers — using AI as scientists,
+from a conference call for papers: using AI as scientists,
 autonomous agentic workflows to do what no human team can
 realistically do: cover literature across multiple fields
 simultaneously at scale. A single agent gathered around
 2,000 papers for a preliminary pass. Not all relevant, but
-with proper workflows — an overall plan, multiple agents
+with proper workflows (an overall plan, multiple agents
 spawned in parallel, each covering papers that fit in their
-context window, filtering and reporting back — you can
+context window, filtering and reporting back) you can
 actually produce a comprehensive survey across biology,
 chemistry, physics, and engineering simultaneously.
 Something as a human that's not possible. Agents can come
@@ -147,15 +147,15 @@ up with gaps and ideas that you can then work on. That's
 the most compelling use case I can think of for agentic
 workflows right now.
 
-The goal is to map the real bottlenecks — not by source
+The goal is to map the real bottlenecks: not by source
 (solar, wind, nuclear) but by constraint: storage, density,
-conversion, distribution — and see where the genuine gaps
+conversion, distribution, and see where the genuine gaps
 are between what biology figured out over three billion
 years and what engineering has built so far.
 
 Energy is at the forefront of everything we do and we must
 think about it deeply. To move to the next phase of
-humanity we need better ways to harness energy — it
+humanity we need better ways to harness energy: it
 directly influences the amount of production we're capable
 of and also opens doors for things we can only imagine
 theoretically.

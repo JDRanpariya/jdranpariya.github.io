@@ -10,10 +10,9 @@ permalink: /tags/
     <h1 class="font-serif text-display text-ink">All Tags</h1>
   </header>
 
-  {% set excluded = ["all", "nav", "post", "posts", "nowUpdates", "tagList", "odysseys", "library", "lectures", "books", "writings", "papers", "paper", "projects", "reckoningTheDead", "alchemistsHearth", "notes", "feedEntries", "__validateFrontmatter"] %}
   <ul class="chip-list leading-loose">
     {% for tag, posts in collections %}
-      {% if tag not in excluded %}
+      {% if tag not in nonContentTags and posts.length >= 2 %}
         <li>
           <a href="/tags/{{ tag | slugify }}/" class="chip">
             {{ tag }} <span class="text-ink-muted">({{ posts.length }})</span>

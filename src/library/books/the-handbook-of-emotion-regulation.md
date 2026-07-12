@@ -31,7 +31,7 @@ What is Emotion?
 
 One of the fundamental insights in affective science is that affective responses are (to some degree) amenable to regulation.
 
-My focus here is one type of affect regulation—­ namely, emotion regulation—which refers to efforts to influence which emotions one has, when one has them, and how one experiences or expresses these emotions.
+My focus here is one type of affect regulation, namely, emotion regulation, which refers to efforts to influence which emotions one has, when one has them, and how one experiences or expresses these emotions.
 
 From my perspective, emotion regulation occurs when (1) an emotion is evaluated as good or bad, and (2) this evaluation activates a goal to change the emotion.
 

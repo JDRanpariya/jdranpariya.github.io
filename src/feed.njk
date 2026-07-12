@@ -3,13 +3,13 @@ permalink: /feed.xml
 eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en" xml:base="https://jdranpariya.github.io/">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en" xml:base="{{ site.url }}/">
   <title>JD Ranpariya</title>
   <subtitle type="text">Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle>
-  <link href="https://jdranpariya.github.io/feed.xml" rel="self" type="application/atom+xml" />
-  <link href="https://jdranpariya.github.io/" rel="alternate" type="text/html" />
+  <link href="{{ site.url }}/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="{{ site.url }}/" rel="alternate" type="text/html" />
   <updated>{{ collections.feedEntries | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
-  <id>https://jdranpariya.github.io/feed.xml</id>
+  <id>{{ site.url }}/feed.xml</id>
   <author>
     <name>JD Ranpariya</name>
     <email>jaydeepranpariya037@gmail.com</email>
@@ -23,8 +23,8 @@ eleventyExcludeFromCollections: true
   {%- endif %}
   <entry>
     <title>{{ (post.data.fullTitle or post.data.title) | escape }}</title>
-    <link href="https://jdranpariya.github.io{{ post.url }}" rel="alternate" type="text/html" />
-    <id>https://jdranpariya.github.io{{ post.url }}</id>
+    <link href="{{ site.url }}{{ post.url }}" rel="alternate" type="text/html" />
+    <id>{{ site.url }}{{ post.url }}</id>
     {%- if postPublished %}
     <published>{{ postPublished | dateToRfc3339 }}</published>
     {%- endif %}
@@ -37,7 +37,7 @@ eleventyExcludeFromCollections: true
     {%- if post.data.description %}
     <summary>{{ post.data.description | escape }}</summary>
     {%- endif %}
-    <content type="html" src="https://jdranpariya.github.io{{ post.url }}" />
+    <content type="text/html" src="{{ site.url }}{{ post.url }}" />
     {%- if post.data.tags %}
     {%- for tag in post.data.tags %}
     <category term="{{ tag }}" />

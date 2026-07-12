@@ -6,8 +6,6 @@ title: Sitemap
 description: All discoverable pages on this site, listed for search engines.
 ---
 
-{%- set site = "https://jdranpariya.github.io" %}
-
 <main>
   <section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16 md:space-y-20">
     <header class="space-y-4">
@@ -17,22 +15,22 @@ description: All discoverable pages on this site, listed for search engines.
       </p>
     </header>
 
-    {%- macro sectionHeading(icon, label) %}
-      <h2 class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
+    {%- macro sectionHeading(icon, label, id) %}
+      <h2 id="{{ id }}" class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
     {%- endmacro %}
 
     {# Home / top-level pages #}
     {%- set found = false %}
     {%- for item in collections.all %}
       {%- set d = item.data %}
-      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") and not item.url.startsWith("/writings/") and not item.url.startsWith("/library/") and not item.url.startsWith("/projects/") and not item.url.startsWith("/odysseys/") and not item.url.startsWith("/tags/") %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") and not item.url.startsWith("/writings/") and not item.url.startsWith("/notes/") and not item.url.startsWith("/library/") and not item.url.startsWith("/projects/") and not item.url.startsWith("/odysseys/") and not item.url.startsWith("/tags/") %}
         {%- if not found %}
           {%- set found = true %}
           {{ sectionHeading("⌂", "Pages") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ "jdranpariya.github.io" if item.url == "/" else d.title or item.url }}</h3>
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
           </a>
@@ -49,11 +47,33 @@ description: All discoverable pages on this site, listed for search engines.
         {%- if not found %}
           {%- set found = true %}
           <section aria-labelledby="section-writings">
-          {{ sectionHeading("✎", "Writings") }}
+          {{ sectionHeading("✎", "Writings", "section-writings") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
+            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
+            {%- if d.published %}<p class="index-row__meta">{{ d.published | formatDate }}</p>{%- endif %}
+            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
+          </a>
+        </li>
+      {%- endif %}
+    {%- endfor %}
+    {%- if found %}</ol></section>{%- endif %}
+
+    {# Notes #}
+    {%- set found = false %}
+    {%- for item in collections.all %}
+      {%- set d = item.data %}
+      {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and item.url.startsWith("/notes/") %}
+        {%- if not found %}
+          {%- set found = true %}
+          <section aria-labelledby="section-notes">
+          {{ sectionHeading("✎", "Notes", "section-notes") }}
+          <ol class="index-list list-none m-0 p-0">
+        {%- endif %}
+        <li>
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ d.title or item.url }}</h3>
             {%- if d.published %}<p class="index-row__meta">{{ d.published | formatDate }}</p>{%- endif %}
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
@@ -71,11 +91,11 @@ description: All discoverable pages on this site, listed for search engines.
         {%- if not found %}
           {%- set found = true %}
           <section aria-labelledby="section-library">
-          {{ sectionHeading("◈", "Library") }}
+          {{ sectionHeading("◈", "Library", "section-library") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ d.title or item.url }}</h3>
             {%- if d.author %}<p class="index-row__meta">{{ d.author }}</p>{%- endif %}
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
@@ -93,11 +113,11 @@ description: All discoverable pages on this site, listed for search engines.
         {%- if not found %}
           {%- set found = true %}
           <section aria-labelledby="section-projects">
-          {{ sectionHeading("⊞", "Projects") }}
+          {{ sectionHeading("⊞", "Projects", "section-projects") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ d.title or item.url }}</h3>
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
           </a>
@@ -114,11 +134,11 @@ description: All discoverable pages on this site, listed for search engines.
         {%- if not found %}
           {%- set found = true %}
           <section aria-labelledby="section-odysseys">
-          {{ sectionHeading("◇", "Odysseys") }}
+          {{ sectionHeading("◇", "Odysseys", "section-odysseys") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ d.title or item.url }}</h3>
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
           </a>
@@ -135,11 +155,11 @@ description: All discoverable pages on this site, listed for search engines.
         {%- if not found %}
           {%- set found = true %}
           <section aria-labelledby="section-tags">
-          {{ sectionHeading("#", "Tags") }}
+          {{ sectionHeading("#", "Tags", "section-tags") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
-          <a href="{{ site }}{{ item.url }}" class="index-row">
+          <a href="{{ site.url }}{{ item.url }}" class="index-row">
             <h3 class="index-row__title">{{ d.title or item.url }}</h3>
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
           </a>

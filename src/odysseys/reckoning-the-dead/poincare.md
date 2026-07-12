@@ -12,7 +12,7 @@ readNext: "/library/papers/more-is-different/"
 
 Exploration into ideas and life of Poincaré
 
-#### References
+## References
 - [Stanford Encyclopedia of Philosophy](https://plato.stanford.edu/entries/poincare/)
 - [Mathematics and Science: Last Essays](https://henripoincarepapers.univ-nantes.fr/chp/hp-pdf/hp1963ms.pdf)
 - [Henri Poincaré: A Scientific Biography](https://www.goodreads.com/book/show/17035857-henri-poincar)

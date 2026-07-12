@@ -4,7 +4,6 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {%- set site = "https://jdranpariya.github.io" %}
   {#
     Fully automated: emit every page Eleventy built, minus:
       - drafts (status: "draft")
@@ -23,7 +22,7 @@ eleventyExcludeFromCollections: true
       and not item.url.startsWith("/now/updates/")
     %}
       <url>
-        <loc>{{ site }}{{ item.url }}</loc>
+        <loc>{{ site.url }}{{ item.url }}</loc>
         {%- set lastmod = d.lastUpdated or d.published or item.date %}
         {%- if lastmod %}
           <lastmod>{{ lastmod | dateToFormat('yyyy-MM-dd') }}</lastmod>

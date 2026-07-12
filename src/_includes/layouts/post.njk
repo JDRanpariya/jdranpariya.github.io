@@ -37,7 +37,7 @@ isPostLayout: true
              URL, or the page context. Category labels ("Writing", "Book", "Paper")
              are redundant and removed. #}
           {% if status == "draft" %}
-            <p class="post-hero__eyebrow text-warning">⚠ DRAFT — not visible in production</p>
+            <p class="post-hero__eyebrow text-warning">⚠ DRAFT (not visible in production)</p>
           {% endif %}
           {% if series and series.name %}
             <p class="post-hero__eyebrow">{{ series.name }} · Part {{ series.order or 1 }}</p>
@@ -90,7 +90,14 @@ isPostLayout: true
                 <p class="eyebrow shrink-0">Tagged</p>
                 <ul class="chip-list">
                   {% for tag in tags %}
-                    <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
+                    {# Tags with only one tagged item (this post) don't get a
+                       dedicated /tags/ page — see tagListMulti in .eleventy.js.
+                       Render those as plain text instead of a dead link. #}
+                    {% if collections[tag].length >= 2 %}
+                      <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
+                    {% else %}
+                      <li><span class="chip">{{ tag }}</span></li>
+                    {% endif %}
                   {% endfor %}
                 </ul>
               </div>

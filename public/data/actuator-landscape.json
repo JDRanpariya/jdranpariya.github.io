@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "x": [0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50],
+      "y": [100, 200, 500, 1000, 2000, 5000, 8000, 10000],
+      "text": ["Piezo", "SMA", "HASEL", "Pneumatic", "Hydraulic", "DC Motor", "Servo", "Industrial"],
+      "mode": "markers+text",
+      "type": "scatter",
+      "textposition": "top center",
+      "marker": { "size": [8, 10, 12, 14, 16, 18, 20, 22], "opacity": 0.8 },
+      "name": "Actuator Types"
+    }
+  ],
+  "layout": {
+    "title": { "text": "Actuator Landscape: Force vs Bandwidth", "font": { "size": 14 } },
+    "xaxis": { "title": { "text": "Bandwidth (Hz)" }, "type": "log" },
+    "yaxis": { "title": { "text": "Force Density (N/kg)" }, "type": "log" },
+    "showlegend": false
+  }
+}

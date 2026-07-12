@@ -19,9 +19,9 @@ export default {
         accent: "var(--color-accent)",
         "accent-soft": "var(--color-accent-soft)",
         border: "var(--color-border)",
-        // Notecard palette (guestbook only).         and       flip with
-        // the .dark theme via CSS variables in input.css;        /
-        //            stay cream-on-sepia in BOTH modes by design — the
+        // Notecard palette (guestbook only). `paper`, `ink`, and `red` flip
+        // with the .dark theme via CSS variables in input.css; `pill` /
+        // `pill-ink` stay cream-on-sepia in BOTH modes by design — the
         // picker + submit pills read as physical paper chips, tied to
         // the card's aesthetic, not the page chrome.
         notecard: {
@@ -85,7 +85,7 @@ export default {
         // and neutral-black (dark mode). Previously this was a hardcoded
         // sepia rgba string, which in dark mode read as a warm glow/halo
         // behind the cream pills instead of a shadow. See the
-        //                   definition in input.css for the recipe.
+        // `--notecard-pill-shadow` definition in input.css for the recipe.
         "notecard-pill": "var(--notecard-pill-shadow)",
       },
       transitionDuration: {
