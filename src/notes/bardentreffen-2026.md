@@ -76,6 +76,11 @@ markdown, so Nunjucks runs alone.
   }
   @media (min-width: 768px) { .bt { padding: 4rem 1.5rem 6rem; } }
 
+  /* Filtering works by setting [hidden]. That's only a UA rule (display:none),
+     so it loses to any author display rule — .bt-slot's grid, the card's flex.
+     Without this, filtered-out acts stay on screen. Must outrank them all. */
+  .bt [hidden] { display: none !important; }
+
   /* Long labels on wide screens, short ones on phones — same button. */
   .bt-lbl-short { display: inline; }
   .bt-lbl-full { display: none; }
@@ -207,12 +212,14 @@ markdown, so Nunjucks runs alone.
     white-space: nowrap;
   }
   @media (min-width: 860px) { .bt-day-tab { font-size: 0.875rem; padding: 0.35rem 1rem; } }
-  .bt-day-tab:hover { color: var(--color-ink); }
-  .bt-day-tab[aria-selected="true"] {
+  .bt-day-tab:hover:not(:disabled) { color: var(--color-ink); }
+  .bt-day-tab[aria-selected="true"]:not(:disabled) {
     background: var(--color-ink);
     color: var(--color-bg);
     box-shadow: var(--shadow-xs);
   }
+  /* Stood down while My Picks is showing every day at once. */
+  .bt-day-tab:disabled { opacity: 0.4; cursor: default; }
 
   /* Wraps rather than squeezing the search box to nothing on a narrow phone. */
   .bt-tools { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
@@ -387,6 +394,8 @@ markdown, so Nunjucks runs alone.
   }
   @media (min-width: 640px) { .bt-day-heading { font-size: 1.5rem; margin-top: 2.25rem; } }
   .bt-day-sub { font-size: 0.8125rem; color: var(--color-ink-muted); margin: 0 0 1rem; }
+  /* The day totals describe the full programme, so they'd be wrong in picks mode. */
+  .bt[data-picks="on"] .bt-day-sub { display: none; }
 
   .bt-view[data-view="stage"] { display: none; }
   .bt[data-view="stage"] .bt-view[data-view="stage"] { display: block; }
@@ -872,15 +881,19 @@ markdown, so Nunjucks runs alone.
        "suma covjek" still finds "Šuma Čovjek". */
     const fold = (s) => s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-    /* ── Day tabs ─────────────────────────────────────────────────── */
+    /* ── Day tabs ─────────────────────────────────────────────────────
+       applyFilters owns which day panels are on screen, because My Picks
+       overrides the day selection — see below. This only records the choice. */
+    let currentDay = DAYS[0].dataset.day;
+
     function selectDay(iso, scroll) {
-      DAYS.forEach((d) => (d.hidden = d.dataset.day !== iso));
+      currentDay = iso;
       TABS.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.day === iso)));
+      applyFilters();
       if (scroll) {
         const panel = DAYS.find((d) => d.dataset.day === iso);
         if (panel) panel.scrollIntoView({ block: "start", behavior: "smooth" });
       }
-      applyFilters();
     }
 
     TABS.forEach((tab) => {
@@ -966,18 +979,27 @@ markdown, so Nunjucks runs alone.
         group.hidden = !group.querySelector(".bt-act:not([hidden])");
       });
 
+      /* My Picks is a list for the whole weekend, not for one day — starring
+         something on Saturday and then opening picks on Thursday should not
+         look empty. So picks mode shows every day that has one, and the day
+         tabs stand down until it's switched off. */
+      DAYS.forEach((day) => {
+        day.hidden = picksOnly
+          ? !day.querySelector(".bt-act:not([hidden])")
+          : day.dataset.day !== currentDay;
+      });
+      TABS.forEach((t) => (t.disabled = picksOnly));
+      root.dataset.picks = picksOnly ? "on" : "off";
+
       const filtering = q !== "" || genreFilter.size > 0 || stageFilter.size > 0 || picksOnly;
       reset.hidden = !filtering;
 
-      const visibleDay = DAYS.find((d) => !d.hidden);
-      const anyVisible = visibleDay && visibleDay.querySelector(".bt-act:not([hidden])");
+      const anyVisible = DAYS.some((d) => !d.hidden && d.querySelector(".bt-act:not([hidden])"));
       empty.classList.toggle("is-visible", !anyVisible);
       empty.textContent =
         picksOnly && picks.size === 0
           ? "No picks yet. Tap the star on any act to save it."
-          : picksOnly
-            ? "Nothing saved for this day. Try another day."
-            : "Nothing matches. Clear the filters to see everything.";
+          : "Nothing matches. Clear the filters to see everything.";
     }
 
     function bindChip(btn, set, key) {
