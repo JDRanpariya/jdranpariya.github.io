@@ -66,6 +66,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/models": "assets/models" });
   eleventyConfig.addPassthroughCopy({ "assets/images/notecards": "assets/images/notecards" });
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
+  eleventyConfig.addPassthroughCopy({
+    "assets/images/bardentreffen": "assets/images/bardentreffen",
+  });
   eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "public/data": "data" });

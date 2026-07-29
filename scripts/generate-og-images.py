@@ -258,6 +258,45 @@ def render_guestbook_card(output_path):
     img.save(output_path, format='PNG', optimize=True)
 
 
+def render_bardentreffen_card(output_path):
+    """Card for /notes/bardentreffen-2026/ — Blerta's festival guide.
+
+    Off-pattern on purpose: the page is hosted for a friend, so her badge
+    carries the card and she gets the byline instead of the site author.
+    """
+    img = Image.new('RGBA', (CARD_W, CARD_H), BG)
+    draw = ImageDraw.Draw(img)
+
+    badge_path = ASSETS / "images" / "bardentreffen" / "blerta-badge.webp"
+    text_left = 100
+    if badge_path.exists():
+        badge = Image.open(badge_path).convert('RGBA').resize((300, 300), Image.LANCZOS)
+        # Circular mask so the badge reads as a sticker, not a pasted square.
+        mask = Image.new('L', (300, 300), 0)
+        ImageDraw.Draw(mask).ellipse([0, 0, 299, 299], fill=255)
+        img.paste(badge, (90, (CARD_H - 300) // 2), mask)
+        text_left = 450
+
+    eyebrow_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=22)
+    draw.text((text_left, 190), "NÜRNBERG · 30 JULY – 2 AUGUST 2026", fill=INK_MUTED, font=eyebrow_font)
+
+    title_font = ImageFont.truetype(FONT_FRAUNCES_BOLD, size=62)
+    draw.text((text_left, 232), "Bardentreffen 2026", fill=INK, font=title_font)
+
+    draw.rectangle([text_left, 330, text_left + 180, 332], fill=ACCENT)
+
+    sub_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=26)
+    draw.text((text_left, 360), "95 acts · 8 stages · 4 days", fill=INK_MUTED, font=sub_font)
+
+    author_font = ImageFont.truetype(FONT_LITERATA_MEDIUM, size=24)
+    draw.text((text_left, 402), "Compiled by Blerta", fill=INK, font=author_font)
+
+    url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
+    draw.text((text_left, 440), "jdranpariya.github.io", fill=INK_FAINT, font=url_font)
+
+    img.save(output_path, format='PNG', optimize=True)
+
+
 # ─── Main ────────────────────────────────────────────────────────────────────
 def main():
     OG_DIR.mkdir(parents=True, exist_ok=True)
@@ -274,6 +313,11 @@ def main():
     print("Generating guestbook card...")
     render_guestbook_card(OG_DIR / "guestbook.png")
     print("  → assets/og/guestbook.png")
+
+    # 1c. Bardentreffen programme card
+    print("Generating Bardentreffen card...")
+    render_bardentreffen_card(OG_DIR / "bardentreffen-2026.png")
+    print("  → assets/og/bardentreffen-2026.png")
 
     # 2. Per-article cards
     count = 0

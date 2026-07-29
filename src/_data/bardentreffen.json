@@ -1,0 +1,2404 @@
+{
+  "stages": [
+    {
+      "name": "Hauptmarkt",
+      "map": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7"
+    },
+    {
+      "name": "Inselschütt",
+      "map": "https://maps.app.goo.gl/FNLrDJEbQDdoZK2J8"
+    },
+    {
+      "name": "St.Katharina",
+      "map": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8"
+    },
+    {
+      "name": "Lorenzer Platz",
+      "map": "https://maps.app.goo.gl/AvahsLkxWLUkEH3MA"
+    },
+    {
+      "name": "Sebalder Platz",
+      "map": "https://maps.app.goo.gl/9G1d3S6iecDb3kHv7"
+    },
+    {
+      "name": "Kreuzigungshof",
+      "map": "https://maps.app.goo.gl/7i1TMk3quYXY2HpX9"
+    },
+    {
+      "name": "Trödelmarkt",
+      "map": "https://maps.app.goo.gl/76ZJzMENPEGCV6EG6"
+    },
+    {
+      "name": "Strassenbühne",
+      "map": "https://maps.app.goo.gl/Zn2jAD619q6XTt1ZA"
+    }
+  ],
+  "stageMap": {
+    "Hauptmarkt": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7",
+    "Inselschütt": "https://maps.app.goo.gl/FNLrDJEbQDdoZK2J8",
+    "St.Katharina": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8",
+    "Lorenzer Platz": "https://maps.app.goo.gl/AvahsLkxWLUkEH3MA",
+    "Sebalder Platz": "https://maps.app.goo.gl/9G1d3S6iecDb3kHv7",
+    "Kreuzigungshof": "https://maps.app.goo.gl/7i1TMk3quYXY2HpX9",
+    "Trödelmarkt": "https://maps.app.goo.gl/76ZJzMENPEGCV6EG6",
+    "Strassenbühne": "https://maps.app.goo.gl/Zn2jAD619q6XTt1ZA"
+  },
+  "genres": [
+    {
+      "id": "folk",
+      "label": "Singer-Songwriter & Traditional Folk",
+      "short": "Folk"
+    },
+    {
+      "id": "world",
+      "label": "Global Pop, Brass & World Fusion",
+      "short": "World"
+    },
+    {
+      "id": "vocal",
+      "label": "Vocal & Choral",
+      "short": "Choral"
+    },
+    {
+      "id": "kids",
+      "label": "Children's Music",
+      "short": "Kids"
+    },
+    {
+      "id": "spoken",
+      "label": "Spoken Word & Radio Broadcast",
+      "short": "Spoken"
+    }
+  ],
+  "genreShort": {
+    "folk": "Folk",
+    "world": "World",
+    "vocal": "Choral",
+    "kids": "Kids",
+    "spoken": "Spoken"
+  },
+  "days": [
+    {
+      "iso": "2026-07-30",
+      "label": "Thursday 30 July",
+      "short": "Thu 30",
+      "stages": ["Hauptmarkt", "St.Katharina"],
+      "slots": [
+        {
+          "time": "19:00",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Hans-Sachs-Chor Nürnberg",
+              "country": null,
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-hans-sachs-chor-nuernberg",
+              "q": "hans-sachs-chor nurnberg hauptmarkt ",
+              "key": "2026-07-30|19:00|Hauptmarkt|Hans-Sachs-Chor Nürnberg"
+            }
+          ]
+        },
+        {
+          "time": "20:00",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "50 Jahre Bardentreffen auf Bayern 2",
+              "country": null,
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-50-jahre-bardentreffen-auf-bayern-2",
+              "q": "50 jahre bardentreffen auf bayern 2 st.katharina ",
+              "key": "2026-07-30|20:00|St.Katharina|50 Jahre Bardentreffen auf Bayern 2"
+            }
+          ]
+        },
+        {
+          "time": "20:15",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Chor2Go Warm-Up",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chor2go-warm-up",
+              "q": "chor2go warm-up hauptmarkt ger",
+              "key": "2026-07-30|20:15|Hauptmarkt|Chor2Go Warm-Up"
+            }
+          ]
+        },
+        {
+          "time": "20:45",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Sing dela Sing",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sing-dela-sing",
+              "q": "sing dela sing hauptmarkt ger",
+              "key": "2026-07-30|20:45|Hauptmarkt|Sing dela Sing"
+            }
+          ]
+        }
+      ],
+      "byStage": [
+        {
+          "stage": "Hauptmarkt",
+          "map": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Hans-Sachs-Chor Nürnberg",
+              "country": null,
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-hans-sachs-chor-nuernberg",
+              "q": "hans-sachs-chor nurnberg hauptmarkt ",
+              "key": "2026-07-30|19:00|Hauptmarkt|Hans-Sachs-Chor Nürnberg",
+              "time": "19:00"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Chor2Go Warm-Up",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chor2go-warm-up",
+              "q": "chor2go warm-up hauptmarkt ger",
+              "key": "2026-07-30|20:15|Hauptmarkt|Chor2Go Warm-Up",
+              "time": "20:15"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Sing dela Sing",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sing-dela-sing",
+              "q": "sing dela sing hauptmarkt ger",
+              "key": "2026-07-30|20:45|Hauptmarkt|Sing dela Sing",
+              "time": "20:45"
+            }
+          ]
+        },
+        {
+          "stage": "St.Katharina",
+          "map": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "50 Jahre Bardentreffen auf Bayern 2",
+              "country": null,
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-50-jahre-bardentreffen-auf-bayern-2",
+              "q": "50 jahre bardentreffen auf bayern 2 st.katharina ",
+              "key": "2026-07-30|20:00|St.Katharina|50 Jahre Bardentreffen auf Bayern 2",
+              "time": "20:00"
+            }
+          ]
+        }
+      ],
+      "count": 4
+    },
+    {
+      "iso": "2026-07-31",
+      "label": "Friday 31 July",
+      "short": "Fri 31",
+      "stages": [
+        "Hauptmarkt",
+        "Inselschütt",
+        "Lorenzer Platz",
+        "Sebalder Platz",
+        "St.Katharina",
+        "Strassenbühne",
+        "Trödelmarkt"
+      ],
+      "slots": [
+        {
+          "time": "17:00",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Geraldino und die Giga Ohm Band",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-geraldino-und-die-giga-ohm-band",
+              "q": "geraldino und die giga ohm band inselschutt ger",
+              "key": "2026-07-31|17:00|Inselschütt|Geraldino und die Giga Ohm Band"
+            }
+          ]
+        },
+        {
+          "time": "19:00",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Stoppok & Artgenossen",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stoppok-artgenossen",
+              "q": "stoppok & artgenossen hauptmarkt ger",
+              "key": "2026-07-31|19:00|Hauptmarkt|Stoppok & Artgenossen"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "MOS",
+              "country": "JPN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mos",
+              "q": "mos inselschutt jpn",
+              "key": "2026-07-31|19:00|Inselschütt|MOS"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Konny Kohle + Käbinkru",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-konny-kohle-kaebinkru",
+              "q": "konny kohle + kabinkru lorenzer platz ger",
+              "key": "2026-07-31|19:00|Lorenzer Platz|Konny Kohle + Käbinkru"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "NENDA",
+              "country": "AUT",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-nenda",
+              "q": "nenda sebalder platz aut",
+              "key": "2026-07-31|19:00|Sebalder Platz|NENDA"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Rackajam",
+              "country": "HUN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rackajam",
+              "q": "rackajam st.katharina hun",
+              "key": "2026-07-31|19:00|St.Katharina|Rackajam"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Doerty Hansen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-doerty-hansen",
+              "q": "doerty hansen strassenbuhne ger",
+              "key": "2026-07-31|19:00|Strassenbühne|Doerty Hansen"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Legiana Collective",
+              "country": "NLD/ESP/ITA/DNK",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-legiana-collective",
+              "q": "legiana collective trodelmarkt nld/esp/ita/dnk",
+              "key": "2026-07-31|19:00|Trödelmarkt|Legiana Collective"
+            }
+          ]
+        },
+        {
+          "time": "20:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "FOSTEN",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-fosten",
+              "q": "fosten strassenbuhne ger",
+              "key": "2026-07-31|20:00|Strassenbühne|FOSTEN"
+            }
+          ]
+        },
+        {
+          "time": "20:30",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "John Q Irritated",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-john-q-irritated",
+              "q": "john q irritated lorenzer platz ger",
+              "key": "2026-07-31|20:30|Lorenzer Platz|John Q Irritated"
+            }
+          ]
+        },
+        {
+          "time": "21:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Soul Meadow",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-soul-meadow",
+              "q": "soul meadow strassenbuhne ger",
+              "key": "2026-07-31|21:00|Strassenbühne|Soul Meadow"
+            }
+          ]
+        },
+        {
+          "time": "21:30",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mine",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mine",
+              "q": "mine hauptmarkt ger",
+              "key": "2026-07-31|21:30|Hauptmarkt|Mine"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Doctor Krápula",
+              "country": "COL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-doctor-krapula",
+              "q": "doctor krapula inselschutt col",
+              "key": "2026-07-31|21:30|Inselschütt|Doctor Krápula"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Luca Vasta",
+              "country": "GER/ITA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-luca-vasta",
+              "q": "luca vasta sebalder platz ger/ita",
+              "key": "2026-07-31|21:30|Sebalder Platz|Luca Vasta"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Frigg",
+              "country": "FIN",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-frigg",
+              "q": "frigg st.katharina fin",
+              "key": "2026-07-31|21:30|St.Katharina|Frigg"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Sarah Lesch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sarah-lesch",
+              "q": "sarah lesch trodelmarkt ger",
+              "key": "2026-07-31|21:30|Trödelmarkt|Sarah Lesch"
+            }
+          ]
+        },
+        {
+          "time": "22:00",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Jupiter Orbit Escape",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-jupiter-orbit-escape",
+              "q": "jupiter orbit escape lorenzer platz ger",
+              "key": "2026-07-31|22:00|Lorenzer Platz|Jupiter Orbit Escape"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Mollton",
+              "country": "CHE",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mollton",
+              "q": "mollton strassenbuhne che",
+              "key": "2026-07-31|22:00|Strassenbühne|Mollton"
+            }
+          ]
+        },
+        {
+          "time": "23:00",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "KulturKellerei",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-kulturkellerei",
+              "q": "kulturkellerei inselschutt ger",
+              "key": "2026-07-31|23:00|Inselschütt|KulturKellerei"
+            }
+          ]
+        }
+      ],
+      "byStage": [
+        {
+          "stage": "Hauptmarkt",
+          "map": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Stoppok & Artgenossen",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stoppok-artgenossen",
+              "q": "stoppok & artgenossen hauptmarkt ger",
+              "key": "2026-07-31|19:00|Hauptmarkt|Stoppok & Artgenossen",
+              "time": "19:00"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mine",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mine",
+              "q": "mine hauptmarkt ger",
+              "key": "2026-07-31|21:30|Hauptmarkt|Mine",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "Inselschütt",
+          "map": "https://maps.app.goo.gl/FNLrDJEbQDdoZK2J8",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Geraldino und die Giga Ohm Band",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-geraldino-und-die-giga-ohm-band",
+              "q": "geraldino und die giga ohm band inselschutt ger",
+              "key": "2026-07-31|17:00|Inselschütt|Geraldino und die Giga Ohm Band",
+              "time": "17:00"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "MOS",
+              "country": "JPN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mos",
+              "q": "mos inselschutt jpn",
+              "key": "2026-07-31|19:00|Inselschütt|MOS",
+              "time": "19:00"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Doctor Krápula",
+              "country": "COL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-doctor-krapula",
+              "q": "doctor krapula inselschutt col",
+              "key": "2026-07-31|21:30|Inselschütt|Doctor Krápula",
+              "time": "21:30"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "KulturKellerei",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-kulturkellerei",
+              "q": "kulturkellerei inselschutt ger",
+              "key": "2026-07-31|23:00|Inselschütt|KulturKellerei",
+              "time": "23:00"
+            }
+          ]
+        },
+        {
+          "stage": "Lorenzer Platz",
+          "map": "https://maps.app.goo.gl/AvahsLkxWLUkEH3MA",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Konny Kohle + Käbinkru",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-konny-kohle-kaebinkru",
+              "q": "konny kohle + kabinkru lorenzer platz ger",
+              "key": "2026-07-31|19:00|Lorenzer Platz|Konny Kohle + Käbinkru",
+              "time": "19:00"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "John Q Irritated",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-john-q-irritated",
+              "q": "john q irritated lorenzer platz ger",
+              "key": "2026-07-31|20:30|Lorenzer Platz|John Q Irritated",
+              "time": "20:30"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Jupiter Orbit Escape",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-jupiter-orbit-escape",
+              "q": "jupiter orbit escape lorenzer platz ger",
+              "key": "2026-07-31|22:00|Lorenzer Platz|Jupiter Orbit Escape",
+              "time": "22:00"
+            }
+          ]
+        },
+        {
+          "stage": "Sebalder Platz",
+          "map": "https://maps.app.goo.gl/9G1d3S6iecDb3kHv7",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "NENDA",
+              "country": "AUT",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-nenda",
+              "q": "nenda sebalder platz aut",
+              "key": "2026-07-31|19:00|Sebalder Platz|NENDA",
+              "time": "19:00"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Luca Vasta",
+              "country": "GER/ITA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-luca-vasta",
+              "q": "luca vasta sebalder platz ger/ita",
+              "key": "2026-07-31|21:30|Sebalder Platz|Luca Vasta",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "St.Katharina",
+          "map": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Rackajam",
+              "country": "HUN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rackajam",
+              "q": "rackajam st.katharina hun",
+              "key": "2026-07-31|19:00|St.Katharina|Rackajam",
+              "time": "19:00"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Frigg",
+              "country": "FIN",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-frigg",
+              "q": "frigg st.katharina fin",
+              "key": "2026-07-31|21:30|St.Katharina|Frigg",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "Strassenbühne",
+          "map": "https://maps.app.goo.gl/Zn2jAD619q6XTt1ZA",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Doerty Hansen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-doerty-hansen",
+              "q": "doerty hansen strassenbuhne ger",
+              "key": "2026-07-31|19:00|Strassenbühne|Doerty Hansen",
+              "time": "19:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "FOSTEN",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-fosten",
+              "q": "fosten strassenbuhne ger",
+              "key": "2026-07-31|20:00|Strassenbühne|FOSTEN",
+              "time": "20:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Soul Meadow",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-soul-meadow",
+              "q": "soul meadow strassenbuhne ger",
+              "key": "2026-07-31|21:00|Strassenbühne|Soul Meadow",
+              "time": "21:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Mollton",
+              "country": "CHE",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mollton",
+              "q": "mollton strassenbuhne che",
+              "key": "2026-07-31|22:00|Strassenbühne|Mollton",
+              "time": "22:00"
+            }
+          ]
+        },
+        {
+          "stage": "Trödelmarkt",
+          "map": "https://maps.app.goo.gl/76ZJzMENPEGCV6EG6",
+          "acts": [
+            {
+              "stage": "Trödelmarkt",
+              "name": "Legiana Collective",
+              "country": "NLD/ESP/ITA/DNK",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-legiana-collective",
+              "q": "legiana collective trodelmarkt nld/esp/ita/dnk",
+              "key": "2026-07-31|19:00|Trödelmarkt|Legiana Collective",
+              "time": "19:00"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Sarah Lesch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sarah-lesch",
+              "q": "sarah lesch trodelmarkt ger",
+              "key": "2026-07-31|21:30|Trödelmarkt|Sarah Lesch",
+              "time": "21:30"
+            }
+          ]
+        }
+      ],
+      "count": 19
+    },
+    {
+      "iso": "2026-08-01",
+      "label": "Saturday 1 August",
+      "short": "Sat 1",
+      "stages": [
+        "Hauptmarkt",
+        "Inselschütt",
+        "Kreuzigungshof",
+        "Lorenzer Platz",
+        "Sebalder Platz",
+        "St.Katharina",
+        "Strassenbühne",
+        "Trödelmarkt"
+      ],
+      "slots": [
+        {
+          "time": "14:00",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Eichhorn & lila Hund",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-eichhorn-lila-hund",
+              "q": "eichhorn & lila hund inselschutt ger",
+              "key": "2026-08-01|14:00|Inselschütt|Eichhorn & lila Hund"
+            },
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Duo Duva",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "duo duva kreuzigungshof ger",
+              "key": "2026-08-01|14:00|Kreuzigungshof|Duo Duva"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Svavar Knùtur",
+              "country": "ISL",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-svavar-knutur",
+              "q": "svavar knutur sebalder platz isl",
+              "key": "2026-08-01|14:00|Sebalder Platz|Svavar Knùtur"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Deitsch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-deitsch",
+              "q": "deitsch st.katharina ger",
+              "key": "2026-08-01|14:00|St.Katharina|Deitsch"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Rockschule",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rockschule",
+              "q": "rockschule strassenbuhne ger",
+              "key": "2026-08-01|14:00|Strassenbühne|Rockschule"
+            }
+          ]
+        },
+        {
+          "time": "14:10",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Die Fledermaus",
+              "country": "GER",
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-die-fledermaus",
+              "q": "die fledermaus lorenzer platz ger",
+              "key": "2026-08-01|14:10|Lorenzer Platz|Die Fledermaus"
+            }
+          ]
+        },
+        {
+          "time": "15:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Duo cantotangaras",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-duo-cantotangaras",
+              "q": "duo cantotangaras strassenbuhne ger",
+              "key": "2026-08-01|15:00|Strassenbühne|Duo cantotangaras"
+            }
+          ]
+        },
+        {
+          "time": "15:15",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Gemeinsam nordmazedonisch tanzen",
+              "country": null,
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-gemeinsam-nordmazedonisch-tanzen",
+              "q": "gemeinsam nordmazedonisch tanzen hauptmarkt ",
+              "key": "2026-08-01|15:15|Hauptmarkt|Gemeinsam nordmazedonisch tanzen"
+            }
+          ]
+        },
+        {
+          "time": "15:25",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Monobraut",
+              "country": "GER",
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-monobraut",
+              "q": "monobraut lorenzer platz ger",
+              "key": "2026-08-01|15:25|Lorenzer Platz|Monobraut"
+            }
+          ]
+        },
+        {
+          "time": "15:45",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Andi und die Affenbande",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-andi-und-die-affenbande",
+              "q": "andi und die affenbande inselschutt ger",
+              "key": "2026-08-01|15:45|Inselschütt|Andi und die Affenbande"
+            }
+          ]
+        },
+        {
+          "time": "16:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Stromausfall",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stromausfall",
+              "q": "stromausfall strassenbuhne ger",
+              "key": "2026-08-01|16:00|Strassenbühne|Stromausfall"
+            }
+          ]
+        },
+        {
+          "time": "16:15",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Joana Amendoeira & Fred Martins",
+              "country": "PRT/BRA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-joana-amendoeira-fred-martins",
+              "q": "joana amendoeira & fred martins st.katharina prt/bra",
+              "key": "2026-08-01|16:15|St.Katharina|Joana Amendoeira & Fred Martins"
+            }
+          ]
+        },
+        {
+          "time": "16:30",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Gangstagrass",
+              "country": "USA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-gangstagrass",
+              "q": "gangstagrass hauptmarkt usa",
+              "key": "2026-08-01|16:30|Hauptmarkt|Gangstagrass"
+            },
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Lavinia Mancusi",
+              "country": "ITA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lavinia-mancusi",
+              "q": "lavinia mancusi kreuzigungshof ita",
+              "key": "2026-08-01|16:30|Kreuzigungshof|Lavinia Mancusi"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Pets",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-pets",
+              "q": "pets lorenzer platz ger",
+              "key": "2026-08-01|16:30|Lorenzer Platz|Pets"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Symbio",
+              "country": "SWE",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-symbio",
+              "q": "symbio sebalder platz swe",
+              "key": "2026-08-01|16:30|Sebalder Platz|Symbio"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Chor2Go",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chor2go",
+              "q": "chor2go trodelmarkt ger",
+              "key": "2026-08-01|16:30|Trödelmarkt|Chor2Go"
+            }
+          ]
+        },
+        {
+          "time": "17:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Klar & Herrlich",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-klar-herrlich",
+              "q": "klar & herrlich strassenbuhne ger",
+              "key": "2026-08-01|17:00|Strassenbühne|Klar & Herrlich"
+            }
+          ]
+        },
+        {
+          "time": "17:30",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Ukulele Death Squad",
+              "country": "AUS",
+              "genre": "world",
+              "url": null,
+              "q": "ukulele death squad inselschutt aus",
+              "key": "2026-08-01|17:30|Inselschütt|Ukulele Death Squad"
+            }
+          ]
+        },
+        {
+          "time": "17:50",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Appaloosa x YONA & Pietro de Lillo",
+              "country": "GER/FRA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-appaloosa-x-yona-pietro-de-lillo",
+              "q": "appaloosa x yona & pietro de lillo lorenzer platz ger/fra",
+              "key": "2026-08-01|17:50|Lorenzer Platz|Appaloosa x YONA & Pietro de Lillo"
+            }
+          ]
+        },
+        {
+          "time": "18:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "StereoSterne",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stereo-sterne",
+              "q": "stereosterne strassenbuhne ger",
+              "key": "2026-08-01|18:00|Strassenbühne|StereoSterne"
+            }
+          ]
+        },
+        {
+          "time": "18:45",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Lady Maisery",
+              "country": "GBR",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lady-maisery",
+              "q": "lady maisery st.katharina gbr",
+              "key": "2026-08-01|18:45|St.Katharina|Lady Maisery"
+            }
+          ]
+        },
+        {
+          "time": "19:00",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "Rackajam",
+              "country": "HUN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rackajam-show-2",
+              "q": "rackajam sebalder platz hun",
+              "key": "2026-08-01|19:00|Sebalder Platz|Rackajam"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Reni",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-reni",
+              "q": "reni strassenbuhne ger",
+              "key": "2026-08-01|19:00|Strassenbühne|Reni"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Magalí Sare & Manel Fortià",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-magali-sare-manel-fortia-1",
+              "q": "magali sare & manel fortia trodelmarkt esp/cat.",
+              "key": "2026-08-01|19:00|Trödelmarkt|Magalí Sare & Manel Fortià"
+            }
+          ]
+        },
+        {
+          "time": "19:10",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Crimson Roots",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-crimson-roots",
+              "q": "crimson roots lorenzer platz ger",
+              "key": "2026-08-01|19:10|Lorenzer Platz|Crimson Roots"
+            }
+          ]
+        },
+        {
+          "time": "19:30",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mari Froes",
+              "country": "BRA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mari-froes",
+              "q": "mari froes hauptmarkt bra",
+              "key": "2026-08-01|19:30|Hauptmarkt|Mari Froes"
+            }
+          ]
+        },
+        {
+          "time": "19:45",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Butter Funk Family",
+              "country": "AUS",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-butter-funk-family",
+              "q": "butter funk family inselschutt aus",
+              "key": "2026-08-01|19:45|Inselschütt|Butter Funk Family"
+            }
+          ]
+        },
+        {
+          "time": "20:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Bold",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-bold",
+              "q": "bold strassenbuhne ger",
+              "key": "2026-08-01|20:00|Strassenbühne|Bold"
+            }
+          ]
+        },
+        {
+          "time": "20:30",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Green Apple Sea",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-green-apple-sea",
+              "q": "the green apple sea lorenzer platz ger",
+              "key": "2026-08-01|20:30|Lorenzer Platz|The Green Apple Sea"
+            }
+          ]
+        },
+        {
+          "time": "21:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Sven Ormen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sven-ormen",
+              "q": "sven ormen strassenbuhne ger",
+              "key": "2026-08-01|21:00|Strassenbühne|Sven Ormen"
+            }
+          ]
+        },
+        {
+          "time": "21:15",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Die Nowak",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-die-nowak",
+              "q": "die nowak st.katharina ger",
+              "key": "2026-08-01|21:15|St.Katharina|Die Nowak"
+            }
+          ]
+        },
+        {
+          "time": "21:30",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Compota de Manana",
+              "country": "CUB/ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-compota-de-manana",
+              "q": "compota de manana hauptmarkt cub/esp/cat.",
+              "key": "2026-08-01|21:30|Hauptmarkt|Compota de Manana"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Eläkeläiset",
+              "country": "FIN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-elaekelaeiset",
+              "q": "elakelaiset sebalder platz fin",
+              "key": "2026-08-01|21:30|Sebalder Platz|Eläkeläiset"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Taco",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-taco",
+              "q": "taco trodelmarkt ger",
+              "key": "2026-08-01|21:30|Trödelmarkt|Taco"
+            }
+          ]
+        },
+        {
+          "time": "21:45",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Acht Eimer Hühnerherzen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-acht-eimer-huehnerherzen",
+              "q": "acht eimer huhnerherzen inselschutt ger",
+              "key": "2026-08-01|21:45|Inselschütt|Acht Eimer Hühnerherzen"
+            }
+          ]
+        },
+        {
+          "time": "22:00",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "BülBül Manush",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-buelbuel-manush",
+              "q": "bulbul manush lorenzer platz ger",
+              "key": "2026-08-01|22:00|Lorenzer Platz|BülBül Manush"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Good Luck Monday",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-good-luck-monday",
+              "q": "good luck monday strassenbuhne ger",
+              "key": "2026-08-01|22:00|Strassenbühne|Good Luck Monday"
+            }
+          ]
+        },
+        {
+          "time": "23:00",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "NBGrooves",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-nbgrooves",
+              "q": "nbgrooves inselschutt ger",
+              "key": "2026-08-01|23:00|Inselschütt|NBGrooves"
+            }
+          ]
+        }
+      ],
+      "byStage": [
+        {
+          "stage": "Hauptmarkt",
+          "map": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Gemeinsam nordmazedonisch tanzen",
+              "country": null,
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-gemeinsam-nordmazedonisch-tanzen",
+              "q": "gemeinsam nordmazedonisch tanzen hauptmarkt ",
+              "key": "2026-08-01|15:15|Hauptmarkt|Gemeinsam nordmazedonisch tanzen",
+              "time": "15:15"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Gangstagrass",
+              "country": "USA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-gangstagrass",
+              "q": "gangstagrass hauptmarkt usa",
+              "key": "2026-08-01|16:30|Hauptmarkt|Gangstagrass",
+              "time": "16:30"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mari Froes",
+              "country": "BRA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mari-froes",
+              "q": "mari froes hauptmarkt bra",
+              "key": "2026-08-01|19:30|Hauptmarkt|Mari Froes",
+              "time": "19:30"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Compota de Manana",
+              "country": "CUB/ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-compota-de-manana",
+              "q": "compota de manana hauptmarkt cub/esp/cat.",
+              "key": "2026-08-01|21:30|Hauptmarkt|Compota de Manana",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "Inselschütt",
+          "map": "https://maps.app.goo.gl/FNLrDJEbQDdoZK2J8",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Eichhorn & lila Hund",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-eichhorn-lila-hund",
+              "q": "eichhorn & lila hund inselschutt ger",
+              "key": "2026-08-01|14:00|Inselschütt|Eichhorn & lila Hund",
+              "time": "14:00"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Andi und die Affenbande",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-andi-und-die-affenbande",
+              "q": "andi und die affenbande inselschutt ger",
+              "key": "2026-08-01|15:45|Inselschütt|Andi und die Affenbande",
+              "time": "15:45"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Ukulele Death Squad",
+              "country": "AUS",
+              "genre": "world",
+              "url": null,
+              "q": "ukulele death squad inselschutt aus",
+              "key": "2026-08-01|17:30|Inselschütt|Ukulele Death Squad",
+              "time": "17:30"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Butter Funk Family",
+              "country": "AUS",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-butter-funk-family",
+              "q": "butter funk family inselschutt aus",
+              "key": "2026-08-01|19:45|Inselschütt|Butter Funk Family",
+              "time": "19:45"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Acht Eimer Hühnerherzen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-acht-eimer-huehnerherzen",
+              "q": "acht eimer huhnerherzen inselschutt ger",
+              "key": "2026-08-01|21:45|Inselschütt|Acht Eimer Hühnerherzen",
+              "time": "21:45"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "NBGrooves",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-nbgrooves",
+              "q": "nbgrooves inselschutt ger",
+              "key": "2026-08-01|23:00|Inselschütt|NBGrooves",
+              "time": "23:00"
+            }
+          ]
+        },
+        {
+          "stage": "Kreuzigungshof",
+          "map": "https://maps.app.goo.gl/7i1TMk3quYXY2HpX9",
+          "acts": [
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Duo Duva",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "duo duva kreuzigungshof ger",
+              "key": "2026-08-01|14:00|Kreuzigungshof|Duo Duva",
+              "time": "14:00"
+            },
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Lavinia Mancusi",
+              "country": "ITA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lavinia-mancusi",
+              "q": "lavinia mancusi kreuzigungshof ita",
+              "key": "2026-08-01|16:30|Kreuzigungshof|Lavinia Mancusi",
+              "time": "16:30"
+            }
+          ]
+        },
+        {
+          "stage": "Lorenzer Platz",
+          "map": "https://maps.app.goo.gl/AvahsLkxWLUkEH3MA",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Die Fledermaus",
+              "country": "GER",
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-die-fledermaus",
+              "q": "die fledermaus lorenzer platz ger",
+              "key": "2026-08-01|14:10|Lorenzer Platz|Die Fledermaus",
+              "time": "14:10"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Monobraut",
+              "country": "GER",
+              "genre": "spoken",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-monobraut",
+              "q": "monobraut lorenzer platz ger",
+              "key": "2026-08-01|15:25|Lorenzer Platz|Monobraut",
+              "time": "15:25"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Pets",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-pets",
+              "q": "pets lorenzer platz ger",
+              "key": "2026-08-01|16:30|Lorenzer Platz|Pets",
+              "time": "16:30"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Appaloosa x YONA & Pietro de Lillo",
+              "country": "GER/FRA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-appaloosa-x-yona-pietro-de-lillo",
+              "q": "appaloosa x yona & pietro de lillo lorenzer platz ger/fra",
+              "key": "2026-08-01|17:50|Lorenzer Platz|Appaloosa x YONA & Pietro de Lillo",
+              "time": "17:50"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Crimson Roots",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-crimson-roots",
+              "q": "crimson roots lorenzer platz ger",
+              "key": "2026-08-01|19:10|Lorenzer Platz|Crimson Roots",
+              "time": "19:10"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Green Apple Sea",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-green-apple-sea",
+              "q": "the green apple sea lorenzer platz ger",
+              "key": "2026-08-01|20:30|Lorenzer Platz|The Green Apple Sea",
+              "time": "20:30"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "BülBül Manush",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-buelbuel-manush",
+              "q": "bulbul manush lorenzer platz ger",
+              "key": "2026-08-01|22:00|Lorenzer Platz|BülBül Manush",
+              "time": "22:00"
+            }
+          ]
+        },
+        {
+          "stage": "Sebalder Platz",
+          "map": "https://maps.app.goo.gl/9G1d3S6iecDb3kHv7",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "Svavar Knùtur",
+              "country": "ISL",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-svavar-knutur",
+              "q": "svavar knutur sebalder platz isl",
+              "key": "2026-08-01|14:00|Sebalder Platz|Svavar Knùtur",
+              "time": "14:00"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Symbio",
+              "country": "SWE",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-symbio",
+              "q": "symbio sebalder platz swe",
+              "key": "2026-08-01|16:30|Sebalder Platz|Symbio",
+              "time": "16:30"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Rackajam",
+              "country": "HUN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rackajam-show-2",
+              "q": "rackajam sebalder platz hun",
+              "key": "2026-08-01|19:00|Sebalder Platz|Rackajam",
+              "time": "19:00"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Eläkeläiset",
+              "country": "FIN",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-elaekelaeiset",
+              "q": "elakelaiset sebalder platz fin",
+              "key": "2026-08-01|21:30|Sebalder Platz|Eläkeläiset",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "St.Katharina",
+          "map": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Deitsch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-deitsch",
+              "q": "deitsch st.katharina ger",
+              "key": "2026-08-01|14:00|St.Katharina|Deitsch",
+              "time": "14:00"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Joana Amendoeira & Fred Martins",
+              "country": "PRT/BRA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-joana-amendoeira-fred-martins",
+              "q": "joana amendoeira & fred martins st.katharina prt/bra",
+              "key": "2026-08-01|16:15|St.Katharina|Joana Amendoeira & Fred Martins",
+              "time": "16:15"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Lady Maisery",
+              "country": "GBR",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lady-maisery",
+              "q": "lady maisery st.katharina gbr",
+              "key": "2026-08-01|18:45|St.Katharina|Lady Maisery",
+              "time": "18:45"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Die Nowak",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-die-nowak",
+              "q": "die nowak st.katharina ger",
+              "key": "2026-08-01|21:15|St.Katharina|Die Nowak",
+              "time": "21:15"
+            }
+          ]
+        },
+        {
+          "stage": "Strassenbühne",
+          "map": "https://maps.app.goo.gl/Zn2jAD619q6XTt1ZA",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Rockschule",
+              "country": "GER",
+              "genre": "kids",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-rockschule",
+              "q": "rockschule strassenbuhne ger",
+              "key": "2026-08-01|14:00|Strassenbühne|Rockschule",
+              "time": "14:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Duo cantotangaras",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-duo-cantotangaras",
+              "q": "duo cantotangaras strassenbuhne ger",
+              "key": "2026-08-01|15:00|Strassenbühne|Duo cantotangaras",
+              "time": "15:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Stromausfall",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stromausfall",
+              "q": "stromausfall strassenbuhne ger",
+              "key": "2026-08-01|16:00|Strassenbühne|Stromausfall",
+              "time": "16:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Klar & Herrlich",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-klar-herrlich",
+              "q": "klar & herrlich strassenbuhne ger",
+              "key": "2026-08-01|17:00|Strassenbühne|Klar & Herrlich",
+              "time": "17:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "StereoSterne",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-stereo-sterne",
+              "q": "stereosterne strassenbuhne ger",
+              "key": "2026-08-01|18:00|Strassenbühne|StereoSterne",
+              "time": "18:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Reni",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-reni",
+              "q": "reni strassenbuhne ger",
+              "key": "2026-08-01|19:00|Strassenbühne|Reni",
+              "time": "19:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Bold",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-bold",
+              "q": "bold strassenbuhne ger",
+              "key": "2026-08-01|20:00|Strassenbühne|Bold",
+              "time": "20:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Sven Ormen",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-sven-ormen",
+              "q": "sven ormen strassenbuhne ger",
+              "key": "2026-08-01|21:00|Strassenbühne|Sven Ormen",
+              "time": "21:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Good Luck Monday",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-good-luck-monday",
+              "q": "good luck monday strassenbuhne ger",
+              "key": "2026-08-01|22:00|Strassenbühne|Good Luck Monday",
+              "time": "22:00"
+            }
+          ]
+        },
+        {
+          "stage": "Trödelmarkt",
+          "map": "https://maps.app.goo.gl/76ZJzMENPEGCV6EG6",
+          "acts": [
+            {
+              "stage": "Trödelmarkt",
+              "name": "Chor2Go",
+              "country": "GER",
+              "genre": "vocal",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chor2go",
+              "q": "chor2go trodelmarkt ger",
+              "key": "2026-08-01|16:30|Trödelmarkt|Chor2Go",
+              "time": "16:30"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Magalí Sare & Manel Fortià",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-magali-sare-manel-fortia-1",
+              "q": "magali sare & manel fortia trodelmarkt esp/cat.",
+              "key": "2026-08-01|19:00|Trödelmarkt|Magalí Sare & Manel Fortià",
+              "time": "19:00"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Taco",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-taco",
+              "q": "taco trodelmarkt ger",
+              "key": "2026-08-01|21:30|Trödelmarkt|Taco",
+              "time": "21:30"
+            }
+          ]
+        }
+      ],
+      "count": 39
+    },
+    {
+      "iso": "2026-08-02",
+      "label": "Sunday 2 August",
+      "short": "Sun 2",
+      "stages": [
+        "Hauptmarkt",
+        "Inselschütt",
+        "Kreuzigungshof",
+        "Lorenzer Platz",
+        "Sebalder Platz",
+        "St.Katharina",
+        "Strassenbühne",
+        "Trödelmarkt"
+      ],
+      "slots": [
+        {
+          "time": "14:00",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Larifari",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-larifari",
+              "q": "larifari inselschutt ger",
+              "key": "2026-08-02|14:00|Inselschütt|Larifari"
+            },
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Charm of Finches",
+              "country": "AUS",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-charm-of-finches",
+              "q": "charm of finches kreuzigungshof aus",
+              "key": "2026-08-02|14:00|Kreuzigungshof|Charm of Finches"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Deitsch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-deitsch-1",
+              "q": "deitsch sebalder platz ger",
+              "key": "2026-08-02|14:00|Sebalder Platz|Deitsch"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Lavinia Mancusi",
+              "country": "ITA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lavinia-mancusi-1",
+              "q": "lavinia mancusi st.katharina ita",
+              "key": "2026-08-02|14:00|St.Katharina|Lavinia Mancusi"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "AMotion",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-amotion",
+              "q": "amotion strassenbuhne ger",
+              "key": "2026-08-02|14:00|Strassenbühne|AMotion"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Folktanz mit Luck & Strauch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-folktanz-mit-luck-strauch",
+              "q": "folktanz mit luck & strauch trodelmarkt ger",
+              "key": "2026-08-02|14:00|Trödelmarkt|Folktanz mit Luck & Strauch"
+            }
+          ]
+        },
+        {
+          "time": "14:10",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Hotel Paradis",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-hotel-paradis",
+              "q": "hotel paradis lorenzer platz ger",
+              "key": "2026-08-02|14:10|Lorenzer Platz|Hotel Paradis"
+            }
+          ]
+        },
+        {
+          "time": "15:00",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Šuma Čovjek",
+              "country": "CHE/SRB/BIH/HRV",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-suma-covjek",
+              "q": "suma covjek hauptmarkt che/srb/bih/hrv",
+              "key": "2026-08-02|15:00|Hauptmarkt|Šuma Čovjek"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Yvonne & Matthias",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-yvonne-matthias",
+              "q": "yvonne & matthias strassenbuhne ger",
+              "key": "2026-08-02|15:00|Strassenbühne|Yvonne & Matthias"
+            }
+          ]
+        },
+        {
+          "time": "15:30",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Chris Padera",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chris-padera",
+              "q": "chris padera lorenzer platz ger",
+              "key": "2026-08-02|15:30|Lorenzer Platz|Chris Padera"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Thede | Feldmann",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-thede-feldmann",
+              "q": "thede | feldmann trodelmarkt ger",
+              "key": "2026-08-02|15:30|Trödelmarkt|Thede | Feldmann"
+            }
+          ]
+        },
+        {
+          "time": "15:45",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "D!E GÄNG",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-de-gaeng",
+              "q": "d!e gang inselschutt ger",
+              "key": "2026-08-02|15:45|Inselschütt|D!E GÄNG"
+            }
+          ]
+        },
+        {
+          "time": "16:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Wolfgang Kalb",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "wolfgang kalb strassenbuhne ger",
+              "key": "2026-08-02|16:00|Strassenbühne|Wolfgang Kalb"
+            }
+          ]
+        },
+        {
+          "time": "16:15",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "Frankenbänd",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-frankenbaend",
+              "q": "frankenband sebalder platz ger",
+              "key": "2026-08-02|16:15|Sebalder Platz|Frankenbänd"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Magalí Sare & Manel Fortià",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-magali-sare-manel-fortia",
+              "q": "magali sare & manel fortia st.katharina esp/cat.",
+              "key": "2026-08-02|16:15|St.Katharina|Magalí Sare & Manel Fortià"
+            }
+          ]
+        },
+        {
+          "time": "16:30",
+          "acts": [
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Maxi Pongratz",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "maxi pongratz kreuzigungshof ger",
+              "key": "2026-08-02|16:30|Kreuzigungshof|Maxi Pongratz"
+            }
+          ]
+        },
+        {
+          "time": "16:50",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "MIITCH",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-miitch",
+              "q": "miitch lorenzer platz ger",
+              "key": "2026-08-02|16:50|Lorenzer Platz|MIITCH"
+            }
+          ]
+        },
+        {
+          "time": "17:00",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "Alex Boldin",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-alex-boldin",
+              "q": "alex boldin strassenbuhne ger",
+              "key": "2026-08-02|17:00|Strassenbühne|Alex Boldin"
+            }
+          ]
+        },
+        {
+          "time": "17:15",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "El Pony Pisador",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-el-pony-pisador",
+              "q": "el pony pisador hauptmarkt esp/cat.",
+              "key": "2026-08-02|17:15|Hauptmarkt|El Pony Pisador"
+            }
+          ]
+        },
+        {
+          "time": "17:30",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Ecos de Siboney",
+              "country": "CUB",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-ecos-de-siboney",
+              "q": "ecos de siboney inselschutt cub",
+              "key": "2026-08-02|17:30|Inselschütt|Ecos de Siboney"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "La Kejoca",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-la-kejoca",
+              "q": "la kejoca trodelmarkt ger",
+              "key": "2026-08-02|17:30|Trödelmarkt|La Kejoca"
+            }
+          ]
+        },
+        {
+          "time": "18:10",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Slam Elephant",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-slam-elephant",
+              "q": "slam elephant lorenzer platz ger",
+              "key": "2026-08-02|18:10|Lorenzer Platz|Slam Elephant"
+            }
+          ]
+        },
+        {
+          "time": "18:30",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "K.ZIA",
+              "country": "BEL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-kzia",
+              "q": "k.zia st.katharina bel",
+              "key": "2026-08-02|18:30|St.Katharina|K.ZIA"
+            }
+          ]
+        },
+        {
+          "time": "18:45",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "An Dannsa Dub",
+              "country": "GBR",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-an-dannsa-dub",
+              "q": "an dannsa dub sebalder platz gbr",
+              "key": "2026-08-02|18:45|Sebalder Platz|An Dannsa Dub"
+            }
+          ]
+        },
+        {
+          "time": "19:30",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "The Cavemen",
+              "country": "NGA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-cavemen",
+              "q": "the cavemen inselschutt nga",
+              "key": "2026-08-02|19:30|Inselschütt|The Cavemen"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Trad Quartett",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-trad-quartett",
+              "q": "trad quartett trodelmarkt ger",
+              "key": "2026-08-02|19:30|Trödelmarkt|Trad Quartett"
+            }
+          ]
+        },
+        {
+          "time": "19:50",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Lovebites",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-lovebites",
+              "q": "the lovebites lorenzer platz ger",
+              "key": "2026-08-02|19:50|Lorenzer Platz|The Lovebites"
+            }
+          ]
+        },
+        {
+          "time": "20:30",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mal Élevé",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mal-eleve",
+              "q": "mal eleve hauptmarkt ger",
+              "key": "2026-08-02|20:30|Hauptmarkt|Mal Élevé"
+            }
+          ]
+        },
+        {
+          "time": "21:00",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "Norbert Schneider",
+              "country": "AUT",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-norbert-schneider",
+              "q": "norbert schneider sebalder platz aut",
+              "key": "2026-08-02|21:00|Sebalder Platz|Norbert Schneider"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Freshlyground",
+              "country": "RSA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-freshlyground",
+              "q": "freshlyground st.katharina rsa",
+              "key": "2026-08-02|21:00|St.Katharina|Freshlyground"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "ProfolkSession",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-profolk-session",
+              "q": "profolksession trodelmarkt ger",
+              "key": "2026-08-02|21:00|Trödelmarkt|ProfolkSession"
+            }
+          ]
+        },
+        {
+          "time": "21:20",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Great Bertholinis",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-great-bertholinis",
+              "q": "the great bertholinis lorenzer platz ger",
+              "key": "2026-08-02|21:20|Lorenzer Platz|The Great Bertholinis"
+            }
+          ]
+        },
+        {
+          "time": "21:30",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Systema Solar",
+              "country": "COL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-systema-solar",
+              "q": "systema solar inselschutt col",
+              "key": "2026-08-02|21:30|Inselschütt|Systema Solar"
+            }
+          ]
+        }
+      ],
+      "byStage": [
+        {
+          "stage": "Hauptmarkt",
+          "map": "https://maps.app.goo.gl/gFdXJRjvmYRQhcgk7",
+          "acts": [
+            {
+              "stage": "Hauptmarkt",
+              "name": "Šuma Čovjek",
+              "country": "CHE/SRB/BIH/HRV",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-suma-covjek",
+              "q": "suma covjek hauptmarkt che/srb/bih/hrv",
+              "key": "2026-08-02|15:00|Hauptmarkt|Šuma Čovjek",
+              "time": "15:00"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "El Pony Pisador",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-el-pony-pisador",
+              "q": "el pony pisador hauptmarkt esp/cat.",
+              "key": "2026-08-02|17:15|Hauptmarkt|El Pony Pisador",
+              "time": "17:15"
+            },
+            {
+              "stage": "Hauptmarkt",
+              "name": "Mal Élevé",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-mal-eleve",
+              "q": "mal eleve hauptmarkt ger",
+              "key": "2026-08-02|20:30|Hauptmarkt|Mal Élevé",
+              "time": "20:30"
+            }
+          ]
+        },
+        {
+          "stage": "Inselschütt",
+          "map": "https://maps.app.goo.gl/FNLrDJEbQDdoZK2J8",
+          "acts": [
+            {
+              "stage": "Inselschütt",
+              "name": "Larifari",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-larifari",
+              "q": "larifari inselschutt ger",
+              "key": "2026-08-02|14:00|Inselschütt|Larifari",
+              "time": "14:00"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "D!E GÄNG",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-de-gaeng",
+              "q": "d!e gang inselschutt ger",
+              "key": "2026-08-02|15:45|Inselschütt|D!E GÄNG",
+              "time": "15:45"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Ecos de Siboney",
+              "country": "CUB",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-ecos-de-siboney",
+              "q": "ecos de siboney inselschutt cub",
+              "key": "2026-08-02|17:30|Inselschütt|Ecos de Siboney",
+              "time": "17:30"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "The Cavemen",
+              "country": "NGA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-cavemen",
+              "q": "the cavemen inselschutt nga",
+              "key": "2026-08-02|19:30|Inselschütt|The Cavemen",
+              "time": "19:30"
+            },
+            {
+              "stage": "Inselschütt",
+              "name": "Systema Solar",
+              "country": "COL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-systema-solar",
+              "q": "systema solar inselschutt col",
+              "key": "2026-08-02|21:30|Inselschütt|Systema Solar",
+              "time": "21:30"
+            }
+          ]
+        },
+        {
+          "stage": "Kreuzigungshof",
+          "map": "https://maps.app.goo.gl/7i1TMk3quYXY2HpX9",
+          "acts": [
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Charm of Finches",
+              "country": "AUS",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-charm-of-finches",
+              "q": "charm of finches kreuzigungshof aus",
+              "key": "2026-08-02|14:00|Kreuzigungshof|Charm of Finches",
+              "time": "14:00"
+            },
+            {
+              "stage": "Kreuzigungshof",
+              "name": "Maxi Pongratz",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "maxi pongratz kreuzigungshof ger",
+              "key": "2026-08-02|16:30|Kreuzigungshof|Maxi Pongratz",
+              "time": "16:30"
+            }
+          ]
+        },
+        {
+          "stage": "Lorenzer Platz",
+          "map": "https://maps.app.goo.gl/AvahsLkxWLUkEH3MA",
+          "acts": [
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Hotel Paradis",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-hotel-paradis",
+              "q": "hotel paradis lorenzer platz ger",
+              "key": "2026-08-02|14:10|Lorenzer Platz|Hotel Paradis",
+              "time": "14:10"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Chris Padera",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-chris-padera",
+              "q": "chris padera lorenzer platz ger",
+              "key": "2026-08-02|15:30|Lorenzer Platz|Chris Padera",
+              "time": "15:30"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "MIITCH",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-miitch",
+              "q": "miitch lorenzer platz ger",
+              "key": "2026-08-02|16:50|Lorenzer Platz|MIITCH",
+              "time": "16:50"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "Slam Elephant",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-slam-elephant",
+              "q": "slam elephant lorenzer platz ger",
+              "key": "2026-08-02|18:10|Lorenzer Platz|Slam Elephant",
+              "time": "18:10"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Lovebites",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-lovebites",
+              "q": "the lovebites lorenzer platz ger",
+              "key": "2026-08-02|19:50|Lorenzer Platz|The Lovebites",
+              "time": "19:50"
+            },
+            {
+              "stage": "Lorenzer Platz",
+              "name": "The Great Bertholinis",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-the-great-bertholinis",
+              "q": "the great bertholinis lorenzer platz ger",
+              "key": "2026-08-02|21:20|Lorenzer Platz|The Great Bertholinis",
+              "time": "21:20"
+            }
+          ]
+        },
+        {
+          "stage": "Sebalder Platz",
+          "map": "https://maps.app.goo.gl/9G1d3S6iecDb3kHv7",
+          "acts": [
+            {
+              "stage": "Sebalder Platz",
+              "name": "Deitsch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-deitsch-1",
+              "q": "deitsch sebalder platz ger",
+              "key": "2026-08-02|14:00|Sebalder Platz|Deitsch",
+              "time": "14:00"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Frankenbänd",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-frankenbaend",
+              "q": "frankenband sebalder platz ger",
+              "key": "2026-08-02|16:15|Sebalder Platz|Frankenbänd",
+              "time": "16:15"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "An Dannsa Dub",
+              "country": "GBR",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-an-dannsa-dub",
+              "q": "an dannsa dub sebalder platz gbr",
+              "key": "2026-08-02|18:45|Sebalder Platz|An Dannsa Dub",
+              "time": "18:45"
+            },
+            {
+              "stage": "Sebalder Platz",
+              "name": "Norbert Schneider",
+              "country": "AUT",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-norbert-schneider",
+              "q": "norbert schneider sebalder platz aut",
+              "key": "2026-08-02|21:00|Sebalder Platz|Norbert Schneider",
+              "time": "21:00"
+            }
+          ]
+        },
+        {
+          "stage": "St.Katharina",
+          "map": "https://maps.app.goo.gl/XDtUz53vctMkZ5PQ8",
+          "acts": [
+            {
+              "stage": "St.Katharina",
+              "name": "Lavinia Mancusi",
+              "country": "ITA",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-lavinia-mancusi-1",
+              "q": "lavinia mancusi st.katharina ita",
+              "key": "2026-08-02|14:00|St.Katharina|Lavinia Mancusi",
+              "time": "14:00"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Magalí Sare & Manel Fortià",
+              "country": "ESP/Cat.",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-magali-sare-manel-fortia",
+              "q": "magali sare & manel fortia st.katharina esp/cat.",
+              "key": "2026-08-02|16:15|St.Katharina|Magalí Sare & Manel Fortià",
+              "time": "16:15"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "K.ZIA",
+              "country": "BEL",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-kzia",
+              "q": "k.zia st.katharina bel",
+              "key": "2026-08-02|18:30|St.Katharina|K.ZIA",
+              "time": "18:30"
+            },
+            {
+              "stage": "St.Katharina",
+              "name": "Freshlyground",
+              "country": "RSA",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-freshlyground",
+              "q": "freshlyground st.katharina rsa",
+              "key": "2026-08-02|21:00|St.Katharina|Freshlyground",
+              "time": "21:00"
+            }
+          ]
+        },
+        {
+          "stage": "Strassenbühne",
+          "map": "https://maps.app.goo.gl/Zn2jAD619q6XTt1ZA",
+          "acts": [
+            {
+              "stage": "Strassenbühne",
+              "name": "AMotion",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-amotion",
+              "q": "amotion strassenbuhne ger",
+              "key": "2026-08-02|14:00|Strassenbühne|AMotion",
+              "time": "14:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Yvonne & Matthias",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-yvonne-matthias",
+              "q": "yvonne & matthias strassenbuhne ger",
+              "key": "2026-08-02|15:00|Strassenbühne|Yvonne & Matthias",
+              "time": "15:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Wolfgang Kalb",
+              "country": "GER",
+              "genre": "folk",
+              "url": null,
+              "q": "wolfgang kalb strassenbuhne ger",
+              "key": "2026-08-02|16:00|Strassenbühne|Wolfgang Kalb",
+              "time": "16:00"
+            },
+            {
+              "stage": "Strassenbühne",
+              "name": "Alex Boldin",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-alex-boldin",
+              "q": "alex boldin strassenbuhne ger",
+              "key": "2026-08-02|17:00|Strassenbühne|Alex Boldin",
+              "time": "17:00"
+            }
+          ]
+        },
+        {
+          "stage": "Trödelmarkt",
+          "map": "https://maps.app.goo.gl/76ZJzMENPEGCV6EG6",
+          "acts": [
+            {
+              "stage": "Trödelmarkt",
+              "name": "Folktanz mit Luck & Strauch",
+              "country": "GER",
+              "genre": "folk",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-folktanz-mit-luck-strauch",
+              "q": "folktanz mit luck & strauch trodelmarkt ger",
+              "key": "2026-08-02|14:00|Trödelmarkt|Folktanz mit Luck & Strauch",
+              "time": "14:00"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Thede | Feldmann",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-thede-feldmann",
+              "q": "thede | feldmann trodelmarkt ger",
+              "key": "2026-08-02|15:30|Trödelmarkt|Thede | Feldmann",
+              "time": "15:30"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "La Kejoca",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-la-kejoca",
+              "q": "la kejoca trodelmarkt ger",
+              "key": "2026-08-02|17:30|Trödelmarkt|La Kejoca",
+              "time": "17:30"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "Trad Quartett",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-trad-quartett",
+              "q": "trad quartett trodelmarkt ger",
+              "key": "2026-08-02|19:30|Trödelmarkt|Trad Quartett",
+              "time": "19:30"
+            },
+            {
+              "stage": "Trödelmarkt",
+              "name": "ProfolkSession",
+              "country": "GER",
+              "genre": "world",
+              "url": "https://bardentreffen.nuernberg.de/bands/2026-profolk-session",
+              "q": "profolksession trodelmarkt ger",
+              "key": "2026-08-02|21:00|Trödelmarkt|ProfolkSession",
+              "time": "21:00"
+            }
+          ]
+        }
+      ],
+      "count": 33
+    }
+  ],
+  "totalActs": 95,
+  "totalStages": 8
+}
