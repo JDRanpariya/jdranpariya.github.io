@@ -148,8 +148,9 @@ markdown, so Nunjucks runs alone.
     line-height: 1.6;
     color: var(--color-ink-secondary);
   }
-  .bt-notice img { width: 2.5rem; height: 2.5rem; flex: none; margin-top: -0.15rem; }
-  @media (min-width: 640px) { .bt-notice img { width: 3rem; height: 3rem; } }
+  /* height:auto — the cat is 201×220, not square; forcing both would squash it. */
+  .bt-notice img { width: 2.5rem; height: auto; flex: none; margin-top: -0.15rem; }
+  @media (min-width: 640px) { .bt-notice img { width: 3rem; } }
   .bt-notice__quote { font-style: italic; }
   .bt-notice__cite {
     display: block;
