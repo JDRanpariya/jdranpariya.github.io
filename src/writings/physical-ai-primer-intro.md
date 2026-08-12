@@ -1,9 +1,9 @@
 ---
 title: what is physical ai
 published: 2026-05-25
-lastUpdated: 2026-05-25
+lastUpdated: 2026-08-12
 tags: [AI, robotics, physical-ai]
-status: published
+status: draft
 section: writings
 layout: layouts/post.njk
 description: what physical ai is and the threads i'm pulling.

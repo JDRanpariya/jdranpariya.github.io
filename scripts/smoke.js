@@ -195,10 +195,76 @@ console.log("\n[7] readNext links resolve");
     if (existsSync(buildPath)) {
       ok(`readNext ${target} → exists`);
     } else {
-      fail(`readNext ${target} → MISSING in build`);
+      const sourcePath = join("src", `${target.replace(/^\//, "")}.md`);
+      const targetIsDraft =
+        existsSync(sourcePath) &&
+        /^status:\s*["']?draft["']?\s*$/m.test(readFileSync(sourcePath, "utf8"));
+
+      if (targetIsDraft) ok(`readNext ${target} → draft; related-post fallback used`);
+      else fail(`readNext ${target} → MISSING in build`);
     }
   }
   if (count === 0) ok("no readNext links found (OK)");
+}
+
+// 8. Draft writings must not ship as pages or leak into discovery files.
+console.log("\n[8] draft writings excluded from production");
+try {
+  const writingsDir = join("src", "writings");
+  const drafts = readdirSync(writingsDir)
+    .filter((name) => name.endsWith(".md"))
+    .filter((name) => {
+      const source = readFileSync(join(writingsDir, name), "utf8");
+      return /^status:\s*["']?draft["']?\s*$/m.test(source);
+    });
+  const sitemap = readFileSync(join(BUILD, "sitemap.xml"), "utf8");
+  const feed = readFileSync(join(BUILD, "feed.xml"), "utf8");
+
+  for (const name of drafts) {
+    const slug = name.replace(/\.md$/, "");
+    const url = `/writings/${slug}/`;
+    const output = join(BUILD, "writings", slug, "index.html");
+
+    let pageResult = "absent from page output";
+    if (existsSync(output)) {
+      const html = readFileSync(output, "utf8");
+      const isRedirect =
+        /<meta[^>]+name=["']robots["'][^>]+content=["']noindex["']/i.test(html) &&
+        /<meta[^>]+http-equiv=["']refresh["']/i.test(html);
+
+      if (!isRedirect) {
+        fail(`${name} generated a production article page`);
+        continue;
+      }
+      pageResult = "replaced by a noindex redirect";
+    }
+
+    if (sitemap.includes(url)) fail(`${name} leaked into sitemap.xml`);
+    else if (feed.includes(url)) fail(`${name} leaked into feed.xml`);
+    else ok(`${name} ${pageResult}; absent from sitemap and feed`);
+  }
+
+  if (drafts.length === 0) ok("no draft writings found (OK)");
+} catch (e) {
+  fail(`draft exclusion check failed: ${e.message}`);
+}
+
+// 9. Qualified-reader analytics stay wired into the production assets.
+console.log("\n[9] article analytics instrumentation");
+try {
+  const postScript = readFileSync(join(BUILD, "assets", "js", "post.js"), "utf8");
+  const home = readFileSync(join(BUILD, "index.html"), "utf8");
+
+  for (const event of ["article-engaged", "article-deep-read"]) {
+    if (postScript.includes(event)) ok(`post.js contains ${event}`);
+    else fail(`post.js missing ${event}`);
+  }
+
+  if (home.includes("umami.disabled") && home.includes("excludeHash"))
+    ok("analytics opt-out and hash exclusion are present");
+  else fail("analytics opt-out or hash exclusion is missing");
+} catch (e) {
+  fail(`analytics instrumentation check failed: ${e.message}`);
 }
 
 // Summary

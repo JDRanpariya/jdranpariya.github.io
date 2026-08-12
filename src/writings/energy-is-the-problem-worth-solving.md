@@ -1,8 +1,9 @@
 ---
 title: energy is the problem worth solving
 published: 2026-03-26
-lastUpdated: 2026-04-20
+lastUpdated: 2026-08-12
 tags: [ideas, science, engineering]
+status: draft
 section: writings
 layout: layouts/post.njk
 description: The highest-impact problem you can work on right now. Solve energy, and everything else leaps forward.

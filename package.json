@@ -39,7 +39,7 @@
     "start": "concurrently \"bunx @11ty/eleventy --serve\" \"bun run css:watch\"",
     "watch": "bunx @11ty/eleventy --watch",
     "build": "ELEVENTY_ENV=dev bunx @11ty/eleventy && bun run css:build",
-    "build:prod": "bun run og:generate && bun run css:build:prod && ELEVENTY_ENV=prod bunx @11ty/eleventy",
+    "build:prod": "bun run clean && bun run og:generate && bun run css:build:prod && ELEVENTY_ENV=prod bunx @11ty/eleventy",
     "og:generate": "python3 scripts/generate-og-images.py",
     "debug": "DEBUG=* bunx @11ty/eleventy",
     "css:build": "bunx postcss src/css/input.css --o build/css/style.css",

@@ -40,16 +40,45 @@
 />
 
 <script>
-  if (
-    !location.hostname.includes("localhost") &&
-    !location.hostname.includes("127.0.0.1")
-  ) {
+  (function () {
+    const isLocal =
+      location.hostname.includes("localhost") ||
+      location.hostname.includes("127.0.0.1");
+    let analyticsDisabled = false;
+
+    try {
+      const params = new URLSearchParams(location.search);
+      const preference = params.get("analytics");
+
+      if (preference === "off") {
+        localStorage.setItem("umami.disabled", "1");
+      } else if (preference === "on") {
+        localStorage.removeItem("umami.disabled");
+      }
+
+      analyticsDisabled = localStorage.getItem("umami.disabled") === "1";
+
+      if (preference === "off" || preference === "on") {
+        params.delete("analytics");
+        const query = params.toString();
+        history.replaceState(
+          null,
+          "",
+          location.pathname + (query ? "?" + query : "") + location.hash
+        );
+      }
+    } catch (e) {}
+
+    if (isLocal || analyticsDisabled) return;
+
     const s = document.createElement("script");
     s.defer = true;
     s.src = "https://jay-cloud.vercel.app/script.js";
     s.dataset.websiteId = "a210a5bb-3c45-4542-be4e-d3b7efa3de33";
+    s.dataset.excludeHash = "true";
+    s.dataset.performance = "true";
     document.head.appendChild(s);
-  }
+  })();
 </script>
 
 <!-- JSON-LD Structured Data -->

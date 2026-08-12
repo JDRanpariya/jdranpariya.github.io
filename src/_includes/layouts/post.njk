@@ -109,6 +109,8 @@ isPostLayout: true
                 <a
                   href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
                   class="btn-link"
+                  data-umami-event="article-reply-click"
+                  data-umami-event-article="{{ page.url }}"
                 >
                   Reply by email
                   <svg
@@ -143,7 +145,13 @@ isPostLayout: true
           {% set next = related[0] %}
           <nav class="read-next" aria-label="Read next">
             <p class="read-next__eyebrow">Read next</p>
-            <a href="{{ next.url }}" class="read-next__link">
+            <a
+              href="{{ next.url }}"
+              class="read-next__link"
+              data-umami-event="read-next-click"
+              data-umami-event-source="{{ page.url }}"
+              data-umami-event-destination="{{ next.url }}"
+            >
               <span class="read-next__header">
                 <span class="read-next__title">{{ next.data.title | smartTitleCase }}</span>
                 <svg
