@@ -301,7 +301,7 @@
 {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "name": "Jaydeep Ranpariya — Physical AI Researcher & Builder",
+  "name": "Jay Ranpariya",
   "description": "{{ description }}",
   "url": "{{ site.url }}",
   "mainEntity": {
@@ -350,7 +350,7 @@
 
 
   <!-- Title and Meta -->
-<title>{% if title %}{{title | smartTitleCase}} · Jaydeep Ranpariya{% else %}Jaydeep Ranpariya · Physical AI Researcher & Builder{% endif %}</title>
+<title>{% if section == "home" %}Jay Ranpariya{% elif title %}{{title | smartTitleCase}} | Jay Ranpariya{% else %}Jay Ranpariya{% endif %}</title>
 <meta name="description" content="{% if description %}{{ description }}{% else %}A polymath building understanding of intelligence from molecules to minds. I love reading, cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of what I build and write starts there.{% endif %}" />
 {% if noindex %}
 <meta name="robots" content="noindex" />
