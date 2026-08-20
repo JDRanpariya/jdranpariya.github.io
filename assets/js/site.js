@@ -98,6 +98,34 @@
 
     // Close menu when clicking the backdrop itself.
     if (event.target.id === "menu-backdrop") closeMobileMenu();
+
+    // Track external destinations without duplicating links that already
+    // declare a more specific Umami event in their markup.
+    const link = event.target.closest("a[href]");
+    if (!link || link.dataset.umamiEvent) return;
+
+    let destination;
+    try {
+      destination = new URL(link.href, window.location.href);
+    } catch (e) {
+      return;
+    }
+
+    if (
+      !/^https?:$/.test(destination.protocol) ||
+      destination.origin === window.location.origin ||
+      !window.umami ||
+      typeof window.umami.track !== "function"
+    )
+      return;
+
+    try {
+      window.umami.track("outbound-click", {
+        destination: destination.hostname,
+        href: destination.href,
+        source: window.location.pathname,
+      });
+    } catch (e) {}
   });
 
   // Escape closes the mobile menu.
@@ -106,6 +134,80 @@
     const menu = document.getElementById("mobile-menu");
     if (menu && !menu.classList.contains("translate-x-full")) closeMobileMenu();
   });
+
+  // ---------- anonymous session context ----------
+  // Umami already derives browser, OS, coarse device type, screen, language,
+  // and location. Save the extra browser-provided context once per tab so an
+  // individual session can be diagnosed without assigning a persistent ID.
+  async function saveSessionContext(attempt) {
+    try {
+      if (sessionStorage.getItem("umami-session-context") === "sent") return;
+    } catch (e) {}
+
+    if (!window.umami || typeof window.umami.identify !== "function") {
+      if (attempt < 20) {
+        window.setTimeout(function () {
+          saveSessionContext(attempt + 1);
+        }, 250);
+      }
+      return;
+    }
+
+    const connection =
+      navigator.connection ||
+      navigator.mozConnection ||
+      navigator.webkitConnection;
+    const context = {
+      rawUserAgent: navigator.userAgent,
+      platform: navigator.userAgentData?.platform || navigator.platform,
+      mobile: navigator.userAgentData?.mobile,
+      screen: `${window.screen.width}x${window.screen.height}`,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      pixelRatio: window.devicePixelRatio,
+      colorDepth: window.screen.colorDepth,
+      touchPoints: navigator.maxTouchPoints,
+      cpuCores: navigator.hardwareConcurrency,
+      deviceMemoryGb: navigator.deviceMemory,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      languages: navigator.languages?.join(", ") || navigator.language,
+      connectionType: connection?.effectiveType,
+      downlinkMbps: connection?.downlink,
+      rttMs: connection?.rtt,
+      saveData: connection?.saveData,
+    };
+
+    if (navigator.userAgentData?.getHighEntropyValues) {
+      try {
+        const hints = await navigator.userAgentData.getHighEntropyValues([
+          "architecture",
+          "bitness",
+          "formFactors",
+          "fullVersionList",
+          "model",
+          "platformVersion",
+        ]);
+        context.architecture = hints.architecture;
+        context.bitness = hints.bitness;
+        context.formFactors = hints.formFactors?.join(", ");
+        context.deviceModel = hints.model;
+        context.platformVersion = hints.platformVersion;
+        context.browserVersions = hints.fullVersionList
+          ?.map(function (brand) {
+            return `${brand.brand} ${brand.version}`;
+          })
+          .join(", ");
+      } catch (e) {}
+    }
+
+    Object.keys(context).forEach(function (key) {
+      if (context[key] === undefined || context[key] === "") delete context[key];
+    });
+
+    try {
+      await Promise.resolve(window.umami.identify(context));
+      sessionStorage.setItem("umami-session-context", "sent");
+    } catch (e) {}
+  }
 
   // ---------- boot ----------
   // This file is loaded with defer, so the DOM is already parsed on execution.
@@ -117,4 +219,5 @@
   const prefersDark =
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   updateThemeButton(savedTheme || (prefersDark ? "dark" : "light"));
+  saveSessionContext(0);
 })();

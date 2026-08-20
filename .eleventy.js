@@ -18,6 +18,7 @@ import { DateTime } from "luxon";
 import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const markdownItKatex = typeof mk === "function" ? mk : mk.default;
 
 // Names that show up as keys in Eleventy's `collections` object but aren't
 // real content tags an author wrote — either internal markers ("all",
@@ -171,7 +172,7 @@ export default function (eleventyConfig) {
     .use(markdownItFootnote)
     .use(markdownItObsidianCallouts)
     .use(markdownItTaskLists, { label: true })
-    .use(mk.default)
+    .use(markdownItKatex)
     .use(markdownItLinkAttributes, {
       // Apply only to external links
       matcher(href) {

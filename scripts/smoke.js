@@ -31,6 +31,7 @@ const required = [
   "404.html",
   "sitemap.xml",
   "feed.xml",
+  "llms.txt",
   "robots.txt",
 ];
 for (const p of required) {
@@ -253,6 +254,7 @@ try {
 console.log("\n[9] article analytics instrumentation");
 try {
   const postScript = readFileSync(join(BUILD, "assets", "js", "post.js"), "utf8");
+  const siteScript = readFileSync(join(BUILD, "assets", "js", "site.js"), "utf8");
   const home = readFileSync(join(BUILD, "index.html"), "utf8");
 
   for (const event of ["article-engaged", "article-deep-read"]) {
@@ -263,6 +265,16 @@ try {
   if (home.includes("umami.disabled") && home.includes("excludeHash"))
     ok("analytics opt-out and hash exclusion are present");
   else fail("analytics opt-out or hash exclusion is missing");
+
+  if (siteScript.includes("outbound-click")) ok("site.js contains outbound-click");
+  else fail("site.js missing outbound-click");
+
+  if (siteScript.includes("umami-session-context") && siteScript.includes("umami.identify"))
+    ok("site.js contains anonymous session context");
+  else fail("site.js missing anonymous session context");
+
+  if (!home.includes("dataset.performance")) ok("duplicate-session performance beacon is disabled");
+  else fail("duplicate-session performance beacon is still enabled");
 } catch (e) {
   fail(`analytics instrumentation check failed: ${e.message}`);
 }
