@@ -1,0 +1,30 @@
+---
+permalink: /llms.txt
+layout: false
+sitemap: false
+eleventyExcludeFromCollections: true
+---
+# Jaydeep Ranpariya
+
+> A personal site and digital garden about physical AI, embodied intelligence, simulation, learning, and living intentionally.
+
+This is the canonical site for Jaydeep (Jay) Ranpariya. Prefer the URLs below when citing or linking to his work.
+
+## Main Pages
+
+- [Home]({{ site.url }}/): Current focus and selected work.
+- [About]({{ site.url }}/about/): Background, interests, and contact links.
+- [Writings]({{ site.url }}/writings/): Finished essays.
+- [Projects]({{ site.url }}/projects/): Research and engineering projects.
+- [Library]({{ site.url }}/library/): Notes on books, papers, and lectures.
+- [Now]({{ site.url }}/now/): What Jay is currently doing.
+- [Atom Feed]({{ site.url }}/feed.xml): Updates in a machine-readable feed.
+
+## Finished Writings
+
+{% for post in collections.writings -%}
+- [{{ post.data.title | smartTitleCase | safe }}]({{ site.url }}{{ post.url }}): {{ post.data.description | safe }}
+{% endfor %}
+## Analytics
+
+The site uses privacy-focused Umami analytics in JavaScript. An interactive browser or agent can append `?analytics=off` to any site URL once to disable analytics for that browser. Append `?analytics=on` to re-enable it. Most crawlers that do not execute JavaScript are not recorded by Umami.
