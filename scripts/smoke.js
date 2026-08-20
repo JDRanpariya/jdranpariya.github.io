@@ -266,8 +266,8 @@ try {
     ok("analytics opt-out and hash exclusion are present");
   else fail("analytics opt-out or hash exclusion is missing");
 
-  if (siteScript.includes("outbound-click")) ok("site.js contains outbound-click");
-  else fail("site.js missing outbound-click");
+  if (siteScript.includes("link-click")) ok("site.js contains link-click");
+  else fail("site.js missing link-click");
 
   if (siteScript.includes("umami-session-context") && siteScript.includes("umami.identify"))
     ok("site.js contains anonymous session context");

@@ -92,17 +92,17 @@
           return;
         case "close-mobile-menu":
           closeMobileMenu();
-          return;
+          break;
       }
     }
 
     // Close menu when clicking the backdrop itself.
     if (event.target.id === "menu-backdrop") closeMobileMenu();
 
-    // Track external destinations without duplicating links that already
-    // declare a more specific Umami event in their markup.
+    // Track every navigational link, including internal links and links that
+    // also declare a more specific Umami event in their markup.
     const link = event.target.closest("a[href]");
-    if (!link || link.dataset.umamiEvent) return;
+    if (!link || !window.umami || typeof window.umami.track !== "function") return;
 
     let destination;
     try {
@@ -112,18 +112,27 @@
     }
 
     if (
-      !/^https?:$/.test(destination.protocol) ||
-      destination.origin === window.location.origin ||
-      !window.umami ||
-      typeof window.umami.track !== "function"
+      !/^(https?:|mailto:|tel:)$/.test(destination.protocol)
     )
       return;
 
     try {
-      window.umami.track("outbound-click", {
-        destination: destination.hostname,
-        href: destination.href,
+      const external =
+        /^https?:$/.test(destination.protocol) &&
+        destination.origin !== window.location.origin;
+      const linkText = (link.getAttribute("aria-label") || link.textContent || "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 200);
+
+      window.umami.track("link-click", {
+        destination: external ? destination.hostname : destination.pathname,
+        destinationUrl: destination.href.slice(0, 500),
+        external,
         source: window.location.pathname,
+        linkText,
+        target: link.target || "_self",
+        download: link.hasAttribute("download"),
       });
     } catch (e) {}
   });
