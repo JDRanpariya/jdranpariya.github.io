@@ -17,7 +17,7 @@ export default class IcraWritingRedirect {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
     <meta http-equiv="refresh" content="0; url=${target}">
-    <link rel="canonical" href="https://jdranpariya.github.io${target}">
+    <link rel="canonical" href="https://jdranpariya.com${target}">
     <title>ICRA 2026 Notes · Jaydeep Ranpariya</title>
   </head>
   <body>

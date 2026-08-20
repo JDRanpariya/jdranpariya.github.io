@@ -31,7 +31,7 @@ description: All discoverable pages on this site, listed for search engines.
         {%- endif %}
         <li>
           <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ "jdranpariya.github.io" if item.url == "/" else d.title or item.url }}</h3>
+            <h3 class="index-row__title">{{ "jdranpariya.com" if item.url == "/" else d.title or item.url }}</h3>
             <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
           </a>
         </li>

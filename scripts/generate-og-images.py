@@ -158,7 +158,7 @@ def render_card(title, output_path, is_default=False):
 
     # URL
     url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url_text = "jdranpariya.github.io"
+    url_text = "jdranpariya.com"
     bbox = draw.textbbox((0, 0), url_text, font=url_font)
     url_w = bbox[2] - bbox[0]
     url_y = author_y - 28
@@ -250,7 +250,7 @@ def render_guestbook_card(output_path):
 
     # URL
     url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url = "jdranpariya.github.io"
+    url = "jdranpariya.com"
     bbox = draw.textbbox((0, 0), url, font=url_font)
     uw = bbox[2] - bbox[0]
     draw.text(((CARD_W - uw) // 2, CARD_H - 60 - 28), url, fill=INK_FAINT, font=url_font)

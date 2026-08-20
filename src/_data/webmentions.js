@@ -7,7 +7,7 @@
  *   { '/writings/some-post/': [ ...mentions ] }
  */
 
-const DOMAIN = "jdranpariya.github.io";
+const DOMAIN = "jdranpariya.com";
 const API = "https://webmention.io/api";
 
 export default async function () {
