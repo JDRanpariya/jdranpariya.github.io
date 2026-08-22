@@ -1,0 +1,6 @@
+-- Deprecated: do not run this file.
+--
+-- Crawler records belong to the Umami database now. The canonical schema and
+-- RLS policy are maintained as a Prisma migration in the Umami repository.
+-- This placeholder intentionally contains no executable SQL so an old setup
+-- guide cannot create the abandoned, separate telemetry database.

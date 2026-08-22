@@ -1,7 +1,7 @@
 ---
 title: "Everything Worked. That Was the Problem."
 published: 2026-04-14
-lastUpdated: 2026-04-14
+lastUpdated: 2026-08-12
 tags: ["simulation", "robotics", "AI", "sim2real"]
 section: "writings"
 series:
@@ -9,7 +9,7 @@ series:
   order: 3
 layout: layouts/post.njk
 description: "A wrong simulation is most dangerous when it still produces working behavior. Lessons from a year of sim2real on a real balancing system."
-readNext: "/writings/energy-is-the-problem-worth-solving/"
+readNext: "/projects/ball-balancing-on-arc/"
 ---
 
 I remember the first time I deployed an RL policy on the actual hardware. Cart moving, ball rolling, the thing was balancing. I stood there watching it and I should've been happy: months of work, first real deployment, ball is staying on the cart. Except something felt wrong. The cart was jerking back and forth like it was panicking. Ball would drift towards one end, cart would slam in that direction, overshoot, ball rolls back, cart slams the other way. Never settled, never looked graceful, just barely surviving each moment. It took about 8 seconds to stabilize when simulation references suggest a decent controller should need about 2.
@@ -111,7 +111,7 @@ One framing that stuck with me: rough parameters are survivable, structural erro
 
 ---
 
-The paper is being finalized, experiments still running. The full codebase should go open-source with the dynamics models included.
+> **Update, August 2026:** The paper has been submitted to *IEEE Robotics & Automation Magazine*. The completed benchmark compares 13 controllers over 650 real-hardware trials. I'm holding back the identity-linked artifact URL here until the double-anonymous review concludes.
 
 Sim-to-real is usually framed as domain adaptation: clean simulation, noisy reality, how do you bridge the gap. That framing assumes the simulation is at least asking the right question about the physics. For me the more fundamental problem came earlier: does the input your optimizer learned to use correspond to what the hardware actually responds to.
 

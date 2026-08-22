@@ -23,7 +23,6 @@ const registry = {
   custom: (el) => import(el.dataset.src),
   ncase: () => import("./modules/ncase.js"),
   scrollama: () => import("./modules/scrollama.js"),
-  observable: () => import("./modules/observable.js"),
   d3: () => import("./modules/d3.js"),
 };
 

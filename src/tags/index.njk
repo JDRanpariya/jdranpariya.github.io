@@ -12,7 +12,7 @@ permalink: /tags/
 
   <ul class="chip-list leading-loose">
     {% for tag, posts in collections %}
-      {% if tag not in nonContentTags and posts.length >= 2 %}
+      {% if tag not in nonContentTags and (posts.length >= 2 or tag in collections.writingTopics) %}
         <li>
           <a href="/tags/{{ tag | slugify }}/" class="chip">
             {{ tag }} <span class="text-ink-muted">({{ posts.length }})</span>

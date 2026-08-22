@@ -16,6 +16,7 @@ export default class IcraWritingRedirect {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
+    <meta name="description" content="These notes moved to the ICRA 2026 Vienna notes page.">
     <meta http-equiv="refresh" content="0; url=${target}">
     <link rel="canonical" href="https://jdranpariya.com${target}">
     <title>ICRA 2026 Notes · Jaydeep Ranpariya</title>

@@ -256,6 +256,7 @@ try {
   const postScript = readFileSync(join(BUILD, "assets", "js", "post.js"), "utf8");
   const siteScript = readFileSync(join(BUILD, "assets", "js", "site.js"), "utf8");
   const home = readFileSync(join(BUILD, "index.html"), "utf8");
+  const worker = readFileSync(join("workers", "request-intelligence", "src", "index.js"), "utf8");
 
   for (const event of ["article-engaged", "article-deep-read"]) {
     if (postScript.includes(event)) ok(`post.js contains ${event}`);
@@ -272,6 +273,18 @@ try {
   if (siteScript.includes("umami-session-context") && siteScript.includes("umami.identify"))
     ok("site.js contains anonymous session context");
   else fail("site.js missing anonymous session context");
+
+  if (
+    worker.includes("TELEMETRY_PATH") &&
+    worker.includes("writeEvent") &&
+    worker.includes("traffic_type")
+  )
+    ok("request Worker contains crawler telemetry collector");
+  else fail("request Worker missing crawler telemetry collector");
+
+  if (postScript.includes("window.umami.track") && postScript.includes("article-engaged"))
+    ok("post.js sends qualified article events to Umami");
+  else fail("post.js missing qualified article events");
 
   if (!home.includes("dataset.performance")) ok("duplicate-session performance beacon is disabled");
   else fail("duplicate-session performance beacon is still enabled");

@@ -1,0 +1,24 @@
+name = "jdranpariya-request-intelligence"
+main = "src/index.js"
+compatibility_date = "2026-08-20"
+
+# Deploy this Worker only after the DNS records for the web site are proxied.
+# The route makes the Worker the pass-through in front of GitHub Pages.
+
+[[routes]]
+pattern = "jdranpariya.com/*"
+zone_name = "jdranpariya.com"
+
+[[routes]]
+pattern = "www.jdranpariya.com/*"
+zone_name = "jdranpariya.com"
+
+[vars]
+TELEMETRY_INGEST_URL = "https://jay-cloud.vercel.app/api/telemetry"
+# Set this to the matching Umami website UUID. Binding records explicitly to a
+# website prevents telemetry from being mixed if more sites are added later.
+TELEMETRY_WEBSITE_ID = "replace-with-umami-website-uuid"
+
+# Set these with `wrangler secret put`; do not put keys in this file:
+# IP_HASH_SECRET
+# TELEMETRY_INGEST_TOKEN

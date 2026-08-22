@@ -6,8 +6,7 @@ title: Sitemap
 description: All discoverable pages on this site, listed for search engines.
 ---
 
-<main>
-  <section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16 md:space-y-20">
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16 md:space-y-20">
     <header class="space-y-4">
       <h1 class="font-serif text-display text-ink">Sitemap</h1>
       <p class="text-lead text-ink-secondary max-w-xl">
@@ -16,7 +15,7 @@ description: All discoverable pages on this site, listed for search engines.
     </header>
 
     {%- macro sectionHeading(icon, label, id) %}
-      <h2 id="{{ id }}" class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
+      <h2{% if id %} id="{{ id }}"{% endif %} class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
     {%- endmacro %}
 
     {# Home / top-level pages #}
@@ -26,7 +25,8 @@ description: All discoverable pages on this site, listed for search engines.
       {%- if item.url and item.url != false and d.status != "draft" and d.sitemap != false and not item.url.startsWith("/404") and not item.url.startsWith("/now/updates/") and not item.url.startsWith("/sitemap/") and not item.url.startsWith("/writings/") and not item.url.startsWith("/notes/") and not item.url.startsWith("/library/") and not item.url.startsWith("/projects/") and not item.url.startsWith("/odysseys/") and not item.url.startsWith("/tags/") %}
         {%- if not found %}
           {%- set found = true %}
-          {{ sectionHeading("⌂", "Pages") }}
+          <section aria-labelledby="section-pages">
+          {{ sectionHeading("⌂", "Pages", "section-pages") }}
           <ol class="index-list list-none m-0 p-0">
         {%- endif %}
         <li>
@@ -37,7 +37,7 @@ description: All discoverable pages on this site, listed for search engines.
         </li>
       {%- endif %}
     {%- endfor %}
-    {%- if found %}</ol>{%- endif %}
+    {%- if found %}</ol></section>{%- endif %}
 
     {# Writings #}
     {%- set found = false %}
@@ -168,5 +168,4 @@ description: All discoverable pages on this site, listed for search engines.
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
 
-  </section>
-</main>
+</section>

@@ -1,0 +1,16 @@
+name = "jdranpariya-request-intelligence"
+main = "src/index.js"
+compatibility_date = "2026-08-20"
+workers_dev = false
+
+[[routes]]
+pattern = "jdranpariya.com/*"
+zone_name = "jdranpariya.com"
+
+[[routes]]
+pattern = "www.jdranpariya.com/*"
+zone_name = "jdranpariya.com"
+
+[vars]
+TELEMETRY_INGEST_URL = "https://jay-cloud.vercel.app/api/telemetry"
+TELEMETRY_WEBSITE_ID = "a210a5bb-3c45-4542-be4e-d3b7efa3de33"

@@ -39,6 +39,8 @@ const NON_CONTENT_TAGS = [
   "lectures",
   "books",
   "writings",
+  "favoriteWritings",
+  "writingTopics",
   "papers",
   "paper",
   "projects",
@@ -48,6 +50,12 @@ const NON_CONTENT_TAGS = [
   "notes",
   "feedEntries",
   "__validateFrontmatter",
+];
+
+const FAVORITE_WRITING_SLUGS = [
+  "dont-be-the-drunken-sailor",
+  "building-different-box-of-tools",
+  "educational-reforms-we-need",
 ];
 
 export default function (eleventyConfig) {
@@ -69,6 +77,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
   eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
+  // Persist the GitHub Pages custom-domain binding in every deploy artifact.
+  eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
   eleventyConfig.addPassthroughCopy({ "public/data": "data" });
 
   // CSS is written directly to build/css/ by PostCSS (see package.json
@@ -577,6 +587,38 @@ export default function (eleventyConfig) {
       .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
   });
 
+  eleventyConfig.addCollection("favoriteWritings", function (collection) {
+    const publishedBySlug = new Map(
+      collection
+        .getFilteredByGlob("src/writings/*.md")
+        .filter((item) => isDev || item.data.status !== "draft")
+        .map((item) => [path.basename(item.inputPath, ".md"), item])
+    );
+
+    return FAVORITE_WRITING_SLUGS.map((slug) => {
+      const writing = publishedBySlug.get(slug);
+      if (!writing) {
+        throw new Error(`Favorite writing is missing or still a draft: ${slug}`);
+      }
+      return writing;
+    });
+  });
+
+  eleventyConfig.addCollection("writingTopics", function (collection) {
+    const topics = new Set();
+    collection
+      .getFilteredByGlob("src/writings/*.md")
+      .filter((item) => isDev || item.data.status !== "draft")
+      .forEach((item) => {
+        for (const tag of item.data.tags || []) {
+          if (!NON_CONTENT_TAGS.includes(tag)) topics.add(tag);
+        }
+      });
+    return Array.from(topics).sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" })
+    );
+  });
+
   eleventyConfig.addCollection("notes", function (collection) {
     return collection
       .getFilteredByGlob("src/notes/*.md")
@@ -603,12 +645,12 @@ export default function (eleventyConfig) {
     return Array.from(tagSet).sort();
   });
 
-  // Tags with only one tagged item make a thin, low-value dedicated page —
-  // the item is already reachable through normal browsing. Used by
-  // tags.njk (pagination) and src/tags/index.njk (listing) so a tag never
-  // shows a link with no page behind it.
+  // Tags with only one tagged item usually make a thin, low-value page.
+  // Writing topics are the exception: they are navigable from the homepage,
+  // so each needs a real destination even while the collection is still small.
   eleventyConfig.addCollection("tagListMulti", function (collections) {
     const tagCounts = new Map();
+    const writingTopics = new Set();
     collections.getAll().forEach((item) => {
       if ("tags" in item.data) {
         let tags = item.data.tags;
@@ -618,8 +660,14 @@ export default function (eleventyConfig) {
         }
       }
     });
+    collections
+      .getFilteredByGlob("src/writings/*.md")
+      .filter((item) => isDev || item.data.status !== "draft")
+      .forEach((item) => {
+        for (const tag of item.data.tags || []) writingTopics.add(tag);
+      });
     return Array.from(tagCounts.entries())
-      .filter(([, count]) => count >= 2)
+      .filter(([tag, count]) => count >= 2 || writingTopics.has(tag))
       .map(([tag]) => tag)
       .sort();
   });

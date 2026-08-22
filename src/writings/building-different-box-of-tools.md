@@ -1,9 +1,10 @@
 ---
 title: building different box of tools
 published: 2026-02-15
-lastUpdated: 2026-03-15
+lastUpdated: 2026-08-22
 tags: [skills, life]
 section: writings
+status: published
 layout: layouts/post.njk
 description: Having different tools matters more than having superior ones.
 readNext: /library/books/surely-you-are-joking-mr-feynman/

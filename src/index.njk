@@ -1,25 +1,24 @@
 ---
 layout: layouts/base.njk
 title: "Jay Ranpariya"
-description: "I'm building understanding of intelligence from molecules to minds. I love reading, cooking, and any sport that'll have me. Nothing I care about fits inside one field and most of what I build and write starts there."
+description: "I'm trying to understand intelligence from molecules to minds, and writing about what becomes possible when disciplines collide."
 section: "home"
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-20 md:space-y-24">
+<section class="max-w-content mx-auto space-y-16 px-6 py-12 md:py-20">
   <!-- Opening -->
-  <header class="space-y-6">
-    <h1 class="font-serif text-display text-ink">Jay Ranpariya.</h1>
-    <p class="text-lead text-ink-secondary max-w-2xl">
-      I'm building understanding of intelligence from molecules to minds. I love reading, cooking,
-      and any sport that'll have me. Nothing I care about fits inside one field and most of what I
-      build and write starts there.
+  <header class="space-y-4">
+    <h1 class="font-heading text-h1 text-ink">Jay Ranpariya</h1>
+    <p class="max-w-2xl text-body-sm text-ink-secondary md:text-body">
+      I'm trying to build an understanding of intelligence from molecules to minds. Yeah, I know
+      it's insane.
     </p>
   </header>
 
-  <!-- Recent writing -->
-  <section aria-labelledby="home-writings" class="space-y-6">
+  <!-- Favorite writing -->
+  <section aria-labelledby="home-writings" class="space-y-4">
     <div class="flex items-baseline justify-between gap-4">
-      <h2 id="home-writings" class="eyebrow">Recent writings</h2>
+      <h2 id="home-writings" class="eyebrow">Favorite writings</h2>
       <a
         href="/writings/"
         class="font-sans text-ui-sm text-ink-muted hover:text-accent transition-colors duration-base block py-2"
@@ -28,57 +27,81 @@ section: "home"
       </a>
     </div>
 
-    <ol class="index-list list-none m-0 p-0">
-      {% for post in collections.writings | limit(4) %}
+    <ol class="m-0 list-none space-y-3 p-0">
+      {% for post in collections.favoriteWritings %}
         <li>
-          <a href="{{ post.url }}" class="index-row">
-            <div class="index-row__meta">
-              <time datetime="{{ post.data.published | isoDate }}"
-                >{{ post.data.published | formatDate }}</time
-              >
-            </div>
-            <h3 class="index-row__title">{{ post.data.title | smartTitleCase }}</h3>
-            {% if post.data.description %}
-              <p class="index-row__desc">{{ post.data.description }}</p>
-            {% endif %}
+          <a
+            href="{{ post.url }}"
+            class="group grid grid-cols-[4.75rem_1fr] items-baseline gap-2 py-1"
+          >
+            <time
+              datetime="{{ post.data.published | isoDate }}"
+              class="font-sans text-ui-sm tabular-nums text-ink-muted"
+            >
+              {{ post.data.published | dateToFormat("yyyy · MM") }}
+            </time>
+            <span
+              class="text-body-sm text-ink transition-colors duration-base group-hover:text-accent"
+            >
+              {{ post.data.title | smartTitleCase }}
+            </span>
           </a>
         </li>
       {% endfor %}
     </ol>
   </section>
 
-  <!-- Other sections -->
-  <section aria-labelledby="home-explore" class="space-y-4">
-    <h2 id="home-explore" class="eyebrow">Also on this site</h2>
-    <ul class="space-y-1 list-none m-0 p-0 font-sans">
-      <li>
-        <a
-          href="/library/"
-          class="text-ink hover:text-accent transition-colors duration-base block py-2"
-          >Books, lectures, papers →</a
-        >
-      </li>
-      <li>
-        <a
-          href="/odysseys/"
-          class="text-ink hover:text-accent transition-colors duration-base block py-2"
-          >Long-running explorations →</a
-        >
-      </li>
-      <li>
-        <a
-          href="/projects/"
-          class="text-ink hover:text-accent transition-colors duration-base block py-2"
-          >Things I'm building →</a
-        >
-      </li>
-      <li>
-        <a
-          href="/now/"
-          class="text-ink hover:text-accent transition-colors duration-base block py-2"
-          >What I'm doing now →</a
-        >
-      </li>
+  <!-- Writing topics -->
+  <section aria-labelledby="home-topics" class="space-y-3">
+    <div class="flex items-baseline justify-between gap-4">
+      <h2 id="home-topics" class="eyebrow">Topics</h2>
+      <a
+        href="/tags/"
+        class="block py-2 font-sans text-ui-sm text-ink-muted transition-colors duration-base hover:text-accent"
+      >
+        All tags →
+      </a>
+    </div>
+    <ul class="m-0 flex list-none flex-wrap gap-x-2 gap-y-1 p-0 text-body-sm">
+      {% for topic in collections.writingTopics %}
+        <li>
+          <a
+            href="/tags/{{ topic | slugify }}/"
+            class="text-ink underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+            >{{ topic }}</a
+          >{% if not loop.last %}<span class="text-ink-muted" aria-hidden="true">,</span>{% endif %}
+        </li>
+      {% endfor %}
     </ul>
+  </section>
+
+  <!-- Follow -->
+  <section aria-labelledby="home-follow" class="space-y-3">
+    <h2 id="home-follow" class="eyebrow">Follow</h2>
+    <p class="max-w-xl text-body-sm text-ink-secondary">
+      Follow new writing through
+      <a
+        href="/feed.xml"
+        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+        data-umami-event="rss-click"
+        data-umami-event-location="home"
+        >RSS</a
+      >, or find me on
+      <a
+        href="https://x.com/jdranpariya"
+        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+        >X</a
+      >,
+      <a
+        href="https://github.com/jdranpariya"
+        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+        >GitHub</a
+      >, and
+      <a
+        href="https://linkedin.com/in/jdranpariya"
+        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+        >LinkedIn</a
+      >.
+    </p>
   </section>
 </section>
