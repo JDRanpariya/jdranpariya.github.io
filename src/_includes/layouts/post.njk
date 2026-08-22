@@ -93,7 +93,7 @@ isPostLayout: true
                     {# Tags with only one tagged item (this post) don't get a
                        dedicated /tags/ page — see tagListMulti in .eleventy.js.
                        Render those as plain text instead of a dead link. #}
-                    {% if collections[tag].length >= 2 %}
+                    {% if tag in collections.tagListMulti %}
                       <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
                     {% else %}
                       <li><span class="chip">{{ tag }}</span></li>

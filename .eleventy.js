@@ -634,6 +634,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addCollection("tagList", function (collections) {
     const tagSet = new Set();
     collections.getAll().forEach((item) => {
+      if (!isDev && item.data.status === "draft") return;
       if ("tags" in item.data) {
         let tags = item.data.tags;
         tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));
@@ -652,6 +653,7 @@ export default function (eleventyConfig) {
     const tagCounts = new Map();
     const writingTopics = new Set();
     collections.getAll().forEach((item) => {
+      if (!isDev && item.data.status === "draft") return;
       if ("tags" in item.data) {
         let tags = item.data.tags;
         tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));

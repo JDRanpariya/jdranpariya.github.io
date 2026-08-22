@@ -13,7 +13,7 @@ section: "odysseys"
     </p>
   </header>
 
-  <ol class="index-list list-none m-0 p-0">
+  <ol class="m-0 list-none space-y-3 p-0">
     {%
       set items = [
         ["/odysseys/purpose/",                     "Purpose",                    "Compass for what I work on and why."],
@@ -24,9 +24,12 @@ section: "odysseys"
     %}
     {% for item in items %}
       <li>
-        <a href="{{ item[0] }}" class="index-row">
-          <h2 class="index-row__title">{{ item[1] }}</h2>
-          <p class="index-row__desc">{{ item[2] }}</p>
+        <a href="{{ item[0] }}" class="group block py-1">
+          <h2
+            class="m-0 font-serif text-body-sm font-normal text-ink transition-colors duration-base group-hover:text-accent"
+          >
+            {{ item[1] }}
+          </h2>
         </a>
       </li>
     {% endfor %}

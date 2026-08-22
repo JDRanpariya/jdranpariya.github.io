@@ -25,13 +25,15 @@
 //   - assets/js/guestbook.js  (reads window.NOTECARD_THEMES to cycle)
 //
 // Drop a new webp in assets/images/notecards/ and rebuild. No code
-// changes needed. Change DEFAULT_KEY below to swap the default.
+// changes needed unless its key is intentionally retired below. Change
+// DEFAULT_KEY to swap the default.
 
 import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const NOTECARD_DIR = "assets/images/notecards";
 const FILE_RE = /^notecard-([a-z0-9][a-z0-9-]*)\.webp$/i;
+const RETIRED_KEYS = new Set(["linen", "navy"]);
 
 // Initial theme on the composer and fallback for unknown entry keys.
 // Must match a notecard-<slug>.webp on disk; if missing, we fall back to
@@ -57,6 +59,8 @@ function scanImageThemes() {
     if (!st.isFile() || st.size === 0) continue;
 
     const key = match[1].toLowerCase();
+    if (RETIRED_KEYS.has(key)) continue;
+
     themes.push({
       key,
       kind: "image",

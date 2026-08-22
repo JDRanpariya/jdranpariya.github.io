@@ -11,14 +11,13 @@ permalink: /tags/
   </header>
 
   <ul class="chip-list leading-loose">
-    {% for tag, posts in collections %}
-      {% if tag not in nonContentTags and (posts.length >= 2 or tag in collections.writingTopics) %}
-        <li>
-          <a href="/tags/{{ tag | slugify }}/" class="chip">
-            {{ tag }} <span class="text-ink-muted">({{ posts.length }})</span>
-          </a>
-        </li>
-      {% endif %}
+    {% for tag in collections.tagListMulti %}
+      {% set itemCount = ((collections.writings or []) | filterByTag(tag) | length) + ((collections.lectures or []) | filterByTag(tag) | length) + ((collections.odysseys or []) | filterByTag(tag) | length) + ((collections.books or []) | filterByTag(tag) | length) + ((collections.projects or []) | filterByTag(tag) | length) + ((collections.papers or []) | filterByTag(tag) | length) + ((collections.notes or []) | filterByTag(tag) | length) %}
+      <li>
+        <a href="/tags/{{ tag | slugify }}/" class="chip">
+          {{ tag }} <span class="text-ink-muted">({{ itemCount }})</span>
+        </a>
+      </li>
     {% endfor %}
   </ul>
 </section>

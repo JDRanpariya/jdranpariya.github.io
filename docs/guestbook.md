@@ -32,27 +32,27 @@ themes and guestbook entries.
 ## How it works
 
 1. **WebP files** in `assets/images/notecards/` are the only source of themes.
-2. `notecardThemes.js` scans that folder at build time, sorts alphabetically,
-   then hoists `DEFAULT_KEY` (currently `"paper"`) to index 0.
+2. `notecardThemes.js` scans that folder at build time, excludes retired
+   theme keys, sorts alphabetically, then hoists `DEFAULT_KEY` (currently
+   `"beige"`) to index 0.
 3. `guestbook.njk` uses `themes[0]` as the composer's initial theme and as
    fallback for entries whose saved theme no longer exists.
 4. `guestbook.js` reads `window.NOTECARD_THEMES` (injected at build) to
    cycle the picker. On submit, the chosen theme key is sent to Google Forms
    via a hidden field (`entry.901424146`).
-5. `input.css` sets default ink color (`#5a3a24` sepia) and overrides it
-   to cream (`#f0e6d2`) for dark-textured themes via `[data-theme="..."]`
-   selectors (wrapped in `/* purgecss start ignore */` comments so they
-   survive prod builds).
+5. `input.css` sets the default ink color (`#5a3a24` sepia). Add a
+   per-theme override only if a future dark texture needs cream ink.
 
 ### Current themes
 
-| Theme  | Luminance   | Ink             | Notes               |
-| ------ | ----------- | --------------- | ------------------- |
-| paper  | 166 (mid)   | `#5a3a24` sepia | Default on composer |
-| cream  | 200 (light) | `#5a3a24` sepia |                     |
-| ivory  | 220 (light) | `#5a3a24` sepia |                     |
-| indigo | 108 (dark)  | `#f0e6d2` cream | CSS override needed |
-| linen  | 72 (dark)   | `#f0e6d2` cream | CSS override needed |
+| Theme     | Ink             | Notes               |
+| --------- | --------------- | ------------------- |
+| beige     | `#5a3a24` sepia | Default on composer |
+| parchment | `#5a3a24` sepia |                     |
+
+`linen` and `navy` are retired and excluded by `RETIRED_KEYS` in
+`src/_data/notecardThemes.js`. Existing guestbook entries using either key
+fall back to the default theme.
 
 ---
 

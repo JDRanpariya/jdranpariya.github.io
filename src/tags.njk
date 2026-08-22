@@ -9,29 +9,32 @@ layout: layouts/base
 section: "tag"
 eleventyComputed:
   title: "Items tagged with {{ tag }}"
-  description: "{{ collections[tag].length }} item{% if collections[tag].length != 1 %}s{% endif %} tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
+  description: "Items tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">
-  <header class="space-y-4">
-    <h1 class="font-serif text-display text-ink">{{ tag }}</h1>
-    <p class="text-lead text-ink-muted">
-      {{ collections[tag].length }} item{% if collections[tag].length != 1 %}s{% endif %}
-    </p>
-  </header>
-
+<section class="max-w-content mx-auto space-y-10 px-6 py-12 md:py-20">
   {% set writings = (collections.writings or []) | filterByTag(tag) %}
   {% set lectures = (collections.lectures or []) | filterByTag(tag) %}
   {% set odysseys = (collections.odysseys or []) | filterByTag(tag) %}
   {% set books    = (collections.books    or []) | filterByTag(tag) %}
   {% set projects = (collections.projects or []) | filterByTag(tag) %}
   {% set papers   = (collections.papers   or []) | filterByTag(tag) %}
+  {% set notes    = (collections.notes    or []) | filterByTag(tag) %}
+  {% set itemCount = (writings | length) + (lectures | length) + (odysseys | length) + (books | length) + (projects | length) + (papers | length) + (notes | length) %}
+
+  <header class="space-y-3">
+    <h1 class="font-heading text-h2 text-ink">{{ tag | smartTitleCase }}</h1>
+    <p class="font-sans text-body-sm text-ink-muted">
+      {{ itemCount }} item{% if itemCount != 1 %}s{% endif %}
+    </p>
+  </header>
 
   {%
     set groups = [
       [odysseys, "Odysseys"],
       [lectures, "Lectures"],
       [writings, "Writings"],
+      [notes,    "Notes"],
       [books,    "Books"],
       [projects, "Projects"],
       [papers,   "Papers"]
@@ -42,27 +45,26 @@ eleventyComputed:
     {% set items = group[0] %}
     {% set label = group[1] %}
     {% if items | length %}
-      <section class="space-y-4" aria-labelledby="tag-{{ label | slug }}">
-        <h2 id="tag-{{ label | slug }}" class="font-serif text-h2 text-ink">{{ label }}</h2>
-        <ul class="index-list list-none m-0 p-0">
+      <section class="space-y-3" aria-labelledby="tag-{{ label | slug }}">
+        <h2 id="tag-{{ label | slug }}" class="font-heading text-h4 text-ink">{{ label }}</h2>
+        <ol class="m-0 list-none space-y-3 p-0">
           {% for post in items %}
             <li>
-              <a href="{{ post.url }}" class="index-row">
-                <h3 class="index-row__title">
+              <a href="{{ post.url }}" class="group block py-1">
+                <h3
+                  class="m-0 font-serif text-body-sm font-normal text-ink transition-colors duration-base group-hover:text-accent"
+                >
                   {{ (post.data.fullTitle or post.data.title) | smartTitleCase }}
                 </h3>
-                {% if post.data.description %}
-                  <p class="index-row__desc">{{ post.data.description }}</p>
-                {% endif %}
               </a>
             </li>
           {% endfor %}
-        </ul>
+        </ol>
       </section>
     {% endif %}
   {% endfor %}
 
-  <div class="pt-8">
+  <div class="pt-4">
     <a href="/tags/" class="btn-link">Browse all tags</a>
   </div>
 </section>

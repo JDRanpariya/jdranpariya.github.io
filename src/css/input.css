@@ -1238,7 +1238,7 @@ details:not([open]) > .toc-toggle svg {
  * --notecard-pill-shadow (depth on the picker/submit pills) change with
  * the page theme. Ink colour is NOT overridden here — it must track the
  * WebP texture luminance, not the page dark/light mode. See the
- * per-theme ink overrides further down (linen, indigo → cream ink). */
+ * per-theme ink overrides when a dark texture is introduced. */
 .dark {
   --notecard-paper: #3a3125;
   /* Neutral-black pill shadow — the sepia-tinted light-mode version read
@@ -1247,35 +1247,6 @@ details:not([open]) > .toc-toggle svg {
     0 0.6px 0.6px rgba(0, 0, 0, 0.35), 0 1.6px 1.6px -1.2px rgba(0, 0, 0, 0.3),
     0 4.7px 4.6px -2.3px rgba(0, 0, 0, 0.22), 0 12.5px 12.2px -3.5px rgba(0, 0, 0, 0.14);
 }
-
-/* Per-theme ink overrides.
- *
- * Default --notecard-ink is sepia brown, tuned for cream/ivory paper.
- * Image themes with genuinely dark paper (navy, deep red, etc.) fail
- * WCAG AA against sepia ink; switch to warm cream.
- *
- * Current heuristic (from scripts/notecard_luminance.py — run it after
- * adding new themes):
- *   lum >= 180  default sepia ink is fine
- *   lum 120-180 borderline, test both; add to either group based on AA
- *   lum <  120  cream ink group below
- *
- * Today's wall: beige (lum~200) + parchment (lum~211) keep the default;
- * linen (lum~72, warm rust) and navy (lum~70, cool blue) flip to cream
- * ink. If you later add new image themes, rerun
- * the luminance script and update the selector list below accordingly.
- *
- * Selector uses bare [data-theme] (no .notecard compound) because the
- * composer splits the two across parent <form class="notecard"> and child
- * <div id="composerCard" data-theme="…">. Entry <li> cards carry both on
- * the same element, so the bare attribute still matches them fine. */
-/* purgecss start ignore */
-[data-theme="linen"],
-[data-theme="navy"] {
-  --notecard-ink: #f0e6d2;
-  --notecard-red: #e8b4a8;
-}
-/* purgecss end ignore */
 
 /* The card itself. Everything else (padding, aspect, width, typography)
  * is Tailwind in the template. We need a class here only for the rotation
@@ -1329,8 +1300,7 @@ details:not([open]) > .toc-toggle svg {
  *
  * Natural colors are preserved — colorful illustrations (butterflies,
  * roses, birds) show their hues through the blend mode.
- * Light cards (beige, parchment): multiply darkens naturally
- * Dark cards (navy, linen): screen lightens naturally */
+ * Light cards (beige, parchment): multiply darkens naturally. */
 .notecard__stamp {
   position: absolute;
   bottom: clamp(1.25rem, 2vw, 1.5rem);
@@ -1343,14 +1313,6 @@ details:not([open]) > .toc-toggle svg {
   z-index: 0;
   mix-blend-mode: multiply;
 }
-
-/* purgecss start ignore */
-/* Hide stamps on dark-textured themes — they don't suit dark cards. */
-[data-theme="navy"] .notecard__stamp,
-[data-theme="linen"] .notecard__stamp {
-  display: none;
-}
-/* purgecss end ignore */
 
 /* sr-only labels live inside the composer's flex column. A flex child
  * with row-gap contributes its own gap to either side — so an invisible
