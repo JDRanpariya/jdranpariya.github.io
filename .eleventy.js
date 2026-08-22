@@ -608,7 +608,7 @@ export default function (eleventyConfig) {
     const topics = new Set();
     collection
       .getFilteredByGlob("src/writings/*.md")
-      .filter((item) => isDev || item.data.status !== "draft")
+      .filter((item) => item.data.status !== "draft")
       .forEach((item) => {
         for (const tag of item.data.tags || []) {
           if (!NON_CONTENT_TAGS.includes(tag)) topics.add(tag);
@@ -627,14 +627,16 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("filterByTag", function (collection, tag) {
-    return collection.filter((item) => (item.data.tags || []).includes(tag));
+    return collection.filter(
+      (item) => item.data.status !== "draft" && (item.data.tags || []).includes(tag)
+    );
   });
 
   // Create collections for each tag
   eleventyConfig.addCollection("tagList", function (collections) {
     const tagSet = new Set();
     collections.getAll().forEach((item) => {
-      if (!isDev && item.data.status === "draft") return;
+      if (item.data.status === "draft") return;
       if ("tags" in item.data) {
         let tags = item.data.tags;
         tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));
@@ -653,7 +655,7 @@ export default function (eleventyConfig) {
     const tagCounts = new Map();
     const writingTopics = new Set();
     collections.getAll().forEach((item) => {
-      if (!isDev && item.data.status === "draft") return;
+      if (item.data.status === "draft") return;
       if ("tags" in item.data) {
         let tags = item.data.tags;
         tags = tags.filter((tag) => !NON_CONTENT_TAGS.includes(tag));
@@ -664,7 +666,7 @@ export default function (eleventyConfig) {
     });
     collections
       .getFilteredByGlob("src/writings/*.md")
-      .filter((item) => isDev || item.data.status !== "draft")
+      .filter((item) => item.data.status !== "draft")
       .forEach((item) => {
         for (const tag of item.data.tags || []) writingTopics.add(tag);
       });
