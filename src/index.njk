@@ -75,18 +75,19 @@ section: "home"
     </ul>
   </section>
 
-  <!-- Follow -->
-  <section aria-labelledby="home-follow" class="space-y-3">
-    <h2 id="home-follow" class="eyebrow">Follow</h2>
+  <!-- Newsletter -->
+  <section aria-labelledby="home-follow" class="space-y-6">
+    <h2 id="home-follow" class="font-sans text-body text-ink-muted">Receive my updates</h2>
+
     <p class="max-w-xl text-body-sm text-ink-secondary">
-      Follow new writing through
+      Follow me via email,
       <a
         href="/feed.xml"
         class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
         data-umami-event="rss-click"
         data-umami-event-location="home"
         >RSS</a
-      >, or find me on
+      >,
       <a
         href="https://x.com/jdranpariya"
         class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
@@ -103,5 +104,32 @@ section: "home"
         >LinkedIn</a
       >.
     </p>
+
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/jdranpariya"
+      method="post"
+      class="max-w-sm"
+    >
+      <label for="bd-email" class="sr-only">Email address</label>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <input
+          type="email"
+          name="email"
+          id="bd-email"
+          class="subscribe-input flex-1"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required
+        />
+        <button
+          type="submit"
+          class="btn btn-primary btn-compact sm:self-center"
+          data-umami-event="newsletter-subscribe"
+          data-umami-event-location="home"
+        >
+          Subscribe
+        </button>
+      </div>
+    </form>
   </section>
 </section>
