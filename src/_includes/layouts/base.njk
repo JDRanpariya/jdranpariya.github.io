@@ -33,7 +33,7 @@
     worker-src 'self' blob:;
     frame-src 'self' https://docs.google.com https://cad.onshape.com;
     base-uri 'self';
-    form-action 'self' https://docs.google.com;
+    form-action 'self' https://docs.google.com https://buttondown.com;
     object-src 'none';
     upgrade-insecure-requests
   "
@@ -478,7 +478,7 @@
   {% include "components/footer.njk" %}
 
   <!-- Site scripts (theme toggle, mobile menu, delegated clicks). -->
-  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/site.js{{ '/assets/js/site.js' | cacheBust }}" defer></script>
   {% if hasInteractive %}
   <script type="module" src="/interactive/loader.js"></script>
   {% endif %}

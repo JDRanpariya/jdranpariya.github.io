@@ -78,6 +78,121 @@
     else openMobileMenu();
   }
 
+  // ---------- newsletter form ----------
+  function setupNewsletterForm() {
+    const form = document.querySelector("[data-newsletter-form]");
+    if (!form) return;
+
+    const button = form.querySelector("[data-newsletter-submit]");
+    const status = form.querySelector("[data-newsletter-status]");
+    const controls = form.querySelector("[data-newsletter-controls]");
+    const confirmed = form.querySelector("[data-newsletter-confirmed]");
+    if (!button || !status || !controls || !confirmed) return;
+
+    const initialLabel = button.textContent.trim();
+    let submitting = false;
+    let submitTimer;
+
+    function clearSubmitTimer() {
+      if (!submitTimer) return;
+      window.clearTimeout(submitTimer);
+      submitTimer = undefined;
+    }
+
+    function cleanRedirectUrl(state) {
+      if (!state) return;
+
+      const url = new URL(window.location.href);
+      let changed = false;
+
+      // Buttondown appends the submitted address to the configured redirect.
+      // It is not needed once the reader is back on the site, so remove it
+      // from both the query string and the fragment without reloading.
+      if (url.searchParams.has("email_address")) {
+        url.searchParams.delete("email_address");
+        changed = true;
+      }
+      if (url.hash.startsWith("#updates?") || url.hash.startsWith("#updates&")) {
+        url.hash = "#updates";
+        changed = true;
+      }
+
+      if (changed) {
+        window.history.replaceState(
+          null,
+          "",
+          `${url.pathname}${url.search}${url.hash}`
+        );
+      }
+    }
+
+    function showSubscriptionState() {
+      const state = new URLSearchParams(window.location.search).get("subscription");
+      cleanRedirectUrl(state);
+      if (state === "pending") {
+        controls.hidden = true;
+        confirmed.hidden = true;
+        status.textContent = "Check your inbox to confirm your email.";
+        return true;
+      }
+      if (state === "confirmed") {
+        controls.hidden = true;
+        status.textContent = "";
+        confirmed.hidden = false;
+        return true;
+      }
+      return false;
+    }
+
+    function reset() {
+      clearSubmitTimer();
+      submitting = false;
+      if (showSubscriptionState()) return;
+      controls.hidden = false;
+      confirmed.hidden = true;
+      button.disabled = false;
+      button.removeAttribute("aria-disabled");
+      button.removeAttribute("aria-busy");
+      button.textContent = initialLabel;
+      status.textContent = "";
+    }
+
+    form.addEventListener("submit", function (event) {
+      if (showSubscriptionState()) {
+        event.preventDefault();
+        return;
+      }
+      if (submitting) {
+        event.preventDefault();
+        return;
+      }
+
+      submitting = true;
+      button.setAttribute("aria-busy", "true");
+      button.setAttribute("aria-disabled", "true");
+      button.textContent = "Subscribing…";
+      status.textContent = "";
+
+      // Keep the native submitter enabled so the browser can complete the
+      // cross-origin form submission. If navigation is blocked or stalls,
+      // restore the form instead of leaving an indefinite loading state.
+      submitTimer = window.setTimeout(function () {
+        submitting = false;
+        button.removeAttribute("aria-busy");
+        button.removeAttribute("aria-disabled");
+        button.textContent = initialLabel;
+        status.textContent = "Couldn't connect. Please try again.";
+      }, 12000);
+    });
+
+    reset();
+
+    // Browsers may restore the page from their back-forward cache after the
+    // Buttondown confirmation flow. Restore the URL-driven state when they do.
+    window.addEventListener("pageshow", reset);
+    window.addEventListener("pagehide", clearSubmitTimer);
+  }
+
   // ---------- delegated click handler ----------
   // Wires [data-action] buttons and links. Extend via new case arms only.
   document.addEventListener("click", function (event) {
@@ -228,5 +343,6 @@
   const prefersDark =
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   updateThemeButton(savedTheme || (prefersDark ? "dark" : "light"));
+  setupNewsletterForm();
   saveSessionContext(0);
 })();
