@@ -16,7 +16,7 @@
     "baseline-browser-mapping": "^2.10.42",
     "browserslist": "^4.28.5",
     "concurrently": "^9.2.4",
-    "cssnano": "^8.0.2",
+    "cssnano": "^9.0.0",
     "del-cli": "^7.0.0",
     "html-minifier-terser": "^7.2.0",
     "http-server": "^14.1.1",
