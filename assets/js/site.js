@@ -83,6 +83,14 @@
     const form = document.querySelector("[data-newsletter-form]");
     if (!form) return;
 
+    function trackNewsletterEvent(name) {
+      if (!window.umami || typeof window.umami.track !== "function") return;
+      window.umami.track(name, {
+        location: form.dataset.newsletterLocation || "unknown",
+        page: window.location.pathname,
+      });
+    }
+
     const button = form.querySelector("[data-newsletter-submit]");
     const status = form.querySelector("[data-newsletter-status]");
     const controls = form.querySelector("[data-newsletter-controls]");
@@ -92,6 +100,27 @@
     const initialLabel = button.textContent.trim();
     let submitting = false;
     let submitTimer;
+    let hasRecordedView = false;
+
+    function recordView() {
+      if (hasRecordedView) return;
+      hasRecordedView = true;
+      trackNewsletterEvent("newsletter-form-view");
+    }
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        function (entries) {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          recordView();
+          observer.disconnect();
+        },
+        { threshold: 0.35 }
+      );
+      observer.observe(form);
+    } else {
+      recordView();
+    }
 
     function clearSubmitTimer() {
       if (!submitTimer) return;
@@ -139,6 +168,11 @@
         controls.hidden = true;
         status.textContent = "";
         confirmed.hidden = false;
+        const confirmationKey = `newsletter-confirmed:${window.location.pathname}`;
+        if (!window.sessionStorage.getItem(confirmationKey)) {
+          trackNewsletterEvent("newsletter-confirmed");
+          window.sessionStorage.setItem(confirmationKey, "1");
+        }
         return true;
       }
       return false;
@@ -168,6 +202,7 @@
       }
 
       submitting = true;
+      trackNewsletterEvent("newsletter-submit");
       button.setAttribute("aria-busy", "true");
       button.setAttribute("aria-disabled", "true");
       button.textContent = "Subscribing…";

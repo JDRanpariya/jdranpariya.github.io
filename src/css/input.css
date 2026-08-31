@@ -521,6 +521,24 @@ button,
     margin-bottom: 0.5rem;
   }
 
+  .post-newsletter {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .post-newsletter h2 {
+    margin-bottom: 1.5rem;
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-ink-muted);
+  }
+
   /* ---------------- Read next ------------------------------------------- */
 
   .read-next {

@@ -105,50 +105,7 @@ section: "home"
       >.
     </p>
 
-    <form
-      action="https://buttondown.com/api/emails/embed-subscribe/jdranpariya"
-      method="post"
-      target="_self"
-      data-newsletter-form
-    >
-      <label for="bd-email" class="sr-only">Email address</label>
-      <input type="hidden" name="embed" value="1" />
-      <input type="hidden" name="utm_source" value="personal-site" />
-      <input type="hidden" name="utm_medium" value="website" />
-      <div class="max-w-sm" data-newsletter-controls>
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="email"
-            name="email"
-            id="bd-email"
-            class="subscribe-input flex-1"
-            placeholder="Enter your email"
-            autocomplete="email"
-            required
-          />
-          <button
-            type="submit"
-            class="btn btn-primary btn-compact sm:self-center"
-            data-newsletter-submit
-            data-umami-event="newsletter-subscribe"
-            data-umami-event-location="home"
-          >
-            Subscribe
-          </button>
-        </div>
-      </div>
-      <p
-        class="mt-2 min-h-6 font-sans text-sm text-ink-secondary"
-        role="status"
-        aria-live="polite"
-        data-newsletter-status
-      ></p>
-      <div class="space-y-3" data-newsletter-confirmed hidden>
-        <p class="font-sans text-body text-ink">Thanks for confirming. You're subscribed now.</p>
-        <p class="font-sans text-body-sm text-ink-secondary">
-          You can explore the site or close this page.
-        </p>
-      </div>
-    </form>
+    {% set newsletterLocation = "home" %}
+    {% include "components/newsletter_form.njk" %}
   </section>
 </section>
