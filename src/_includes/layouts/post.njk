@@ -80,62 +80,27 @@ isPostLayout: true
         <div class="prose-site">{{ content | safe }}</div>
 
         <!-- ------------------------------------------------------------ -->
-        <!-- Post footer: tags + reply CTA. Tags live here (not in hero)  -->
+        <!-- Post footer: tags. Tags live here (not in hero)              -->
         <!-- so the top of the page stays calm.                            -->
         <!-- ------------------------------------------------------------ -->
-        {% if tags or section == "writings" %}
+        {% if tags %}
           <footer class="post-footer">
-            {% if tags %}
-              <div class="post-footer__tags">
-                <p class="eyebrow shrink-0">Tagged</p>
-                <ul class="chip-list">
-                  {% for tag in tags %}
-                    {# Tags with only one tagged item (this post) don't get a
-                       dedicated /tags/ page — see tagListMulti in .eleventy.js.
-                       Render those as plain text instead of a dead link. #}
-                    {% if tag in collections.tagListMulti %}
-                      <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
-                    {% else %}
-                      <li><span class="chip">{{ tag }}</span></li>
-                    {% endif %}
-                  {% endfor %}
-                </ul>
-              </div>
-            {% endif %}
-
-            {% if section == "writings" %}
-              <div class="post-footer__reply">
-                <p>Thoughts on this? I&rsquo;d genuinely like to hear them.</p>
-                <a
-                  href="mailto:jaydeepranpariya037@gmail.com?subject={{ title | urlencode }}"
-                  class="btn-link"
-                  data-umami-event="article-reply-click"
-                  data-umami-event-article="{{ page.url }}"
-                >
-                  Reply by email
-                  <svg
-                    class="w-3 h-3 shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </a>
-              </div>
-            {% endif %}
+            <div class="post-footer__tags">
+              <p class="eyebrow shrink-0">Tagged</p>
+              <ul class="chip-list">
+                {% for tag in tags %}
+                  {# Tags with only one tagged item (this post) don't get a
+                     dedicated /tags/ page — see tagListMulti in .eleventy.js.
+                     Render those as plain text instead of a dead link. #}
+                  {% if tag in collections.tagListMulti %}
+                    <li><a href="/tags/{{ tag | slug }}/" class="chip">{{ tag }}</a></li>
+                  {% else %}
+                    <li><span class="chip">{{ tag }}</span></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
           </footer>
-        {% endif %}
-
-        {# --- Webmentions --- #}
-        {% if section == "writings" or section == "odyssey" %}
-          {% include "components/webmentions.njk" %}
         {% endif %}
 
         {% if section == "writings" and status != "draft" %}
@@ -182,6 +147,39 @@ isPostLayout: true
               {% endif %}
             </a>
           </nav>
+        {% endif %}
+
+        {% if section == "writings" %}
+          <section class="post-reply" aria-labelledby="post-reply-title">
+            <h2 id="post-reply-title">Thoughts on this? I&rsquo;d genuinely like to hear them.</h2>
+            <a
+              href="mailto:jay@jdranpariya.com?subject={{ title | urlencode }}"
+              class="btn-link"
+              data-umami-event="article-reply-click"
+              data-umami-event-article="{{ page.url }}"
+            >
+              Reply by email
+              <svg
+                class="w-3 h-3 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </a>
+          </section>
+        {% endif %}
+
+        {# --- Webmentions --- #}
+        {% if section == "writings" or section == "odyssey" %}
+          {% include "components/webmentions.njk" %}
         {% endif %}
       </div>
     </article>

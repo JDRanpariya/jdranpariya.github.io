@@ -128,6 +128,11 @@
       submitTimer = undefined;
     }
 
+    function setStatus(message) {
+      status.textContent = message;
+      status.hidden = !message;
+    }
+
     function cleanRedirectUrl(state) {
       if (!state) return;
 
@@ -161,12 +166,12 @@
       if (state === "pending") {
         controls.hidden = true;
         confirmed.hidden = true;
-        status.textContent = "Check your inbox to confirm your email.";
+        setStatus("Check your inbox to confirm your email.");
         return true;
       }
       if (state === "confirmed") {
         controls.hidden = true;
-        status.textContent = "";
+        setStatus("");
         confirmed.hidden = false;
         const confirmationKey = `newsletter-confirmed:${window.location.pathname}`;
         if (!window.sessionStorage.getItem(confirmationKey)) {
@@ -188,7 +193,7 @@
       button.removeAttribute("aria-disabled");
       button.removeAttribute("aria-busy");
       button.textContent = initialLabel;
-      status.textContent = "";
+      setStatus("");
     }
 
     form.addEventListener("submit", function (event) {
@@ -206,7 +211,7 @@
       button.setAttribute("aria-busy", "true");
       button.setAttribute("aria-disabled", "true");
       button.textContent = "Subscribing…";
-      status.textContent = "";
+      setStatus("");
 
       // Keep the native submitter enabled so the browser can complete the
       // cross-origin form submission. If navigation is blocked or stalls,
@@ -216,7 +221,7 @@
         button.removeAttribute("aria-busy");
         button.removeAttribute("aria-disabled");
         button.textContent = initialLabel;
-        status.textContent = "Couldn't connect. Please try again.";
+        setStatus("Couldn't connect. Please try again.");
       }, 12000);
     });
 

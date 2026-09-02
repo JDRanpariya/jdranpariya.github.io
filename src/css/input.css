@@ -500,9 +500,6 @@ button,
   .post-footer {
     margin-top: 5rem;
     padding-top: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
     border-top: 1px solid var(--color-border);
   }
   .post-footer__tags {
@@ -511,32 +508,31 @@ button,
     align-items: baseline;
     gap: 0.75rem 1rem;
   }
-  .post-footer__reply {
-    text-align: center;
-    font-family: "Literata", ui-serif, Georgia, serif;
-  }
-  .post-footer__reply p {
-    color: var(--color-ink-secondary);
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-
   .post-newsletter {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
+    margin-top: 2rem;
   }
   .post-newsletter h2 {
-    margin-bottom: 1.5rem;
-    font-family:
-      system-ui,
-      -apple-system,
-      "Segoe UI",
-      sans-serif;
+    margin-bottom: 1rem;
+    font-family: "Literata", ui-serif, Georgia, serif;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-ink-secondary);
+  }
+  .post-newsletter [data-newsletter-submit] {
+    min-height: 2.75rem;
+  }
+
+  .post-reply {
+    margin-top: 2.5rem;
+    font-family: "Literata", ui-serif, Georgia, serif;
+  }
+  .post-reply h2 {
+    margin-bottom: 0.25rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--color-ink-muted);
+    color: var(--color-ink-secondary);
   }
 
   /* ---------------- Read next ------------------------------------------- */
@@ -830,6 +826,8 @@ button,
   }
   /* When a blockquote ends with a pure em, treat it as attribution. */
   .prose-site blockquote p:last-child:has(em:only-child) {
+    width: 90%;
+    margin-left: auto;
     font-style: normal;
     font-size: 0.9em;
     color: var(--color-ink-muted);
@@ -1053,13 +1051,62 @@ button,
 }
 .callout[data-callout="quote"] {
   --callout-color: 173, 214, 171;
+  margin: 1.75rem 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  overflow: visible;
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.callout[data-callout="quote"]:not([data-callout-title]) .callout-title {
+  display: none;
+}
+.callout[data-callout="quote"] .callout-title {
+  padding: 0 0 0.75rem;
+  border: 0;
+  background: transparent;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.callout[data-callout="quote"] .callout-title-icon {
+  display: none;
+}
+.callout[data-callout="quote"] .callout-title-inner {
+  color: var(--color-ink-muted);
+  font-weight: 600;
 }
 .callout[data-callout="cite"] {
   --callout-color: 237, 217, 162;
 }
 .callout[data-callout="quote"] .callout-content {
+  padding: 0;
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: inherit;
   font-style: normal;
   font-weight: 500;
+  line-height: inherit;
+}
+.callout[data-callout="quote"] .callout-content:has(> p:nth-child(2):last-child) > p:last-child {
+  width: 90%;
+  margin-left: auto;
+  margin-top: 0.5em;
+  color: var(--color-ink-muted);
+  font-family: inherit;
+  font-size: 0.9em;
+  font-style: italic;
+  font-weight: 500;
+  line-height: inherit;
+  text-align: right;
 }
 
 /* Custom markdown container: collapsible references. */
