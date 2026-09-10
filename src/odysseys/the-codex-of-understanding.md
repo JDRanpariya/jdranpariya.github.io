@@ -6,7 +6,7 @@ section: "odyssey"
 description: A personal quest to build the most complete, connected understanding of existence - uniting the scientific, philosophical, and humanistic worldviews.
 tags: ["learning"]
 published: 2025-10-13
-lastUpdated: 2025-10-13
+lastUpdated: 2026-09-10
 readNext: "/library/lectures/the-art-of-doing-science-and-engineering/"
 ---
 
@@ -44,24 +44,6 @@ and **human civilization**.
 >
 > Now everything is very intermixed, I can't say I will study physics first and then Cosmology. To begin with this are the constructs of human brain and have been developed over time in kinda following manner.
 
-## What Should I Do? (Efficient Learning Strategy)
-
-1. **Find the Best "Top 5-10" First**
-    
-    - Look for **commonly recommended books** in the field.
-    - Check **citations, reviews, or expert opinions**.
-2. **Skim & Identify Core Ideas Quickly**
-    
-    - Not all books need a full read, just skim to extract **unique insights**.
-    - Look for **overlapping principles** across multiple books.
-3. **Use "Meta-Learning" to Save Time**
-    
-    - Read **summaries, lecture notes, or expert interviews** to validate a book’s importance before diving deep.
-4. **Go Beyond Books**
-    
-    - Engage in **practical application, discussions, or real-world projects**.
-    - Books give **theory**, but **mastery** comes from **doing**.
-
 I'm keeping a [timeline of how human knowledge evolved](/odysseys/the-codex-of-understanding/archive/), from prehistoric tools to now, updated as I learn more.
 
 Current Science can be branched into following
@@ -86,16 +68,7 @@ I think I should start learning about the subject with it's history and origin.
 2. Find some good compendium and look through
 3. Course from Top University or online platforms, [classcentral.com](https://www.classcentral.com)
 
-## 🛠️ Principles to Guide in the Journey
-
-- Start with Universals, Move to Particulars
-	- Begin with the most fundamental ideas that explain the widest range of phenomena (e.g., logic, math, and physical laws).
-- Embrace a Recursive Learning Approach
-	- You will revisit core concepts repeatedly, each time with new depth and clarity. This reflects the way real discovery works, by spiraling deeper into the unknown.
-- Balance Theory with Experimentation
-	- Knowledge without application is incomplete. As you learn, create models, test ideas, and engage with real-world phenomena.
-- Think Across Domains
-	- Many breakthroughs arise at intersections (e.g., the birth of AI from neuroscience and mathematics).
+<!-- Jay: add principles only after they have been tested against your own learning practice. -->
 
 ## [Engineering](/odysseys/the-codex-of-understanding/engineering/)
 > Make your own stuff with 3d printing, electronics and software.

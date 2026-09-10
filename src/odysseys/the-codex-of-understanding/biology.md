@@ -6,7 +6,7 @@ category: "Science & Nature"
 description: "Resources on biology, self-organization, and the origin of life, from molecular systems to swarm intelligence and artificial life."
 tags: ["science", "biology", "emergence"]
 published: 2024-08-06
-lastUpdated: 2024-08-06
+lastUpdated: 2026-09-10
 ---
 
 - Complexity
@@ -82,11 +82,4 @@ lastUpdated: 2024-08-06
 - Per Bak, Tang & Wiesenfeld (1987) - "Self-Organized Criticality"
 - Holland (1975) - "Adaptation in Natural and Artificial Systems"
 
-📌 Suggested Learning Path (Beginner to Advanced)
-
-1️⃣ Start with "How Nature Works" (Per Bak) for an intuitive understanding.
-2️⃣ Read "Self-Organization in Biological Systems" (Camazine et al.) for biological examples.
-3️⃣ Study "Nonlinear Dynamics and Chaos" (Strogatz) for the math behind self-organization.
-4️⃣ Explore morphogenesis via "Mathematical Biology" (Murray) & Turing's papers.
-5️⃣ Deep dive into swarm intelligence & evolutionary dynamics (Kauffman, Nowak).
-6️⃣ If interested in artificial systems, read Wolfram, Langton, and Holland.
+<!-- Jay: add your own reading notes and experiments here instead of a generic learning path. -->

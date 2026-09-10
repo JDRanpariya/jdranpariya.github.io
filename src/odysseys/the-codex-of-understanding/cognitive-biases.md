@@ -6,7 +6,7 @@ category: "Mind & Body"
 description: "A working framework for categorizing cognitive biases: by cognitive process, decision stage, and emotion, plus practical ways to catch and counter them."
 tags: ["psychology", "decision-making", "self-help"]
 published: 2023-09-03
-lastUpdated: 2023-09-03
+lastUpdated: 2026-09-10
 ---
 
 > also see: Fallacies
@@ -22,77 +22,6 @@ lastUpdated: 2023-09-03
 
 - The spotlight effect -> People are seldom interested in you and your actions.
 - Primacy Effect -> we put more weight on sequence of attributes we know about a person or object.
-
-Categorizing biases can be done in multiple ways, each providing a different perspective on understanding and addressing biases. Achieving full knowledge of biases involves a comprehensive approach that considers these various categorizations. Here are the main ways to categorize biases and recommendations for each:
-
-## 1. By Cognitive Processes
-
-**Description**: This categorization focuses on the cognitive mechanisms behind biases.
-
-- **Attention Biases**: How we focus our attention.
-- **Interpretation Biases**: How we interpret information.
-- **Memory Biases**: How we recall and remember information.
-
-**Recommendation**: Use this categorization to understand how biases affect different stages of information processing. It's particularly useful for improving metacognitive awareness and for targeted interventions in specific cognitive areas.
-
-## 2. By Decision-Making Stages
-
-**Description**: Categorizes biases based on where they occur in the decision-making process.
-
-- **Heuristic-based Biases**: Simplified decision-making strategies.
-- **Motivational Biases**: Biases driven by desires and emotions.
-- **Outcome Biases**: Judging decisions based on their outcomes.
-
-**Recommendation**: This approach helps in refining decision-making frameworks and is practical for those looking to improve rational decision-making in personal and professional settings.
-
-## 3. By Social Influences
-
-**Description**: Focuses on biases that arise from social interactions and cultural contexts.
-
-- **Group Dynamics**: Biases in group settings.
-- **Cultural Biases**: Biases influenced by cultural norms and values.
-
-**Recommendation**: Use this categorization to understand biases in social and organizational contexts. It's beneficial for leaders, team members, and anyone involved in multicultural settings.
-
-## 4. By Emotional Influences
-
-**Description**: Considers how emotions and moods influence biases.
-
-- **Affective Biases**: Biases driven by emotional states.
-- **Stress and Anxiety**: Biases arising from stress or anxiety.
-
-**Recommendation**: This approach is useful for personal development and mental health professionals, as it emphasizes the emotional components of biases.
-
-## 5. By Behavioral Outcomes
-
-**Description**: Focuses on the impact of biases on behaviors and decisions.
-
-- **Risk Perception**: How we perceive and respond to risk.
-- **Economic Decision-Making**: Biases affecting financial and economic choices.
-
-**Recommendation**: Ideal for those in fields like finance, economics, and risk management, where understanding the behavioral impacts of biases is crucial.
-
-## 6. By Temporal Influences
-
-**Description**: Looks at how biases change over time or with respect to time.
-
-- **Present vs. Future**: Biases in valuing present versus future outcomes.
-- **Recency and Primacy Effects**: Biases based on the timing of information.
-
-**Recommendation**: Use this to improve long-term planning and time management, particularly in project management and strategic planning contexts.
-
-## 7. By Contextual Influences
-
-**Description**: Examines how biases are influenced by situational or environmental contexts.
-
-- **Situational Biases**: Biases specific to certain situations.
-- **Environmental Influences**: Biases influenced by environmental factors.
-
-**Recommendation**: This is helpful for understanding situational awareness and adapting to different environments, useful in fields like marketing, design, and ergonomics.
-
-## Comprehensive Approach
-
-To achieve full knowledge of biases, a comprehensive approach that integrates multiple categorizations is recommended. Here's a step-by-step plan:
 
 1. **Start with Cognitive Processes**: Understand the basic mechanisms of biases.
 2. **Move to Decision-Making Stages**: Apply this knowledge to refine your decision-making processes.
