@@ -51,6 +51,8 @@ try {
   else ok("has <?xml declaration");
 
   const expectedUrls = ["/about/", "/writings/", "/library/", "/projects/", "/now/"];
+  expectedUrls.push("/tags/education/", "/tags/physical-ai/", "/tags/sim2real/");
+  expectedUrls.push("/writings/icra-2026/");
   for (const u of expectedUrls) {
     if (sitemap.includes(u)) ok(`contains ${u}`);
     else fail(`sitemap missing URL: ${u}`);

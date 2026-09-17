@@ -8,7 +8,7 @@ permalink: /tags/{{ tag | slugify }}/
 layout: layouts/base
 section: "tag"
 eleventyComputed:
-  title: "Items tagged with {{ tag }}"
+  title: "Items tagged with {{ tag | replace('-', ' ') | smartTitleCase }}"
   description: "Items tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
 ---
 
@@ -23,7 +23,7 @@ eleventyComputed:
   {% set itemCount = (writings | length) + (lectures | length) + (odysseys | length) + (books | length) + (projects | length) + (papers | length) + (notes | length) %}
 
   <header class="space-y-3">
-    <h1 class="font-heading text-h2 text-ink">{{ tag | smartTitleCase }}</h1>
+    <h1 class="font-heading text-h2 text-ink">{{ tag | replace("-", " ") | smartTitleCase }}</h1>
     <p class="font-sans text-body-sm text-ink-muted">
       {{ itemCount }} item{% if itemCount != 1 %}s{% endif %}
     </p>
@@ -50,12 +50,18 @@ eleventyComputed:
         <ol class="m-0 list-none space-y-3 p-0">
           {% for post in items %}
             <li>
-              <a href="{{ post.url }}" class="group block py-1">
-                <h3
-                  class="m-0 font-serif text-body-sm font-normal text-ink transition-colors duration-base group-hover:text-accent"
-                >
+              <a href="{{ post.url }}" class="index-row">
+                {% if post.data.published %}
+                  <time class="index-row__meta" datetime="{{ post.data.published | isoDate }}">
+                    {{ post.data.published | formatDate }}
+                  </time>
+                {% endif %}
+                <h3 class="index-row__title">
                   {{ (post.data.fullTitle or post.data.title) | smartTitleCase }}
                 </h3>
+                {% if post.data.description %}
+                  <p class="index-row__desc">{{ post.data.description }}</p>
+                {% endif %}
               </a>
             </li>
           {% endfor %}
