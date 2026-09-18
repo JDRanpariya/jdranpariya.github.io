@@ -6,7 +6,7 @@ tags: [AI, robotics, physical-ai]
 status: published
 section: writings
 layout: layouts/post.njk
-description: what physical ai is and the threads i'm pulling.
+description: What is physical AI, how do its layers fit together, and how should we approach building systems that perceive and act in the real world?
 ---
 
 Any system that perceives the real world and interacts with it.

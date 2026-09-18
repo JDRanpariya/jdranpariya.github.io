@@ -2,11 +2,11 @@
 title: neuro-inspired ai
 published: 2026-09-18
 lastUpdated: 2026-09-18
-tags: [AI, science, learning]
+tags: [research, neuroscience, AI]
 status: published
 section: writings
 layout: layouts/post.njk
-description: I want to understand how biological systems learn, remember and adapt and how we can use that to build better AI systems.
+description: How do biological systems learn, remember and adapt, and how can we use that to build better AI systems?
 ---
 
 My research interest is in Bio-Inspired AI and NeuroAI, particularly in understanding biological intelligence well enough to derive principles for new AI architectures and systems.
@@ -28,3 +28,9 @@ I also want to examine areas often described as limitations or open challenges i
 The central translation question is which biological mechanisms represent portable computational principles, which are consequences or limitations of biological implementation, which can be realized in software, and which may depend on different hardware or substrates. I do not want to copy the brain indiscriminately. I want to understand it well enough to distinguish essential principles from incidental details, compare biologically inspired mechanisms with strong non-biological alternatives, and test them through clear hypotheses and experiments.
 
 The eventual goal is to develop AI architectures and systems that learn, remember, reason, adapt, reorganize experience, and improve across a lifetime while retaining the scale and capabilities of modern machine intelligence. I have had many intuitions and personal epiphanies around these questions. I now want to turn them into a serious research program and bring the strongest ideas into the world.
+
+A few adjacent groups working in similar fields:
+
+- [Grewe Lab | ETHZ](https://grewelab.org/research/bio-inspired-ai)
+- [Sakana AI](https://sakana.ai/)
+- [Lossfunk](https://lossfunk.com/) → Unfortunately, most of their work is concentrated around LLMs and current ML, with much less on the broader foundational topics I care about. Research questions also often feel more like gaps from recent papers than questions built from first principles. :(
