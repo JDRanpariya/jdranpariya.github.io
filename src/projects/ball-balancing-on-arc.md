@@ -1,18 +1,20 @@
 ---
 title: "Ball Balancing on Arc"
 fullTitle: "Ball Balancing on Arc"
-description: "A 13-controller benchmark on real ball-on-arc hardware—650 trials across classical control, RL, offline RL, and world models."
+description: "A 13-controller benchmark on real ball-on-arc hardware: 650 trials across classical control, RL, offline RL, and world models."
 image: "/assets/images/projects/ball_on_arc_cart.png"
 tech: ["RL", "Sim2Real", "World Models", "Nonlinear Dynamics", "Control Theory"]
 status: "under-review"
 published: 2026-04-14
-lastUpdated: 2026-08-12
+lastUpdated: 2026-09-18
 layout: layouts/post
 section: "projects"
 tags: ["robotics", "simulation"]
 ---
 
 > **Paper status, August 2026:** submitted to *IEEE Robotics & Automation Magazine* and under review. The identity-linked artifact URL will be added here after review.
+
+[Visit Ball on Arc →](https://ball-on-arc.pages.dev)
 
 ## Brief
 

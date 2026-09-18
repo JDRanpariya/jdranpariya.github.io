@@ -47,6 +47,15 @@ SMALL_WORDS = {
     "with", "vs", "via",
 }
 
+ACRONYMS = {
+    "ai", "rl", "pid", "nmpc", "lqr", "mpc", "vlms", "llms",
+    "gpu", "cpu", "cad", "ar", "vr",
+}
+
+SPECIAL_CASING = {
+    "neuroai": "NeuroAI",
+}
+
 def smart_title_case(s):
     """Port of .eleventy.js smartTitleCase filter."""
     if not s:
@@ -67,6 +76,12 @@ def smart_title_case(s):
             result.append(token)
             continue
         lower = token.lower()
+        if lower in SPECIAL_CASING:
+            result.append(SPECIAL_CASING[lower])
+            continue
+        if lower in ACRONYMS:
+            result.append(token.upper())
+            continue
         bare = re.sub(r'[^a-z]', '', lower)
         if i != first_idx and i != last_idx and bare in SMALL_WORDS:
             result.append(lower)

@@ -149,6 +149,7 @@ export default function (eleventyConfig) {
     "ar",
     "vr",
   ]);
+  const SPECIAL_CASING = new Map([["neuroai", "NeuroAI"]]);
   eleventyConfig.addFilter("smartTitleCase", function (str) {
     if (!str) return "";
     const words = String(str).split(/(\s+)/); // keep whitespace tokens
@@ -163,6 +164,7 @@ export default function (eleventyConfig) {
         if (!/\S/.test(token)) return token;
         if (/^[A-Z0-9]{2,}$/.test(token)) return token;
         const lower = token.toLowerCase();
+        if (SPECIAL_CASING.has(lower)) return SPECIAL_CASING.get(lower);
         if (ACRONYMS.has(lower)) return token.toUpperCase();
         const bare = lower.replace(/[^a-z]/g, "");
         if (i !== firstIdx && i !== lastIdx && SMALL_WORDS.has(bare)) {

@@ -2,11 +2,11 @@
 title: "Multimodal Imitation Learning"
 fullTitle: "Multimodal Imitation Learning via Hardware-Native Proprioception for Contact-Rich Manipulation"
 description: "My master's thesis at Fraunhofer IIS, testing whether raw servo-bus signals improve imitation-learning policies for contact-rich SO-101 manipulation."
-image: "/assets/images/projects/multimodal-imitation-learning.webp"
+image: "/assets/images/projects/multimodal-imitation-learning-card.png"
 tech: ["PyTorch", "LeRobot", "SO-101", "Imitation Learning", "Proprioception"]
 status: "active"
 published: 2026-05-02
-lastUpdated: 2026-09-16
+lastUpdated: 2026-09-18
 layout: layouts/post.njk
 section: "projects"
 tags: ["robotics", "AI", "physical-ai"]
@@ -15,6 +15,8 @@ tags: ["robotics", "AI", "physical-ai"]
 ![The SO-101 workspace used for contact-rich peg-insertion experiments.](/assets/images/projects/multimodal-imitation-learning.webp)
 
 My master's thesis at Fraunhofer IIS asks whether signals already available inside low-cost robot servos can improve imitation-learning policies during contact-rich manipulation.
+
+[Visit Contact from Current →](https://contact-from-current.pages.dev)
 
 ## Research question
 
