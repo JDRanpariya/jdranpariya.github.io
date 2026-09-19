@@ -17,14 +17,22 @@ eleventyExcludeFromCollections: true
   <generator>Eleventy</generator>
   <rights>© 2025–2026 JD Ranpariya</rights>
   {%- for post in collections.feedEntries | limit(20) %}
+  {%- set isNowUpdate = post.inputPath.startsWith('./src/now/updates/') %}
+  {%- if isNowUpdate %}
+  {%- set postUrl = '/now/' + (post.date | dateToFormat('yyyy-MM-dd')) + '/' %}
+  {%- set postTitle = 'Now, ' + (post.date | formatDate) %}
+  {%- else %}
+  {%- set postUrl = post.url %}
+  {%- set postTitle = post.data.fullTitle or post.data.title %}
+  {%- endif %}
   {%- set postPublished = post.data.published or post.data.date %}
   {%- if not postPublished and post.data.year %}
   {%- set postPublished = post.data.year | yearToDate %}
   {%- endif %}
   <entry>
-    <title>{{ (post.data.fullTitle or post.data.title) | escape }}</title>
-    <link href="{{ site.url }}{{ post.url }}" rel="alternate" type="text/html" />
-    <id>{{ site.url }}{{ post.url }}</id>
+    <title>{{ postTitle | escape }}</title>
+    <link href="{{ site.url }}{{ postUrl }}" rel="alternate" type="text/html" />
+    <id>{{ site.url }}{{ postUrl }}</id>
     {%- if postPublished %}
     <published>{{ postPublished | dateToRfc3339 }}</published>
     {%- endif %}
@@ -37,8 +45,10 @@ eleventyExcludeFromCollections: true
     {%- if post.data.description %}
     <summary>{{ post.data.description | escape }}</summary>
     {%- endif %}
-    <content type="text/html" src="{{ site.url }}{{ post.url }}" />
-    {%- if post.data.tags %}
+    <content type="text/html" src="{{ site.url }}{{ postUrl }}" />
+    {%- if isNowUpdate %}
+    <category term="now" />
+    {%- elif post.data.tags %}
     {%- for tag in post.data.tags %}
     <category term="{{ tag }}" />
     {%- endfor %}

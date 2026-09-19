@@ -1,0 +1,34 @@
+---
+pagination:
+  data: collections.nowUpdates
+  size: 1
+  alias: nowUpdate
+  addAllPagesToCollections: true
+permalink: /now/{{ nowUpdate.date | dateToFormat("yyyy-MM-dd") }}/
+layout: layouts/base
+section: "now"
+eleventyComputed:
+  title: "Now, {{ nowUpdate.date | formatDate }}"
+  description: "A Now update from {{ nowUpdate.date | formatDate }}."
+---
+
+<section class="max-w-page mx-auto px-6 md:px-8 py-16 md:py-24">
+  <div class="max-w-reading mx-auto">
+    <header class="mb-12 space-y-4">
+      <h1 class="font-serif text-display text-ink">Now</h1>
+    </header>
+
+    <hr class="post-hero__divider" />
+
+    <h2 class="font-serif text-h3 text-ink mt-6 mb-6">
+      Update from
+      <time datetime="{{ nowUpdate.date | isoDate }}">{{ nowUpdate.date | formatDate }}</time>
+    </h2>
+
+    <article class="prose-site">{{ nowUpdate.templateContent | safe }}</article>
+
+    <p class="mt-12 pt-6 border-t border-border">
+      <a href="/now/" class="btn-link">Back to Now</a>
+    </p>
+  </div>
+</section>

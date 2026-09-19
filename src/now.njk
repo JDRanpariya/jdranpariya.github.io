@@ -32,20 +32,12 @@ description: "What Jay's actually up to: a running log of life, work, and whatev
             {% endif %}
           </h2>
 
-          <div id="updates-container" class="space-y-6">
-            {% for update in collections.nowUpdates %}
-              {% set dateStringId = update.date | dateToFormat("yyyy-MM-dd") %}
-              <article
-                id="update-{{ dateStringId }}"
-                class="now-update-content prose-site {% if not loop.first %}hidden{% endif %}"
-                data-date="{{ dateStringId }}"
-                data-formatted-date="{{ update.date | formatDate }}"
-              >
-                {{ update.templateContent | safe }}
-              </article>
+          <div class="space-y-6">
+            {% if latestUpdate %}
+              <article class="prose-site">{{ latestUpdate.templateContent | safe }}</article>
             {% else %}
               <p class="text-ink-muted italic">No updates posted yet.</p>
-            {% endfor %}
+            {% endif %}
           </div>
         </div>
 
@@ -90,9 +82,8 @@ description: "What Jay's actually up to: a running log of life, work, and whatev
                             {% set dateStringId = update.date | dateToFormat("yyyy-MM-dd") %}
                             <li>
                               <a
-                                href="#update-{{ dateStringId }}"
+                                href="/now/{{ dateStringId }}/"
                                 class="archive-link font-sans text-ui-sm text-ink-muted hover:text-accent transition-colors duration-base"
-                                data-date="{{ dateStringId }}"
                               >
                                 {{ update.date | formatDate }}
                               </a>
@@ -137,9 +128,8 @@ description: "What Jay's actually up to: a running log of life, work, and whatev
                         {% set dateStringId = update.date | dateToFormat("yyyy-MM-dd") %}
                         <li>
                           <a
-                            href="#update-{{ dateStringId }}"
+                            href="/now/{{ dateStringId }}/"
                             class="archive-link font-sans text-ui-sm text-ink-muted hover:text-accent transition-colors duration-base"
-                            data-date="{{ dateStringId }}"
                           >
                             {{ update.date | formatDate }}
                           </a>
@@ -158,5 +148,3 @@ description: "What Jay's actually up to: a running log of life, work, and whatev
     </aside>
   </div>
 </section>
-
-<script src="/assets/js/now.js" defer></script>

@@ -694,6 +694,9 @@ export default function (eleventyConfig) {
     return new Date(raw);
   }
 
+  // Older Now updates remain in the archive, but do not arrive in readers as a backfill.
+  const nowFeedStart = new Date("2026-09-19T00:00:00Z");
+
   // Unified feed collection — all published content, sorted reverse-chronological
   eleventyConfig.addCollection("feedEntries", function (collectionApi) {
     return [
@@ -707,6 +710,9 @@ export default function (eleventyConfig) {
       ...collectionApi.getFilteredByGlob("src/library/lectures/*.md"),
       ...collectionApi.getFilteredByGlob("src/projects/**/*.md"),
       ...collectionApi.getFilteredByGlob("src/odysseys/**/*.md"),
+      ...collectionApi
+        .getFilteredByGlob("src/now/updates/*.md")
+        .filter((item) => getPostDate(item) >= nowFeedStart),
     ]
       .filter((item) => getPostDate(item) !== null)
       .sort((a, b) => getPostDate(b) - getPostDate(a));
