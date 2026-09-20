@@ -26,9 +26,15 @@ async function authenticatedRequest(path, init = {}) {
   });
 }
 
-test("accepts only Markdown paths under src", () => {
+test("accepts only Markdown paths in the personal and research content roots", () => {
   assert.equal(adminInternals.safeSourcePath("src/writings/example.md"), "src/writings/example.md");
+  assert.equal(
+    adminInternals.safeSourcePath("apps/research/content/research-home.md"),
+    "apps/research/content/research-home.md"
+  );
   assert.equal(adminInternals.safeSourcePath("src/../secret.md"), null);
+  assert.equal(adminInternals.safeSourcePath("apps/research/app/page.tsx"), null);
+  assert.equal(adminInternals.safeSourcePath("apps/other/content/example.md"), null);
   assert.equal(adminInternals.safeSourcePath("README.md"), null);
   assert.equal(adminInternals.safeSourcePath("src/admin.njk"), null);
 });
@@ -80,6 +86,12 @@ test("lists only editable Markdown files", async () => {
       JSON.stringify({
         tree: [
           { path: "src/writings/one.md", type: "blob", sha: "one", size: 20 },
+          {
+            path: "apps/research/content/research-home.md",
+            type: "blob",
+            sha: "research",
+            size: 40,
+          },
           { path: "src/index.njk", type: "blob", sha: "two", size: 20 },
           { path: "README.md", type: "blob", sha: "three", size: 20 },
         ],
@@ -92,7 +104,7 @@ test("lists only editable Markdown files", async () => {
     assert.equal(response.status, 200);
     assert.deepEqual(
       payload.files.map((file) => file.path),
-      ["src/writings/one.md"]
+      ["apps/research/content/research-home.md", "src/writings/one.md"]
     );
   } finally {
     globalThis.fetch = previousFetch;

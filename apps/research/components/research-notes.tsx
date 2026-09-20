@@ -1,6 +1,5 @@
 "use client";
 
-import { ResearchAuthor } from "@/components/research-author";
 import { parseResearchHome, type ResearchHome, type ResearchTheme } from "@/lib/research-home";
 import {
   type CSSProperties,
@@ -11,6 +10,9 @@ import {
   useMemo,
   useState,
 } from "react";
+
+const PUBLISHED_MARKDOWN =
+  "https://raw.githubusercontent.com/JDRanpariya/jdranpariya.github.io/main/apps/research/content/research-home.md";
 
 function normalizePath(path: string[], themes: ReadonlyMap<string, ResearchTheme>) {
   const seen = new Set<string>();
@@ -66,12 +68,10 @@ function paneScrollLeft(index: number, paneWidth: number, paneEdge: number, maxi
 export function ResearchNotes({
   initialDocument,
   initialFocus,
-  initialMarkdown,
   initialPath,
 }: {
   initialDocument: ResearchHome;
   initialFocus: number;
-  initialMarkdown: string;
   initialPath: string[];
 }) {
   const [researchDocument, setResearchDocument] = useState(initialDocument);
@@ -219,6 +219,25 @@ export function ResearchNotes({
     }
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const source = new URL(PUBLISHED_MARKDOWN);
+    source.searchParams.set("published", Date.now().toString());
+
+    void fetch(source, { cache: "no-store", signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Research source returned ${response.status}.`);
+        return response.text();
+      })
+      .then(previewMarkdown)
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        // Keep the bundled document visible if GitHub is temporarily unavailable.
+      });
+
+    return () => controller.abort();
+  }, [previewMarkdown]);
+
   return (
     <>
       {panels.length > 1 ? (
@@ -303,8 +322,6 @@ export function ResearchNotes({
           </article>
         ))}
       </section>
-
-      <ResearchAuthor initialMarkdown={initialMarkdown} onPreview={previewMarkdown} />
     </>
   );
 }

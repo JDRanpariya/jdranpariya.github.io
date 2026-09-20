@@ -99,7 +99,8 @@ function configurationReady(env) {
 
 function safeSourcePath(value) {
   const path = String(value || "");
-  if (!/^src\/[a-zA-Z0-9][a-zA-Z0-9_./-]*\.md$/.test(path)) return null;
+  const editableRoot = /^(?:src|apps\/research\/content)\/[a-zA-Z0-9][a-zA-Z0-9_./-]*\.md$/;
+  if (!editableRoot.test(path)) return null;
   if (path.includes("..") || path.includes("//")) return null;
   return path;
 }

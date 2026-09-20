@@ -81,6 +81,9 @@
   }
 
   function publicUrl(path) {
+    if (path === "apps/research/content/research-home.md") {
+      return "https://research.jdranpariya.com/";
+    }
     const rules = [
       [/^src\/odysseys\/(.+?)(?:\/index)?\.md$/, "/odysseys/$1/"],
       [/^src\/writings\/(.+)\.md$/, "/writings/$1/"],
@@ -99,6 +102,7 @@
   }
 
   function fileGroup(path) {
+    if (path.startsWith("apps/research/content/")) return "research";
     const parts = path.split("/");
     if (parts[1] === "odysseys" && parts[2] && !parts[2].endsWith(".md")) return `odysseys / ${parts[2]}`;
     if (parts[1] === "library" && parts[2]) return `library / ${parts[2]}`;
@@ -351,7 +355,11 @@
       }
       els.draftState.textContent = "Published to GitHub";
       renderFileList();
-      const message = result.commitUrl ? "Published. The site deployment has started." : "Published to GitHub.";
+      const message = state.current.path.startsWith("apps/research/content/")
+        ? "Published. Reload the research site to see this version."
+        : result.commitUrl
+          ? "Published. The site deployment has started."
+          : "Published to GitHub.";
       showStatus(message, "success");
     } catch (error) {
       showStatus(error.message, "error");

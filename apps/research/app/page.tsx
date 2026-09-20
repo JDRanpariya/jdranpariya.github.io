@@ -34,7 +34,6 @@ export default async function Home({
         <ResearchNotes
           initialDocument={researchHome}
           initialFocus={initialFocus}
-          initialMarkdown={researchHomeMarkdown}
           initialPath={initialPath}
         />
       </main>
