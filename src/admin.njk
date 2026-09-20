@@ -1,0 +1,190 @@
+---
+permalink: /admin/index.html
+eleventyExcludeFromCollections: true
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'self'"
+    />
+    <title>Site admin</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png" />
+    <link
+      rel="preload"
+      href="/assets/fonts/figtree-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/source-serif-4-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/assets/css/admin.css{{ '/assets/css/admin.css' | cacheBust }}" />
+  </head>
+  <body>
+    <a class="admin-skip" href="#admin-main">Skip to editor</a>
+
+    <header class="admin-topbar">
+      <a class="admin-wordmark" href="/admin/" aria-label="Site admin home"
+        >jdranpariya.com <span>/ admin</span></a
+      >
+      <div class="admin-account" id="admin-account" hidden>
+        <span id="admin-identity"></span>
+        <button class="admin-text-button" id="admin-logout" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <main id="admin-main">
+      <section class="admin-gate" id="admin-loading" aria-live="polite">
+        <p>Opening your workspace…</p>
+      </section>
+
+      <section class="admin-gate" id="admin-login" hidden>
+        <p class="admin-eyebrow">Private workspace</p>
+        <h1>Edit the site.</h1>
+        <p>
+          Write and preview Markdown here. Publishing creates a commit in GitHub and starts the
+          normal site deployment.
+        </p>
+        <form class="admin-login-form" id="admin-login-form">
+          <label for="admin-password">Passphrase</label>
+          <input
+            id="admin-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          <button class="admin-primary-link" id="admin-login-button" type="submit">
+            Open workspace
+          </button>
+        </form>
+        <p class="admin-password-help">Saved in Passwords/Keychain as jdranpariya.com.</p>
+        <p class="admin-login-error" id="admin-login-error" role="alert" hidden></p>
+      </section>
+
+      <section class="admin-workspace" id="admin-workspace" hidden>
+        <aside class="admin-files" data-mobile-panel="files">
+          <div class="admin-panel-heading">
+            <div>
+              <p class="admin-eyebrow">Repository</p>
+              <h1>Markdown</h1>
+            </div>
+            <button
+              class="admin-icon-button"
+              id="admin-new"
+              type="button"
+              aria-label="Create a new file"
+            >
+              +
+            </button>
+          </div>
+
+          <label class="admin-search">
+            <span class="sr-only">Search files</span>
+            <input
+              id="admin-file-search"
+              type="search"
+              autocomplete="off"
+              placeholder="Find a file"
+            />
+          </label>
+
+          <section class="admin-create" id="admin-create" hidden>
+            <label>
+              <span>Title</span>
+              <input id="admin-new-title" type="text" autocomplete="off" />
+            </label>
+            <label>
+              <span>File</span>
+              <input id="admin-new-path" type="text" spellcheck="false" />
+            </label>
+            <label>
+              <span>Template</span>
+              <select id="admin-new-template">
+                <option value="codex">Codex note</option>
+                <option value="writing">Writing</option>
+                <option value="blank">Blank Markdown</option>
+              </select>
+            </label>
+            <div class="admin-create-actions">
+              <button class="admin-text-button" id="admin-new-cancel" type="button">Cancel</button>
+              <button class="admin-solid-button" id="admin-new-create" type="button">
+                Create draft
+              </button>
+            </div>
+          </section>
+
+          <div class="admin-mode-notice" id="admin-link-notice" hidden>
+            Choose the note that should receive the selected text.
+            <button class="admin-text-button" id="admin-link-cancel" type="button">Cancel</button>
+          </div>
+
+          <nav class="admin-file-list" id="admin-file-list" aria-label="Markdown files"></nav>
+        </aside>
+
+        <section class="admin-editor" data-mobile-panel="edit">
+          <header class="admin-document-bar">
+            <div class="admin-document-name">
+              <p id="admin-file-path">Choose a file</p>
+              <span id="admin-draft-state"></span>
+            </div>
+            <div class="admin-document-actions">
+              <button class="admin-text-button" id="admin-create-linked" type="button" disabled>
+                New note from selection
+              </button>
+              <button class="admin-text-button" id="admin-link-existing" type="button" disabled>
+                Link existing
+              </button>
+              <button class="admin-solid-button" id="admin-publish" type="button" disabled>
+                Publish
+              </button>
+            </div>
+          </header>
+          <textarea
+            id="admin-source"
+            aria-label="Markdown source"
+            autocomplete="off"
+            autocapitalize="sentences"
+            spellcheck="true"
+            placeholder="Choose a Markdown file to begin."
+            disabled
+          ></textarea>
+        </section>
+
+        <section class="admin-preview" data-mobile-panel="preview">
+          <header class="admin-preview-heading">
+            <p class="admin-eyebrow">Preview</p>
+            <a id="admin-public-link" href="#" target="_blank" rel="noopener" hidden
+              >Open published page ↗</a
+            >
+          </header>
+          <article class="admin-preview-content" id="admin-preview-content">
+            <p class="admin-preview-empty">The rendered note will appear here.</p>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <nav class="admin-mobile-tabs" id="admin-mobile-tabs" aria-label="Workspace panels" hidden>
+      <button type="button" data-admin-tab="files" aria-pressed="true">Files</button>
+      <button type="button" data-admin-tab="edit" aria-pressed="false">Edit</button>
+      <button type="button" data-admin-tab="preview" aria-pressed="false">Preview</button>
+    </nav>
+
+    <div class="admin-status" id="admin-status" role="status" aria-live="polite"></div>
+
+    <script src="/assets/vendor/markdown-it/markdown-it.min.js" defer></script>
+    <script src="/assets/js/admin.js{{ '/assets/js/admin.js' | cacheBust }}" defer></script>
+  </body>
+</html>

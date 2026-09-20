@@ -1,3 +1,5 @@
+import { handleAdminRequest } from "./admin.js";
+
 /*
  * Crawler and request telemetry for jdranpariya.com.
  *
@@ -207,6 +209,9 @@ export default {
     const cf = request.cf || {};
     const classification = classify(userAgent, cf);
 
+    const adminResponse = await handleAdminRequest(request, env);
+    if (adminResponse) return adminResponse;
+
     // Human analytics remain in Umami. Keep this endpoint as a harmless
     // compatibility response for older local builds that still call it.
     if (url.pathname === TELEMETRY_PATH) {
@@ -314,6 +319,19 @@ export default {
           env
         )
       );
+    }
+
+    if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
+      const headers = new Headers(response.headers);
+      headers.set("Cache-Control", "no-store");
+      headers.set("Content-Security-Policy", "frame-ancestors 'none'");
+      headers.set("Referrer-Policy", "no-referrer");
+      headers.set("X-Frame-Options", "DENY");
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+      });
     }
 
     return response;

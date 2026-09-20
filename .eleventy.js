@@ -61,24 +61,6 @@ const FAVORITE_WRITING_SLUGS = [
 export default function (eleventyConfig) {
   eleventyConfig.addGlobalData("nonContentTags", NON_CONTENT_TAGS);
 
-  eleventyConfig.addFilter("codexAuthorIndex", (items = []) => {
-    const root = "/odysseys/the-codex-of-understanding/";
-    return JSON.stringify(
-      items
-        .filter(
-          (item) =>
-            String(item.url || "").startsWith(root) && String(item.inputPath || "").endsWith(".md")
-        )
-        .map((item) => ({
-          title: item.data?.title || "Untitled",
-          url: String(item.url),
-          sourcePath: String(item.inputPath).replace(/^\.\//, ""),
-          markdown: readFileSync(String(item.inputPath), "utf8"),
-        }))
-        .sort((a, b) => a.title.localeCompare(b.title))
-    );
-  });
-
   // Passthrough copy — only ship assets that are directly referenced in HTML.
   // Source images in assets/images/{projects,lectures}/ are NOT copied because
   // they're processed by eleventy-img into build/img/ as optimized AVIF.
@@ -87,6 +69,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/fonts/*.woff2": "assets/fonts" });
   // Self-hosted KaTeX + Prism theme CSS (was CDN-loaded from jsdelivr/unpkg).
   eleventyConfig.addPassthroughCopy({ "assets/vendor": "assets/vendor" });
+  eleventyConfig.addPassthroughCopy({ "assets/css": "assets/css" });
   eleventyConfig.addPassthroughCopy({ "assets/logo": "assets/logo" });
   eleventyConfig.addPassthroughCopy({ "assets/js": "assets/js" });
   eleventyConfig.addPassthroughCopy({ "assets/og": "assets/og" });
@@ -776,7 +759,10 @@ export default function (eleventyConfig) {
   // Cache-busting: appends a short content hash as a query string to asset URLs.
   // Usage in templates: href="/css/style.css{{ '/css/style.css' | cacheBust }}"
   eleventyConfig.addFilter("cacheBust", (filePath) => {
-    const fullPath = path.join(__dirname, "build", filePath);
+    let fullPath = path.join(__dirname, "build", filePath);
+    if (!existsSync(fullPath) && String(filePath).startsWith("/assets/")) {
+      fullPath = path.join(__dirname, String(filePath).slice(1));
+    }
     if (!existsSync(fullPath)) return "";
     const content = readFileSync(fullPath);
     const hash = createHash("md5").update(content).digest("hex").slice(0, 8);
