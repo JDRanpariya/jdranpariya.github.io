@@ -1,4 +1,4 @@
-import { SiteFooter } from "@/components/site-footer";
+import { ResearchNavigation } from "@/components/research-navigation";
 import { researchThemes } from "@/data/research-themes";
 
 export default function Home() {
@@ -7,7 +7,8 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <main id="main" className="page-frame page-main">
+      <main id="main" className="public-page">
+        <ResearchNavigation current="questions" />
         <article className="research-index">
           <header className="research-intro">
             <h1>Jay Ranpariya</h1>
@@ -36,8 +37,6 @@ export default function Home() {
           </ul>
         </article>
       </main>
-
-      <SiteFooter />
     </div>
   );
 }

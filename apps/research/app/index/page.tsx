@@ -1,6 +1,6 @@
 import { getLibraryOwner, LIBRARY_OWNER_EMAIL } from "@/app/library-auth";
 import { PublicResearchIndex, type PublishedRecord } from "@/components/public-research-index";
-import { SiteFooter } from "@/components/site-footer";
+import { ResearchNavigation } from "@/components/research-navigation";
 import { getPublishedAnnotations } from "@/lib/research-annotations";
 import { getCatalogRecord, isCollectionId } from "@/lib/research-catalog";
 import type { Metadata } from "next";
@@ -42,23 +42,18 @@ export default async function ResearchIndexPage() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <main id="main" className="page-frame page-main">
-        <header className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="ui-label">Selected work</p>
-            <h1 className="mt-2 text-[32px] font-bold leading-tight tracking-[-0.025em]">
-              Research index
-            </h1>
-          </div>
+      <main id="main" className="public-page">
+        <ResearchNavigation current="index" />
+        <header className="index-heading">
+          <h1>Research index</h1>
           {owner ? (
-            <a href="/library/great-minds" className="text-sm underline">
-              Edit library
+            <a href="/library/great-minds" className="font-sans text-sm underline">
+              Open library
             </a>
           ) : null}
         </header>
         <PublicResearchIndex records={records} />
       </main>
-      <SiteFooter />
     </div>
   );
 }

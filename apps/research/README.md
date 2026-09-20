@@ -1,6 +1,6 @@
 # Research site
 
-This directory is the source for [research.jdranpariya.com](https://research.jdranpariya.com). It lives inside the canonical personal site repository so its design, source data, and deployment history stay together.
+This directory is the source for [research.jdranpariya.com](https://research.jdranpariya.com). It lives inside the canonical personal site repository so its source data and deployment history stay together. The research site has its own information architecture and visual system.
 
 ## What is here
 
@@ -13,6 +13,15 @@ This directory is the source for [research.jdranpariya.com](https://research.jdr
 - D1 — decisions and notes. Source census rows remain unchanged.
 
 Only `Keep` records with `Publish` enabled appear in the public index. Private notes are never included in its query or response.
+
+## Information architecture
+
+The site has two surfaces:
+
+- **Public research:** Questions at `/` and Jay's selected records at `/index`.
+- **Private workspace:** The two library collections, where Jay reviews, annotates, and publishes records.
+
+Public pages share one compact navigation. The library uses contextual links for moving back to the public pages and keeps its collection controls inside the workspace. Primary navigation is never placed in a footer.
 
 ## Local work
 
@@ -30,7 +39,7 @@ Regenerate the catalogs after either source CSV changes:
 bun run catalog:build
 ```
 
-The app uses the personal site's Figtree and Literata fonts and the Golden Peachy Glow color system. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
+The app uses self-hosted Figtree and Literata fonts with a neutral white, black, and red visual system inspired by Farnam Street. It does not inherit the personal site's color theme or page components. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
 
 ## Data model
 

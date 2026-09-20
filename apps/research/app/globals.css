@@ -34,34 +34,18 @@
 
 :root {
   color-scheme: light;
-  --bg: #fdfbf5;
-  --surface: #f4efe4;
-  --card: #ede8dc;
-  --ink: #2c251d;
-  --ink-secondary: #342b21;
-  --ink-muted: #786a55;
-  --accent: #9b4230;
-  --accent-soft: #f5ece1;
-  --border: #e2ddd0;
-  --success: #3f6f3c;
-  --warning: #9a6419;
-  --danger: #9b4230;
-}
-
-html.dark {
-  color-scheme: dark;
-  --bg: #1a1611;
-  --surface: #2d261c;
-  --card: #3a3024;
-  --ink: #f5f0e4;
-  --ink-secondary: #e0d8c8;
-  --ink-muted: #b8ad90;
-  --accent: #d4a070;
-  --accent-soft: #3f3426;
-  --border: #3a3024;
-  --success: #91bd88;
-  --warning: #ddb56d;
-  --danger: #e6a48f;
+  --bg: #ffffff;
+  --surface: #f5f5f3;
+  --card: #ededeb;
+  --ink: #121212;
+  --ink-secondary: #292929;
+  --ink-muted: #686764;
+  --accent: #b8321c;
+  --accent-soft: #f7e9e5;
+  --border: #dededb;
+  --success: #2f6b3a;
+  --warning: #8a5a12;
+  --danger: #b8321c;
 }
 
 @theme inline {
@@ -169,12 +153,32 @@ a:hover {
     @apply mx-auto w-full max-w-[78rem] px-5 sm:px-7;
   }
 
-  .page-main {
-    @apply pb-14 pt-10 md:pb-20 md:pt-14;
+  .public-page {
+    @apply mx-auto w-full max-w-[64rem] px-5 pb-16 pt-7 sm:px-7 sm:pt-9 md:pb-24;
+  }
+
+  .research-navigation {
+    @apply mb-14 flex min-h-10 items-center justify-between gap-5 font-sans text-[0.8125rem] leading-5 text-ink-muted md:mb-20;
+  }
+
+  .research-navigation-name {
+    @apply shrink-0 font-medium text-ink no-underline;
+  }
+
+  .research-navigation-links {
+    @apply flex items-center gap-5;
+  }
+
+  .research-navigation a {
+    @apply py-2 no-underline hover:text-accent;
+  }
+
+  .research-navigation a[aria-current="page"] {
+    @apply font-semibold text-ink;
   }
 
   .research-index {
-    @apply max-w-[80rem];
+    @apply max-w-[60rem];
   }
 
   .research-intro h1 {
@@ -186,7 +190,7 @@ a:hover {
   }
 
   .research-intro p {
-    @apply mt-5 max-w-[72rem] text-[1.0625rem] leading-[1.8] text-ink-secondary;
+    @apply mt-5 max-w-[58rem] text-[1.0625rem] leading-[1.8] text-ink-secondary;
   }
 
   .theme-list {
@@ -197,20 +201,59 @@ a:hover {
     @apply font-bold text-ink;
   }
 
-  .site-footer {
-    @apply mt-20 border-t border-border font-sans text-[0.875rem] leading-6 text-ink-muted;
+  .index-heading {
+    @apply flex items-baseline justify-between gap-5;
   }
 
-  .footer-inner {
-    @apply flex flex-col gap-3 py-8 sm:flex-row sm:items-center sm:justify-between;
+  .index-heading h1 {
+    @apply text-[2rem] font-bold leading-tight;
   }
 
-  .footer-inner nav {
-    @apply flex flex-wrap gap-x-5 gap-y-2;
+  .index-tools {
+    @apply mt-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between;
   }
 
-  .footer-inner a {
-    @apply underline;
+  .index-filters {
+    @apply flex flex-wrap gap-5 font-sans text-sm;
+  }
+
+  .index-filters button {
+    @apply min-h-10 py-2 text-ink-muted hover:text-ink;
+  }
+
+  .index-filters button[aria-pressed="true"] {
+    @apply font-semibold text-ink;
+  }
+
+  .index-search {
+    @apply block w-full sm:max-w-64;
+  }
+
+  .index-search input {
+    @apply w-full appearance-none border-0 bg-transparent px-0 py-2 font-sans text-sm text-ink placeholder:text-ink-muted;
+    border-radius: 0;
+    box-shadow: none;
+    outline: 0;
+  }
+
+  .index-results {
+    @apply mt-7 space-y-10;
+  }
+
+  .index-record {
+    @apply grid gap-3 md:grid-cols-[minmax(13rem,1.1fr)_minmax(18rem,2fr)_auto] md:gap-8;
+  }
+
+  .index-record h2 {
+    @apply font-bold leading-6;
+  }
+
+  .index-record-note {
+    @apply min-w-0;
+  }
+
+  .index-empty {
+    @apply py-8 text-ink-muted;
   }
 
   .skip-link {

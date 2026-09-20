@@ -1,9 +1,12 @@
 "use client";
 
+import { ResearchNavigation } from "@/components/research-navigation";
+
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <main className="page-frame py-16 md:py-24">
+      <main className="public-page">
+        <ResearchNavigation />
         <p className="ui-label">Error</p>
         <h1 className="mt-2 text-4xl font-bold">This page could not be loaded.</h1>
         <p className="mt-5 max-w-xl text-ink-secondary">

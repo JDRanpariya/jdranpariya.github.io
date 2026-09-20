@@ -1,7 +1,10 @@
+import { ResearchNavigation } from "@/components/research-navigation";
+
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <main className="page-frame py-16 md:py-24">
+      <main className="public-page">
+        <ResearchNavigation />
         <p className="ui-label">404</p>
         <h1 className="mt-2 text-4xl font-bold">Page not found.</h1>
         <p className="mt-5 max-w-xl text-ink-secondary">

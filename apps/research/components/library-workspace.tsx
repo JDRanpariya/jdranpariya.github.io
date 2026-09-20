@@ -329,13 +329,13 @@ export function LibraryWorkspace({
       <main id="main" className="page-frame py-6 md:py-9">
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
-          <a
-            href="/signout-with-chatgpt?return_to=%2F"
-            className="font-sans text-xs text-ink-muted underline"
-            title={`Signed in as ${ownerEmail}`}
-          >
-            Sign out
-          </a>
+          <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
+            <a href="/">Questions</a>
+            <a href="/index">Index</a>
+            <a href="/signout-with-chatgpt?return_to=%2F" title={`Signed in as ${ownerEmail}`}>
+              Sign out
+            </a>
+          </span>
         </div>
 
         <nav aria-label="Research collections" className="mt-6 flex gap-5 font-sans text-sm">
