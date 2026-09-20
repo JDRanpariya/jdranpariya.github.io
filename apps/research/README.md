@@ -39,7 +39,7 @@ Regenerate the catalogs after either source CSV changes:
 bun run catalog:build
 ```
 
-The app uses self-hosted Figtree and Literata fonts with a neutral white, black, and red visual system inspired by Farnam Street. It does not inherit the personal site's color theme or page components. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
+The app uses self-hosted Figtree for headings and Source Serif 4 for body text, with a neutral white, black, and red visual system inspired by Farnam Street. It does not inherit the personal site's color theme or page components. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
 
 ## Data model
 

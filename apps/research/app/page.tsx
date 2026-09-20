@@ -11,8 +11,7 @@ export default function Home() {
         <ResearchNavigation current="research" />
         <article className="research-index">
           <header className="research-intro">
-            <h1>Jay Ranpariya</h1>
-            <h2>information, compression and learning dynamics</h2>
+            <h1>information, compression and learning dynamics</h1>
             <p>
               Anything you can formalize can be simulated, and substrate only matters for cost:
               energy, time, parallelism, and noise tolerance.{" "}
