@@ -158,11 +158,7 @@ a:hover {
   }
 
   .research-navigation {
-    @apply mb-14 flex min-h-10 items-center justify-between gap-5 font-sans text-[0.8125rem] leading-5 text-ink-muted md:mb-20;
-  }
-
-  .research-navigation-name {
-    @apply shrink-0 font-medium text-ink no-underline;
+    @apply mb-14 flex min-h-10 items-center justify-end font-sans text-[0.8125rem] leading-5 text-ink-muted md:mb-20;
   }
 
   .research-navigation-links {

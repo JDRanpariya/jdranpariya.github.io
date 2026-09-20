@@ -18,7 +18,7 @@ Only `Keep` records with `Publish` enabled appear in the public index. Private n
 
 The site has two surfaces:
 
-- **Public research:** Questions at `/` and Jay's selected records at `/index`.
+- **Public research:** Research at `/` and Jay's selected records at `/index`.
 - **Private workspace:** The two library collections, where Jay reviews, annotates, and publishes records.
 
 Public pages share one compact navigation. The library uses contextual links for moving back to the public pages and keeps its collection controls inside the workspace. Primary navigation is never placed in a footer.

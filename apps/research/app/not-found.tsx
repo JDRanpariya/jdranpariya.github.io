@@ -11,7 +11,7 @@ export default function NotFound() {
           The page may have moved, or this part of the research library may be private.
         </p>
         <a href="/" className="ui-button-secondary mt-7">
-          Return to research questions
+          Return to research
         </a>
       </main>
     </div>

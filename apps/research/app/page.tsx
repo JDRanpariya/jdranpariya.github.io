@@ -8,7 +8,7 @@ export default function Home() {
         Skip to content
       </a>
       <main id="main" className="public-page">
-        <ResearchNavigation current="questions" />
+        <ResearchNavigation current="research" />
         <article className="research-index">
           <header className="research-intro">
             <h1>Jay Ranpariya</h1>

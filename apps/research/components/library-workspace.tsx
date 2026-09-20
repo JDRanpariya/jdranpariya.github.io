@@ -330,7 +330,7 @@ export function LibraryWorkspace({
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
           <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
-            <a href="/">Questions</a>
+            <a href="/">Research</a>
             <a href="/index">Index</a>
             <a href="/signout-with-chatgpt?return_to=%2F" title={`Signed in as ${ownerEmail}`}>
               Sign out
