@@ -350,7 +350,10 @@ export function LibraryWorkspace({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <main id="main" className="page-frame py-6 md:py-9">
+      <main
+        id="main"
+        className="page-frame flex min-h-screen flex-col py-6 md:h-dvh md:min-h-0 md:overflow-hidden md:py-9"
+      >
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
           <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
@@ -429,19 +432,19 @@ export function LibraryWorkspace({
           ) : null}
         </section>
 
-        <div className="mt-5 grid md:grid-cols-[20rem_minmax(0,1fr)] lg:grid-cols-[22rem_minmax(0,1fr)]">
+        <div className="mt-5 grid min-h-0 flex-1 md:grid-cols-[20rem_minmax(0,1fr)] lg:grid-cols-[22rem_minmax(0,1fr)]">
           <section
             aria-label="Catalog records"
-            className={`${mobileDetail ? "hidden md:block" : "block"} min-w-0`}
+            className={`${mobileDetail ? "hidden md:flex" : "block md:flex"} min-w-0 md:min-h-0 md:flex-col`}
           >
-            <div className="mb-2 flex items-center justify-between font-sans text-xs text-ink-muted">
+            <div className="mb-2 flex shrink-0 items-center justify-between font-sans text-xs text-ink-muted">
               <p>{loading ? "Loading…" : `${pageData.total.toLocaleString()} records`}</p>
               {dirty.size > 0 ? <p>{dirty.size} unsaved</p> : null}
             </div>
 
             <div
               id="library-record-scroll"
-              className="library-record-scroll md:max-h-[69vh] md:overflow-y-auto"
+              className="library-record-scroll md:min-h-0 md:flex-1 md:overflow-y-auto"
             >
               {pageData.records.map((record) => {
                 const draft = drafts[record.id] ?? emptyDraft();
@@ -487,7 +490,7 @@ export function LibraryWorkspace({
 
           <section
             aria-label="Selected record"
-            className={`${mobileDetail ? "block" : "hidden md:block"} min-w-0 md:pl-8 lg:pl-10`}
+            className={`${mobileDetail ? "block" : "hidden md:block"} library-detail-scroll min-w-0 md:min-h-0 md:overflow-y-auto md:pl-8 md:pr-2 lg:pl-10`}
           >
             {selected && selectedDraft ? (
               <div>
