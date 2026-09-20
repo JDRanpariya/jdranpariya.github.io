@@ -142,6 +142,28 @@ a:hover {
   outline: 0;
 }
 
+.library-record-scroll {
+  scrollbar-color: color-mix(in srgb, var(--ink-muted) 45%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+.library-record-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.library-record-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.library-record-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-muted) 45%, transparent);
+  border-radius: 999px;
+}
+
+.library-record-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-muted);
+}
+
 :focus-visible {
   border-radius: 4px;
   outline: 2px solid var(--accent);

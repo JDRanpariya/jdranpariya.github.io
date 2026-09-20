@@ -147,11 +147,13 @@ export function LibraryWorkspace({
     decision = decisionFilter,
     page = 1,
     nextCollection = activeCollection,
+    append = false,
   }: {
     q?: string;
     decision?: Decision | "all";
     page?: number;
     nextCollection?: CollectionId;
+    append?: boolean;
   } = {}) {
     const requestId = ++requestNumber.current;
     setLoadError("");
@@ -159,7 +161,27 @@ export function LibraryWorkspace({
 
     function applyResult(result: LibraryPageData) {
       setActiveCollection(nextCollection);
-      setPageData(result);
+      setPageData((current) => {
+        if (!append) return result;
+
+        const existingRecordIds = new Set(current.records.map((record) => record.id));
+        const existingAnnotationIds = new Set(
+          current.annotations.map((annotation) => annotation.recordId)
+        );
+        return {
+          ...result,
+          records: [
+            ...current.records,
+            ...result.records.filter((record) => !existingRecordIds.has(record.id)),
+          ],
+          annotations: [
+            ...current.annotations,
+            ...result.annotations.filter(
+              (annotation) => !existingAnnotationIds.has(annotation.recordId)
+            ),
+          ],
+        };
+      });
       setDrafts((current) => {
         const next = { ...current };
         const incoming = draftsFromAnnotations(result.annotations);
@@ -168,12 +190,14 @@ export function LibraryWorkspace({
         }
         return next;
       });
-      setSelectedId((current) =>
-        result.records.some((record) => record.id === current)
-          ? current
-          : (result.records[0]?.id ?? "")
-      );
-      setMobileDetail(false);
+      if (!append) {
+        setSelectedId((current) =>
+          result.records.some((record) => record.id === current)
+            ? current
+            : (result.records[0]?.id ?? "")
+        );
+        setMobileDetail(false);
+      }
     }
 
     const cached = pageCache.current.get(key);
@@ -415,7 +439,10 @@ export function LibraryWorkspace({
               {dirty.size > 0 ? <p>{dirty.size} unsaved</p> : null}
             </div>
 
-            <div className="md:max-h-[69vh] md:overflow-y-auto">
+            <div
+              id="library-record-scroll"
+              className="library-record-scroll md:max-h-[69vh] md:overflow-y-auto"
+            >
               {pageData.records.map((record) => {
                 const draft = drafts[record.id] ?? emptyDraft();
                 const active = selected?.id === record.id;
@@ -450,31 +477,12 @@ export function LibraryWorkspace({
               {!loading && pageData.records.length === 0 ? (
                 <p className="py-10 text-ink-muted">No matching records.</p>
               ) : null}
+              <InfiniteLoader
+                hasMore={pageData.page < pageData.pageCount && !loadError}
+                loading={loading}
+                onLoadMore={() => void loadPage({ page: pageData.page + 1, append: true })}
+              />
             </div>
-
-            {pageData.pageCount > 1 ? (
-              <div className="mt-4 flex items-center justify-between font-sans text-sm">
-                <button
-                  type="button"
-                  disabled={loading || pageData.page === 1}
-                  onClick={() => void loadPage({ page: pageData.page - 1 })}
-                  className="min-h-10 px-1 underline disabled:text-ink-muted disabled:no-underline"
-                >
-                  Previous
-                </button>
-                <span className="text-ink-muted">
-                  {pageData.page} / {pageData.pageCount}
-                </span>
-                <button
-                  type="button"
-                  disabled={loading || pageData.page === pageData.pageCount}
-                  onClick={() => void loadPage({ page: pageData.page + 1 })}
-                  className="min-h-10 px-1 underline disabled:text-ink-muted disabled:no-underline"
-                >
-                  Next
-                </button>
-              </div>
-            ) : null}
           </section>
 
           <section
@@ -676,6 +684,48 @@ export function LibraryWorkspace({
           </section>
         </div>
       </main>
+    </div>
+  );
+}
+
+function InfiniteLoader({
+  hasMore,
+  loading,
+  onLoadMore,
+}: {
+  hasMore: boolean;
+  loading: boolean;
+  onLoadMore: () => void;
+}) {
+  const sentinel = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const target = sentinel.current;
+    if (!target || !hasMore || loading) return;
+
+    const desktop = window.matchMedia("(min-width: 768px)").matches;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) onLoadMore();
+      },
+      {
+        root: desktop ? document.getElementById("library-record-scroll") : null,
+        rootMargin: "240px",
+      }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMore, loading, onLoadMore]);
+
+  if (!hasMore && !loading) return null;
+
+  return (
+    <div
+      ref={sentinel}
+      className="min-h-8 py-2 font-sans text-xs text-ink-muted"
+      aria-live="polite"
+    >
+      {loading ? "Loading more…" : ""}
     </div>
   );
 }
