@@ -23,6 +23,12 @@ The site has two surfaces:
 
 Public pages share one compact navigation. The library uses contextual links for moving back to the public pages and keeps its collection controls inside the workspace. Primary navigation is never placed in a footer.
 
+### Research notes
+
+The homepage is the root of a note trail. Each theme in `data/research-themes.ts` has a stable `slug`; its title opens as a note and is encoded in repeated `notes` query parameters. Browser Back and Forward rebuild the trail, so a copied URL opens the same note context.
+
+Add another theme slug to a theme's optional `links` array to expose a link from that note. Registered note links open in the stack on desktop, show a preview on hover or keyboard focus, and behave as ordinary single-page navigation below 801 px. External and modifier-clicked links keep the browser's normal behavior.
+
 ## Local work
 
 ```sh
@@ -43,7 +49,7 @@ The app uses self-hosted Figtree for headings and Source Serif 4 for body text, 
 
 ## Data model
 
-The full catalogs stay server side. The private editor requests 40 records at a time and performs search, filtering, and pagination on the server. This keeps the first page small enough to hydrate promptly on both phones and desktop browsers.
+The full catalogs stay server side. The private editor requests records incrementally and performs search and filtering on the server. This keeps the first response small while continuous loading removes visible numbered pagination.
 
 Annotation writes require a signed-in user whose normalized email equals `jaydeepranpariya037@gmail.com`. The API validates collections, decisions, note lengths, and record IDs before writing to D1.
 

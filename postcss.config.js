@@ -63,6 +63,9 @@ export default {
                 /^interactive/,
                 /^ncase/,
                 /^scroll-step/,
+                // Codex note trails are assembled by assets/js/codex-notes.js.
+                /^codex-note/,
+                /^codex-stack-section$/,
                 /^guestbook-credit$/,
               ],
             },

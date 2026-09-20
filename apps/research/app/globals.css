@@ -184,6 +184,14 @@ a:hover {
     @apply mx-auto w-full max-w-[64rem] px-5 pb-16 pt-7 sm:px-7 sm:pt-9 md:pb-24;
   }
 
+  .research-notes-page {
+    @apply mx-auto w-full max-w-[78rem] px-5 pb-16 pt-7 sm:px-7 sm:pt-9 md:pb-20;
+  }
+
+  .research-notes-navigation {
+    @apply mx-auto max-w-[64rem];
+  }
+
   .research-navigation {
     @apply mb-14 flex min-h-10 items-center justify-between gap-5 font-sans text-[0.8125rem] leading-5 text-ink-muted md:mb-20;
   }
@@ -222,6 +230,86 @@ a:hover {
 
   .theme-list strong {
     @apply font-bold text-ink;
+  }
+
+  .research-note-link {
+    @apply underline decoration-border decoration-[1.5px] underline-offset-[0.22em] transition-colors duration-100 hover:text-accent hover:decoration-accent;
+  }
+
+  .research-note-stack {
+    @apply flex min-h-[calc(100dvh-9rem)] w-full items-stretch overflow-x-auto bg-bg;
+    scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
+    scrollbar-width: thin;
+  }
+
+  .research-note-rails {
+    @apply flex shrink-0 items-stretch;
+  }
+
+  .research-note-rail {
+    @apply flex w-10 shrink-0 items-start justify-center bg-page py-5 font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted no-underline transition-colors duration-100 hover:bg-card hover:text-ink;
+    box-shadow: inset -1px 0 0 var(--border);
+  }
+
+  .research-note-rail span {
+    writing-mode: vertical-lr;
+  }
+
+  .research-note-pane {
+    @apply min-h-[calc(100dvh-9rem)] w-[min(39rem,calc(100vw-5rem))] shrink-0 overflow-y-auto px-7 pb-16 pt-4 outline-none sm:px-10 sm:pt-7;
+    scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
+    scrollbar-width: thin;
+  }
+
+  .research-note-pane:focus-visible {
+    border-radius: 0;
+    outline: none;
+  }
+
+  .research-note-pane::-webkit-scrollbar,
+  .research-note-stack::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .research-note-pane::-webkit-scrollbar-track,
+  .research-note-stack::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .research-note-pane::-webkit-scrollbar-thumb,
+  .research-note-stack::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+
+  .research-note-header h1 {
+    @apply mt-3 text-[2rem] font-bold leading-[1.1] tracking-[-0.035em] sm:text-[2.5rem];
+  }
+
+  .research-note-question {
+    @apply mt-8 text-[1.125rem] leading-[1.8] text-ink-secondary;
+  }
+
+  .research-note-links {
+    @apply mt-9 space-y-3 pl-5 text-[1.0625rem] leading-7;
+  }
+
+  .research-note-mobile-back {
+    @apply mb-8 hidden font-sans text-sm text-ink-muted no-underline;
+  }
+
+  .research-note-preview {
+    @apply pointer-events-none fixed z-40 w-[min(31.25rem,calc(100vw-2rem))] overflow-hidden bg-bg px-8 py-7 text-ink;
+    max-height: min(25rem, calc(100dvh - 2rem));
+    box-shadow: 0 12px 36px rgb(44 37 29 / 14%);
+  }
+
+  .research-note-preview h2 {
+    @apply mt-2 text-2xl font-bold leading-tight;
+  }
+
+  .research-note-preview > p:last-child {
+    @apply mt-5 text-[1rem] leading-7 text-ink-secondary;
   }
 
   .index-heading {
@@ -309,6 +397,25 @@ a:hover {
 
   .ui-label {
     @apply font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted;
+  }
+}
+
+@media (max-width: 800px) {
+  .research-note-stack {
+    @apply block min-h-0 overflow-visible;
+  }
+
+  .research-note-rails,
+  .research-note-preview {
+    @apply hidden;
+  }
+
+  .research-note-pane {
+    @apply min-h-0 w-full overflow-visible px-0 pb-4 pt-0;
+  }
+
+  .research-note-mobile-back {
+    @apply inline-block;
   }
 }
 

@@ -1,40 +1,31 @@
 import { ResearchNavigation } from "@/components/research-navigation";
+import { ResearchNotes } from "@/components/research-notes";
 import { researchThemes } from "@/data/research-themes";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ notes?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const requestedPath = Array.isArray(params.notes)
+    ? params.notes
+    : params.notes
+      ? [params.notes]
+      : [];
+  const validSlugs = new Set(researchThemes.map((theme) => theme.slug));
+  const initialPath = requestedPath.filter((slug) => validSlugs.has(slug));
+
   return (
     <div className="min-h-screen bg-page text-ink">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <main id="main" className="public-page">
-        <ResearchNavigation current="research" />
-        <article className="research-index">
-          <header className="research-intro">
-            <h1>information, compression and learning dynamics</h1>
-            <p>
-              Anything you can formalize can be simulated, and substrate only matters for cost:
-              energy, time, parallelism, and noise tolerance.{" "}
-              <em>
-                A mechanism carries over if the constraint that made it worthwhile still holds on
-                the new substrate.
-              </em>
-            </p>
-            <p>
-              I want to understand how intelligent systems learn to perceive, act, remember, and
-              adapt in the physical world, and which principles from biological intelligence can
-              help us build better ones.
-            </p>
-          </header>
-
-          <ul className="theme-list">
-            {researchThemes.map((theme) => (
-              <li key={theme.title}>
-                <strong>{theme.title}:</strong> {theme.questions}
-              </li>
-            ))}
-          </ul>
-        </article>
+      <main id="main" className="research-notes-page">
+        <div className="research-notes-navigation">
+          <ResearchNavigation current="research" />
+        </div>
+        <ResearchNotes initialPath={initialPath} />
       </main>
     </div>
   );
