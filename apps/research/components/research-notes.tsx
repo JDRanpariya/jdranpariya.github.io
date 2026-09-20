@@ -1,241 +1,310 @@
 "use client";
 
-import { researchThemes, type ResearchTheme } from "@/data/research-themes";
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ResearchAuthor } from "@/components/research-author";
+import { parseResearchHome, type ResearchHome, type ResearchTheme } from "@/lib/research-home";
+import {
+  type CSSProperties,
+  type ReactNode,
+  type WheelEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-type PreviewState = { theme: ResearchTheme; left: number; top: number };
-
-const themeBySlug = new Map(researchThemes.map((theme) => [theme.slug, theme]));
-
-function normalizePath(path: string[]) {
+function normalizePath(path: string[], themes: ReadonlyMap<string, ResearchTheme>) {
   const seen = new Set<string>();
   return path.filter((slug) => {
-    if (!themeBySlug.has(slug) || seen.has(slug)) return false;
+    if (!themes.has(slug) || seen.has(slug)) return false;
     seen.add(slug);
     return true;
   });
 }
 
-function readPathFromLocation() {
-  return normalizePath(new URL(window.location.href).searchParams.getAll("notes"));
-}
-
-function hrefForPath(path: string[]) {
+function hrefForPath(path: string[], focusIndex = path.length) {
   const params = new URLSearchParams();
   path.forEach((slug) => params.append("notes", slug));
+  if (path.length && focusIndex !== path.length) params.set("noteFocus", String(focusIndex));
   const query = params.toString();
   return query ? `/?${query}` : "/";
 }
 
-function isPlainPrimaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
-  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+function renderInline(text: string, openNote?: (slug: string) => void): ReactNode[] {
+  return text.split(/(\[[^\]]+\]\([^)]+\)|_[^_]+_)/g).map((part, index) => {
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link) {
+      const [, label, destination] = link;
+      const noteSlug = destination.startsWith("note:") ? destination.slice(5) : undefined;
+      return (
+        <a
+          href={noteSlug ? `/?notes=${encodeURIComponent(noteSlug)}` : destination}
+          key={index}
+          onClick={
+            noteSlug && openNote
+              ? (event) => {
+                  event.preventDefault();
+                  openNote(noteSlug);
+                }
+              : undefined
+          }
+        >
+          {label}
+        </a>
+      );
+    }
+    if (part.startsWith("_") && part.endsWith("_")) {
+      return <em key={index}>{part.slice(1, -1)}</em>;
+    }
+    return part;
+  });
 }
 
-export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
-  const [path, setPath] = useState(() => normalizePath(initialPath));
-  const [preview, setPreview] = useState<PreviewState | null>(null);
-  const stackRef = useRef<HTMLElement>(null);
-  const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+function paneScrollLeft(index: number, paneWidth: number, paneEdge: number, maximum: number) {
+  return Math.min(Math.max(0, maximum), Math.max(0, index) * Math.max(0, paneWidth - paneEdge));
+}
 
-  const setTrail = useCallback((nextPath: string[], mode: "push" | "replace" = "push") => {
-    const normalized = normalizePath(nextPath);
-    setPath(normalized);
-    setPreview(null);
-    const url = new URL(window.location.href);
-    url.searchParams.delete("notes");
-    normalized.forEach((slug) => url.searchParams.append("notes", slug));
-    window.history[mode === "push" ? "pushState" : "replaceState"](
-      { notes: normalized },
-      "",
-      `${url.pathname}${url.search}${url.hash}`
-    );
-  }, []);
+export function ResearchNotes({
+  initialDocument,
+  initialFocus,
+  initialMarkdown,
+  initialPath,
+}: {
+  initialDocument: ResearchHome;
+  initialFocus: number;
+  initialMarkdown: string;
+  initialPath: string[];
+}) {
+  const [researchDocument, setResearchDocument] = useState(initialDocument);
+  const themeBySlug = useMemo(
+    () => new Map(researchDocument.themes.map((theme) => [theme.slug, theme])),
+    [researchDocument.themes]
+  );
+  const [path, setPath] = useState(() => normalizePath(initialPath, themeBySlug));
+  const [focusIndex, setFocusIndex] = useState(() => initialFocus);
+  const [obscured, setObscured] = useState<ReadonlySet<number>>(() => new Set());
 
-  useEffect(() => {
-    const handlePopState = () => {
-      setPath(readPathFromLocation());
-      setPreview(null);
-    };
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  const panels = useMemo(
+    () => [
+      { slug: "research", title: "Research", theme: undefined },
+      ...path.map((slug) => ({
+        slug,
+        title: themeBySlug.get(slug)?.title ?? slug,
+        theme: themeBySlug.get(slug),
+      })),
+    ],
+    [path, themeBySlug]
+  );
 
-  useEffect(() => {
-    const stack = stackRef.current;
-    if (!stack || window.matchMedia("(max-width: 800px)").matches) return;
-    const frame = requestAnimationFrame(() => {
-      stack.scrollTo({ left: Math.max(0, (path.length - 1) * 585), behavior: "smooth" });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [path]);
-
-  useEffect(() => {
-    const dismiss = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setPreview(null);
-    };
-    window.addEventListener("keydown", dismiss);
-    return () => window.removeEventListener("keydown", dismiss);
-  }, []);
-
-  useEffect(
-    () => () => {
-      if (previewTimer.current) clearTimeout(previewTimer.current);
+  const writeLocation = useCallback(
+    (nextPath: string[], nextFocus: number, mode: "push" | "replace") => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("notes");
+      url.searchParams.delete("noteFocus");
+      nextPath.forEach((slug) => url.searchParams.append("notes", slug));
+      if (nextPath.length && nextFocus !== nextPath.length) {
+        url.searchParams.set("noteFocus", String(nextFocus));
+      }
+      window.history[mode === "push" ? "pushState" : "replaceState"](
+        { notes: nextPath, noteFocus: nextFocus },
+        "",
+        `${url.pathname}${url.search}${url.hash}`
+      );
     },
     []
   );
 
-  const panels = useMemo(
-    () => [
-      { slug: "research", title: "Research", theme: undefined, path: [] as string[] },
-      ...path.map((slug, index) => ({
-        slug,
-        title: themeBySlug.get(slug)?.title ?? slug,
-        theme: themeBySlug.get(slug),
-        path: path.slice(0, index + 1),
-      })),
-    ],
-    [path]
+  const measureObscured = useCallback(() => {
+    const stack = window.document.querySelector<HTMLElement>(".research-note-stack");
+    if (!stack) return;
+    const panes = [...stack.querySelectorAll<HTMLElement>(".research-note-pane")];
+    const next = new Set<number>();
+    for (let index = 0; index < panes.length - 1; index += 1) {
+      const pane = panes[index];
+      const following = panes[index + 1];
+      if (
+        pane &&
+        following &&
+        following.getBoundingClientRect().left < pane.getBoundingClientRect().right - 1
+      ) {
+        next.add(index);
+      }
+    }
+    setObscured((current) => {
+      if (current.size === next.size && [...current].every((index) => next.has(index)))
+        return current;
+      return next;
+    });
+  }, []);
+
+  const scrollToPane = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
+    const stack = window.document.querySelector<HTMLElement>(".research-note-stack");
+    if (!stack) return;
+    const pane = stack.querySelector<HTMLElement>(`[data-pane-index="${index}"]`);
+    if (!pane) return;
+    const edge = Number.parseFloat(getComputedStyle(stack).getPropertyValue("--pane-edge")) || 40;
+    stack.scrollTo({
+      left: paneScrollLeft(index, pane.offsetWidth, edge, stack.scrollWidth - stack.clientWidth),
+      behavior,
+    });
+  }, []);
+
+  const focusPane = useCallback(
+    (index: number, mode: "push" | "replace" = "push") => {
+      const bounded = Math.max(0, Math.min(index, panels.length - 1));
+      setFocusIndex(bounded);
+      writeLocation(path, bounded, mode);
+      requestAnimationFrame(() => scrollToPane(bounded));
+    },
+    [panels.length, path, scrollToPane, writeLocation]
   );
 
-  function openTheme(
-    event: React.MouseEvent<HTMLAnchorElement>,
-    slug: string,
-    sourceIndex: number
-  ) {
-    if (!isPlainPrimaryClick(event)) return;
+  const openTheme = useCallback(
+    (slug: string, sourcePanelIndex: number) => {
+      if (!themeBySlug.has(slug)) return;
+      const existing = path.indexOf(slug);
+      if (existing >= 0) {
+        focusPane(existing + 1);
+        return;
+      }
+      const nextPath = [...path.slice(0, sourcePanelIndex), slug];
+      setPath(nextPath);
+      setFocusIndex(nextPath.length);
+      writeLocation(nextPath, nextPath.length, "push");
+    },
+    [focusPane, path, themeBySlug, writeLocation]
+  );
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      measureObscured();
+      scrollToPane(focusIndex, "auto");
+    });
+    window.addEventListener("resize", measureObscured);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", measureObscured);
+    };
+  }, [focusIndex, measureObscured, panels.length, scrollToPane]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URL(window.location.href).searchParams;
+      const nextPath = normalizePath(params.getAll("notes"), themeBySlug);
+      const requestedFocus = Number.parseInt(
+        params.get("noteFocus") ?? String(nextPath.length),
+        10
+      );
+      setPath(nextPath);
+      setFocusIndex(Math.max(0, Math.min(requestedFocus, nextPath.length)));
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [themeBySlug]);
+
+  function panHorizontally(event: WheelEvent<HTMLElement>) {
+    if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     event.preventDefault();
-    const openIndex = path.indexOf(slug);
-    if (openIndex >= 0) {
-      setTrail(path.slice(0, openIndex + 1));
-      return;
+    event.currentTarget.scrollLeft += event.deltaY;
+  }
+
+  const previewMarkdown = useCallback((markdown: string) => {
+    try {
+      const next = parseResearchHome(markdown);
+      setResearchDocument(next);
+      setPath((current) =>
+        normalizePath(current, new Map(next.themes.map((theme) => [theme.slug, theme])))
+      );
+    } catch {
+      // The editor reports parse errors and leaves the last valid preview visible.
     }
-    setTrail([...path.slice(0, sourceIndex + 1), slug]);
-  }
-
-  function schedulePreview(anchor: HTMLAnchorElement, slug: string, immediate = false) {
-    if (!window.matchMedia("(min-width: 801px) and (hover: hover) and (pointer: fine)").matches)
-      return;
-    if (previewTimer.current) clearTimeout(previewTimer.current);
-    previewTimer.current = setTimeout(
-      () => {
-        const theme = themeBySlug.get(slug);
-        if (!theme || !document.contains(anchor)) return;
-        const rect = anchor.getBoundingClientRect();
-        const width = Math.min(500, window.innerWidth - 32);
-        const height = Math.min(400, window.innerHeight - 32);
-        const fitsRight = rect.right + 14 + width <= window.innerWidth - 16;
-        const left = fitsRight ? rect.right + 14 : Math.max(16, rect.left - width - 14);
-        const top = Math.min(Math.max(16, rect.top - 28), window.innerHeight - height - 16);
-        setPreview({ theme, left, top });
-      },
-      immediate ? 0 : 260
-    );
-  }
-
-  function hidePreview() {
-    if (previewTimer.current) clearTimeout(previewTimer.current);
-    setPreview(null);
-  }
-
-  function themeLink(theme: ResearchTheme, sourceIndex: number) {
-    const nextPath = [...path.slice(0, sourceIndex + 1), theme.slug];
-    const isOpenNext = path[sourceIndex + 1] === theme.slug;
-    return (
-      <Link
-        href={hrefForPath(nextPath)}
-        className={`research-note-link${isOpenNext ? " is-open" : ""}`}
-        onClick={(event) => openTheme(event, theme.slug, sourceIndex)}
-        onMouseEnter={(event) => schedulePreview(event.currentTarget, theme.slug)}
-        onMouseLeave={hidePreview}
-        onFocus={(event) => schedulePreview(event.currentTarget, theme.slug, true)}
-        onBlur={hidePreview}
-      >
-        {theme.title}
-      </Link>
-    );
-  }
+  }, []);
 
   return (
     <>
+      {panels.length > 1 ? (
+        <nav className="research-note-path" aria-label="Open research notes">
+          {panels.map((panel, index) => (
+            <button
+              aria-current={index === focusIndex ? "page" : undefined}
+              key={panel.slug}
+              onClick={() => focusPane(index)}
+              type="button"
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {panel.title}
+            </button>
+          ))}
+        </nav>
+      ) : null}
+
       <section
-        ref={stackRef}
-        className={`research-note-stack${panels.length > 2 ? " has-overflowing-trail" : ""}`}
+        className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length > 1 ? " has-path" : ""}`}
         aria-label="Open research notes"
+        onScroll={measureObscured}
+        onWheel={panHorizontally}
       >
         {panels.map((panel, panelIndex) => (
-          <article key={panel.slug} className="research-note-pane" aria-label={panel.title}>
-            <Link
-              href={hrefForPath(panel.path)}
-              className="research-note-obscured-label"
-              onClick={(event) => {
-                if (!isPlainPrimaryClick(event)) return;
-                event.preventDefault();
-                setTrail(panel.path);
-              }}
-              tabIndex={panelIndex < panels.length - 2 ? 0 : -1}
+          <article
+            aria-current={panelIndex === focusIndex ? "page" : undefined}
+            className={`research-note-pane${panelIndex === focusIndex ? " is-active" : ""}${obscured.has(panelIndex) ? " is-obscured" : ""}`}
+            data-pane-index={panelIndex}
+            key={panel.slug}
+            style={{ "--pane-index": panelIndex } as CSSProperties}
+          >
+            <button
+              aria-hidden={!obscured.has(panelIndex)}
+              aria-label={`Focus pane ${String(panelIndex + 1).padStart(2, "0")}: ${panel.title}`}
+              className="research-note-spine"
+              onClick={() => focusPane(panelIndex)}
+              tabIndex={obscured.has(panelIndex) ? 0 : -1}
+              type="button"
             >
-              {panel.title}
-            </Link>
+              <span>{String(panelIndex + 1).padStart(2, "0")}</span>
+              <strong>{panel.title}</strong>
+            </button>
 
-            {panel.theme ? (
-              <div className="research-note-content">
-                <h1>{panel.theme.title}</h1>
-                <p>{panel.theme.questions}</p>
-                {panel.theme.links?.length ? (
-                  <ul className="research-note-links">
-                    {panel.theme.links
-                      .map((slug) => themeBySlug.get(slug))
-                      .filter((theme): theme is ResearchTheme => Boolean(theme))
-                      .map((theme) => (
-                        <li key={theme.slug}>{themeLink(theme, panelIndex - 1)}</li>
-                      ))}
+            <div className="research-note-scroll">
+              {panel.theme ? (
+                <div className="research-note-content">
+                  <h1>{panel.theme.title}</h1>
+                  <p>
+                    {renderInline(panel.theme.questions, (slug) => openTheme(slug, panelIndex))}
+                  </p>
+                  <a
+                    className="research-note-back"
+                    href={hrefForPath(path, panelIndex - 1)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      focusPane(panelIndex - 1);
+                    }}
+                  >
+                    Back to {panels[panelIndex - 1]?.title ?? "Research"}
+                  </a>
+                </div>
+              ) : (
+                <div className="research-note-content research-root-note">
+                  <header className="research-intro">
+                    <h1>{researchDocument.title}</h1>
+                    {researchDocument.introduction.map((paragraph) => (
+                      <p key={paragraph}>{renderInline(paragraph, (slug) => openTheme(slug, 0))}</p>
+                    ))}
+                  </header>
+                  <ul className="theme-list">
+                    {researchDocument.themes.map((theme) => (
+                      <li key={theme.slug}>
+                        <strong>{theme.title}:</strong>{" "}
+                        {renderInline(theme.questions, (slug) => openTheme(slug, 0))}
+                      </li>
+                    ))}
                   </ul>
-                ) : null}
-              </div>
-            ) : (
-              <div className="research-note-content research-root-note">
-                <header className="research-intro">
-                  <h1>information, compression and learning dynamics</h1>
-                  <p>
-                    Anything you can formalize can be simulated, and substrate only matters for
-                    cost: energy, time, parallelism, and noise tolerance.{" "}
-                    <em>
-                      A mechanism carries over if the constraint that made it worthwhile still holds
-                      on the new substrate.
-                    </em>
-                  </p>
-                  <p>
-                    I want to understand how intelligent systems learn to perceive, act, remember,
-                    and adapt in the physical world, and which principles from biological
-                    intelligence can help us build better ones.
-                  </p>
-                </header>
-                <ul className="theme-list">
-                  {researchThemes.map((theme) => (
-                    <li key={theme.slug}>
-                      <strong>{theme.title}:</strong> {theme.questions}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </article>
         ))}
       </section>
 
-      {preview ? (
-        <aside
-          className="research-note-preview"
-          style={{ left: preview.left, top: preview.top }}
-          aria-hidden="true"
-        >
-          <div className="research-note-preview-content">
-            <h2>{preview.theme.title}</h2>
-            <p>{preview.theme.questions}</p>
-          </div>
-        </aside>
-      ) : null}
+      <ResearchAuthor initialMarkdown={initialMarkdown} onPreview={previewMarkdown} />
     </>
   );
 }

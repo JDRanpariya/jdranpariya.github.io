@@ -25,9 +25,11 @@ Public pages share one compact navigation. The library uses contextual links for
 
 ### Research notes
 
-The homepage is the root of a note trail. Each theme in `data/research-themes.ts` has a stable `slug`; its title opens as a note and is encoded in repeated `notes` query parameters. Browser Back and Forward rebuild the trail, so a copied URL opens the same note context.
+The homepage content has one source: `content/research-home.md`. Theme headings use an explicit Markdown identifier such as `## Memory {#memory}` so URLs stay stable when the visible title changes. Theme headings in the root list are plain text. Only an explicit Markdown link such as `[related question](note:memory)` opens another pane.
 
-Add another theme slug to a theme's optional `links` array to expose a link from that note. Registered note links open in the stack on desktop, show a preview on hover or keyboard focus, and behave as ordinary single-page navigation below 801 px. External and modifier-clicked links keep the browser's normal behavior.
+Open `/\?edit=1` or press Alt+E for the private authoring controls. The Markdown editor previews locally and saves a browser draft. After choosing the `personal-site` repository folder once, Save writes directly to `apps/research/content/research-home.md`. The public page renders no authoring controls.
+
+The note trail uses Scholium's focus model: panes keep a readable width in a native horizontal strip, geometrically occluded ancestors expose 40 px labeled rails, focus does not discard the open path, and compact path controls remain available on narrow screens. Repeated `notes` parameters and `noteFocus` preserve the complete view in browser history and copied URLs.
 
 ## Local work
 
