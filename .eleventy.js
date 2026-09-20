@@ -61,6 +61,24 @@ const FAVORITE_WRITING_SLUGS = [
 export default function (eleventyConfig) {
   eleventyConfig.addGlobalData("nonContentTags", NON_CONTENT_TAGS);
 
+  eleventyConfig.addFilter("codexAuthorIndex", (items = []) => {
+    const root = "/odysseys/the-codex-of-understanding/";
+    return JSON.stringify(
+      items
+        .filter(
+          (item) =>
+            String(item.url || "").startsWith(root) && String(item.inputPath || "").endsWith(".md")
+        )
+        .map((item) => ({
+          title: item.data?.title || "Untitled",
+          url: String(item.url),
+          sourcePath: String(item.inputPath).replace(/^\.\//, ""),
+          markdown: readFileSync(String(item.inputPath), "utf8"),
+        }))
+        .sort((a, b) => a.title.localeCompare(b.title))
+    );
+  });
+
   // Passthrough copy — only ship assets that are directly referenced in HTML.
   // Source images in assets/images/{projects,lectures}/ are NOT copied because
   // they're processed by eleventy-img into build/img/ as optimized AVIF.

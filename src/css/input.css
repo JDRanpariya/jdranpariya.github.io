@@ -1828,3 +1828,305 @@ details:not([open]) > .toc-toggle svg {
     display: none;
   }
 }
+
+/* Private Codex authoring mode. It is inert until ?edit=1 or Alt+E enables it. */
+.codex-author[hidden],
+.codex-author-editor[hidden],
+.codex-selection-menu[hidden] {
+  display: none !important;
+}
+
+.codex-author-toolbar {
+  position: fixed;
+  z-index: 80;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+  font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+  font-size: 0.8125rem;
+}
+
+.codex-author-toolbar > span {
+  padding: 0 0.55rem;
+  color: var(--color-ink-muted);
+  font-weight: 650;
+}
+
+.codex-author button {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.65rem;
+  border: 0;
+  border-radius: 0.3rem;
+  color: var(--color-ink);
+  background: transparent;
+  font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.codex-author button:hover {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.codex-author button.is-primary {
+  color: var(--color-bg);
+  background: var(--color-ink);
+}
+
+.codex-selection-menu {
+  --selection-x: 1rem;
+  --selection-y: 1rem;
+  position: fixed;
+  z-index: 90;
+  top: var(--selection-y);
+  left: var(--selection-x);
+  display: flex;
+  gap: 0.125rem;
+  padding: 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-md);
+}
+
+.codex-author-editor {
+  position: fixed;
+  z-index: 85;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: min(46rem, 56vw);
+  height: 100dvh;
+  flex-direction: column;
+  border-left: 1px solid var(--color-border);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sheet);
+  font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+}
+
+.codex-author-editor > header {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.codex-author-kicker {
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.codex-author-title {
+  margin: 0.15rem 0 0;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.codex-author-edit-view {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.codex-author-textarea {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  resize: none;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  padding: 1.25rem;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  tab-size: 2;
+}
+
+.codex-author-edit-view > footer {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.codex-author-edit-view > footer > span {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.codex-author-status {
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codex-author-status[data-kind="success"] {
+  color: var(--color-success);
+}
+
+.codex-author-status[data-kind="error"] {
+  color: var(--color-danger);
+}
+
+.codex-author-search-view {
+  display: none;
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+
+.codex-author-new-view {
+  display: none;
+  padding: 1.25rem;
+}
+
+.codex-author[data-view="search"] .codex-author-edit-view {
+  display: none;
+}
+
+.codex-author[data-view="search"] .codex-author-search-view {
+  display: block;
+}
+
+.codex-author[data-view="new"] .codex-author-edit-view {
+  display: none;
+}
+
+.codex-author[data-view="new"] .codex-author-new-view {
+  display: block;
+}
+
+.codex-author-search-view label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.codex-author-search-view input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  outline: 0;
+  padding: 0.65rem 0;
+  color: var(--color-ink);
+  background: transparent;
+  font-size: 1rem;
+}
+
+.codex-author-new-view label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.codex-author-new-view input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  outline: 0;
+  padding: 0.65rem 0;
+  color: var(--color-ink);
+  background: transparent;
+  font-size: 1rem;
+}
+
+.codex-author-new-view p {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  color: var(--color-ink-muted);
+  font-family: "Source Serif 4", ui-serif, Georgia, serif;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.codex-author-new-view > div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 1.25rem;
+}
+
+.codex-author-results {
+  margin-top: 1rem;
+}
+
+.codex-author-result {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0 !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
+  text-align: left;
+}
+
+.codex-author-result strong,
+.codex-author-result span {
+  display: block;
+}
+
+.codex-author-result strong {
+  font-size: 0.9375rem;
+}
+
+.codex-author-result span {
+  margin-top: 0.15rem;
+  color: var(--color-ink-muted);
+  font-size: 0.75rem;
+}
+
+.codex-author-empty {
+  color: var(--color-ink-muted);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 800px) {
+  .codex-author-toolbar {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    max-width: calc(100vw - 1rem);
+    overflow-x: auto;
+  }
+
+  .codex-author-toolbar > span {
+    display: none;
+  }
+
+  .codex-author-editor {
+    width: 100vw;
+  }
+}

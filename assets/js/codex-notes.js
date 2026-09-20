@@ -122,6 +122,14 @@
 
     section.replaceChildren(stack);
     document.title = `${entries.map((entry) => entry.title).join(" | ")} | JD Ranpariya`;
+    window.dispatchEvent(
+      new CustomEvent("codex:active-note", {
+        detail: {
+          url: entries[entries.length - 1].url.pathname,
+          title: entries[entries.length - 1].title,
+        },
+      })
+    );
 
     requestAnimationFrame(() => {
       stack.querySelectorAll(".codex-note-pane").forEach((pane) => {
