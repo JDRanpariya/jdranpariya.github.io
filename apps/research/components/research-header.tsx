@@ -1,6 +1,6 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 
-export function ResearchHeader({ owner = false }: { owner?: boolean }) {
+export function ResearchHeader() {
   return (
     <header className="border-b border-border font-sans">
       <div className="page-frame flex min-h-20 items-center justify-between gap-5 py-3">
@@ -21,14 +21,12 @@ export function ResearchHeader({ owner = false }: { owner?: boolean }) {
           <a href="/index" className="inline-flex min-h-11 items-center px-2 text-sm underline">
             Index
           </a>
-          {owner ? (
-            <a
-              href="/library/great-minds"
-              className="inline-flex min-h-11 items-center px-2 text-sm underline"
-            >
-              Library
-            </a>
-          ) : null}
+          <a
+            href="/library/great-minds"
+            className="inline-flex min-h-11 items-center px-2 text-sm underline"
+          >
+            Library
+          </a>
           <ThemeToggle />
         </nav>
       </div>

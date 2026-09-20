@@ -248,7 +248,7 @@ export function LibraryWorkspace({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ResearchHeader owner />
+      <ResearchHeader />
 
       <main id="main" className="page-frame py-7 md:py-10">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">

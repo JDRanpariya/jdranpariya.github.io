@@ -43,7 +43,7 @@ export default async function ResearchIndexPage() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ResearchHeader owner={Boolean(owner)} />
+      <ResearchHeader />
       <main id="main" className="page-frame page-main">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
