@@ -1,11 +1,8 @@
 "use client";
 
-import { ResearchHeader } from "@/components/research-header";
-
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <ResearchHeader />
       <main className="page-frame py-16 md:py-24">
         <p className="ui-label">Error</p>
         <h1 className="mt-2 text-4xl font-bold">This page could not be loaded.</h1>

@@ -1,6 +1,5 @@
 import { getLibraryOwner, LIBRARY_OWNER_EMAIL } from "@/app/library-auth";
 import { PublicResearchIndex, type PublishedRecord } from "@/components/public-research-index";
-import { ResearchHeader } from "@/components/research-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPublishedAnnotations } from "@/lib/research-annotations";
 import { getCatalogRecord, isCollectionId } from "@/lib/research-catalog";
@@ -43,7 +42,6 @@ export default async function ResearchIndexPage() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ResearchHeader />
       <main id="main" className="page-frame page-main">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>

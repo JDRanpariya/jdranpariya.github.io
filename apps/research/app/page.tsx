@@ -1,4 +1,3 @@
-import { ResearchHeader } from "@/components/research-header";
 import { SiteFooter } from "@/components/site-footer";
 import { researchThemes } from "@/data/research-themes";
 
@@ -8,7 +7,6 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ResearchHeader />
       <main id="main" className="page-frame page-main">
         <article className="research-index">
           <header className="research-intro">

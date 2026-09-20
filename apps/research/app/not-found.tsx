@@ -1,9 +1,6 @@
-import { ResearchHeader } from "@/components/research-header";
-
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <ResearchHeader />
       <main className="page-frame py-16 md:py-24">
         <p className="ui-label">404</p>
         <h1 className="mt-2 text-4xl font-bold">Page not found.</h1>
