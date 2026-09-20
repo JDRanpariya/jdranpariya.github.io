@@ -430,6 +430,10 @@
 
     try {
       const session = await api("/session");
+      if (!session.authenticated) {
+        showLogin();
+        return;
+      }
       state.csrf = session.csrf;
       els.identity.textContent = `@${session.login}`;
       const filesResult = await api("/files");

@@ -292,7 +292,16 @@ export async function handleAdminRequest(request, env) {
   }
 
   const auth = await authenticate(request, env);
-  if (auth.error) return auth.error;
+  if (auth.error) {
+    if (
+      url.pathname === `${API_ROOT}/session` &&
+      request.method === "GET" &&
+      auth.error.status === 401
+    ) {
+      return json({ authenticated: false });
+    }
+    return auth.error;
+  }
 
   if (url.pathname === `${API_ROOT}/session` && request.method === "GET") {
     return authenticatedJson(auth, {

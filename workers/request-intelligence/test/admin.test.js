@@ -64,6 +64,15 @@ test("creates a session only for the configured passphrase", async () => {
   assert.equal(rejected.status, 401);
 });
 
+test("reports a signed-out session without a failing network response", async () => {
+  const response = await handleAdminRequest(
+    new Request("https://jdranpariya.com/api/admin/session"),
+    env
+  );
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { authenticated: false });
+});
+
 test("lists only editable Markdown files", async () => {
   const previousFetch = globalThis.fetch;
   globalThis.fetch = async () =>
