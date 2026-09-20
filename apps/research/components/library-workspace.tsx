@@ -606,13 +606,12 @@ export function LibraryWorkspace({
                       <span className="ui-label">Public note</span>
                       <textarea
                         value={selectedDraft.publicNotes}
-                        disabled={selectedDraft.decision !== "keep"}
                         onChange={(event) =>
                           updateLocal(selected.id, { publicNotes: event.target.value })
                         }
                         rows={3}
                         placeholder="Optional note shown with this entry."
-                        className="ui-control mt-1.5 min-h-20 resize-y font-sans disabled:bg-surface disabled:text-ink-muted"
+                        className="ui-control mt-1.5 min-h-20 resize-y font-sans"
                       />
                     </label>
 
