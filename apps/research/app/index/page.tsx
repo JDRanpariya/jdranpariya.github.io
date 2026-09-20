@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { getPublishedAnnotations } from "@/lib/research-annotations";
 import { getCatalogRecord, isCollectionId } from "@/lib/research-catalog";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -54,9 +53,9 @@ export default async function ResearchIndexPage() {
             </h1>
           </div>
           {owner ? (
-            <Link href="/library/great-minds" className="text-sm underline">
+            <a href="/library/great-minds" className="text-sm underline">
               Edit library
-            </Link>
+            </a>
           ) : null}
         </header>
         <PublicResearchIndex records={records} />

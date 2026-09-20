@@ -83,8 +83,8 @@ export function PublicResearchIndex({ records }: { records: PublishedRecord[] })
           >
             <div>
               <h2 className="font-bold leading-6">
-                <a href={record.url} target="_blank" rel="noreferrer" className="underline">
-                  {record.name} ↗
+                <a href={record.url} className="underline">
+                  {record.name} →
                 </a>
               </h2>
               {record.lead ? (

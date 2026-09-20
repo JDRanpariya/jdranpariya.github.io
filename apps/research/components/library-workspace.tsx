@@ -4,7 +4,6 @@ import { ResearchHeader } from "@/components/research-header";
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
 import type { Decision } from "@/lib/research-annotations";
 import type { CollectionId } from "@/lib/research-catalog";
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Draft = {
@@ -271,20 +270,20 @@ export function LibraryWorkspace({
           aria-label="Research collections"
           className="mt-5 flex gap-6 border-b border-border font-sans text-[0.9375rem]"
         >
-          <Link
+          <a
             href="/library/great-minds"
             aria-current={collection === "great-minds" ? "page" : undefined}
             className={`min-h-11 pb-3 pt-2 no-underline ${collection === "great-minds" ? "border-b-2 border-accent font-semibold text-ink" : "text-ink-muted"}`}
           >
             Great minds <span className="font-normal">{collectionTotals["great-minds"]}</span>
-          </Link>
-          <Link
+          </a>
+          <a
             href="/library/neuroai"
             aria-current={collection === "neuroai" ? "page" : undefined}
             className={`min-h-11 pb-3 pt-2 no-underline ${collection === "neuroai" ? "border-b-2 border-accent font-semibold text-ink" : "text-ink-muted"}`}
           >
             NeuroAI <span className="font-normal">{collectionTotals.neuroai}</span>
-          </Link>
+          </a>
         </nav>
 
         <section
@@ -432,13 +431,8 @@ export function LibraryWorkspace({
                           {selected.name}
                         </h2>
                       </div>
-                      <a
-                        href={selected.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="ui-button-secondary"
-                      >
-                        Visit site ↗
+                      <a href={selected.url} className="ui-button-secondary">
+                        Visit site →
                       </a>
                     </div>
                     {selected.lead ? (
@@ -476,14 +470,8 @@ export function LibraryWorkspace({
                     {selected.evidenceUrls.length ? (
                       <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm">
                         {selected.evidenceUrls.map((url, index) => (
-                          <a
-                            key={url}
-                            href={url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="underline"
-                          >
-                            Evidence {index + 1} ↗
+                          <a key={url} href={url} className="underline">
+                            Evidence {index + 1} →
                           </a>
                         ))}
                       </div>

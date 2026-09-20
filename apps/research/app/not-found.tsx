@@ -1,5 +1,4 @@
 import { ResearchHeader } from "@/components/research-header";
-import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -11,9 +10,9 @@ export default function NotFound() {
         <p className="mt-5 max-w-xl text-ink-secondary">
           The page may have moved, or this part of the research library may be private.
         </p>
-        <Link href="/" className="ui-button-secondary mt-7">
+        <a href="/" className="ui-button-secondary mt-7">
           Return to research questions
-        </Link>
+        </a>
       </main>
     </div>
   );
