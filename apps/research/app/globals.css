@@ -144,6 +144,20 @@ a:hover {
   text-decoration-color: var(--accent);
 }
 
+.library-search {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: 0;
+}
+
+.library-search:focus-visible {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: 0;
+}
+
 :focus-visible {
   border-radius: 4px;
   outline: 2px solid var(--accent);

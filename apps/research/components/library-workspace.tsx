@@ -1,6 +1,5 @@
 "use client";
 
-import { ResearchHeader } from "@/components/research-header";
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
 import type { Decision } from "@/lib/research-annotations";
 import type { CollectionId } from "@/lib/research-catalog";
@@ -75,12 +74,10 @@ function cacheKey(
 
 export function LibraryWorkspace({
   collection,
-  collectionTotals,
   initialData,
   ownerEmail,
 }: {
   collection: CollectionId;
-  collectionTotals: Record<CollectionId, number>;
   initialData: LibraryPageData;
   ownerEmail: string;
 }) {
@@ -329,38 +326,34 @@ export function LibraryWorkspace({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ResearchHeader />
-
-      <main id="main" className="page-frame py-5 md:py-7">
-        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
+      <main id="main" className="page-frame py-6 md:py-9">
+        <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
-          <div className="font-sans text-xs text-ink-muted" title={ownerEmail}>
-            <span className="hidden sm:inline">Private · </span>
-            <a href="/signout-with-chatgpt?return_to=%2F" className="underline">
-              Sign out
-            </a>
-          </div>
+          <a
+            href="/signout-with-chatgpt?return_to=%2F"
+            className="font-sans text-xs text-ink-muted underline"
+            title={`Signed in as ${ownerEmail}`}
+          >
+            Sign out
+          </a>
         </div>
 
-        <nav
-          aria-label="Research collections"
-          className="mt-3 flex gap-5 border-b border-border font-sans text-sm"
-        >
+        <nav aria-label="Research collections" className="mt-6 flex gap-5 font-sans text-sm">
           <a
             href="/library/great-minds"
             onClick={(event) => void switchCollection(event, "great-minds")}
             aria-current={activeCollection === "great-minds" ? "page" : undefined}
-            className={`min-h-10 pb-2 pt-1.5 no-underline ${activeCollection === "great-minds" ? "border-b-2 border-ink font-semibold text-ink" : "text-ink-muted"}`}
+            className={`min-h-10 py-2 no-underline ${activeCollection === "great-minds" ? "font-semibold text-ink" : "text-ink-muted"}`}
           >
-            Great minds <span className="font-normal">{collectionTotals["great-minds"]}</span>
+            Great minds
           </a>
           <a
             href="/library/neuroai"
             onClick={(event) => void switchCollection(event, "neuroai")}
             aria-current={activeCollection === "neuroai" ? "page" : undefined}
-            className={`min-h-10 pb-2 pt-1.5 no-underline ${activeCollection === "neuroai" ? "border-b-2 border-ink font-semibold text-ink" : "text-ink-muted"}`}
+            className={`min-h-10 py-2 no-underline ${activeCollection === "neuroai" ? "font-semibold text-ink" : "text-ink-muted"}`}
           >
-            NeuroAI <span className="font-normal">{collectionTotals.neuroai}</span>
+            NeuroAI
           </a>
         </nav>
 
@@ -377,7 +370,7 @@ export function LibraryWorkspace({
               placeholder={
                 activeCollection === "great-minds" ? "Search people" : "Search NeuroAI groups"
               }
-              className="w-full border-0 border-b border-border bg-transparent px-0 py-2 font-sans text-sm text-ink outline-none placeholder:text-ink-muted focus:border-ink"
+              className="library-search w-full appearance-none bg-transparent px-0 py-2 font-sans text-base text-ink placeholder:text-ink-muted md:text-sm"
             />
           </label>
 
@@ -391,7 +384,7 @@ export function LibraryWorkspace({
                 setDecisionFilter("all");
                 void loadPage({ decision: "all", page: 1 });
               }}
-              label={`All ${pageData.sourceTotal}`}
+              label="All"
             />
             {decisions.map((decision) => (
               <FilterButton
@@ -401,7 +394,7 @@ export function LibraryWorkspace({
                   setDecisionFilter(decision.value);
                   void loadPage({ decision: decision.value, page: 1 });
                 }}
-                label={`${decision.label} ${pageData.counts[decision.value]}`}
+                label={decision.label}
               />
             ))}
           </div>
@@ -422,7 +415,7 @@ export function LibraryWorkspace({
               {dirty.size > 0 ? <p>{dirty.size} unsaved</p> : null}
             </div>
 
-            <div className="divide-y divide-border border-y border-border md:max-h-[69vh] md:overflow-y-auto">
+            <div className="md:max-h-[69vh] md:overflow-y-auto">
               {pageData.records.map((record) => {
                 const draft = drafts[record.id] ?? emptyDraft();
                 const active = selected?.id === record.id;
@@ -432,7 +425,7 @@ export function LibraryWorkspace({
                     key={record.id}
                     onClick={() => selectRecord(record.id)}
                     aria-current={active ? "true" : undefined}
-                    className={`flex min-h-16 w-full gap-2.5 border-l px-3 py-2.5 text-left transition-colors ${active ? "border-accent text-ink" : "border-transparent text-ink hover:text-accent"}`}
+                    className={`flex min-h-16 w-full gap-2.5 px-3 py-2.5 text-left transition-colors ${active ? "bg-surface text-ink" : "text-ink hover:text-accent"}`}
                   >
                     <span
                       className={`mt-[0.45rem] h-2 w-2 shrink-0 rounded-full ${statusColor[draft.decision]}`}
@@ -486,7 +479,7 @@ export function LibraryWorkspace({
 
           <section
             aria-label="Selected record"
-            className={`${mobileDetail ? "block" : "hidden md:block"} min-w-0 md:border-l md:border-border md:pl-6 lg:pl-8`}
+            className={`${mobileDetail ? "block" : "hidden md:block"} min-w-0 md:pl-8 lg:pl-10`}
           >
             {selected && selectedDraft ? (
               <div>
@@ -499,7 +492,7 @@ export function LibraryWorkspace({
                 </button>
 
                 <article>
-                  <header className="border-b border-border pb-5">
+                  <header className="pb-4">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="ui-label">{selected.entityType.replaceAll("_", " ")}</p>
@@ -530,7 +523,7 @@ export function LibraryWorkspace({
                       </p>
                     ) : null}
                     {selected.question ? (
-                      <div className="mt-4 border-l border-accent pl-3">
+                      <div className="mt-4">
                         <p className="ui-label">Life question</p>
                         <p className="mt-1 text-[0.9375rem] leading-7 text-ink-secondary">
                           {selected.question}
@@ -555,11 +548,11 @@ export function LibraryWorkspace({
 
                   <fieldset className="mt-5" disabled={currentSaveState?.kind === "saving"}>
                     <legend className="ui-label">Decision — saved immediately</legend>
-                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 border-b border-border">
+                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
                       {decisions.map((decision) => (
                         <label
                           key={decision.value}
-                          className={`flex min-h-10 cursor-pointer items-center gap-2 border-b-2 px-0.5 py-2 font-sans text-sm transition-colors ${selectedDraft.decision === decision.value ? "border-ink font-semibold text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}
+                          className={`flex min-h-10 cursor-pointer items-center gap-2 px-0.5 py-2 font-sans text-sm transition-colors ${selectedDraft.decision === decision.value ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
                         >
                           <input
                             type="radio"
@@ -623,7 +616,7 @@ export function LibraryWorkspace({
                       />
                     </label>
 
-                    <div className="mt-4 flex items-start gap-3 border-y border-border py-3">
+                    <div className="mt-4 flex items-start gap-3 py-2">
                       <input
                         id={`publish-${selected.id}`}
                         type="checkbox"
@@ -667,7 +660,7 @@ export function LibraryWorkspace({
                   </div>
 
                   {selected.activity ? (
-                    <details className="mt-5 border-t border-border pt-4">
+                    <details className="mt-5 pt-2">
                       <summary className="cursor-pointer font-sans text-sm text-ink-muted">
                         Activity evidence
                       </summary>
@@ -679,7 +672,7 @@ export function LibraryWorkspace({
                 </article>
               </div>
             ) : (
-              <p className="border-y border-border py-10 text-ink-muted">No record selected.</p>
+              <p className="py-10 text-ink-muted">No record selected.</p>
             )}
           </section>
         </div>
@@ -702,7 +695,7 @@ function FilterButton({
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`min-h-9 border-b py-1 ${active ? "border-ink font-semibold text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}
+      className={`min-h-9 py-1 ${active ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
     >
       {label}
     </button>

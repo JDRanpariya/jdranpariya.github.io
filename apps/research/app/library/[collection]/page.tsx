@@ -1,7 +1,7 @@
 import { requireLibraryOwner } from "@/app/library-auth";
 import { LibraryWorkspace } from "@/components/library-workspace";
 import { getLibraryPage } from "@/lib/library-data";
-import { getCatalog, isCollectionId } from "@/lib/research-catalog";
+import { isCollectionId } from "@/lib/research-catalog";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -25,14 +25,6 @@ export default async function CollectionPage({
   const initialData = await getLibraryPage({ ownerId: owner.userId, collection });
 
   return (
-    <LibraryWorkspace
-      collection={collection}
-      collectionTotals={{
-        "great-minds": getCatalog("great-minds").length,
-        neuroai: getCatalog("neuroai").length,
-      }}
-      initialData={initialData}
-      ownerEmail={owner.email}
-    />
+    <LibraryWorkspace collection={collection} initialData={initialData} ownerEmail={owner.email} />
   );
 }
