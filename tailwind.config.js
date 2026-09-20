@@ -34,7 +34,7 @@ export default {
       },
       fontFamily: {
         serif: ["Literata", "ui-serif", "Georgia", "serif"],
-        heading: ["Fraunces", "ui-serif", "Georgia", "serif"],
+        heading: ["Figtree", "Avenir", "Avenir Next", "system-ui", "sans-serif"],
         sans: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
       },

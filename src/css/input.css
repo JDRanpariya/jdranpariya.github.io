@@ -3,27 +3,27 @@
 @tailwind utilities;
 
 /* ==========================================================================
- * Self-hosted variable fonts — Fraunces (headings) + Literata (body)
+ * Self-hosted variable fonts — Figtree (headings) + Literata (body)
  * Both are variable with wght + opsz axes. Files live in /assets/fonts/.
  * ========================================================================== */
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Figtree";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("/assets/fonts/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+  src: url("/assets/fonts/figtree-latin-wght-normal.woff2") format("woff2-variations");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Figtree";
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url("/assets/fonts/fraunces-latin-wght-italic.woff2") format("woff2-variations");
+  src: url("/assets/fonts/figtree-latin-wght-italic.woff2") format("woff2-variations");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -131,8 +131,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings use Fraunces — characterful display serif with wonky charm.
-   WONK 1 enables the quirky alternate glyphs; SOFT 50 adds warmth. */
+/* Headings use Figtree, a clear geometric sans in the same editorial family
+   as Farnam Street's Sofia Pro. */
 h1,
 h2,
 h3,
@@ -146,10 +146,8 @@ h3.font-serif,
 h4.font-serif,
 h5.font-serif,
 h6.font-serif {
-  font-family: Fraunces, ui-serif, Georgia, serif;
-  font-variation-settings:
-    "WONK" 1,
-    "SOFT" 50;
+  font-family: Figtree, Avenir, "Avenir Next", system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 /* Sans stack owns nav, buttons, chips, meta — anything scanned. */

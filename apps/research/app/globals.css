@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Figtree";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("/assets/fonts/fraunces-latin-wght-normal.woff2") format("woff2-variations");
+  src: url("/assets/fonts/figtree-latin-wght-normal.woff2") format("woff2-variations");
 }
 
 @font-face {
-  font-family: "Fraunces";
+  font-family: "Figtree";
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url("/assets/fonts/fraunces-latin-wght-italic.woff2") format("woff2-variations");
+  src: url("/assets/fonts/figtree-latin-wght-italic.woff2") format("woff2-variations");
 }
 
 @font-face {
@@ -81,7 +81,7 @@ html.dark {
   --color-muted: var(--ink-muted);
   --color-rule: var(--border);
   --color-link: var(--accent);
-  --font-heading: "Fraunces", ui-serif, Georgia, serif;
+  --font-heading: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
   --font-body: "Literata", ui-serif, Georgia, serif;
   --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -111,10 +111,8 @@ h2,
 h3,
 h4,
 .font-heading {
-  font-family: "Fraunces", ui-serif, Georgia, serif;
-  font-variation-settings:
-    "WONK" 1,
-    "SOFT" 50;
+  font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 button,
@@ -154,7 +152,7 @@ a:hover {
 
 @layer components {
   .page-frame {
-    @apply mx-auto w-full max-w-[88rem] px-5 sm:px-8;
+    @apply mx-auto w-full max-w-[78rem] px-5 sm:px-7;
   }
 
   .page-main {
@@ -206,7 +204,7 @@ a:hover {
   }
 
   .ui-control {
-    @apply min-h-11 w-full rounded-md border border-border bg-bg px-3 py-2 font-sans text-[0.9375rem] leading-6 text-ink placeholder:text-ink-muted;
+    @apply min-h-10 w-full rounded-sm border border-border bg-bg px-2.5 py-1.5 font-sans text-sm leading-6 text-ink placeholder:text-ink-muted;
   }
 
   .ui-control:hover {
@@ -214,7 +212,7 @@ a:hover {
   }
 
   .ui-button {
-    @apply inline-flex min-h-11 items-center justify-center rounded-md border border-ink bg-ink px-4 py-2 font-sans text-[0.9375rem] font-semibold text-bg transition-colors disabled:cursor-not-allowed disabled:border-border disabled:bg-card disabled:text-ink-muted;
+    @apply inline-flex min-h-10 items-center justify-center rounded-sm border border-ink bg-ink px-3 py-1.5 font-sans text-sm font-semibold text-bg transition-colors disabled:cursor-not-allowed disabled:border-border disabled:bg-card disabled:text-ink-muted;
   }
 
   .ui-button:hover:not(:disabled) {
@@ -222,7 +220,7 @@ a:hover {
   }
 
   .ui-button-secondary {
-    @apply inline-flex min-h-11 items-center justify-center rounded-md border border-border bg-bg px-4 py-2 font-sans text-[0.9375rem] font-medium text-ink transition-colors;
+    @apply inline-flex min-h-10 items-center justify-center rounded-sm border border-border bg-bg px-3 py-1.5 font-sans text-sm font-medium text-ink transition-colors;
   }
 
   .ui-button-secondary:hover {
@@ -230,7 +228,7 @@ a:hover {
   }
 
   .ui-label {
-    @apply font-sans text-[0.8125rem] font-semibold uppercase tracking-[0.05em] text-ink-muted;
+    @apply font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted;
   }
 }
 

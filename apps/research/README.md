@@ -30,7 +30,7 @@ Regenerate the catalogs after either source CSV changes:
 bun run catalog:build
 ```
 
-The app uses the personal site's Fraunces and Literata fonts and the Golden Peachy Glow color system. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
+The app uses the personal site's Figtree and Literata fonts and the Golden Peachy Glow color system. Public prose comes from Jay's reviewed material; the editor interface uses short functional labels.
 
 ## Data model
 

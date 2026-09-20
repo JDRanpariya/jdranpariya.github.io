@@ -4,7 +4,7 @@ import { ResearchHeader } from "@/components/research-header";
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
 import type { Decision } from "@/lib/research-annotations";
 import type { CollectionId } from "@/lib/research-catalog";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 type Draft = {
   decision: Decision;
@@ -64,6 +64,15 @@ function draftsFromAnnotations(annotations: LibraryAnnotationView[]) {
   ) as Record<string, Draft>;
 }
 
+function cacheKey(
+  collection: CollectionId,
+  query: string,
+  decision: Decision | "all",
+  page: number
+) {
+  return `${collection}\u0000${query}\u0000${decision}\u0000${page}`;
+}
+
 export function LibraryWorkspace({
   collection,
   collectionTotals,
@@ -75,6 +84,7 @@ export function LibraryWorkspace({
   initialData: LibraryPageData;
   ownerEmail: string;
 }) {
+  const [activeCollection, setActiveCollection] = useState(collection);
   const [pageData, setPageData] = useState(initialData);
   const [drafts, setDrafts] = useState<Record<string, Draft>>(() =>
     draftsFromAnnotations(initialData.annotations)
@@ -89,6 +99,9 @@ export function LibraryWorkspace({
   const [loadError, setLoadError] = useState("");
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const requestNumber = useRef(0);
+  const pageCache = useRef(
+    new Map<string, LibraryPageData>([[cacheKey(collection, "", "all", 1), initialData]])
+  );
 
   useEffect(
     () => () => {
@@ -96,6 +109,33 @@ export function LibraryWorkspace({
     },
     []
   );
+
+  useEffect(() => {
+    const otherCollection: CollectionId = collection === "great-minds" ? "neuroai" : "great-minds";
+    const key = cacheKey(otherCollection, "", "all", 1);
+    if (pageCache.current.has(key)) return;
+
+    const controller = new AbortController();
+    const params = new URLSearchParams({
+      collection: otherCollection,
+      q: "",
+      decision: "all",
+      page: "1",
+    });
+    void fetch(`/api/library/annotations?${params}`, {
+      headers: { accept: "application/json" },
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const result = (await response.json()) as LibraryPageData;
+        pageCache.current.set(key, result);
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
+  }, [collection]);
 
   const selected = useMemo(
     () =>
@@ -109,24 +149,19 @@ export function LibraryWorkspace({
     q = query,
     decision = decisionFilter,
     page = 1,
+    nextCollection = activeCollection,
   }: {
     q?: string;
     decision?: Decision | "all";
     page?: number;
+    nextCollection?: CollectionId;
   } = {}) {
     const requestId = ++requestNumber.current;
-    setLoading(true);
     setLoadError("");
-    try {
-      const params = new URLSearchParams({ collection, q, decision, page: String(page) });
-      const response = await fetch(`/api/library/annotations?${params}`, {
-        headers: { accept: "application/json" },
-        cache: "no-store",
-      });
-      const result = (await response.json()) as LibraryPageData & { error?: string };
-      if (!response.ok) throw new Error(result.error ?? "Unable to load the library.");
-      if (requestId !== requestNumber.current) return;
+    const key = cacheKey(nextCollection, q, decision, page);
 
+    function applyResult(result: LibraryPageData) {
+      setActiveCollection(nextCollection);
       setPageData(result);
       setDrafts((current) => {
         const next = { ...current };
@@ -142,12 +177,55 @@ export function LibraryWorkspace({
           : (result.records[0]?.id ?? "")
       );
       setMobileDetail(false);
+    }
+
+    const cached = pageCache.current.get(key);
+    if (cached) {
+      applyResult(cached);
+      setLoading(false);
+      return true;
+    }
+
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({
+        collection: nextCollection,
+        q,
+        decision,
+        page: String(page),
+      });
+      const response = await fetch(`/api/library/annotations?${params}`, {
+        headers: { accept: "application/json" },
+        cache: "no-store",
+      });
+      const result = (await response.json()) as LibraryPageData & { error?: string };
+      if (!response.ok) throw new Error(result.error ?? "Unable to load the library.");
+      if (requestId !== requestNumber.current) return false;
+
+      pageCache.current.set(key, result);
+      applyResult(result);
+      return true;
     } catch (error) {
       if (requestId === requestNumber.current) {
         setLoadError(error instanceof Error ? error.message : "Unable to load the library.");
       }
+      return false;
     } finally {
       if (requestId === requestNumber.current) setLoading(false);
+    }
+  }
+
+  async function switchCollection(
+    event: MouseEvent<HTMLAnchorElement>,
+    nextCollection: CollectionId
+  ) {
+    event.preventDefault();
+    if (nextCollection === activeCollection) return;
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+    setQuery("");
+    setDecisionFilter("all");
+    if (await loadPage({ q: "", decision: "all", page: 1, nextCollection })) {
+      window.history.replaceState(null, "", `/library/${nextCollection}`);
     }
   }
 
@@ -163,7 +241,7 @@ export function LibraryWorkspace({
       const response = await fetch("/api/library/annotations", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ collection, recordId: id, ...draft }),
+        body: JSON.stringify({ collection: activeCollection, recordId: id, ...draft }),
       });
       const result = (await response.json()) as {
         annotation?: LibraryAnnotationView;
@@ -186,6 +264,9 @@ export function LibraryWorkspace({
         return next;
       });
       setSaveStates((current) => ({ ...current, [id]: { kind: "saved", text: "Saved" } }));
+      for (const key of pageCache.current.keys()) {
+        if (key.startsWith(`${activeCollection}\u0000`)) pageCache.current.delete(key);
+      }
       return saved;
     } catch (error) {
       setSaveStates((current) => ({
@@ -250,16 +331,11 @@ export function LibraryWorkspace({
       </a>
       <ResearchHeader />
 
-      <main id="main" className="page-frame py-7 md:py-10">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
-          <div>
-            <p className="ui-label">Private workspace</p>
-            <h1 className="mt-1 text-[2rem] font-bold leading-tight tracking-[-0.015em] md:text-[2.5rem]">
-              Research library
-            </h1>
-          </div>
-          <div className="font-sans text-sm text-ink-muted">
-            <span className="hidden sm:inline">{ownerEmail} · </span>
+      <main id="main" className="page-frame py-5 md:py-7">
+        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
+          <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
+          <div className="font-sans text-xs text-ink-muted" title={ownerEmail}>
+            <span className="hidden sm:inline">Private · </span>
             <a href="/signout-with-chatgpt?return_to=%2F" className="underline">
               Sign out
             </a>
@@ -268,45 +344,45 @@ export function LibraryWorkspace({
 
         <nav
           aria-label="Research collections"
-          className="mt-5 flex gap-6 border-b border-border font-sans text-[0.9375rem]"
+          className="mt-3 flex gap-5 border-b border-border font-sans text-sm"
         >
           <a
             href="/library/great-minds"
-            aria-current={collection === "great-minds" ? "page" : undefined}
-            className={`min-h-11 pb-3 pt-2 no-underline ${collection === "great-minds" ? "border-b-2 border-accent font-semibold text-ink" : "text-ink-muted"}`}
+            onClick={(event) => void switchCollection(event, "great-minds")}
+            aria-current={activeCollection === "great-minds" ? "page" : undefined}
+            className={`min-h-10 pb-2 pt-1.5 no-underline ${activeCollection === "great-minds" ? "border-b-2 border-ink font-semibold text-ink" : "text-ink-muted"}`}
           >
             Great minds <span className="font-normal">{collectionTotals["great-minds"]}</span>
           </a>
           <a
             href="/library/neuroai"
-            aria-current={collection === "neuroai" ? "page" : undefined}
-            className={`min-h-11 pb-3 pt-2 no-underline ${collection === "neuroai" ? "border-b-2 border-accent font-semibold text-ink" : "text-ink-muted"}`}
+            onClick={(event) => void switchCollection(event, "neuroai")}
+            aria-current={activeCollection === "neuroai" ? "page" : undefined}
+            className={`min-h-10 pb-2 pt-1.5 no-underline ${activeCollection === "neuroai" ? "border-b-2 border-ink font-semibold text-ink" : "text-ink-muted"}`}
           >
             NeuroAI <span className="font-normal">{collectionTotals.neuroai}</span>
           </a>
         </nav>
 
         <section
-          className={`${mobileDetail ? "hidden md:block" : "block"} mt-6`}
+          className={`${mobileDetail ? "hidden md:grid" : "grid"} mt-4 gap-3 md:grid-cols-[minmax(15rem,1fr)_auto] md:items-end`}
           aria-label="Library filters"
         >
-          <label className="block max-w-2xl">
-            <span className="ui-label">Search</span>
+          <label className="block max-w-md">
+            <span className="sr-only">Search</span>
             <input
               type="search"
               value={query}
               onChange={(event) => search(event.target.value)}
               placeholder={
-                collection === "great-minds"
-                  ? "Name, field, institution, or contribution"
-                  : "Group, lead, topic, institution, or summary"
+                activeCollection === "great-minds" ? "Search people" : "Search NeuroAI groups"
               }
-              className="ui-control mt-2"
+              className="w-full border-0 border-b border-border bg-transparent px-0 py-2 font-sans text-sm text-ink outline-none placeholder:text-ink-muted focus:border-ink"
             />
           </label>
 
           <div
-            className="mt-4 flex flex-wrap gap-2 font-sans text-sm"
+            className="flex flex-wrap gap-x-4 gap-y-1 font-sans text-xs"
             aria-label="Filter by decision"
           >
             <FilterButton
@@ -336,17 +412,17 @@ export function LibraryWorkspace({
           ) : null}
         </section>
 
-        <div className="mt-7 grid gap-10 md:grid-cols-[minmax(17rem,4fr)_minmax(24rem,6fr)] lg:grid-cols-[minmax(20rem,4fr)_minmax(32rem,7fr)]">
+        <div className="mt-5 grid md:grid-cols-[20rem_minmax(0,1fr)] lg:grid-cols-[22rem_minmax(0,1fr)]">
           <section
             aria-label="Catalog records"
             className={`${mobileDetail ? "hidden md:block" : "block"} min-w-0`}
           >
-            <div className="mb-3 flex items-center justify-between font-sans text-sm text-ink-muted">
+            <div className="mb-2 flex items-center justify-between font-sans text-xs text-ink-muted">
               <p>{loading ? "Loading…" : `${pageData.total.toLocaleString()} records`}</p>
               {dirty.size > 0 ? <p>{dirty.size} unsaved</p> : null}
             </div>
 
-            <div className="divide-y divide-border border-y border-border md:max-h-[66vh] md:overflow-y-auto">
+            <div className="divide-y divide-border border-y border-border md:max-h-[69vh] md:overflow-y-auto">
               {pageData.records.map((record) => {
                 const draft = drafts[record.id] ?? emptyDraft();
                 const active = selected?.id === record.id;
@@ -356,22 +432,22 @@ export function LibraryWorkspace({
                     key={record.id}
                     onClick={() => selectRecord(record.id)}
                     aria-current={active ? "true" : undefined}
-                    className={`flex min-h-[4.75rem] w-full gap-3 border-l-2 px-3 py-3 text-left transition-colors ${active ? "border-accent bg-accent-soft" : "border-transparent bg-bg hover:bg-surface"}`}
+                    className={`flex min-h-16 w-full gap-2.5 border-l px-3 py-2.5 text-left transition-colors ${active ? "border-accent text-ink" : "border-transparent text-ink hover:text-accent"}`}
                   >
                     <span
-                      className={`mt-[0.45rem] h-2.5 w-2.5 shrink-0 rounded-full ${statusColor[draft.decision]}`}
+                      className={`mt-[0.45rem] h-2 w-2 shrink-0 rounded-full ${statusColor[draft.decision]}`}
                     />
                     <span className="min-w-0">
-                      <span className="block font-heading text-[1.0625rem] font-bold leading-6">
+                      <span className="block font-heading text-[0.9375rem] font-semibold leading-5">
                         {record.name}
                       </span>
-                      <span className="mt-1 block line-clamp-2 font-sans text-[0.8125rem] leading-5 text-ink-muted">
+                      <span className="mt-0.5 block line-clamp-2 font-sans text-xs leading-4 text-ink-muted">
                         {[record.institution, record.country].filter(Boolean).join(" · ") ||
                           record.primary}
                       </span>
                     </span>
                     {draft.isPublished ? (
-                      <span className="ml-auto shrink-0 font-sans text-[0.6875rem] uppercase tracking-wide text-ink-muted">
+                      <span className="ml-auto shrink-0 font-sans text-[0.625rem] text-ink-muted">
                         Public
                       </span>
                     ) : null}
@@ -389,7 +465,7 @@ export function LibraryWorkspace({
                   type="button"
                   disabled={loading || pageData.page === 1}
                   onClick={() => void loadPage({ page: pageData.page - 1 })}
-                  className="min-h-11 px-2 underline disabled:text-ink-muted disabled:no-underline"
+                  className="min-h-10 px-1 underline disabled:text-ink-muted disabled:no-underline"
                 >
                   Previous
                 </button>
@@ -400,7 +476,7 @@ export function LibraryWorkspace({
                   type="button"
                   disabled={loading || pageData.page === pageData.pageCount}
                   onClick={() => void loadPage({ page: pageData.page + 1 })}
-                  className="min-h-11 px-2 underline disabled:text-ink-muted disabled:no-underline"
+                  className="min-h-10 px-1 underline disabled:text-ink-muted disabled:no-underline"
                 >
                   Next
                 </button>
@@ -410,65 +486,64 @@ export function LibraryWorkspace({
 
           <section
             aria-label="Selected record"
-            className={`${mobileDetail ? "block" : "hidden md:block"} min-w-0 md:border-l md:border-border md:pl-8`}
+            className={`${mobileDetail ? "block" : "hidden md:block"} min-w-0 md:border-l md:border-border md:pl-6 lg:pl-8`}
           >
             {selected && selectedDraft ? (
               <div>
                 <button
                   type="button"
                   onClick={() => setMobileDetail(false)}
-                  className="ui-button-secondary mb-6 md:hidden"
+                  className="mb-4 min-h-10 font-sans text-sm underline md:hidden"
                 >
                   ← Back to results
                 </button>
 
                 <article>
-                  <header className="border-b border-border pb-6">
-                    <div className="flex flex-wrap items-start justify-between gap-4">
+                  <header className="border-b border-border pb-5">
+                    <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="ui-label">{selected.entityType.replaceAll("_", " ")}</p>
-                        <h2 className="mt-1 text-[1.75rem] font-bold leading-tight tracking-[-0.01em] md:text-[2.1rem]">
+                        <h2 className="mt-1 text-[1.5rem] font-bold leading-tight md:text-[1.75rem]">
                           {selected.name}
                         </h2>
                       </div>
-                      <a href={selected.url} className="ui-button-secondary">
+                      <a href={selected.url} className="shrink-0 font-sans text-sm underline">
                         Visit site →
                       </a>
                     </div>
                     {selected.lead ? (
-                      <p className="mt-4">
+                      <p className="mt-3 text-[0.9375rem] leading-6">
                         <strong>Lead:</strong> {selected.lead}
                       </p>
                     ) : null}
                     {selected.institution ? (
-                      <p className="mt-1 text-ink-secondary">{selected.institution}</p>
+                      <p className="mt-1 text-[0.9375rem] leading-6 text-ink-secondary">
+                        {selected.institution}
+                      </p>
                     ) : null}
                     <p className="mt-1 font-sans text-sm text-ink-muted">
                       {[selected.city, selected.country].filter(Boolean).join(", ")}
                     </p>
                     {selected.summary ? (
-                      <p className="mt-5 leading-[1.8] text-ink-secondary">{selected.summary}</p>
+                      <p className="mt-4 text-[0.9375rem] leading-7 text-ink-secondary">
+                        {selected.summary}
+                      </p>
                     ) : null}
                     {selected.question ? (
-                      <div className="mt-5 border-l-2 border-accent pl-4">
+                      <div className="mt-4 border-l border-accent pl-3">
                         <p className="ui-label">Life question</p>
-                        <p className="mt-2 leading-[1.8] text-ink-secondary">{selected.question}</p>
+                        <p className="mt-1 text-[0.9375rem] leading-7 text-ink-secondary">
+                          {selected.question}
+                        </p>
                       </div>
                     ) : null}
                     {selected.topics.length ? (
-                      <ul className="mt-5 flex list-none flex-wrap gap-2 p-0 font-sans text-xs text-ink-muted">
-                        {selected.topics.map((topic) => (
-                          <li
-                            key={topic}
-                            className="rounded-md border border-border bg-surface px-2 py-1"
-                          >
-                            {topic}
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="mt-4 font-sans text-xs leading-5 text-ink-muted">
+                        {selected.topics.join(" · ")}
+                      </p>
                     ) : null}
                     {selected.evidenceUrls.length ? (
-                      <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm">
+                      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 font-sans text-xs">
                         {selected.evidenceUrls.map((url, index) => (
                           <a key={url} href={url} className="underline">
                             Evidence {index + 1} →
@@ -478,13 +553,13 @@ export function LibraryWorkspace({
                     ) : null}
                   </header>
 
-                  <fieldset className="mt-6" disabled={currentSaveState?.kind === "saving"}>
+                  <fieldset className="mt-5" disabled={currentSaveState?.kind === "saving"}>
                     <legend className="ui-label">Decision — saved immediately</legend>
-                    <div className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
+                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 border-b border-border">
                       {decisions.map((decision) => (
                         <label
                           key={decision.value}
-                          className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-md border px-3 py-2 font-sans text-sm transition-colors ${selectedDraft.decision === decision.value ? "border-ink bg-ink text-bg" : "border-border bg-bg text-ink hover:border-accent"}`}
+                          className={`flex min-h-10 cursor-pointer items-center gap-2 border-b-2 px-0.5 py-2 font-sans text-sm transition-colors ${selectedDraft.decision === decision.value ? "border-ink font-semibold text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}
                         >
                           <input
                             type="radio"
@@ -495,7 +570,7 @@ export function LibraryWorkspace({
                             className="sr-only"
                           />
                           <span
-                            className={`h-2.5 w-2.5 rounded-full ${statusColor[decision.value]}`}
+                            className={`h-2 w-2 rounded-full ${statusColor[decision.value]}`}
                             aria-hidden="true"
                           />
                           {decision.label}
@@ -504,7 +579,7 @@ export function LibraryWorkspace({
                     </div>
                   </fieldset>
 
-                  <div className="mt-7 border-t border-border pt-6">
+                  <div className="mt-5 pt-1">
                     <label className="block">
                       <span className="ui-label">Private notes</span>
                       <textarea
@@ -512,29 +587,29 @@ export function LibraryWorkspace({
                         onChange={(event) =>
                           updateLocal(selected.id, { privateNotes: event.target.value })
                         }
-                        rows={6}
+                        rows={5}
                         placeholder="Questions, objections, connections, or next steps."
-                        className="ui-control mt-2 min-h-36 resize-y font-sans"
+                        className="ui-control mt-1.5 min-h-28 resize-y font-sans"
                       />
                       <span className="mt-1 block font-sans text-xs text-ink-muted">
                         Never shown publicly.
                       </span>
                     </label>
 
-                    <label className="mt-5 block">
+                    <label className="mt-4 block">
                       <span className="ui-label">Tags</span>
                       <input
                         value={selectedDraft.tags}
                         onChange={(event) => updateLocal(selected.id, { tags: event.target.value })}
                         placeholder="memory, embodiment, revisit"
-                        className="ui-control mt-2"
+                        className="ui-control mt-1.5"
                       />
                       <span className="mt-1 block font-sans text-xs text-ink-muted">
                         Separate tags with commas.
                       </span>
                     </label>
 
-                    <label className="mt-5 block">
+                    <label className="mt-4 block">
                       <span className="ui-label">Public note</span>
                       <textarea
                         value={selectedDraft.publicNotes}
@@ -544,11 +619,11 @@ export function LibraryWorkspace({
                         }
                         rows={3}
                         placeholder="Optional note shown with this entry."
-                        className="ui-control mt-2 min-h-24 resize-y font-sans disabled:bg-surface disabled:text-ink-muted"
+                        className="ui-control mt-1.5 min-h-20 resize-y font-sans disabled:bg-surface disabled:text-ink-muted"
                       />
                     </label>
 
-                    <div className="mt-5 flex items-start gap-3 rounded-md border border-border bg-surface p-4">
+                    <div className="mt-4 flex items-start gap-3 border-y border-border py-3">
                       <input
                         id={`publish-${selected.id}`}
                         type="checkbox"
@@ -572,7 +647,7 @@ export function LibraryWorkspace({
                       </label>
                     </div>
 
-                    <div className="mt-5 flex flex-wrap items-center gap-4">
+                    <div className="mt-4 flex flex-wrap items-center gap-4">
                       <button
                         type="button"
                         onClick={() => void persist(selected.id, selectedDraft)}
@@ -592,7 +667,7 @@ export function LibraryWorkspace({
                   </div>
 
                   {selected.activity ? (
-                    <details className="mt-7 border-t border-border pt-5">
+                    <details className="mt-5 border-t border-border pt-4">
                       <summary className="cursor-pointer font-sans text-sm text-ink-muted">
                         Activity evidence
                       </summary>
@@ -627,7 +702,7 @@ function FilterButton({
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`min-h-11 rounded-md border px-3 py-2 ${active ? "border-ink bg-ink text-bg" : "border-border bg-bg text-ink hover:border-accent"}`}
+      className={`min-h-9 border-b py-1 ${active ? "border-ink font-semibold text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}
     >
       {label}
     </button>
