@@ -59,7 +59,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@11ty/eleventy-img": "^6.0.4",
+    "@11ty/eleventy-img": "^7.0.0",
     "@11ty/eleventy-plugin-rss": "^3.0.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@vscode/markdown-it-katex": "^1.1.2",
