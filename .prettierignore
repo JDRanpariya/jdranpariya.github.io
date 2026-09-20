@@ -4,6 +4,11 @@ node_modules/
 public/
 .worktrees/
 .github/
+apps/research/.next/
+apps/research/.wrangler/
+apps/research/.sites-runtime/
+apps/research/dist/
+apps/research/node_modules/
 
 # lockfiles
 bun.lock
@@ -19,6 +24,7 @@ src/projects/
 
 # auto-generated
 assets/
+apps/research/data/catalogs/
 
 # has JSON-LD inside {% if %} branches, breaks the jinja parser
 src/_includes/layouts/base.njk
