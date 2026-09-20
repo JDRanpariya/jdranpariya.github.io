@@ -185,15 +185,19 @@ a:hover {
   }
 
   .research-notes-page {
-    @apply mx-auto w-full max-w-[78rem] px-5 pb-16 pt-7 sm:px-7 sm:pt-9 md:pb-20;
+    @apply h-dvh w-full overflow-hidden bg-bg;
   }
 
   .research-notes-navigation {
-    @apply mx-auto max-w-[64rem];
+    @apply h-11 w-full border-b border-border;
   }
 
   .research-navigation {
     @apply mb-14 flex min-h-10 items-center justify-between gap-5 font-sans text-[0.8125rem] leading-5 text-ink-muted md:mb-20;
+  }
+
+  .research-notes-navigation .research-navigation {
+    @apply m-0 h-11 min-h-11 w-full px-4 md:px-8;
   }
 
   .research-navigation-name {
@@ -212,16 +216,12 @@ a:hover {
     @apply font-semibold text-ink;
   }
 
-  .research-index {
-    @apply max-w-[60rem];
-  }
-
   .research-intro h1 {
     @apply text-[1.25rem] font-bold leading-7;
   }
 
   .research-intro p {
-    @apply mt-5 max-w-[58rem] text-[1.0625rem] leading-[1.8] text-ink-secondary;
+    @apply mt-5 text-[1.0625rem] leading-[1.72] text-ink-secondary;
   }
 
   .theme-list {
@@ -233,32 +233,93 @@ a:hover {
   }
 
   .research-note-link {
-    @apply underline decoration-border decoration-[1.5px] underline-offset-[0.22em] transition-colors duration-100 hover:text-accent hover:decoration-accent;
+    @apply rounded-sm no-underline transition-colors duration-100 hover:text-accent;
+  }
+
+  .research-note-link.is-open {
+    @apply bg-accent-soft text-accent;
   }
 
   .research-note-stack {
-    @apply flex min-h-[calc(100dvh-9rem)] w-full items-stretch overflow-x-auto bg-bg;
+    @apply flex h-[calc(100dvh-2.75rem)] w-full items-stretch overflow-x-auto overflow-y-hidden bg-bg;
     scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
     scrollbar-width: thin;
   }
 
-  .research-note-rails {
-    @apply flex shrink-0 items-stretch;
-  }
-
-  .research-note-rail {
-    @apply flex w-10 shrink-0 items-start justify-center bg-page py-5 font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted no-underline transition-colors duration-100 hover:bg-card hover:text-ink;
-    box-shadow: inset -1px 0 0 var(--border);
-  }
-
-  .research-note-rail span {
-    writing-mode: vertical-lr;
+  .research-note-stack.has-overflowing-trail::after {
+    @apply block w-[36.5625rem] shrink-0 content-[''];
   }
 
   .research-note-pane {
-    @apply min-h-[calc(100dvh-9rem)] w-[min(39rem,calc(100vw-5rem))] shrink-0 overflow-y-auto px-7 pb-16 pt-4 outline-none sm:px-10 sm:pt-7;
+    @apply sticky top-0 h-full w-[39.0625rem] max-w-[39.0625rem] grow shrink-0 overflow-y-auto border-l border-border bg-bg outline-none;
+    right: -36.5625rem;
+    transition:
+      box-shadow 100ms ease,
+      opacity 75ms ease,
+      transform 200ms cubic-bezier(0.19, 1, 0.22, 1);
     scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
     scrollbar-width: thin;
+  }
+
+  .research-note-pane:nth-child(1) {
+    left: 0;
+  }
+  .research-note-pane:nth-child(2) {
+    left: 2.5rem;
+  }
+  .research-note-pane:nth-child(3) {
+    left: 5rem;
+  }
+  .research-note-pane:nth-child(4) {
+    left: 7.5rem;
+  }
+  .research-note-pane:nth-child(5) {
+    left: 10rem;
+  }
+  .research-note-pane:nth-child(6) {
+    left: 12.5rem;
+  }
+  .research-note-pane:nth-child(7) {
+    left: 15rem;
+  }
+  .research-note-pane:nth-child(8) {
+    left: 17.5rem;
+  }
+  .research-note-pane:nth-child(9) {
+    left: 20rem;
+  }
+  .research-note-pane:nth-child(10) {
+    left: 22.5rem;
+  }
+  .research-note-pane:nth-child(11) {
+    left: 25rem;
+  }
+  .research-note-pane:nth-child(12) {
+    left: 27.5rem;
+  }
+  .research-note-pane:nth-child(13) {
+    left: 30rem;
+  }
+
+  .research-note-content {
+    @apply min-h-full px-8 pb-16 pt-8;
+  }
+
+  .research-note-content > h1 {
+    @apply text-[2rem] font-bold leading-[1.12] tracking-[-0.035em];
+  }
+
+  .research-note-content > p {
+    @apply mt-7 text-[1.125rem] leading-[1.72] text-ink-secondary;
+  }
+
+  .research-note-obscured-label {
+    @apply absolute bottom-0 left-0 top-0 z-10 hidden w-10 overflow-hidden bg-bg pt-9 font-sans text-[1.0625rem] font-medium leading-10 text-ink-muted no-underline hover:text-accent;
+    writing-mode: vertical-lr;
+  }
+
+  .research-note-pane:not(:nth-last-child(-n + 2)) > .research-note-obscured-label {
+    @apply block;
   }
 
   .research-note-pane:focus-visible {
@@ -282,33 +343,24 @@ a:hover {
     @apply rounded-full bg-border;
   }
 
-  .research-note-header h1 {
-    @apply mt-3 text-[2rem] font-bold leading-[1.1] tracking-[-0.035em] sm:text-[2.5rem];
-  }
-
-  .research-note-question {
-    @apply mt-8 text-[1.125rem] leading-[1.8] text-ink-secondary;
-  }
-
   .research-note-links {
     @apply mt-9 space-y-3 pl-5 text-[1.0625rem] leading-7;
   }
 
-  .research-note-mobile-back {
-    @apply mb-8 hidden font-sans text-sm text-ink-muted no-underline;
+  .research-note-preview {
+    @apply pointer-events-none fixed z-40 h-[min(25rem,calc(100dvh-2rem))] w-[min(31.25rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-border bg-bg text-ink;
+    box-shadow: 0 10px 32px rgb(30 28 24 / 16%);
   }
 
-  .research-note-preview {
-    @apply pointer-events-none fixed z-40 w-[min(31.25rem,calc(100vw-2rem))] overflow-hidden bg-bg px-8 py-7 text-ink;
-    max-height: min(25rem, calc(100dvh - 2rem));
-    box-shadow: 0 12px 36px rgb(44 37 29 / 14%);
+  .research-note-preview-content {
+    @apply p-7;
   }
 
   .research-note-preview h2 {
-    @apply mt-2 text-2xl font-bold leading-tight;
+    @apply text-2xl font-bold leading-tight;
   }
 
-  .research-note-preview > p:last-child {
+  .research-note-preview p {
     @apply mt-5 text-[1rem] leading-7 text-ink-secondary;
   }
 
@@ -401,21 +453,44 @@ a:hover {
 }
 
 @media (max-width: 800px) {
-  .research-note-stack {
-    @apply block min-h-0 overflow-visible;
+  .research-notes-page {
+    @apply h-auto min-h-dvh overflow-visible;
   }
 
-  .research-note-rails,
+  .research-notes-navigation {
+    @apply sticky top-0 z-30 bg-bg;
+  }
+
+  .research-note-stack {
+    @apply block h-auto min-h-0 overflow-visible;
+  }
+
   .research-note-preview {
     @apply hidden;
   }
 
-  .research-note-pane {
-    @apply min-h-0 w-full overflow-visible px-0 pb-4 pt-0;
+  .research-note-stack.has-overflowing-trail::after {
+    @apply hidden;
   }
 
-  .research-note-mobile-back {
-    @apply inline-block;
+  .research-note-pane {
+    @apply static hidden h-auto min-h-0 w-full max-w-none overflow-visible border-0;
+  }
+
+  .research-note-pane:last-child {
+    @apply block;
+  }
+
+  .research-note-content {
+    @apply min-h-0 px-5 pb-14 pt-7;
+  }
+
+  .research-note-obscured-label {
+    @apply hidden;
+  }
+
+  .research-note-content > h1 {
+    @apply text-[1.75rem];
   }
 }
 

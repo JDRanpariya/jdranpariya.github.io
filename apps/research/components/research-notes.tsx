@@ -4,11 +4,7 @@ import { researchThemes, type ResearchTheme } from "@/data/research-themes";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type PreviewState = {
-  theme: ResearchTheme;
-  left: number;
-  top: number;
-};
+type PreviewState = { theme: ResearchTheme; left: number; top: number };
 
 const themeBySlug = new Map(researchThemes.map((theme) => [theme.slug, theme]));
 
@@ -39,16 +35,13 @@ function isPlainPrimaryClick(event: React.MouseEvent<HTMLAnchorElement>) {
 export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
   const [path, setPath] = useState(() => normalizePath(initialPath));
   const [preview, setPreview] = useState<PreviewState | null>(null);
-  const activePane = useRef<HTMLElement>(null);
-  const shouldFocusActivePane = useRef(false);
-
-  const activeTheme = path.length ? themeBySlug.get(path[path.length - 1]) : undefined;
+  const stackRef = useRef<HTMLElement>(null);
+  const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setTrail = useCallback((nextPath: string[], mode: "push" | "replace" = "push") => {
     const normalized = normalizePath(nextPath);
     setPath(normalized);
     setPreview(null);
-
     const url = new URL(window.location.href);
     url.searchParams.delete("notes");
     normalized.forEach((slug) => url.searchParams.append("notes", slug));
@@ -69,9 +62,12 @@ export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
   }, []);
 
   useEffect(() => {
-    if (!shouldFocusActivePane.current || !path.length) return;
-    activePane.current?.focus({ preventScroll: true });
-    shouldFocusActivePane.current = false;
+    const stack = stackRef.current;
+    if (!stack || window.matchMedia("(max-width: 800px)").matches) return;
+    const frame = requestAnimationFrame(() => {
+      stack.scrollTo({ left: Math.max(0, (path.length - 1) * 585), behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [path]);
 
   useEffect(() => {
@@ -82,11 +78,20 @@ export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
     return () => window.removeEventListener("keydown", dismiss);
   }, []);
 
-  const trail = useMemo(
+  useEffect(
+    () => () => {
+      if (previewTimer.current) clearTimeout(previewTimer.current);
+    },
+    []
+  );
+
+  const panels = useMemo(
     () => [
-      { title: "Research", path: [] as string[] },
-      ...path.slice(0, -1).map((slug, index) => ({
+      { slug: "research", title: "Research", theme: undefined, path: [] as string[] },
+      ...path.map((slug, index) => ({
+        slug,
         title: themeBySlug.get(slug)?.title ?? slug,
+        theme: themeBySlug.get(slug),
         path: path.slice(0, index + 1),
       })),
     ],
@@ -100,134 +105,124 @@ export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
   ) {
     if (!isPlainPrimaryClick(event)) return;
     event.preventDefault();
-    shouldFocusActivePane.current = true;
-
     const openIndex = path.indexOf(slug);
     if (openIndex >= 0) {
       setTrail(path.slice(0, openIndex + 1));
       return;
     }
-
     setTrail([...path.slice(0, sourceIndex + 1), slug]);
   }
 
-  function showPreview(anchor: HTMLAnchorElement, slug: string, fromKeyboard = false) {
-    const theme = themeBySlug.get(slug);
-    if (!theme) return;
-    if (!fromKeyboard && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  function schedulePreview(anchor: HTMLAnchorElement, slug: string, immediate = false) {
+    if (!window.matchMedia("(min-width: 801px) and (hover: hover) and (pointer: fine)").matches)
+      return;
+    if (previewTimer.current) clearTimeout(previewTimer.current);
+    previewTimer.current = setTimeout(
+      () => {
+        const theme = themeBySlug.get(slug);
+        if (!theme || !document.contains(anchor)) return;
+        const rect = anchor.getBoundingClientRect();
+        const width = Math.min(500, window.innerWidth - 32);
+        const height = Math.min(400, window.innerHeight - 32);
+        const fitsRight = rect.right + 14 + width <= window.innerWidth - 16;
+        const left = fitsRight ? rect.right + 14 : Math.max(16, rect.left - width - 14);
+        const top = Math.min(Math.max(16, rect.top - 28), window.innerHeight - height - 16);
+        setPreview({ theme, left, top });
+      },
+      immediate ? 0 : 260
+    );
+  }
 
-    const rect = anchor.getBoundingClientRect();
-    const width = Math.min(500, window.innerWidth - 32);
-    const estimatedHeight = 250;
-    const fitsRight = rect.right + 16 + width <= window.innerWidth - 16;
-    const left = fitsRight ? rect.right + 16 : Math.max(16, rect.left - width - 16);
-    const top = Math.min(Math.max(16, rect.top - 24), window.innerHeight - estimatedHeight - 16);
-    setPreview({ theme, left, top });
+  function hidePreview() {
+    if (previewTimer.current) clearTimeout(previewTimer.current);
+    setPreview(null);
   }
 
   function themeLink(theme: ResearchTheme, sourceIndex: number) {
     const nextPath = [...path.slice(0, sourceIndex + 1), theme.slug];
+    const isOpenNext = path[sourceIndex + 1] === theme.slug;
     return (
       <Link
         href={hrefForPath(nextPath)}
-        className="research-note-link"
+        className={`research-note-link${isOpenNext ? " is-open" : ""}`}
         onClick={(event) => openTheme(event, theme.slug, sourceIndex)}
-        onMouseEnter={(event) => showPreview(event.currentTarget, theme.slug)}
-        onMouseLeave={() => setPreview(null)}
-        onFocus={(event) => showPreview(event.currentTarget, theme.slug, true)}
-        onBlur={() => setPreview(null)}
+        onMouseEnter={(event) => schedulePreview(event.currentTarget, theme.slug)}
+        onMouseLeave={hidePreview}
+        onFocus={(event) => schedulePreview(event.currentTarget, theme.slug, true)}
+        onBlur={hidePreview}
       >
         {theme.title}
       </Link>
     );
   }
 
-  const rootNote = (
-    <article className="research-index research-root-note">
-      <header className="research-intro">
-        <h1>information, compression and learning dynamics</h1>
-        <p>
-          Anything you can formalize can be simulated, and substrate only matters for cost: energy,
-          time, parallelism, and noise tolerance.{" "}
-          <em>
-            A mechanism carries over if the constraint that made it worthwhile still holds on the
-            new substrate.
-          </em>
-        </p>
-        <p>
-          I want to understand how intelligent systems learn to perceive, act, remember, and adapt
-          in the physical world, and which principles from biological intelligence can help us build
-          better ones.
-        </p>
-      </header>
-
-      <ul className="theme-list">
-        {researchThemes.map((theme) => (
-          <li key={theme.slug}>
-            <strong>{themeLink(theme, -1)}:</strong> {theme.questions}
-          </li>
-        ))}
-      </ul>
-    </article>
-  );
-
   return (
     <>
-      {!activeTheme ? (
-        rootNote
-      ) : (
-        <section className="research-note-stack" aria-label="Open research notes">
-          <nav className="research-note-rails" aria-label="Research note trail">
-            {trail.map((item) => (
-              <Link
-                key={item.path.join("/") || "research"}
-                href={hrefForPath(item.path)}
-                className="research-note-rail"
-                onClick={(event) => {
-                  if (!isPlainPrimaryClick(event)) return;
-                  event.preventDefault();
-                  shouldFocusActivePane.current = true;
-                  setTrail(item.path);
-                }}
-                aria-label={`Open ${item.title}`}
-              >
-                <span>{item.title}</span>
-              </Link>
-            ))}
-          </nav>
-
-          <article ref={activePane} className="research-note-pane" tabIndex={-1}>
+      <section
+        ref={stackRef}
+        className={`research-note-stack${panels.length > 2 ? " has-overflowing-trail" : ""}`}
+        aria-label="Open research notes"
+      >
+        {panels.map((panel, panelIndex) => (
+          <article key={panel.slug} className="research-note-pane" aria-label={panel.title}>
             <Link
-              href={hrefForPath(path.slice(0, -1))}
-              className="research-note-mobile-back"
+              href={hrefForPath(panel.path)}
+              className="research-note-obscured-label"
               onClick={(event) => {
                 if (!isPlainPrimaryClick(event)) return;
                 event.preventDefault();
-                shouldFocusActivePane.current = true;
-                setTrail(path.slice(0, -1));
+                setTrail(panel.path);
               }}
+              tabIndex={panelIndex < panels.length - 2 ? 0 : -1}
             >
-              ← Research
+              {panel.title}
             </Link>
-            <header className="research-note-header">
-              <p className="ui-label">Research note</p>
-              <h1>{activeTheme.title}</h1>
-            </header>
-            <p className="research-note-question">{activeTheme.questions}</p>
 
-            {activeTheme.links?.length ? (
-              <ul className="research-note-links">
-                {activeTheme.links
-                  .map((slug) => themeBySlug.get(slug))
-                  .filter((theme): theme is ResearchTheme => Boolean(theme))
-                  .map((theme) => (
-                    <li key={theme.slug}>{themeLink(theme, path.length - 1)}</li>
+            {panel.theme ? (
+              <div className="research-note-content">
+                <h1>{panel.theme.title}</h1>
+                <p>{panel.theme.questions}</p>
+                {panel.theme.links?.length ? (
+                  <ul className="research-note-links">
+                    {panel.theme.links
+                      .map((slug) => themeBySlug.get(slug))
+                      .filter((theme): theme is ResearchTheme => Boolean(theme))
+                      .map((theme) => (
+                        <li key={theme.slug}>{themeLink(theme, panelIndex - 1)}</li>
+                      ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : (
+              <div className="research-note-content research-root-note">
+                <header className="research-intro">
+                  <h1>information, compression and learning dynamics</h1>
+                  <p>
+                    Anything you can formalize can be simulated, and substrate only matters for
+                    cost: energy, time, parallelism, and noise tolerance.{" "}
+                    <em>
+                      A mechanism carries over if the constraint that made it worthwhile still holds
+                      on the new substrate.
+                    </em>
+                  </p>
+                  <p>
+                    I want to understand how intelligent systems learn to perceive, act, remember,
+                    and adapt in the physical world, and which principles from biological
+                    intelligence can help us build better ones.
+                  </p>
+                </header>
+                <ul className="theme-list">
+                  {researchThemes.map((theme) => (
+                    <li key={theme.slug}>
+                      <strong>{theme.title}:</strong> {theme.questions}
+                    </li>
                   ))}
-              </ul>
-            ) : null}
+                </ul>
+              </div>
+            )}
           </article>
-        </section>
-      )}
+        ))}
+      </section>
 
       {preview ? (
         <aside
@@ -235,9 +230,10 @@ export function ResearchNotes({ initialPath }: { initialPath: string[] }) {
           style={{ left: preview.left, top: preview.top }}
           aria-hidden="true"
         >
-          <p className="ui-label">Research note</p>
-          <h2>{preview.theme.title}</h2>
-          <p>{preview.theme.questions}</p>
+          <div className="research-note-preview-content">
+            <h2>{preview.theme.title}</h2>
+            <p>{preview.theme.questions}</p>
+          </div>
         </aside>
       ) : null}
     </>

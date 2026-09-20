@@ -11,76 +11,114 @@
 @media (min-width: 801px) {
   .codex-stack-section {
     width: 100%;
-    max-width: 90rem;
-    padding-top: 2rem;
-    padding-right: 1.5rem;
-    padding-bottom: 3rem;
-    padding-left: 1.5rem;
+    max-width: none;
+    height: calc(100dvh - 5.75rem);
+    padding: 0;
+    overflow: hidden;
   }
 
   .codex-note-stack {
     display: flex;
     width: 100%;
-    min-height: calc(100dvh - 9rem);
+    height: 100%;
     align-items: stretch;
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-color: color-mix(in srgb, var(--color-ink-muted) 42%, transparent) transparent;
     scrollbar-width: thin;
   }
 
-  .codex-note-stack.is-single {
-    justify-content: center;
-  }
-
-  .codex-note-rails {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: stretch;
-  }
-
-  .codex-note-rail {
-    display: flex;
-    width: 2.5rem;
-    flex: 0 0 2.5rem;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 1.25rem 0;
-    color: var(--color-ink-muted);
-    background: var(--color-surface);
-    box-shadow: inset -1px 0 0 var(--color-border);
-    font-family:
-      system-ui,
-      -apple-system,
-      "Segoe UI",
-      sans-serif;
-    font-size: 0.75rem;
-    font-weight: 650;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    transition:
-      color var(--duration-fast) var(--ease-standard),
-      background-color var(--duration-fast) var(--ease-standard);
-  }
-
-  .codex-note-rail:hover {
-    color: var(--color-ink);
-    background: var(--color-card);
-  }
-
-  .codex-note-rail span {
-    writing-mode: vertical-lr;
+  .codex-note-stack.has-overflowing-trail::after {
+    display: block;
+    width: 36.5625rem;
+    flex: 0 0 36.5625rem;
+    content: "";
   }
 
   .codex-note-pane {
-    width: min(42.5rem, calc(100vw - 6rem));
-    height: calc(100dvh - 9rem);
-    flex: 0 0 min(42.5rem, calc(100vw - 6rem));
+    position: sticky;
+    top: 0;
+    right: -36.5625rem;
+    width: 39.0625rem;
+    max-width: 39.0625rem;
+    height: 100%;
+    flex: 1 0 39.0625rem;
     overflow-y: auto;
-    padding: 1.5rem 2.5rem 4rem;
+    padding: 2rem 2rem 4rem;
+    border-left: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
     background: var(--color-bg);
+    outline: none;
     scrollbar-color: color-mix(in srgb, var(--color-ink-muted) 42%, transparent) transparent;
     scrollbar-width: thin;
+    transition:
+      box-shadow 100ms ease,
+      opacity 75ms ease,
+      transform 200ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .codex-note-pane:nth-child(1) {
+    left: 0;
+  }
+  .codex-note-pane:nth-child(2) {
+    left: 2.5rem;
+  }
+  .codex-note-pane:nth-child(3) {
+    left: 5rem;
+  }
+  .codex-note-pane:nth-child(4) {
+    left: 7.5rem;
+  }
+  .codex-note-pane:nth-child(5) {
+    left: 10rem;
+  }
+  .codex-note-pane:nth-child(6) {
+    left: 12.5rem;
+  }
+  .codex-note-pane:nth-child(7) {
+    left: 15rem;
+  }
+  .codex-note-pane:nth-child(8) {
+    left: 17.5rem;
+  }
+  .codex-note-pane:nth-child(9) {
+    left: 20rem;
+  }
+  .codex-note-pane:nth-child(10) {
+    left: 22.5rem;
+  }
+  .codex-note-pane:nth-child(11) {
+    left: 25rem;
+  }
+  .codex-note-pane:nth-child(12) {
+    left: 27.5rem;
+  }
+
+  .codex-note-obscured-label {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    width: 2.5rem;
+    overflow: hidden;
+    padding-top: 2.25rem;
+    color: var(--color-ink-muted);
+    background: var(--color-bg);
+    font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 2.5rem;
+    text-decoration: none;
+    writing-mode: vertical-lr;
+  }
+
+  .codex-note-pane:not(:nth-last-child(-n + 2)) > .codex-note-obscured-label {
+    display: block;
+  }
+
+  .codex-note-obscured-label:hover {
+    color: var(--color-accent);
   }
 
   .codex-note-pane::-webkit-scrollbar,
@@ -101,11 +139,31 @@
   }
 
   .codex-note-pane .post-hero {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
 
   .codex-note-pane .post-hero__title {
     max-width: 17ch;
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .codex-note-pane h1:focus {
+    outline: none;
+  }
+
+  .codex-note-pane .codex-internal-link {
+    border-radius: 0.125rem;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .codex-note-pane .codex-internal-link:hover {
+    color: var(--color-ink);
+  }
+
+  .codex-note-pane .codex-internal-link.is-open-note {
+    background: var(--color-accent-soft);
   }
 
   .codex-note-preview {
@@ -115,31 +173,39 @@
     z-index: 60;
     top: var(--preview-top);
     left: var(--preview-left);
-    width: min(27.375rem, calc(100vw - 2rem));
-    height: min(22.5rem, calc(100dvh - 2rem));
+    width: min(31.25rem, calc(100vw - 2rem));
+    height: min(25rem, calc(100dvh - 2rem));
     overflow: hidden;
     pointer-events: none;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
     background: var(--color-bg);
     box-shadow: var(--shadow-md);
   }
 
-  .codex-note-preview__viewport {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .codex-note-preview__canvas {
-    width: 42.5rem;
-    transform: scale(0.64);
-    transform-origin: top left;
-  }
-
   .codex-note-preview .codex-note-pane {
-    width: 42.5rem;
+    position: static;
+    width: 100%;
+    max-width: none;
     height: auto;
-    min-height: 35rem;
+    min-height: 25rem;
     overflow: visible;
+    padding: 1.5rem 1.625rem 2.5rem;
+    border: 0;
+  }
+
+  .codex-note-preview .post-hero {
+    margin-bottom: 1.25rem;
+  }
+
+  .codex-note-preview .post-hero__title {
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .codex-note-preview .prose-site {
+    font-size: 0.9375rem;
+    line-height: 1.5;
   }
 }
 
@@ -1739,4 +1805,26 @@ details:not([open]) > .toc-toggle svg {
 
 .scroll-step:not(.is-active) {
   @apply opacity-40 transition-opacity duration-slow;
+}
+
+/* Codex trail shell overrides generated layout utilities after Tailwind. */
+@media (min-width: 801px) {
+  body.codex-note-mode > nav > div {
+    height: 2.75rem;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  body.codex-note-mode #main > .codex-stack-section {
+    width: 100% !important;
+    max-width: none !important;
+    height: calc(100dvh - 2.75rem) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  body.codex-note-mode > footer {
+    display: none;
+  }
 }

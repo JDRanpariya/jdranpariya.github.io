@@ -1,7 +1,5 @@
-// Andy Matuschak-style note trails for the Codex of Understanding.
-// The published HTML remains the no-JS and mobile experience. On larger
-// screens, same-Codex links open beside the current note and are reflected in
-// the URL so the trail survives reloads and browser history navigation.
+// Spatial note trails for the Codex of Understanding. Desktop links open in
+// adjacent, independently scrollable panes; mobile keeps the published page.
 
 (function () {
   "use strict";
@@ -33,13 +31,7 @@
   }
 
   function plainPrimaryClick(event) {
-    return (
-      event.button === 0 &&
-      !event.metaKey &&
-      !event.ctrlKey &&
-      !event.shiftKey &&
-      !event.altKey
-    );
+    return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   }
 
   function extractNote(documentNode, url) {
@@ -54,14 +46,8 @@
     const pane = document.createElement("article");
     pane.className = "codex-note-pane";
     pane.dataset.noteUrl = url.pathname;
-    pane.tabIndex = -1;
     pane.append(hero.cloneNode(true), prose.cloneNode(true));
-
-    return {
-      title: heading.textContent.trim(),
-      url,
-      pane,
-    };
+    return { title: heading.textContent.trim(), url, pane };
   }
 
   const initialEntry = extractNote(document, baseUrl);
@@ -71,12 +57,8 @@
     const url = canonicalUrl(value);
     const cached = noteCache.get(url.pathname);
     if (cached) return cached;
-
-    const response = await fetch(`${url.pathname}${url.search}`, {
-      headers: { Accept: "text/html" },
-    });
+    const response = await fetch(`${url.pathname}${url.search}`, { headers: { Accept: "text/html" } });
     if (!response.ok) throw new Error(`Could not load ${url.pathname}`);
-
     const documentNode = new DOMParser().parseFromString(await response.text(), "text/html");
     const note = extractNote(documentNode, url);
     noteCache.set(url.pathname, note);
@@ -86,9 +68,7 @@
   function trailUrl() {
     const url = new URL(baseUrl.href);
     url.searchParams.delete(STACK_PARAM);
-    entries.slice(1).forEach((entry) => {
-      url.searchParams.append(STACK_PARAM, entry.url.pathname);
-    });
+    entries.slice(1).forEach((entry) => url.searchParams.append(STACK_PARAM, entry.url.pathname));
     return `${url.pathname}${url.search}${url.hash}`;
   }
 
@@ -108,44 +88,59 @@
 
   function render(focusActive) {
     hidePreview();
-
+    const scrollPositions = new Map(
+      [...section.querySelectorAll(".codex-note-pane")].map((pane) => [pane.dataset.noteUrl, pane.scrollTop])
+    );
     const stack = document.createElement("div");
-    stack.className = `codex-note-stack${entries.length === 1 ? " is-single" : ""}`;
+    stack.className = `codex-note-stack${entries.length > 2 ? " has-overflowing-trail" : ""}`;
     stack.setAttribute("aria-label", "Open Codex notes");
 
-    if (entries.length > 1) {
-      const trail = document.createElement("nav");
-      trail.className = "codex-note-rails";
-      trail.setAttribute("aria-label", "Codex note trail");
+    entries.forEach((entry, index) => {
+      const pane = entry.pane.cloneNode(true);
+      pane.dataset.trailIndex = String(index);
+      pane.tabIndex = -1;
 
-      entries.slice(0, -1).forEach((entry, index) => {
-        const rail = document.createElement("a");
-        rail.className = "codex-note-rail";
-        rail.href = entry.url.pathname;
-        rail.dataset.trailIndex = String(index);
-        rail.setAttribute("aria-label", `Open ${entry.title}`);
+      const label = document.createElement("a");
+      label.className = "codex-note-obscured-label";
+      label.href = entry.url.pathname;
+      label.dataset.trailIndex = String(index);
+      label.textContent = entry.title;
+      label.setAttribute("aria-label", `Open ${entry.title}`);
+      pane.prepend(label);
 
-        const label = document.createElement("span");
-        label.textContent = entry.title;
-        rail.append(label);
-        trail.append(rail);
+      const nextEntry = entries[index + 1];
+      pane.querySelectorAll("a[href]").forEach((link) => {
+        if (isCodexUrl(canonicalUrl(link.href))) link.classList.add("codex-internal-link");
       });
+      if (nextEntry) {
+        pane.querySelectorAll("a[href]").forEach((link) => {
+          if (canonicalUrl(link.href).pathname === nextEntry.url.pathname) link.classList.add("is-open-note");
+        });
+      }
+      stack.append(pane);
+    });
 
-      stack.append(trail);
-    }
-
-    const pane = entries[entries.length - 1].pane.cloneNode(true);
-    stack.append(pane);
     section.replaceChildren(stack);
-    document.title = `${entries[entries.length - 1].title} | JD Ranpariya`;
+    document.title = `${entries.map((entry) => entry.title).join(" | ")} | JD Ranpariya`;
 
-    if (focusActive) pane.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      stack.querySelectorAll(".codex-note-pane").forEach((pane) => {
+        pane.scrollTop = scrollPositions.get(pane.dataset.noteUrl) || 0;
+      });
+      stack.scrollTo({ left: Math.max(0, (entries.length - 2) * 585), behavior: "smooth" });
+      if (focusActive) {
+        const heading = stack.lastElementChild?.querySelector("h1");
+        if (heading) {
+          heading.tabIndex = -1;
+          heading.focus({ preventScroll: true });
+        }
+      }
+    });
   }
 
   async function openNote(value, sourceIndex) {
     const targetUrl = canonicalUrl(value);
     const existingIndex = entries.findIndex((entry) => entry.url.pathname === targetUrl.pathname);
-
     if (existingIndex >= 0) {
       entries = entries.slice(0, existingIndex + 1);
       render(true);
@@ -165,11 +160,11 @@
 
   function positionPreview(preview, anchor) {
     const rect = anchor.getBoundingClientRect();
-    const width = Math.min(438, window.innerWidth - 32);
-    const height = Math.min(360, window.innerHeight - 32);
-    const fitsRight = rect.right + 16 + width <= window.innerWidth - 16;
-    const left = fitsRight ? rect.right + 16 : Math.max(16, rect.left - width - 16);
-    const top = Math.min(Math.max(16, rect.top - 32), window.innerHeight - height - 16);
+    const width = Math.min(500, window.innerWidth - 32);
+    const height = Math.min(400, window.innerHeight - 32);
+    const fitsRight = rect.right + 14 + width <= window.innerWidth - 16;
+    const left = fitsRight ? rect.right + 14 : Math.max(16, rect.left - width - 14);
+    const top = Math.min(Math.max(16, rect.top - 28), window.innerHeight - height - 16);
     preview.style.setProperty("--preview-left", `${left}px`);
     preview.style.setProperty("--preview-top", `${top}px`);
   }
@@ -177,42 +172,32 @@
   async function showPreview(anchor) {
     const url = canonicalUrl(anchor.href);
     if (!isCodexUrl(url)) return;
-
     const sequence = ++previewSequence;
     try {
       const note = await loadNote(url);
       if (sequence !== previewSequence || !document.contains(anchor)) return;
-
       document.querySelector(".codex-note-preview")?.remove();
       const preview = document.createElement("aside");
       preview.className = "codex-note-preview";
       preview.setAttribute("aria-hidden", "true");
-
-      const viewport = document.createElement("div");
-      viewport.className = "codex-note-preview__viewport";
-      const canvas = document.createElement("div");
-      canvas.className = "codex-note-preview__canvas";
       const pane = note.pane.cloneNode(true);
       pane.removeAttribute("tabindex");
-      canvas.append(pane);
-      viewport.append(canvas);
-      preview.append(viewport);
+      preview.append(pane);
       positionPreview(preview, anchor);
       document.body.append(preview);
     } catch (error) {
-      // A failed preview should never prevent the underlying link from working.
+      // Preview failure must not interfere with navigation.
     }
   }
 
   function schedulePreview(anchor, immediate) {
     hidePreview();
-    previewTimer = window.setTimeout(() => showPreview(anchor), immediate ? 0 : 120);
+    previewTimer = window.setTimeout(() => showPreview(anchor), immediate ? 0 : 260);
   }
 
   async function restoreFromUrl() {
     const requested = new URL(window.location.href).searchParams.getAll(STACK_PARAM);
     const restored = [initialEntry];
-
     for (const value of requested) {
       const url = canonicalUrl(value);
       if (!isCodexUrl(url)) continue;
@@ -222,21 +207,21 @@
         break;
       }
     }
-
     entries = restored;
     render(false);
   }
 
+  document.body.classList.add("codex-note-mode");
   section.classList.add("codex-stack-section");
   entries = [initialEntry];
   render(false);
   restoreFromUrl();
 
   section.addEventListener("click", function (event) {
-    const rail = event.target.closest("[data-trail-index]");
-    if (rail && plainPrimaryClick(event)) {
+    const trailLink = event.target.closest(".codex-note-obscured-label");
+    if (trailLink && plainPrimaryClick(event)) {
       event.preventDefault();
-      entries = entries.slice(0, Number(rail.dataset.trailIndex) + 1);
+      entries = entries.slice(0, Number(trailLink.dataset.trailIndex) + 1);
       render(true);
       setHistory("push");
       return;
@@ -246,18 +231,18 @@
     if (!link || !plainPrimaryClick(event)) return;
     const url = canonicalUrl(link.href);
     if (!isCodexUrl(url)) return;
-    if (url.pathname === entries[entries.length - 1].url.pathname && url.hash) return;
-
+    const sourcePane = link.closest(".codex-note-pane");
+    const sourceIndex = Number(sourcePane.dataset.trailIndex);
+    if (url.pathname === entries[sourceIndex].url.pathname && url.hash) return;
     event.preventDefault();
-    openNote(url, entries.length - 1);
+    openNote(url, sourceIndex);
   });
 
   section.addEventListener("pointerover", function (event) {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const link = event.target.closest(".codex-note-pane a[href]");
+    const link = event.target.closest(".codex-note-pane a[href]:not(.codex-note-obscured-label)");
     if (!link || (event.relatedTarget && link.contains(event.relatedTarget))) return;
-    const url = canonicalUrl(link.href);
-    if (isCodexUrl(url)) schedulePreview(link, false);
+    if (isCodexUrl(canonicalUrl(link.href))) schedulePreview(link, false);
   });
 
   section.addEventListener("pointerout", function (event) {
@@ -267,24 +252,14 @@
   });
 
   section.addEventListener("focusin", function (event) {
-    const link = event.target.closest(".codex-note-pane a[href]");
+    const link = event.target.closest(".codex-note-pane a[href]:not(.codex-note-obscured-label)");
     if (link && isCodexUrl(canonicalUrl(link.href))) schedulePreview(link, true);
   });
 
   section.addEventListener("focusout", hidePreview);
-
-  window.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") hidePreview();
-  });
-
+  window.addEventListener("keydown", (event) => event.key === "Escape" && hidePreview());
   window.addEventListener("popstate", restoreFromUrl);
   desktop.addEventListener("change", () => window.location.reload());
-
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) restoreFromUrl();
-  });
-
-  window.addEventListener("pagehide", function () {
-    document.title = originalTitle;
-  });
+  window.addEventListener("pageshow", (event) => event.persisted && restoreFromUrl());
+  window.addEventListener("pagehide", () => { document.title = originalTitle; });
 })();
