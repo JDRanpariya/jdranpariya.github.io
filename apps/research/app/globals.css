@@ -185,7 +185,7 @@ a:hover {
   }
 
   .research-notes-page {
-    @apply h-dvh w-full overflow-hidden bg-bg;
+    @apply min-h-dvh w-full overflow-visible bg-bg;
   }
 
   .research-notes-navigation {
@@ -228,8 +228,8 @@ a:hover {
     @apply mt-6 list-disc space-y-3 pl-7 text-[1.0625rem] leading-[1.8] marker:text-accent;
   }
 
-  .theme-list strong {
-    @apply font-bold text-ink;
+  .research-theme-link {
+    @apply font-bold text-ink no-underline hover:text-accent;
   }
 
   .research-note-stack {
@@ -247,7 +247,7 @@ a:hover {
   }
 
   .research-note-stack.is-solo {
-    @apply justify-center bg-bg;
+    @apply block h-auto min-h-[calc(100dvh-2.75rem)] overflow-visible bg-bg;
   }
 
   .research-note-pane {
@@ -270,10 +270,23 @@ a:hover {
   }
 
   .research-note-stack.is-solo .research-note-pane {
-    width: min(49.375rem, 100%);
-    min-width: min(49.375rem, 100%);
-    flex: 0 1 49.375rem;
-    @apply border-l;
+    right: auto;
+    left: auto;
+    width: 100%;
+    max-width: 72rem;
+    min-width: 0;
+    height: auto;
+    margin-inline: auto;
+    flex: none;
+    @apply static overflow-visible border-0;
+  }
+
+  .research-note-stack.is-solo .research-note-scroll {
+    @apply h-auto overflow-visible;
+  }
+
+  .research-note-stack.is-solo .research-note-content {
+    @apply min-h-0 px-5 pb-24 pt-12 sm:px-7 md:pt-16;
   }
 
   .research-note-scroll {

@@ -311,8 +311,17 @@ export function ResearchNotes({
                   <ul className="theme-list">
                     {researchDocument.themes.map((theme) => (
                       <li key={theme.slug}>
-                        <strong>{theme.title}:</strong>{" "}
-                        {renderInline(theme.questions, (slug) => openTheme(slug, 0))}
+                        <a
+                          className="research-theme-link"
+                          href={hrefForPath([theme.slug])}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            openTheme(theme.slug, 0);
+                          }}
+                        >
+                          {theme.title}
+                        </a>
+                        : {renderInline(theme.questions, (slug) => openTheme(slug, 0))}
                       </li>
                     ))}
                   </ul>
