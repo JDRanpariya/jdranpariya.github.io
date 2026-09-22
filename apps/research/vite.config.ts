@@ -12,7 +12,7 @@ const localBindingConfig = {
   compatibility_date: "2026-09-22",
   compatibility_flags: ["nodejs_compat"],
   workers_dev: true,
-  routes: [{ pattern: "research.jdranpariya.com/*", zone_name: "jdranpariya.com" }],
+  routes: [{ pattern: "research.jdranpariya.com", custom_domain: true }],
   d1_databases: [
     {
       binding: "DB",
