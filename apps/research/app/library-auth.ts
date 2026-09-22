@@ -1,19 +1,15 @@
-import { getChatGPTUser, requireChatGPTUser, type ChatGPTUser } from "@/app/chatgpt-auth";
-import { notFound } from "next/navigation";
+import { ADMIN_EMAIL, getAdminUser, requireAdminUser, type AdminUser } from "@/app/admin-auth";
 
-export const LIBRARY_OWNER_EMAIL = "jaydeepranpariya037@gmail.com";
+export const LIBRARY_OWNER_EMAIL = ADMIN_EMAIL;
 
-export function isLibraryOwner(user: ChatGPTUser | null): user is ChatGPTUser {
+export function isLibraryOwner(user: AdminUser | null): user is AdminUser {
   return Boolean(user && user.email.toLowerCase() === LIBRARY_OWNER_EMAIL);
 }
 
-export async function requireLibraryOwner(returnTo: string): Promise<ChatGPTUser> {
-  const user = await requireChatGPTUser(returnTo);
-  if (!isLibraryOwner(user)) notFound();
-  return user;
+export async function requireLibraryOwner(returnTo: string): Promise<AdminUser> {
+  return requireAdminUser(returnTo);
 }
 
-export async function getLibraryOwner(): Promise<ChatGPTUser | null> {
-  const user = await getChatGPTUser();
-  return isLibraryOwner(user) ? user : null;
+export async function getLibraryOwner(): Promise<AdminUser | null> {
+  return getAdminUser();
 }

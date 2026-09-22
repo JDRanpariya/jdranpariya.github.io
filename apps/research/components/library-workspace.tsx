@@ -359,7 +359,7 @@ export function LibraryWorkspace({
           <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
             <a href="/">Research</a>
             <a href="/index">Index</a>
-            <a href="/signout-with-chatgpt?return_to=%2F" title={`Signed in as ${ownerEmail}`}>
+            <a href="/logout?returnTo=%2F" title={`Signed in as ${ownerEmail}`}>
               Sign out
             </a>
           </span>

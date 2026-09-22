@@ -1,4 +1,4 @@
-import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { getAdminUser } from "@/app/admin-auth";
 import { isLibraryOwner } from "@/app/library-auth";
 import { getCatalogRecord } from "@/lib/research-catalog";
 import { getLibraryPage } from "@/lib/library-data";
@@ -24,7 +24,7 @@ const annotationSchema = z.object({
 });
 
 export async function GET(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getAdminUser();
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   if (!isLibraryOwner(user)) return NextResponse.json({ error: "Access denied." }, { status: 403 });
 
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getAdminUser();
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   if (!isLibraryOwner(user)) return NextResponse.json({ error: "Access denied." }, { status: 403 });
 
