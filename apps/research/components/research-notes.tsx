@@ -40,7 +40,7 @@ function renderInline(text: string, openNote?: (slug: string) => void): ReactNod
       const isExternal = /^https?:\/\//u.test(destination);
       return (
         <a
-          className={isExternal ? "research-external-link" : undefined}
+          className={isExternal ? "research-outbound-link" : undefined}
           href={noteSlug ? `/?notes=${encodeURIComponent(noteSlug)}` : destination}
           key={index}
           rel={isExternal ? "noreferrer" : undefined}
@@ -55,11 +55,6 @@ function renderInline(text: string, openNote?: (slug: string) => void): ReactNod
           }
         >
           {label}
-          {isExternal ? (
-            <span aria-hidden="true" className="research-external-link-marker">
-              ↗
-            </span>
-          ) : null}
         </a>
       );
     }
