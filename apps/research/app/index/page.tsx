@@ -1,5 +1,6 @@
 import { getLibraryOwner, LIBRARY_OWNER_EMAIL } from "@/app/library-auth";
 import { PublicResearchIndex, type PublishedRecord } from "@/components/public-research-index";
+import { PublicAnalytics } from "@/components/public-analytics";
 import { ResearchNavigation } from "@/components/research-navigation";
 import { getPublishedAnnotations } from "@/lib/research-annotations";
 import { getCatalogRecord, isCollectionId } from "@/lib/research-catalog";
@@ -39,6 +40,7 @@ export default async function ResearchIndexPage() {
 
   return (
     <div className="min-h-screen bg-page text-ink">
+      <PublicAnalytics />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

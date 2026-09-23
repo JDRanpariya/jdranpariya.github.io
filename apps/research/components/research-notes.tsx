@@ -275,6 +275,7 @@ export function ResearchNotes({
   );
 
   function panHorizontally(event: WheelEvent<HTMLElement>) {
+    if (panels.length === 2 && window.innerWidth > 800) return;
     const horizontalDelta = Math.abs(event.deltaX) > 1;
     const shiftedVertical = event.shiftKey && Math.abs(event.deltaY) > Math.abs(event.deltaX);
     if (!horizontalDelta && !shiftedVertical) return;
@@ -339,13 +340,14 @@ export function ResearchNotes({
       ) : null}
 
       <section
-        className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length > 1 ? " has-path" : ""}`}
+        className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length === 2 ? " is-pair" : ""}${panels.length > 1 ? " has-path" : ""}`}
         aria-label="Open research notes"
         onPointerDown={(event) => {
           pointerStartX.current = event.clientX;
           pointerStartY.current = event.clientY;
         }}
         onPointerMove={(event) => {
+          if (panels.length === 2 && window.innerWidth > 800) return;
           if (pointerStartX.current !== null && pointerStartY.current !== null) {
             const horizontalDistance = event.clientX - pointerStartX.current;
             const verticalDistance = event.clientY - pointerStartY.current;

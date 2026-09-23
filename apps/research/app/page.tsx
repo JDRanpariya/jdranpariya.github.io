@@ -1,5 +1,6 @@
 import { ResearchNavigation } from "@/components/research-navigation";
 import { ResearchNotes } from "@/components/research-notes";
+import { PublicAnalytics } from "@/components/public-analytics";
 import researchHomeMarkdown from "@/content/research-home.md?raw";
 import { parseResearchHome } from "@/lib/research-home";
 
@@ -24,6 +25,7 @@ export default async function Home({
 
   return (
     <div className="min-h-screen bg-page text-ink">
+      <PublicAnalytics />
       <a href="#main" className="skip-link">
         Skip to content
       </a>
