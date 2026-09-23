@@ -322,7 +322,7 @@ a:hover {
   }
 
   .research-note-content .research-outbound-link:hover {
-    color: var(--ink);
+    color: var(--accent);
   }
 
   .research-note-spine {
