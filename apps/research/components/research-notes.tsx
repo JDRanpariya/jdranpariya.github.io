@@ -293,16 +293,6 @@ export function ResearchNotes({
                   <p>
                     {renderInline(panel.theme.questions, (slug) => openTheme(slug, panelIndex))}
                   </p>
-                  <a
-                    className="research-note-back"
-                    href={hrefForPath(path, panelIndex - 1)}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      focusPane(panelIndex - 1);
-                    }}
-                  >
-                    Back to {panels[panelIndex - 1]?.title ?? "Research"}
-                  </a>
                 </div>
               ) : (
                 <div className="research-note-content research-root-note">

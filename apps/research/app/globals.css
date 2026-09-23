@@ -234,16 +234,15 @@ a:hover {
 
   .research-note-stack {
     --pane-edge: 2.5rem;
-    --pane-width: clamp(32.5rem, 50vw, 42.5rem);
-    @apply flex h-[calc(100dvh-2.75rem)] w-full items-stretch overflow-x-auto overflow-y-hidden bg-border;
+    --pane-width: min(39.0625rem, calc(100vw - var(--pane-edge)));
+    @apply flex h-[calc(100dvh-2.75rem)] w-full items-stretch overflow-x-auto overflow-y-hidden bg-bg;
     overscroll-behavior-x: contain;
     scroll-behavior: smooth;
-    scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
   }
 
   .research-note-stack.has-path {
-    @apply h-[calc(100dvh-4.9375rem)];
+    @apply h-[calc(100dvh-2.75rem)];
   }
 
   .research-note-stack.is-solo {
@@ -257,9 +256,11 @@ a:hover {
     width: var(--pane-width);
     min-width: var(--pane-width);
     flex: 0 0 var(--pane-width);
-    @apply sticky top-0 h-full overflow-hidden border-r border-border bg-surface outline-none;
+    @apply sticky top-0 h-full overflow-hidden border-r border-border bg-bg outline-none;
     isolation: isolate;
+    animation: research-pane-enter 140ms ease-out;
     transition:
+      box-shadow 140ms ease,
       background-color 180ms ease,
       color 180ms ease;
   }
@@ -292,13 +293,12 @@ a:hover {
   .research-note-scroll {
     @apply h-full overflow-y-auto;
     scroll-behavior: smooth;
-    scrollbar-color: transparent transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    transition: opacity 120ms ease;
   }
 
-  .research-note-pane:hover .research-note-scroll,
-  .research-note-pane:focus-within .research-note-scroll {
-    scrollbar-color: color-mix(in srgb, var(--ink-muted) 40%, transparent) transparent;
+  .research-note-pane.is-obscured .research-note-scroll {
+    opacity: 0;
   }
 
   .research-note-content {
@@ -359,26 +359,11 @@ a:hover {
 
   .research-note-scroll::-webkit-scrollbar,
   .research-note-stack::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-
-  .research-note-scroll::-webkit-scrollbar-track,
-  .research-note-stack::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .research-note-scroll::-webkit-scrollbar-thumb,
-  .research-note-stack::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-border;
-  }
-
-  .research-note-back {
-    @apply mt-10 inline-block font-sans text-sm text-ink-muted no-underline hover:text-accent;
+    display: none;
   }
 
   .research-note-path {
-    @apply relative z-10 flex h-[2.1875rem] items-center overflow-x-auto bg-surface px-3 font-sans;
+    @apply relative z-10 hidden h-[2.1875rem] items-center overflow-x-auto bg-surface px-3 font-sans;
     scrollbar-width: none;
   }
 
@@ -509,8 +494,7 @@ a:hover {
 
   .research-note-stack {
     --pane-width: 100vw;
-    @apply flex h-[calc(100dvh-2.75rem)] min-h-0 overflow-x-auto overflow-y-hidden bg-bg;
-    scroll-snap-type: x mandatory;
+    @apply block h-[calc(100dvh-2.75rem)] min-h-0 overflow-hidden bg-bg;
   }
 
   .research-note-stack.has-path {
@@ -518,10 +502,13 @@ a:hover {
   }
 
   .research-note-pane {
-    @apply static h-full w-screen min-w-full flex-none border-0;
+    @apply static hidden h-full w-screen min-w-full border-0;
     right: auto;
     left: auto;
-    scroll-snap-align: start;
+  }
+
+  .research-note-pane.is-active {
+    @apply block;
   }
 
   .research-note-scroll {
@@ -541,11 +528,23 @@ a:hover {
   }
 
   .research-note-path {
-    @apply px-1.5;
+    @apply flex px-1.5;
   }
 
   .research-note-path button {
     @apply max-w-[9.375rem] px-2.5 text-[0.62rem];
+  }
+}
+
+@keyframes research-pane-enter {
+  from {
+    opacity: 0.94;
+    transform: translateX(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
