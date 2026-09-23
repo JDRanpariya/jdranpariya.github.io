@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -86,6 +87,11 @@ export function ResearchNotes({
   const [path, setPath] = useState(() => normalizePath(initialPath, themeBySlug));
   const [focusIndex, setFocusIndex] = useState(() => initialFocus);
   const [obscured, setObscured] = useState<ReadonlySet<number>>(() => new Set());
+  const pointerStartX = useRef<number | null>(null);
+  const pointerStartY = useRef<number | null>(null);
+  const horizontalGesture = useRef(false);
+  const returnGesture = useRef(false);
+  const scrollSettleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const panels = useMemo(
     () => [
@@ -161,6 +167,18 @@ export function ResearchNotes({
     [panels.length, path, scrollToPane, writeLocation]
   );
 
+  const closeAfterPane = useCallback(
+    (index: number, mode: "push" | "replace" = "push") => {
+      const bounded = Math.max(0, Math.min(index, path.length));
+      const nextPath = path.slice(0, bounded);
+      setPath(nextPath);
+      setFocusIndex(bounded);
+      writeLocation(nextPath, bounded, mode);
+      requestAnimationFrame(() => scrollToPane(bounded));
+    },
+    [path, scrollToPane, writeLocation]
+  );
+
   const openTheme = useCallback(
     (slug: string, sourcePanelIndex: number) => {
       if (!themeBySlug.has(slug)) return;
@@ -204,10 +222,71 @@ export function ResearchNotes({
     return () => window.removeEventListener("popstate", handlePopState);
   }, [themeBySlug]);
 
+  useEffect(
+    () => () => {
+      if (scrollSettleTimer.current) clearTimeout(scrollSettleTimer.current);
+    },
+    []
+  );
+
+  const settleHorizontalGesture = useCallback(
+    (stack: HTMLElement) => {
+      if (!horizontalGesture.current) return;
+      horizontalGesture.current = false;
+      const shouldReturn = returnGesture.current;
+      returnGesture.current = false;
+
+      if (shouldReturn && stack.scrollLeft <= 2 && path.length) {
+        closeAfterPane(0, "push");
+        return;
+      }
+
+      const pane = stack.querySelector<HTMLElement>(".research-note-pane");
+      if (!pane) return;
+      const edge = Number.parseFloat(getComputedStyle(stack).getPropertyValue("--pane-edge")) || 40;
+      const stride = Math.max(1, pane.offsetWidth - edge);
+      const nextFocus = Math.max(0, Math.min(path.length, Math.round(stack.scrollLeft / stride)));
+      if (nextFocus !== focusIndex) {
+        setFocusIndex(nextFocus);
+        writeLocation(path, nextFocus, "replace");
+      }
+    },
+    [closeAfterPane, focusIndex, path, writeLocation]
+  );
+
+  const scheduleHorizontalSettle = useCallback(
+    (stack: HTMLElement, delay = 140) => {
+      if (scrollSettleTimer.current) clearTimeout(scrollSettleTimer.current);
+      scrollSettleTimer.current = setTimeout(() => {
+        scrollSettleTimer.current = null;
+        settleHorizontalGesture(stack);
+      }, delay);
+    },
+    [settleHorizontalGesture]
+  );
+
+  const handleStackScroll = useCallback(
+    (stack: HTMLElement) => {
+      measureObscured();
+      if (!horizontalGesture.current) return;
+      scheduleHorizontalSettle(stack);
+    },
+    [measureObscured, scheduleHorizontalSettle]
+  );
+
   function panHorizontally(event: WheelEvent<HTMLElement>) {
-    if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-    event.preventDefault();
-    event.currentTarget.scrollLeft += event.deltaY;
+    const horizontalDelta = Math.abs(event.deltaX) > 1;
+    const shiftedVertical = event.shiftKey && Math.abs(event.deltaY) > Math.abs(event.deltaX);
+    if (!horizontalDelta && !shiftedVertical) return;
+    horizontalGesture.current = true;
+    if ((horizontalDelta && event.deltaX < 0) || (shiftedVertical && event.deltaY < 0)) {
+      returnGesture.current = true;
+    }
+    if (shiftedVertical) {
+      event.preventDefault();
+      event.currentTarget.scrollLeft += event.deltaY;
+    }
+    scheduleHorizontalSettle(event.currentTarget);
   }
 
   const previewMarkdown = useCallback((markdown: string) => {
@@ -249,7 +328,7 @@ export function ResearchNotes({
             <button
               aria-current={index === focusIndex ? "page" : undefined}
               key={panel.slug}
-              onClick={() => focusPane(index)}
+              onClick={() => closeAfterPane(index)}
               type="button"
             >
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -262,7 +341,38 @@ export function ResearchNotes({
       <section
         className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length > 1 ? " has-path" : ""}`}
         aria-label="Open research notes"
-        onScroll={measureObscured}
+        onPointerDown={(event) => {
+          pointerStartX.current = event.clientX;
+          pointerStartY.current = event.clientY;
+        }}
+        onPointerMove={(event) => {
+          if (pointerStartX.current !== null && pointerStartY.current !== null) {
+            const horizontalDistance = event.clientX - pointerStartX.current;
+            const verticalDistance = event.clientY - pointerStartY.current;
+            if (horizontalDistance > 18 && horizontalDistance > Math.abs(verticalDistance) * 1.25) {
+              returnGesture.current = true;
+              horizontalGesture.current = true;
+            }
+          }
+        }}
+        onPointerUp={(event) => {
+          pointerStartX.current = null;
+          pointerStartY.current = null;
+          if (horizontalGesture.current && !scrollSettleTimer.current) {
+            scheduleHorizontalSettle(event.currentTarget, 80);
+          }
+        }}
+        onPointerCancel={() => {
+          pointerStartX.current = null;
+          pointerStartY.current = null;
+          if (scrollSettleTimer.current) {
+            clearTimeout(scrollSettleTimer.current);
+            scrollSettleTimer.current = null;
+          }
+          horizontalGesture.current = false;
+          returnGesture.current = false;
+        }}
+        onScroll={(event) => handleStackScroll(event.currentTarget)}
         onWheel={panHorizontally}
       >
         {panels.map((panel, panelIndex) => (
@@ -277,7 +387,7 @@ export function ResearchNotes({
               aria-hidden={!obscured.has(panelIndex)}
               aria-label={`Focus pane ${String(panelIndex + 1).padStart(2, "0")}: ${panel.title}`}
               className="research-note-spine"
-              onClick={() => focusPane(panelIndex)}
+              onClick={() => closeAfterPane(panelIndex)}
               tabIndex={obscured.has(panelIndex) ? 0 : -1}
               type="button"
             >
