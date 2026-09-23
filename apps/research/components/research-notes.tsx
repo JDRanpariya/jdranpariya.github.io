@@ -121,16 +121,15 @@ export function ResearchNotes({
     const stack = window.document.querySelector<HTMLElement>(".research-note-stack");
     if (!stack) return;
     const panes = [...stack.querySelectorAll<HTMLElement>(".research-note-pane")];
+    const edge = Number.parseFloat(getComputedStyle(stack).getPropertyValue("--pane-edge")) || 40;
     const next = new Set<number>();
     for (let index = 0; index < panes.length - 1; index += 1) {
       const pane = panes[index];
       const following = panes[index + 1];
-      if (
-        pane &&
-        following &&
-        following.getBoundingClientRect().left < pane.getBoundingClientRect().right - 1
-      ) {
-        next.add(index);
+      if (pane && following) {
+        const paneLeft = pane.getBoundingClientRect().left;
+        const followingLeft = following.getBoundingClientRect().left;
+        if (followingLeft - paneLeft <= edge + 1) next.add(index);
       }
     }
     setObscured((current) => {
@@ -301,6 +300,12 @@ export function ResearchNotes({
                     {researchDocument.introduction.map((paragraph) => (
                       <p key={paragraph}>{renderInline(paragraph, (slug) => openTheme(slug, 0))}</p>
                     ))}
+                    {researchDocument.quote ? (
+                      <blockquote className="research-quote">
+                        <p>{researchDocument.quote.text}</p>
+                        <cite>{researchDocument.quote.attribution}</cite>
+                      </blockquote>
+                    ) : null}
                   </header>
                   <ul className="theme-list">
                     {researchDocument.themes.map((theme) => (

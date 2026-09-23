@@ -224,6 +224,18 @@ a:hover {
     @apply mt-5 text-[1.0625rem] leading-[1.72] text-ink-secondary;
   }
 
+  .research-quote {
+    @apply mt-7 border-0 border-l-[3px] border-accent py-1 pl-5 text-ink;
+  }
+
+  .research-quote p {
+    @apply m-0 text-[1.0625rem] font-semibold leading-[1.65] text-ink;
+  }
+
+  .research-quote cite {
+    @apply ml-auto mt-2 block w-[90%] text-right text-[0.95rem] font-medium italic text-ink-muted;
+  }
+
   .theme-list {
     @apply mt-6 list-disc space-y-3 pl-7 text-[1.0625rem] leading-[1.8] marker:text-accent;
   }
@@ -233,8 +245,8 @@ a:hover {
   }
 
   .research-note-stack {
-    --pane-edge: 2.5rem;
-    --pane-width: min(39.0625rem, calc(100vw - var(--pane-edge)));
+    --pane-edge: 40px;
+    --pane-width: min(625px, calc(100vw - var(--pane-edge)));
     @apply flex h-[calc(100dvh-2.75rem)] w-full items-stretch overflow-x-auto overflow-y-hidden bg-bg;
     overscroll-behavior-x: contain;
     scroll-behavior: smooth;

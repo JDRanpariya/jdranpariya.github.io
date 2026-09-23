@@ -7,6 +7,10 @@ export type ResearchTheme = {
 export type ResearchHome = {
   title: string;
   introduction: string[];
+  quote?: {
+    attribution: string;
+    text: string;
+  };
   themes: ResearchTheme[];
 };
 
@@ -20,6 +24,33 @@ function paragraphs(markdown: string) {
     .filter(Boolean);
 }
 
+function introduction(markdown: string) {
+  const copy: string[] = [];
+  let quote: ResearchHome["quote"];
+
+  for (const block of markdown.trim().split(/\n\s*\n/)) {
+    const lines = block
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (lines.length && lines.every((line) => line.startsWith(">"))) {
+      const quoteLines = lines.map((line) => line.replace(/^>\s?/, ""));
+      const attribution = quoteLines.at(-1)?.match(/^—\s*(.+)$/u);
+      if (attribution && quoteLines.length > 1) {
+        quote = {
+          attribution: attribution[1].trim(),
+          text: quoteLines.slice(0, -1).join(" ").trim(),
+        };
+        continue;
+      }
+    }
+    const paragraph = lines.join(" ").trim();
+    if (paragraph) copy.push(paragraph);
+  }
+
+  return { copy, quote };
+}
+
 export function parseResearchHome(markdown: string): ResearchHome {
   const titleMatch = markdown.match(/^#\s+(.+)$/m);
   if (!titleMatch || titleMatch.index === undefined) {
@@ -29,7 +60,7 @@ export function parseResearchHome(markdown: string): ResearchHome {
   const matches = [...markdown.matchAll(sectionPattern)];
   const firstSection = matches[0]?.index ?? markdown.length;
   const introStart = titleMatch.index + titleMatch[0].length;
-  const introduction = paragraphs(markdown.slice(introStart, firstSection));
+  const intro = introduction(markdown.slice(introStart, firstSection));
   const themes = matches.map((match, index) => {
     const bodyStart = (match.index ?? 0) + match[0].length;
     const bodyEnd = matches[index + 1]?.index ?? markdown.length;
@@ -40,5 +71,10 @@ export function parseResearchHome(markdown: string): ResearchHome {
     };
   });
 
-  return { title: titleMatch[1].trim(), introduction, themes };
+  return {
+    title: titleMatch[1].trim(),
+    introduction: intro.copy,
+    quote: intro.quote,
+    themes,
+  };
 }

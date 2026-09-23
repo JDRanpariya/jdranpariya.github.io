@@ -4,6 +4,11 @@ Anything you can formalize can be simulated, and substrate only matters for cost
 
 I'm interested in understanding and reverse engineering intelligence to build better robots. Intelligence is very hard to define, but I like Levin's idea of [diverse intelligence](https://www.youtube.com/watch?v=Or_3tlEOLj4).
 
+We need our agents to be good enough!
+
+> Finite agents must "satisfice" because true optimization is computationally impossible in the real world.
+> — Simon
+
 ## Embodied intelligence and control {#embodied-intelligence-control}
 
 What separates a physically intelligent system from a robot that runs an AI model? How should language, reasoning, planning, skills, control, and reflexes work together instead of being treated as a one-way stack? What computation should happen in the body itself, and when do compliance, passive dynamics, actuation, and morphology reduce what a controller has to learn? How should vision, touch, proprioception, and action be coupled, and which sensorimotor loops should stay fast and local?
