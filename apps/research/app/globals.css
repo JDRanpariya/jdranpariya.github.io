@@ -240,10 +240,6 @@ a:hover {
     @apply mt-6 list-disc space-y-3 pl-7 text-[1.0625rem] leading-[1.8] marker:text-accent;
   }
 
-  .research-theme-link {
-    @apply font-bold;
-  }
-
   .research-note-stack {
     --pane-edge: 40px;
     --pane-width: min(625px, calc(100vw - var(--pane-edge)));

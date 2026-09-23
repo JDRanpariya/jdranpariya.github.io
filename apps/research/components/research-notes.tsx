@@ -1,6 +1,6 @@
 "use client";
 
-import { parseResearchHome, type ResearchHome, type ResearchTheme } from "@/lib/research-home";
+import { parseResearchHome, type ResearchHome, type ResearchNote } from "@/lib/research-home";
 import {
   type CSSProperties,
   type ReactNode,
@@ -15,10 +15,10 @@ import {
 const PUBLISHED_MARKDOWN =
   "https://raw.githubusercontent.com/JDRanpariya/jdranpariya.github.io/refs/heads/main/apps/research/content/research-home.md";
 
-function normalizePath(path: string[], themes: ReadonlyMap<string, ResearchTheme>) {
+function normalizePath(path: string[], notes: ReadonlyMap<string, ResearchNote>) {
   const seen = new Set<string>();
   return path.filter((slug) => {
-    if (!themes.has(slug) || seen.has(slug)) return false;
+    if (!notes.has(slug) || seen.has(slug)) return false;
     seen.add(slug);
     return true;
   });
@@ -32,11 +32,11 @@ function hrefForPath(path: string[], focusIndex = path.length) {
   return query ? `/?${query}` : "/";
 }
 
-function resolveNote(reference: string, themes: ReadonlyMap<string, ResearchTheme>) {
+function resolveNote(reference: string, notes: ReadonlyMap<string, ResearchNote>) {
   const trimmed = reference.trim();
   return (
-    themes.get(trimmed) ??
-    [...themes.values()].find((theme) => theme.title.toLowerCase() === trimmed.toLowerCase())
+    notes.get(trimmed) ??
+    [...notes.values()].find((note) => note.title.toLowerCase() === trimmed.toLowerCase())
   );
 }
 
@@ -52,7 +52,7 @@ function noteReferenceFromDestination(destination?: string) {
 
 export function renderInline(
   text: string,
-  themes: ReadonlyMap<string, ResearchTheme>,
+  notes: ReadonlyMap<string, ResearchNote>,
   openNote?: (slug: string) => void
 ): ReactNode[] {
   return text.split(/(\[\[[^\]]+\]\]|\[[^\]]+\]\([^)]+\)|_[^_]+_)/g).map((part, index) => {
@@ -61,7 +61,7 @@ export function renderInline(
     if (wikiLink || link) {
       const destination = link?.[2];
       const noteReference = wikiLink?.[1] ?? noteReferenceFromDestination(destination);
-      const note = noteReference ? resolveNote(noteReference, themes) : undefined;
+      const note = noteReference ? resolveNote(noteReference, notes) : undefined;
       const label = wikiLink ? (wikiLink[2] ?? note?.title ?? wikiLink[1]) : link![1];
       if (noteReference && !note) return label;
       const isExternal = destination ? /^https?:\/\//u.test(destination) : false;
@@ -107,11 +107,11 @@ export function ResearchNotes({
   initialPath: string[];
 }) {
   const [researchDocument, setResearchDocument] = useState(initialDocument);
-  const themeBySlug = useMemo(
-    () => new Map(researchDocument.themes.map((theme) => [theme.slug, theme])),
-    [researchDocument.themes]
+  const noteBySlug = useMemo(
+    () => new Map(researchDocument.notes.map((note) => [note.slug, note])),
+    [researchDocument.notes]
   );
-  const [path, setPath] = useState(() => normalizePath(initialPath, themeBySlug));
+  const [path, setPath] = useState(() => normalizePath(initialPath, noteBySlug));
   const [focusIndex, setFocusIndex] = useState(() => initialFocus);
   const [obscured, setObscured] = useState<ReadonlySet<number>>(() => new Set());
   const pointerStartX = useRef<number | null>(null);
@@ -122,14 +122,14 @@ export function ResearchNotes({
 
   const panels = useMemo(
     () => [
-      { slug: "research", title: "Research", theme: undefined },
+      { slug: "research", title: "Research", note: undefined },
       ...path.map((slug) => ({
         slug,
-        title: themeBySlug.get(slug)?.title ?? slug,
-        theme: themeBySlug.get(slug),
+        title: noteBySlug.get(slug)?.title ?? slug,
+        note: noteBySlug.get(slug),
       })),
     ],
-    [path, themeBySlug]
+    [path, noteBySlug]
   );
 
   const writeLocation = useCallback(
@@ -208,7 +208,7 @@ export function ResearchNotes({
 
   const openTheme = useCallback(
     (slug: string, sourcePanelIndex: number) => {
-      if (!themeBySlug.has(slug)) return;
+      if (!noteBySlug.has(slug)) return;
       const existing = path.indexOf(slug);
       if (existing >= 0) {
         focusPane(existing + 1);
@@ -219,7 +219,7 @@ export function ResearchNotes({
       setFocusIndex(nextPath.length);
       writeLocation(nextPath, nextPath.length, "push");
     },
-    [focusPane, path, themeBySlug, writeLocation]
+    [focusPane, path, noteBySlug, writeLocation]
   );
 
   useEffect(() => {
@@ -237,7 +237,7 @@ export function ResearchNotes({
   useEffect(() => {
     const handlePopState = () => {
       const params = new URL(window.location.href).searchParams;
-      const nextPath = normalizePath(params.getAll("notes"), themeBySlug);
+      const nextPath = normalizePath(params.getAll("notes"), noteBySlug);
       const requestedFocus = Number.parseInt(
         params.get("noteFocus") ?? String(nextPath.length),
         10
@@ -247,7 +247,7 @@ export function ResearchNotes({
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [themeBySlug]);
+  }, [noteBySlug]);
 
   useEffect(
     () => () => {
@@ -321,7 +321,7 @@ export function ResearchNotes({
       const next = parseResearchHome(markdown);
       setResearchDocument(next);
       setPath((current) =>
-        normalizePath(current, new Map(next.themes.map((theme) => [theme.slug, theme])))
+        normalizePath(current, new Map(next.notes.map((note) => [note.slug, note])))
       );
     } catch {
       // Keep the bundled document visible if the published Markdown is malformed.
@@ -424,17 +424,15 @@ export function ResearchNotes({
             </button>
 
             <div className="research-note-scroll">
-              {panel.theme ? (
+              {panel.note ? (
                 <div className="research-note-content">
-                  <h1>{panel.theme.title}</h1>
-                  {panel.theme.questions
+                  <h1>{panel.note.title}</h1>
+                  {panel.note.body
                     .split(/\n\s*\n/u)
                     .filter(Boolean)
                     .map((paragraph, index) => (
                       <p key={`${panel.slug}-${index}`}>
-                        {renderInline(paragraph, themeBySlug, (slug) =>
-                          openTheme(slug, panelIndex)
-                        )}
+                        {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, panelIndex))}
                       </p>
                     ))}
                 </div>
@@ -444,7 +442,7 @@ export function ResearchNotes({
                     <h1>{researchDocument.title}</h1>
                     {researchDocument.introduction.map((paragraph) => (
                       <p key={paragraph}>
-                        {renderInline(paragraph, themeBySlug, (slug) => openTheme(slug, 0))}
+                        {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, 0))}
                       </p>
                     ))}
                     {researchDocument.quote ? (
@@ -457,18 +455,7 @@ export function ResearchNotes({
                   <ul className="theme-list">
                     {researchDocument.themes.map((theme) => (
                       <li key={theme.slug}>
-                        <a
-                          className="research-theme-link"
-                          href={hrefForPath([theme.slug])}
-                          onClick={(event) => {
-                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
-                              return;
-                            event.preventDefault();
-                            openTheme(theme.slug, 0);
-                          }}
-                        >
-                          {theme.title}
-                        </a>
+                        <strong>{theme.title}</strong>: {renderInline(theme.questions, noteBySlug)}
                       </li>
                     ))}
                   </ul>

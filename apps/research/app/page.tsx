@@ -16,7 +16,7 @@ export default async function Home({
       ? [params.notes]
       : [];
   const researchHome = parseResearchHome(researchHomeMarkdown);
-  const validSlugs = new Set(researchHome.themes.map((theme) => theme.slug));
+  const validSlugs = new Set(researchHome.notes.map((note) => note.slug));
   const initialPath = requestedPath.filter((slug) => validSlugs.has(slug));
   const requestedFocus = Number.parseInt(params.noteFocus ?? String(initialPath.length), 10);
   const initialFocus = Number.isFinite(requestedFocus)

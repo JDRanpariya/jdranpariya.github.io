@@ -4,6 +4,12 @@ export type ResearchTheme = {
   questions: string;
 };
 
+export type ResearchNote = {
+  slug: string;
+  title: string;
+  body: string;
+};
+
 export type ResearchHome = {
   title: string;
   introduction: string[];
@@ -12,6 +18,7 @@ export type ResearchHome = {
     text: string;
   };
   themes: ResearchTheme[];
+  notes: ResearchNote[];
 };
 
 const sectionPattern = /^##\s+(.+?)\s+\{#([a-z0-9-]+)\}\s*$/gm;
@@ -76,5 +83,7 @@ export function parseResearchHome(markdown: string): ResearchHome {
     introduction: intro.copy,
     quote: intro.quote,
     themes,
+    // Theme questions belong to the homepage. There are no authored note pages yet.
+    notes: [],
   };
 }
