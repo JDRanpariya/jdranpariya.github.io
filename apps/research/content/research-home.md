@@ -2,7 +2,7 @@
 
 Anything you can formalize can be simulated, and substrate only matters for cost: energy, time, parallelism, and noise tolerance. _A mechanism carries over if the constraint that made it worthwhile still holds on the new substrate._
 
-I'm interested in understanding and reverse engineering intelligence to build better robots. Intelligence is very hard to define, but I lean towards Levin's work on [diverse intelligence](https://www.youtube.com/watch?v=Or_3tlEOLj4).
+I'm interested in understanding and reverse engineering intelligence to build better robots. Intelligence is very hard to define, but I like Levin's idea of [diverse intelligence](https://www.youtube.com/watch?v=Or_3tlEOLj4).
 
 ## Embodied intelligence and control {#embodied-intelligence-control}
 

@@ -317,6 +317,11 @@ a:hover {
     @apply text-accent no-underline hover:text-ink;
   }
 
+  .research-external-link-marker {
+    @apply ml-[0.18em] inline-block font-sans text-[0.68em] font-semibold;
+    transform: translateY(-0.32em);
+  }
+
   .research-note-spine {
     @apply pointer-events-none absolute bottom-0 left-0 top-0 z-10 flex w-10 flex-col items-center gap-3 overflow-hidden border-0 border-r border-border bg-surface px-0 py-[1.125rem] font-sans text-ink-muted opacity-0;
     cursor: pointer;

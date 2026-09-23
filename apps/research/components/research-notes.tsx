@@ -37,10 +37,14 @@ function renderInline(text: string, openNote?: (slug: string) => void): ReactNod
     if (link) {
       const [, label, destination] = link;
       const noteSlug = destination.startsWith("note:") ? destination.slice(5) : undefined;
+      const isExternal = /^https?:\/\//u.test(destination);
       return (
         <a
+          className={isExternal ? "research-external-link" : undefined}
           href={noteSlug ? `/?notes=${encodeURIComponent(noteSlug)}` : destination}
           key={index}
+          rel={isExternal ? "noreferrer" : undefined}
+          target={isExternal ? "_blank" : undefined}
           onClick={
             noteSlug && openNote
               ? (event) => {
@@ -51,6 +55,11 @@ function renderInline(text: string, openNote?: (slug: string) => void): ReactNod
           }
         >
           {label}
+          {isExternal ? (
+            <span aria-hidden="true" className="research-external-link-marker">
+              ↗
+            </span>
+          ) : null}
         </a>
       );
     }
