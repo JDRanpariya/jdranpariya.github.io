@@ -12,7 +12,7 @@ import {
 } from "react";
 
 const PUBLISHED_MARKDOWN =
-  "https://raw.githubusercontent.com/JDRanpariya/jdranpariya.github.io/main/apps/research/content/research-home.md";
+  "https://raw.githubusercontent.com/JDRanpariya/jdranpariya.github.io/refs/heads/main/apps/research/content/research-home.md";
 
 function normalizePath(path: string[], themes: ReadonlyMap<string, ResearchTheme>) {
   const seen = new Set<string>();
