@@ -317,14 +317,6 @@ a:hover {
     @apply text-accent no-underline hover:text-ink;
   }
 
-  .research-note-content .research-outbound-link {
-    color: var(--accent);
-  }
-
-  .research-note-content .research-outbound-link:hover {
-    color: var(--accent);
-  }
-
   .research-note-spine {
     @apply pointer-events-none absolute bottom-0 left-0 top-0 z-10 flex w-10 flex-col items-center gap-3 overflow-hidden border-0 border-r border-border bg-surface px-0 py-[1.125rem] font-sans text-ink-muted opacity-0;
     cursor: pointer;
@@ -481,6 +473,11 @@ a:hover {
   .ui-label {
     @apply font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted;
   }
+}
+
+.research-note-content .research-outbound-link,
+.research-note-content .research-outbound-link:hover {
+  color: var(--accent);
 }
 
 @media (max-width: 800px) {
