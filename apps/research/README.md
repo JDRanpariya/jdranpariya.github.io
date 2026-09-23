@@ -25,9 +25,9 @@ Public pages share one compact navigation. The library uses contextual links for
 
 ### Research notes
 
-The homepage content has one source: `content/research-home.md`. Theme headings use an explicit Markdown identifier such as `## Memory {#memory}` so URLs stay stable when the visible title changes. Theme headings in the root list are plain text. Only an explicit Markdown link such as `[related question](note:memory)` opens another pane.
+The homepage content has one source: `content/research-home.md`. Theme headings use an explicit Markdown identifier such as `## Memory {#memory}` so URLs stay stable when the visible title changes. Their titles become note links in the root list; the writing under each heading appears only in its own pane. Blank lines separate paragraphs. Link to another note with `[related question](note:memory)`, `[[memory]]`, or `[[memory|related question]]`; the latter two can also use the visible note title. These links open the note in the sliding pane stack without leaving the current reading path. External links continue to open separately.
 
-Open `/\?edit=1` or press Alt+E for the private authoring controls. The Markdown editor previews locally and saves a browser draft. After choosing the `personal-site` repository folder once, Save writes directly to `apps/research/content/research-home.md`. The public page renders no authoring controls.
+There is currently no browser editor for the public research notes. Edit `content/research-home.md` in the repository, putting text beneath the relevant `## Theme {#slug}` heading. Keep the slug stable so existing links continue to work. The published page also fetches the latest copy of this file from the repository on load; a Worker deployment updates the bundled fallback and initial HTML. `/login` and `/library` are only for private census annotations, not these notes.
 
 The note trail uses Scholium's focus model: panes keep a readable width in a native horizontal strip, geometrically occluded ancestors expose 40 px labeled rails, focus does not discard the open path, and compact path controls remain available on narrow screens. Repeated `notes` parameters and `noteFocus` preserve the complete view in browser history and copied URLs.
 

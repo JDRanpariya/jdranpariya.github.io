@@ -241,7 +241,7 @@ a:hover {
   }
 
   .research-theme-link {
-    @apply font-bold text-ink no-underline hover:text-accent;
+    @apply font-bold;
   }
 
   .research-note-stack {
@@ -299,24 +299,9 @@ a:hover {
   }
 
   .research-note-stack.is-solo .research-note-content {
-    max-width: 42rem;
+    max-width: 55rem;
     margin-inline: auto;
     @apply min-h-0 px-5 pb-24 pt-12 sm:px-7 md:pt-16;
-  }
-
-  @media (min-width: 801px) {
-    .research-note-stack.is-pair .research-note-pane {
-      right: auto;
-      left: auto;
-      width: 50%;
-      min-width: 0;
-      flex: 1 1 50%;
-    }
-
-    .research-note-stack.is-pair .research-note-content {
-      max-width: 42rem;
-      margin-inline: auto;
-    }
   }
 
   .research-note-scroll {
@@ -340,10 +325,6 @@ a:hover {
 
   .research-note-content > p {
     @apply mt-7 text-[1.125rem] leading-[1.72] text-ink-secondary;
-  }
-
-  .research-note-content a {
-    @apply text-accent no-underline hover:text-ink;
   }
 
   .research-note-spine {
@@ -502,6 +483,19 @@ a:hover {
   .ui-label {
     @apply font-sans text-xs font-semibold tracking-[0.02em] text-ink-muted;
   }
+}
+
+.research-note-content a {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+}
+
+.research-note-content a:hover,
+.research-note-content a:focus-visible {
+  color: var(--accent);
 }
 
 .research-note-content .research-outbound-link,

@@ -32,25 +32,52 @@ function hrefForPath(path: string[], focusIndex = path.length) {
   return query ? `/?${query}` : "/";
 }
 
-function renderInline(text: string, openNote?: (slug: string) => void): ReactNode[] {
-  return text.split(/(\[[^\]]+\]\([^)]+\)|_[^_]+_)/g).map((part, index) => {
+function resolveNote(reference: string, themes: ReadonlyMap<string, ResearchTheme>) {
+  const trimmed = reference.trim();
+  return (
+    themes.get(trimmed) ??
+    [...themes.values()].find((theme) => theme.title.toLowerCase() === trimmed.toLowerCase())
+  );
+}
+
+function noteReferenceFromDestination(destination?: string) {
+  if (!destination) return undefined;
+  if (destination.startsWith("note:")) return destination.slice(5);
+  if (destination.startsWith("/?")) {
+    const query = destination.slice(2).split("#", 1)[0];
+    return new URLSearchParams(query).getAll("notes").at(-1);
+  }
+  return undefined;
+}
+
+export function renderInline(
+  text: string,
+  themes: ReadonlyMap<string, ResearchTheme>,
+  openNote?: (slug: string) => void
+): ReactNode[] {
+  return text.split(/(\[\[[^\]]+\]\]|\[[^\]]+\]\([^)]+\)|_[^_]+_)/g).map((part, index) => {
+    const wikiLink = part.match(/^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/);
     const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-    if (link) {
-      const [, label, destination] = link;
-      const noteSlug = destination.startsWith("note:") ? destination.slice(5) : undefined;
-      const isExternal = /^https?:\/\//u.test(destination);
+    if (wikiLink || link) {
+      const destination = link?.[2];
+      const noteReference = wikiLink?.[1] ?? noteReferenceFromDestination(destination);
+      const note = noteReference ? resolveNote(noteReference, themes) : undefined;
+      const label = wikiLink ? (wikiLink[2] ?? note?.title ?? wikiLink[1]) : link![1];
+      if (noteReference && !note) return label;
+      const isExternal = destination ? /^https?:\/\//u.test(destination) : false;
       return (
         <a
           className={isExternal ? "research-outbound-link" : undefined}
-          href={noteSlug ? `/?notes=${encodeURIComponent(noteSlug)}` : destination}
+          href={note ? hrefForPath([note.slug]) : destination}
           key={index}
           rel={isExternal ? "noreferrer" : undefined}
           target={isExternal ? "_blank" : undefined}
           onClick={
-            noteSlug && openNote
+            note && openNote
               ? (event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
                   event.preventDefault();
-                  openNote(noteSlug);
+                  openNote(note.slug);
                 }
               : undefined
           }
@@ -275,7 +302,6 @@ export function ResearchNotes({
   );
 
   function panHorizontally(event: WheelEvent<HTMLElement>) {
-    if (panels.length === 2 && window.innerWidth > 800) return;
     const horizontalDelta = Math.abs(event.deltaX) > 1;
     const shiftedVertical = event.shiftKey && Math.abs(event.deltaY) > Math.abs(event.deltaX);
     if (!horizontalDelta && !shiftedVertical) return;
@@ -290,7 +316,7 @@ export function ResearchNotes({
     scheduleHorizontalSettle(event.currentTarget);
   }
 
-  const previewMarkdown = useCallback((markdown: string) => {
+  const applyPublishedMarkdown = useCallback((markdown: string) => {
     try {
       const next = parseResearchHome(markdown);
       setResearchDocument(next);
@@ -298,11 +324,12 @@ export function ResearchNotes({
         normalizePath(current, new Map(next.themes.map((theme) => [theme.slug, theme])))
       );
     } catch {
-      // The editor reports parse errors and leaves the last valid preview visible.
+      // Keep the bundled document visible if the published Markdown is malformed.
     }
   }, []);
 
   useEffect(() => {
+    if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return;
     const controller = new AbortController();
     const source = new URL(PUBLISHED_MARKDOWN);
     source.searchParams.set("published", Date.now().toString());
@@ -312,14 +339,14 @@ export function ResearchNotes({
         if (!response.ok) throw new Error(`Research source returned ${response.status}.`);
         return response.text();
       })
-      .then(previewMarkdown)
+      .then(applyPublishedMarkdown)
       .catch((error) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
         // Keep the bundled document visible if GitHub is temporarily unavailable.
       });
 
     return () => controller.abort();
-  }, [previewMarkdown]);
+  }, [applyPublishedMarkdown]);
 
   return (
     <>
@@ -340,14 +367,13 @@ export function ResearchNotes({
       ) : null}
 
       <section
-        className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length === 2 ? " is-pair" : ""}${panels.length > 1 ? " has-path" : ""}`}
+        className={`research-note-stack${panels.length === 1 ? " is-solo" : ""}${panels.length > 1 ? " has-path" : ""}`}
         aria-label="Open research notes"
         onPointerDown={(event) => {
           pointerStartX.current = event.clientX;
           pointerStartY.current = event.clientY;
         }}
         onPointerMove={(event) => {
-          if (panels.length === 2 && window.innerWidth > 800) return;
           if (pointerStartX.current !== null && pointerStartY.current !== null) {
             const horizontalDistance = event.clientX - pointerStartX.current;
             const verticalDistance = event.clientY - pointerStartY.current;
@@ -401,16 +427,25 @@ export function ResearchNotes({
               {panel.theme ? (
                 <div className="research-note-content">
                   <h1>{panel.theme.title}</h1>
-                  <p>
-                    {renderInline(panel.theme.questions, (slug) => openTheme(slug, panelIndex))}
-                  </p>
+                  {panel.theme.questions
+                    .split(/\n\s*\n/u)
+                    .filter(Boolean)
+                    .map((paragraph, index) => (
+                      <p key={`${panel.slug}-${index}`}>
+                        {renderInline(paragraph, themeBySlug, (slug) =>
+                          openTheme(slug, panelIndex)
+                        )}
+                      </p>
+                    ))}
                 </div>
               ) : (
                 <div className="research-note-content research-root-note">
                   <header className="research-intro">
                     <h1>{researchDocument.title}</h1>
                     {researchDocument.introduction.map((paragraph) => (
-                      <p key={paragraph}>{renderInline(paragraph, (slug) => openTheme(slug, 0))}</p>
+                      <p key={paragraph}>
+                        {renderInline(paragraph, themeBySlug, (slug) => openTheme(slug, 0))}
+                      </p>
                     ))}
                     {researchDocument.quote ? (
                       <blockquote className="research-quote">
@@ -426,13 +461,14 @@ export function ResearchNotes({
                           className="research-theme-link"
                           href={hrefForPath([theme.slug])}
                           onClick={(event) => {
+                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+                              return;
                             event.preventDefault();
                             openTheme(theme.slug, 0);
                           }}
                         >
                           {theme.title}
                         </a>
-                        : {renderInline(theme.questions, (slug) => openTheme(slug, 0))}
                       </li>
                     ))}
                   </ul>
