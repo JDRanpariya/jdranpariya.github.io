@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 {#
   Content Security Policy.
-  Note: 'unsafe-inline' is required for scripts (theme init, Umami injector, mobile menu)
+  Note: 'unsafe-inline' is required for scripts (Umami injector and JSON-LD)
   and for Tailwind @apply / prose styles in prod. Refactoring to external JS + hashes is
   tracked as tech debt.
   Origins:
@@ -437,24 +437,10 @@
 <link rel="stylesheet" href="/assets/vendor/katex/katex.min.css" />
 {% endif %}
 {% if hasCode %}
-<link rel="stylesheet" href="/assets/vendor/prism/prism-gruvbox-dark.css" />
+<link rel="stylesheet" href="/assets/css/prism-light.css" />
 {% endif %}
 {% endif %}
 
-  <!-- Theme initialization to prevent flash.
-       localStorage access is wrapped in try/catch because private-browsing
-       Safari and storage-disabled contexts throw SecurityError on read;
-       without the guard the whole IIFE would crash before <body> renders. -->
-  <script>
-  (function() {
-    let savedTheme = null;
-    try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      document.documentElement.classList.add('dark');
-    }
-  })();
-  </script>
   </head>
 
   <body class="bg-bg text-ink min-h-screen flex flex-col antialiased"
@@ -477,7 +463,7 @@
   <!-- Footer -->
   {% include "components/footer.njk" %}
 
-  <!-- Site scripts (theme toggle, mobile menu, delegated clicks). -->
+  <!-- Site scripts (mobile menu, delegated clicks). -->
   <script src="/assets/js/site.js{{ '/assets/js/site.js' | cacheBust }}" defer></script>
   {% if hasInteractive %}
   <script type="module" src="/interactive/loader.js"></script>

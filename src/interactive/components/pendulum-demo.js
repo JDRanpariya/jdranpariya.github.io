@@ -7,7 +7,7 @@ export function setup({ engine, render, Matter, theme, config, el }) {
   const width = render.options.width;
   const height = render.options.height;
   const cx = width / 2;
-  const palette = theme.palette || ["#9b4230", "#4C7E4D", "#C4882D"];
+  const palette = theme.palette || ["#b8321c", "#4C7E4D", "#C4882D"];
 
   // Anchor point (fixed)
   const anchor = Bodies.circle(cx, 80, 8, {

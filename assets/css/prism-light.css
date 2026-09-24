@@ -1,0 +1,57 @@
+/* Prism tokens on the site's light paper palette. Loaded only by posts with code. */
+pre[class*="language-"],
+code[class*="language-"] {
+  color: var(--color-ink);
+  text-shadow: none;
+}
+
+pre[class*="language-"] {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+:not(pre) > code[class*="language-"] {
+  background: var(--color-card);
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata,
+.token.punctuation {
+  color: var(--color-ink-muted);
+}
+
+.token.keyword,
+.token.selector,
+.token.atrule,
+.token.important,
+.token.boolean,
+.token.number {
+  color: var(--color-accent);
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.url,
+.token.function,
+.token.property,
+.token.variable,
+.token.constant,
+.token.builtin {
+  color: var(--color-ink-secondary);
+}
+
+.token.bold {
+  font-weight: 700;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection {
+  background: var(--color-accent-soft);
+}

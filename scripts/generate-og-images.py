@@ -29,11 +29,11 @@ CARD_W = 1200
 CARD_H = 630
 
 # Design tokens (from src/css/input.css)
-BG = "#fdfbf5"
-INK = "#2c251d"
-INK_MUTED = "#786a55"
-INK_FAINT = "#b8ad91"
-ACCENT = "#9b4230"
+BG = "#ffffff"
+INK = "#121212"
+INK_MUTED = "#686764"
+INK_FAINT = "#9d9c99"
+ACCENT = "#b8321c"
 
 # ─── Fonts ────────────────────────────────────────────────────────────────────
 FONT_FRAUNCES_BOLD = str(FONTS_DIR / "Fraunces-Bold.otf")
@@ -149,7 +149,7 @@ def render_card(title, output_path, is_default=False):
         y = title_start_y + i * line_height
         draw.text((x, y), line, fill=INK, font=title_font)
 
-    # Terracotta rule
+    # Red accent rule
     rule_y = title_start_y + title_total_h + 40
     if show_rule:
         rule_x = (CARD_W - 180) // 2

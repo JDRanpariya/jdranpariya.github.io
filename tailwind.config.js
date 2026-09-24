@@ -6,7 +6,6 @@
  */
 export default {
   content: ["./src/**/*.{html,njk,js,md}"],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -19,11 +18,8 @@ export default {
         accent: "var(--color-accent)",
         "accent-soft": "var(--color-accent-soft)",
         border: "var(--color-border)",
-        // Notecard palette (guestbook only). `paper`, `ink`, and `red` flip
-        // with the .dark theme via CSS variables in input.css; `pill` /
-        // `pill-ink` stay cream-on-sepia in BOTH modes by design — the
-        // picker + submit pills read as physical paper chips, tied to
-        // the card's aesthetic, not the page chrome.
+        // Notecard palette (guestbook only). The picker and submit pills
+        // remain cream-on-sepia like the illustrated cards.
         notecard: {
           paper: "var(--notecard-paper)",
           ink: "var(--notecard-ink)",
@@ -83,15 +79,11 @@ export default {
         md: "var(--shadow-md)",
         sheet: "var(--shadow-sheet)",
         // Notecard card lift on hover — warm-biased, matches the paper
-        // palette. Same recipe for light + dark; the rgba channel stays
-        // sepia because the card itself is always paper-coloured.
+        // palette. The rgba channel stays sepia because the card itself
+        // is paper-coloured.
         "notecard-hover": "0 1px 2px rgba(52, 28, 8, 0.06), 0 8px 20px rgba(52, 28, 8, 0.1)",
         // Ky.fyi-style 4-layer pill shadow, defined as a CSS variable in
-        // input.css so it can flip between sepia-on-cream (light mode)
-        // and neutral-black (dark mode). Previously this was a hardcoded
-        // sepia rgba string, which in dark mode read as a warm glow/halo
-        // behind the cream pills instead of a shadow. See the
-        // `--notecard-pill-shadow` definition in input.css for the recipe.
+        // input.css. See `--notecard-pill-shadow` for the recipe.
         "notecard-pill": "var(--notecard-pill-shadow)",
       },
       transitionDuration: {

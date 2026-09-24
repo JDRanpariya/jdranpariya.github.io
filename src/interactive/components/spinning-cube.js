@@ -3,10 +3,10 @@
  * No external model needed — procedural geometry.
  */
 export async function setup({ scene, THREE, camera, controls, theme }) {
-  // Cube with golden peachy material
+  // Cube picks up the site's accent color.
   const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
   const material = new THREE.MeshStandardMaterial({
-    color: theme.isDark ? 0xd4a070 : 0x9b4230,
+    color: theme.accent,
     roughness: 0.4,
     metalness: 0.3,
   });
@@ -17,7 +17,7 @@ export async function setup({ scene, THREE, camera, controls, theme }) {
   // Wireframe overlay
   const wireGeo = new THREE.BoxGeometry(1.52, 1.52, 1.52);
   const wireMat = new THREE.MeshBasicMaterial({
-    color: theme.isDark ? 0xfdfbf5 : 0x1a1410,
+    color: theme.ink,
     wireframe: true,
     transparent: true,
     opacity: 0.3,

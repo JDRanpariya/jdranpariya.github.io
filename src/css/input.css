@@ -332,22 +332,22 @@
 }
 
 /* ==========================================================================
- * Design tokens — Golden Peachy Glow
+ * Design tokens — light editorial palette shared with research.jdranpariya.com
  * Canonical source: DESIGN.md (YAML front matter). Keep these in sync.
  * Tailwind maps these to utility names in tailwind.config.js.
  * ========================================================================== */
 
 :root {
   /* color */
-  --color-bg: #fdfbf5;
-  --color-surface: #f4efe4;
-  --color-card: #ede8dc;
-  --color-ink: #2c251d;
-  --color-ink-secondary: #342b21;
-  --color-ink-muted: #786a55;
-  --color-accent: #9b4230;
-  --color-accent-soft: #f5ece1;
-  --color-border: #e2ddd0;
+  --color-bg: #ffffff;
+  --color-surface: #f5f5f3;
+  --color-card: #ededeb;
+  --color-ink: #121212;
+  --color-ink-secondary: #292929;
+  --color-ink-muted: #686764;
+  --color-accent: #b8321c;
+  --color-accent-soft: #f7e9e5;
+  --color-border: #dededb;
 
   /* semantic (callouts only) */
   --color-success: #57c853;
@@ -356,34 +356,16 @@
   --color-info: #47a2bb;
 
   /* shadows */
-  --shadow-xs: 0 1px 2px 0 rgba(45, 36, 26, 0.04);
-  --shadow-sm: 0 2px 8px -2px rgba(45, 36, 26, 0.08);
-  --shadow-md: 0 8px 24px -6px rgba(45, 36, 26, 0.1);
-  --shadow-sheet: -8px 0 32px -8px rgba(45, 36, 26, 0.2);
+  --shadow-xs: 0 1px 2px 0 rgba(18, 18, 18, 0.04);
+  --shadow-sm: 0 2px 8px -2px rgba(18, 18, 18, 0.08);
+  --shadow-md: 0 8px 24px -6px rgba(18, 18, 18, 0.1);
+  --shadow-sheet: -8px 0 32px -8px rgba(18, 18, 18, 0.2);
 
   /* motion */
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 300ms;
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark {
-  --color-bg: #1a1611;
-  --color-surface: #2d261c;
-  --color-card: #3a3024;
-  --color-ink: #f5f0e4;
-  --color-ink-secondary: #e0d8c8;
-  --color-ink-muted: #b8ad90;
-  --color-accent: #d4a070;
-  --color-accent-soft: #3f3426;
-  --color-border: #3a3024;
-
-  /* Darken shadow tint on dark ground so cards don't disappear. */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
-  --shadow-sheet: -8px 0 32px -8px rgba(0, 0, 0, 0.6);
 }
 
 /* ==========================================================================
@@ -395,10 +377,6 @@ html {
   text-size-adjust: 100%;
   tab-size: 4;
   color-scheme: light;
-}
-
-html.dark {
-  color-scheme: dark;
 }
 
 body {
@@ -544,7 +522,7 @@ button,
     color: var(--color-bg);
   }
   .btn-primary:hover {
-    /* Darken accent a touch; keeps cream text legible. */
+    /* Darken accent a touch; keeps light text legible. */
     filter: brightness(0.92);
   }
 
@@ -1583,7 +1561,7 @@ details:not([open]) > .toc-toggle svg {
  *
  * Most layout + typography is Tailwind utilities in src/guestbook.njk.
  * Only these live here:
- *   - paper/ink/red tokens (light + dark palette, flipped by .dark)
+ *   - paper/ink/red tokens for the guestbook's illustrated cards
  *   - per-theme ink overrides for dark papers
  *   - rotation + hover-settle transform (needs --rotation custom prop)
  *   - focus-within ring on the composer card
@@ -1603,22 +1581,6 @@ details:not([open]) > .toc-toggle svg {
   --notecard-pill-shadow:
     0 0.6px 0.6px rgba(52, 28, 8, 0.14), 0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
     0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08), 0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);
-}
-
-/* Dark-mode page overrides for notecard chrome.
- *
- * Only --notecard-paper (loading-state fallback bg) and
- * --notecard-pill-shadow (depth on the picker/submit pills) change with
- * the page theme. Ink colour is NOT overridden here — it must track the
- * WebP texture luminance, not the page dark/light mode. See the
- * per-theme ink overrides when a dark texture is introduced. */
-.dark {
-  --notecard-paper: #3a3125;
-  /* Neutral-black pill shadow — the sepia-tinted light-mode version read
-   * as a warm glow behind the cream pills on a dark page. */
-  --notecard-pill-shadow:
-    0 0.6px 0.6px rgba(0, 0, 0, 0.35), 0 1.6px 1.6px -1.2px rgba(0, 0, 0, 0.3),
-    0 4.7px 4.6px -2.3px rgba(0, 0, 0, 0.22), 0 12.5px 12.2px -3.5px rgba(0, 0, 0, 0.14);
 }
 
 /* The card itself. Everything else (padding, aspect, width, typography)
@@ -1712,8 +1674,7 @@ details:not([open]) > .toc-toggle svg {
 
 /* ---------------- Composer controls pill ------------------------------
  * Both pills sit over the card's bottom edge, half above / half below.
- * Background + text are HARDCODED cream-on-sepia in both light and
- * dark modes — the pills read as physical paper chips tied to the
+ * Background + text stay cream-on-sepia — the pills read as physical paper chips tied to the
  * card, not to page chrome. Do NOT bind to --color-bg / --color-ink. */
 
 .composer__picker {

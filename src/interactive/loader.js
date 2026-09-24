@@ -11,7 +11,7 @@
  * Size budget: this file should stay under 2 KB.
  */
 
-import { getTheme, onThemeChange } from "./theme.js";
+import { getTheme } from "./theme.js";
 
 const registry = {
   plotly: () => import("./modules/plotly.js"),
@@ -25,9 +25,6 @@ const registry = {
   scrollama: () => import("./modules/scrollama.js"),
   d3: () => import("./modules/d3.js"),
 };
-
-// Track mounted instances for theme-change re-rendering
-const mounted = [];
 
 function parseConfig(el) {
   try {
@@ -52,8 +49,7 @@ async function hydrate(el) {
     const module = await loader(el);
     const config = parseConfig(el);
     const theme = getTheme();
-    const instance = await module.mount(el, config, theme);
-    mounted.push({ el, module, instance, config });
+    await module.mount(el, config, theme);
     if (canvas) {
       canvas.removeAttribute("aria-busy");
       canvas.classList.add("interactive--loaded");
@@ -84,13 +80,4 @@ if (elements.length > 0) {
   );
 
   elements.forEach((el) => observer.observe(el));
-
-  // Re-render all mounted interactives when theme changes
-  onThemeChange((newTheme) => {
-    for (const { module, instance, el, config } of mounted) {
-      if (module.onThemeChange) {
-        module.onThemeChange(el, instance, config, newTheme);
-      }
-    }
-  });
 }

@@ -36,31 +36,6 @@
         {% endfor %}
       </ul>
 
-      <!-- Theme toggle -->
-      <button
-        id="theme-toggle"
-        type="button"
-        data-action="toggle-theme"
-        class="p-3 rounded-md text-ink hover:text-accent transition-colors duration-base"
-        aria-label="Toggle dark mode"
-        aria-pressed="false"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-          />
-        </svg>
-      </button>
-
       <!-- Mobile menu toggle -->
       <button
         id="mobile-menu-toggle"
@@ -102,12 +77,16 @@
      transform so it stays correct even if JS hasn't run yet. -->
 <aside
   id="mobile-menu"
-  class="fixed top-0 right-0 h-full w-80 max-w-sm bg-surface shadow-sheet z-50 lg:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
+  class="fixed top-0 right-0 h-full w-80 max-w-sm bg-bg shadow-sheet z-50 lg:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
   aria-label="Site navigation"
   inert
 >
   <div class="flex items-center justify-between p-6 border-b border-border">
-    <span class="font-serif text-lg text-ink" aria-hidden="true">=^.^=</span>
+    <span
+      class="inline-flex items-center min-h-[44px] font-heading text-2xl text-ink"
+      aria-hidden="true"
+      >=^.^=</span
+    >
     <button
       type="button"
       data-action="close-mobile-menu"
