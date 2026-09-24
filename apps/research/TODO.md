@@ -13,7 +13,7 @@
 - Search, decision filters, and pagination run server side in 40-record pages.
 - Desktop uses a persistent master/detail workspace; mobile uses a list-to-detail flow.
 
-## Migration verification (2026-09-23)
+## Migration verification (2026-09-23 to 2026-09-24)
 
 - The existing remote D1 database ID in `wrangler.jsonc` was queried read-only: `research_annotations` exists and currently has 0 rows. No data migration is required for the framework cutover.
 - The existing Worker has both required secret names configured. Secret values were not read.
@@ -21,7 +21,9 @@
 - Local 11ty/Worker preview passed build, unit, smoke, accessibility, browser, and Wrangler dry-run checks. The root personal site's full `bun run check` passed too.
 - After the latest build, Wrangler's bundled esbuild binary stopped launching (exit 137). A forced frozen-lockfile reinstall repaired the local binary without changing `bun.lock`; the deployment dry-run and all 14 route smoke checks passed again. An ignored vinext deployment redirect was moved to `.wrangler/deploy/config.json.vinext-backup` so the new config is unambiguous.
 - Jay approved the lockfile update, commit/push, and production deployment on 2026-09-24. The research app now owns its Eleventy/build dependencies; `bun install --frozen-lockfile`, app checks, root checks, formatting, deployment dry-run, and local authenticated save/publish/restore all pass.
-- The remote D1 count was rechecked read-only on 2026-09-24: 0 annotations. Production remains on the previous Worker until the planned cutover is executed.
+- The remote D1 count was rechecked read-only on 2026-09-24: 0 annotations before and after cutover.
+- Commit `e2758aa` was pushed to `main`. Cloudflare deployed Worker version `9652f755-7c92-4399-9006-02693209f2c8` to `research.jdranpariya.com` on 2026-09-24; the previous version `caa3d015-359c-46b3-95ba-f57a1bae492e` is the rollback target.
+- Production passed all 14 route smoke checks. The homepage and index rendered in a browser; unauthenticated library access redirected to login. Both required production secret names remain configured. The authenticated save/publish/restore flow was verified against local D1 and local test credentials, not the production passphrase.
 
 ## Source regeneration
 
@@ -29,6 +31,5 @@ Run `bun run catalog:build` after a source census changes.
 
 ## Next
 
-- Commit, push, and deploy the migration. Verify live public routes, private-route protection, static assets, analytics, and the current Worker version. Do not change the remote D1 data during the framework migration.
-- Use the private library to review and annotate records.
+- Use the private library to review and annotate records. Jay can perform an optional owner sign-in check on production without sharing his passphrase.
 - Publish selected entries one at a time from the editor.
