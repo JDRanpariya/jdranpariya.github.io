@@ -1,25 +1,23 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import tsParser from "@typescript-eslint/parser";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
+export default defineConfig([
   globalIgnores([
-    // Default ignores of eslint-config-next:
+    ".cache/**",
     ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
+    ".wrangler/**",
+    "_site/**",
+    "dist/**",
+    "node_modules/**",
   ]),
   {
-    rules: {
-      // Vinext's client router does not complete navigation on this deployment.
-      // Plain anchors keep every route usable without JavaScript.
-      "@next/next/no-html-link-for-pages": "off",
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: { ecmaFeatures: { jsx: true }, sourceType: "module" },
     },
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: { "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }] },
   },
 ]);
-
-export default eslintConfig;

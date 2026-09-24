@@ -5,8 +5,12 @@ import type { CollectionId } from "@/lib/research-catalog";
 
 export type Decision = "unreviewed" | "keep" | "maybe" | "remove";
 
-export async function getAnnotations(ownerId: string, collection: CollectionId) {
-  return getDb()
+export async function getAnnotations(
+  binding: D1Database,
+  ownerId: string,
+  collection: CollectionId
+) {
+  return getDb(binding)
     .select()
     .from(researchAnnotations)
     .where(
@@ -14,9 +18,15 @@ export async function getAnnotations(ownerId: string, collection: CollectionId) 
     );
 }
 
-export async function getPublishedAnnotations(ownerEmail: string) {
-  return getDb()
-    .select()
+export async function getPublishedAnnotations(binding: D1Database, ownerEmail: string) {
+  return getDb(binding)
+    .select({
+      collection: researchAnnotations.collection,
+      recordId: researchAnnotations.recordId,
+      publicNotes: researchAnnotations.publicNotes,
+      tags: researchAnnotations.tags,
+      updatedAt: researchAnnotations.updatedAt,
+    })
     .from(researchAnnotations)
     .where(
       and(
@@ -27,8 +37,8 @@ export async function getPublishedAnnotations(ownerEmail: string) {
     );
 }
 
-export async function upsertAnnotation(annotation: ResearchAnnotation) {
-  await getDb()
+export async function upsertAnnotation(binding: D1Database, annotation: ResearchAnnotation) {
+  await getDb(binding)
     .insert(researchAnnotations)
     .values(annotation)
     .onConflictDoUpdate({

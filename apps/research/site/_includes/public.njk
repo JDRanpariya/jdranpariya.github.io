@@ -1,0 +1,22 @@
+---
+layout: base.njk
+---
+
+<div class="min-h-screen bg-page text-ink">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="research-public-navigation">
+    <nav aria-label="Research" class="research-navigation">
+      <a href="/" class="research-navigation-name">Jay Ranpariya</a>
+      <span class="research-navigation-links">
+        <a href="/" {% if pageKind == "research" %}aria-current="page"{% endif %}>Research</a>
+        <a href="/index" {% if pageKind == "index" %}aria-current="page"{% endif %}>Index</a>
+      </span>
+    </nav>
+  </div>
+  <main
+    id="main"
+    class="{% if pageKind == 'research' %}research-notes-page{% else %}research-index-page{% endif %}"
+  >
+    {{ content | safe }}
+  </main>
+</div>

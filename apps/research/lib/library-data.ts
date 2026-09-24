@@ -27,12 +27,14 @@ export type LibraryPageData = {
 };
 
 export async function getLibraryPage({
+  binding,
   ownerId,
   collection,
   query = "",
   decision = "all",
   page = 1,
 }: {
+  binding: D1Database;
   ownerId: string;
   collection: CollectionId;
   query?: string;
@@ -41,7 +43,7 @@ export async function getLibraryPage({
 }): Promise<LibraryPageData> {
   const [catalog, annotations] = await Promise.all([
     Promise.resolve(getCatalog(collection)),
-    getAnnotations(ownerId, collection),
+    getAnnotations(binding, ownerId, collection),
   ]);
   const annotationMap = new Map(annotations.map((annotation) => [annotation.recordId, annotation]));
   const counts: DecisionCounts = { unreviewed: 0, keep: 0, maybe: 0, remove: 0 };

@@ -40,5 +40,8 @@ src/sitemap.njk
 # Plain-text Nunjucks; HTML formatting destroys the Markdown line structure
 src/llms.txt.njk
 
+# Emits raw JSON rather than HTML; the Jinja formatter cannot parse it
+apps/research/site/index.njk
+
 # Nunjucks control flow with conditional </ol> inside {% if %} confuses the jinja parser
 src/sitemap.html.njk

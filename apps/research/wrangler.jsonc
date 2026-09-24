@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "jdranpariya-research",
+  "main": "dist/worker.js",
+  "compatibility_date": "2026-05-22",
+  "workers_dev": true,
+  "routes": [{ "pattern": "research.jdranpariya.com", "custom_domain": true }],
+  "secrets": { "required": ["RESEARCH_ADMIN_PASSPHRASE", "RESEARCH_SESSION_SECRET"] },
+  "assets": {
+    "directory": "./_site",
+    "binding": "ASSETS",
+    "html_handling": "none",
+    "run_worker_first": [
+      "/",
+      "/index",
+      "/index/*",
+      "/login",
+      "/login/*",
+      "/library",
+      "/library/*",
+      "/people",
+      "/api/*",
+      "/logout",
+    ],
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "jdranpariya-research",
+      "database_id": "a66ff6a4-351a-48b2-bb4a-f9d48b42b500",
+    },
+  ],
+}

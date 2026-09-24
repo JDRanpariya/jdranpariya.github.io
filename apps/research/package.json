@@ -6,44 +6,42 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "install:ci": "node scripts/install-ci.mjs",
-    "dev": "node scripts/run-framework.mjs dev",
-    "build": "node scripts/run-framework.mjs build",
-    "start": "node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --local --persist-to .wrangler/state --ip 127.0.0.1 --inspector-port 0",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "dev": "bun run build && bunx wrangler dev --config wrangler.jsonc --local --persist-to .wrangler/state --ip 127.0.0.1 --port 8790",
+    "build": "bun run build:clean && bun run build:home && bun run build:11ty && bun run build:client && bun run build:worker",
+    "build:clean": "del-cli _site",
+    "build:home": "bun scripts/render-home.tsx",
+    "build:11ty": "eleventy --config=eleventy.config.mjs",
+    "build:client": "bunx vite build --config vite.client.config.ts",
+    "build:worker": "bun build worker/index.tsx --target browser --outfile dist/worker.js",
+    "check": "bun run lint && bun test && bun run build",
+    "check:smoke": "bun scripts/smoke-research.mjs",
+    "start": "bunx wrangler dev --config wrangler.jsonc --local --persist-to .wrangler/state --ip 127.0.0.1 --port 8790",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .wrangler --ignore-pattern _site --ignore-pattern .cache && bunx tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "catalog:build": "python3 scripts/build-research-catalogs.py"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
-    "next": "16.3.4",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
+    "@11ty/eleventy": "3.1.6",
     "@cloudflare/workers-types": "4.20260515.1",
     "@tailwindcss/postcss": "4.2.1",
+    "@typescript-eslint/eslint-plugin": "8.70.0",
+    "@typescript-eslint/parser": "8.70.0",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.2",
-    "@vitejs/plugin-rsc": "0.5.26",
+    "del-cli": "7.0.0",
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.3.4",
-    "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
-    "vinext": "1.0.0-beta.5",
     "vite": "8.0.13",
     "wrangler": "4.92.0"
   },
-  "type": "module",
-  "overrides": {
-    "miniflare": {
-      "sharp": "0.35.4"
-    }
-  }
+  "type": "module"
 }

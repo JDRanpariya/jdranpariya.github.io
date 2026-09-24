@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/research.css" />
+    {% if noindex %}<meta name="robots" content="noindex, nofollow" />{% endif %}
+    {% if canonical %}<link rel="canonical" href="{{ canonical }}" />{% endif %}
+    {% if pageKind == "research" or pageKind == "index" %}
+      <script
+        src="https://jay-cloud.vercel.app/script.js"
+        data-website-id="f52a832a-723d-4d1f-9268-e8415f723a2b"
+        data-domains="research.jdranpariya.com"
+        data-exclude-search="true"
+        data-exclude-hash="true"
+        defer
+      ></script>
+    {% endif %}
+    <script type="module" src="/assets/research.js"></script>
+  </head>
+  <body class="antialiased" data-page="{{ pageKind }}">
+    {{ content | safe }}
+  </body>
+</html>
