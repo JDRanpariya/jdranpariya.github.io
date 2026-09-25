@@ -16,6 +16,7 @@
   const section = document.querySelector("#main > section");
   const sourceArticle = section && section.querySelector("article");
   if (!section || !sourceArticle) return;
+  const originalSectionChildren = [...section.childNodes];
 
   const noteCache = new Map();
   const scrollPositions = new Map();
@@ -26,6 +27,9 @@
   let entries = [];
   let focusIndex = 0;
   let previewSequence = 0;
+  let previewDismissPoint = null;
+  let previewDismissTarget = null;
+  let nativeScrollY = window.scrollY;
 
   function canonicalUrl(value) {
     return new URL(value, window.location.origin);
@@ -161,7 +165,7 @@
   }
 
   function showPreview(entry, index, element, placement, point) {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (previewDismissPoint || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const sequence = ++previewSequence;
     const preview = document.createElement("aside");
     preview.className = "codex-note-preview";
@@ -238,13 +242,26 @@
 
   function render({ focusHeading = false, behavior = "smooth" } = {}) {
     hidePreview();
+    const wasStacked = section.classList.contains("codex-stack-section");
     section.querySelectorAll(".codex-note-pane").forEach((pane) => {
       const scroll = pane.querySelector(".codex-pane-scroll");
       scrollPositions.set(pane.dataset.noteUrl, scroll?.scrollTop || 0);
     });
 
+    if (entries.length === 1) {
+      section.classList.remove("codex-stack-section", "codex-has-path");
+      document.body.classList.remove("codex-note-mode");
+      section.replaceChildren(...originalSectionChildren);
+      document.title = originalTitle;
+      if (wasStacked) requestAnimationFrame(() => window.scrollTo(0, nativeScrollY));
+      return;
+    }
+
+    if (!wasStacked) nativeScrollY = window.scrollY;
+    document.body.classList.add("codex-note-mode");
+    section.classList.add("codex-stack-section", "codex-has-path");
     const stack = document.createElement("div");
-    stack.className = `codex-note-stack${entries.length === 1 ? " is-solo" : " has-path"}`;
+    stack.className = "codex-note-stack has-path";
     stack.setAttribute("aria-label", "Open Codex notes");
 
     entries.forEach((entry, index) => {
@@ -280,9 +297,9 @@
       stack.append(pane);
     });
 
-    section.classList.toggle("codex-has-path", entries.length > 1);
-    section.replaceChildren(...(entries.length > 1 ? [createPath(), stack] : [stack]));
+    section.replaceChildren(createPath(), stack);
     activeChanged();
+    if (!wasStacked) window.scrollTo(0, 0);
 
     requestAnimationFrame(() => {
       stack.querySelectorAll(".codex-note-pane").forEach((pane) => {
@@ -356,62 +373,97 @@
     render({ behavior: "auto" });
   }
 
-  document.body.classList.add("codex-note-mode");
-  section.classList.add("codex-stack-section");
   entries = [initialEntry];
-  render({ behavior: "auto" });
   void restoreFromUrl();
+
+  const previewTargetSelector = ".codex-note-pane a[href], article .prose-site a[href], .codex-pane-spine, .codex-note-path button";
+
+  function previewLink(target, point) {
+    const url = canonicalUrl(target.href);
+    if (!isCodexUrl(url)) return;
+    const sequence = previewSequence;
+    void loadNote(url).then((entry) => {
+      if (sequence !== previewSequence || previewDismissPoint || !target.isConnected) return;
+      if (!target.matches(":hover") && document.activeElement !== target) return;
+      showPreview(entry, undefined, target, "inline", point);
+    }).catch(() => {});
+  }
+
+  function previewTarget(target, point) {
+    if (target.matches("a[href]")) {
+      previewLink(target, point);
+      return;
+    }
+    const index = Number(target.dataset.codexFocus);
+    const entry = entries[index];
+    if (entry) showPreview(entry, index, target, target.closest(".codex-note-path") ? "path" : "spine", point);
+  }
+
+  section.addEventListener("pointerdown", function (event) {
+    const target = event.target.closest(previewTargetSelector);
+    if (!target) return;
+    previewDismissPoint = { x: event.clientX, y: event.clientY };
+    previewDismissTarget = target;
+    hidePreview();
+  });
+
+  section.addEventListener("pointermove", function (event) {
+    if (!previewDismissPoint) return;
+    if (Math.hypot(event.clientX - previewDismissPoint.x, event.clientY - previewDismissPoint.y) <= 12) return;
+    if (previewDismissTarget?.isConnected && previewDismissTarget.contains(event.target)) return;
+    previewDismissPoint = null;
+    previewDismissTarget = null;
+    const target = event.target.closest(previewTargetSelector);
+    if (target) previewTarget(target, { x: event.clientX, y: event.clientY });
+  }, { passive: true });
+
+  section.addEventListener("pointerleave", function () {
+    previewDismissPoint = null;
+    previewDismissTarget = null;
+    hidePreview();
+  });
 
   section.addEventListener("click", function (event) {
     const focusTarget = event.target.closest("[data-codex-focus]");
     if (focusTarget && plainPrimaryClick(event)) {
       event.preventDefault();
+      hidePreview();
       focusPane(Number(focusTarget.dataset.codexFocus));
       return;
     }
 
-    const link = event.target.closest(".codex-note-pane a[href]");
+    const link = event.target.closest(".codex-note-pane a[href], article .prose-site a[href]");
     if (!link || !plainPrimaryClick(event)) return;
     const url = canonicalUrl(link.href);
     if (!isCodexUrl(url)) return;
     const sourcePane = link.closest(".codex-note-pane");
-    const sourceIndex = Number(sourcePane.dataset.trailIndex);
+    const sourceIndex = sourcePane ? Number(sourcePane.dataset.trailIndex) : 0;
     if (url.pathname === entries[sourceIndex].url.pathname && url.hash) return;
     event.preventDefault();
+    hidePreview();
     void openNote(url, sourceIndex);
   });
 
   section.addEventListener("pointerover", function (event) {
-    const target = event.target.closest(".codex-note-pane a[href], .codex-pane-spine, .codex-note-path button");
-    if (!target || (event.relatedTarget && target.contains(event.relatedTarget))) return;
-    if (target.matches("a[href]")) {
-      const url = canonicalUrl(target.href);
-      if (!isCodexUrl(url)) return;
-      void loadNote(url).then((entry) => showPreview(entry, undefined, target, "inline", { x: event.clientX, y: event.clientY }));
-      return;
-    }
-    const index = Number(target.dataset.codexFocus);
-    const entry = entries[index];
-    if (entry) showPreview(entry, index, target, target.closest(".codex-note-path") ? "path" : "spine", { x: event.clientX, y: event.clientY });
+    const target = event.target.closest(previewTargetSelector);
+    if (!target || previewDismissPoint || (event.relatedTarget && target.contains(event.relatedTarget))) return;
+    previewTarget(target, { x: event.clientX, y: event.clientY });
   });
 
   section.addEventListener("pointerout", function (event) {
-    const target = event.target.closest(".codex-note-pane a[href], .codex-pane-spine, .codex-note-path button");
+    const target = event.target.closest(previewTargetSelector);
     if (!target || (event.relatedTarget && target.contains(event.relatedTarget))) return;
+    if (target === previewDismissTarget) {
+      previewDismissPoint = null;
+      previewDismissTarget = null;
+    }
     hidePreview();
   });
 
   section.addEventListener("focusin", function (event) {
-    const target = event.target.closest(".codex-note-pane a[href], .codex-pane-spine, .codex-note-path button");
+    const target = event.target.closest(previewTargetSelector);
     if (!target) return;
-    if (target.matches("a[href]")) {
-      const url = canonicalUrl(target.href);
-      if (isCodexUrl(url)) void loadNote(url).then((entry) => showPreview(entry, undefined, target, "inline"));
-      return;
-    }
-    const index = Number(target.dataset.codexFocus);
-    const entry = entries[index];
-    if (entry) showPreview(entry, index, target, target.closest(".codex-note-path") ? "path" : "spine");
+    previewTarget(target);
   });
 
   section.addEventListener("focusout", hidePreview);

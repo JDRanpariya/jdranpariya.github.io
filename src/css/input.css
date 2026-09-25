@@ -33,11 +33,6 @@
     scrollbar-width: thin;
   }
 
-  .codex-note-stack.is-solo {
-    justify-content: center;
-    background: var(--color-bg);
-  }
-
   .codex-note-pane {
     z-index: calc(var(--pane-index) + 1);
     position: sticky;
@@ -60,17 +55,8 @@
       color 180ms ease;
   }
 
-  .codex-note-pane.is-active,
-  .codex-note-stack.is-solo .codex-note-pane {
+  .codex-note-pane.is-active {
     background: var(--color-bg);
-  }
-
-  .codex-note-stack.is-solo .codex-note-pane {
-    width: min(49.375rem, 100%);
-    min-width: min(49.375rem, 100%);
-    flex: 0 1 49.375rem;
-    border-right: 1px solid var(--color-border);
-    border-left: 1px solid var(--color-border);
   }
 
   .codex-pane-scroll {
@@ -1842,13 +1828,13 @@ details:not([open]) > .toc-toggle svg {
 }
 
 /* Codex trail shell overrides generated layout utilities after Tailwind. */
-@media (min-width: 801px) {
-  body.codex-note-mode > nav > div {
-    height: 2.75rem;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
+body.codex-note-mode > nav > div {
+  height: 2.75rem;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 
+@media (min-width: 801px) {
   body.codex-note-mode #main > .codex-stack-section {
     display: flex;
     width: 100% !important;
