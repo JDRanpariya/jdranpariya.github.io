@@ -195,13 +195,6 @@ textarea:focus-visible {
   margin-top: 1.25rem;
 }
 
-.admin-password-help {
-  margin-top: 0.8rem !important;
-  color: var(--admin-faint) !important;
-  font-family: "Figtree", system-ui, sans-serif !important;
-  font-size: 0.72rem !important;
-}
-
 .admin-login-error {
   margin-top: 1.25rem;
   color: var(--admin-accent);

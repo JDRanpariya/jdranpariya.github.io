@@ -432,7 +432,7 @@
         els.loginError.hidden = false;
         els.password.select();
         els.loginButton.disabled = false;
-        els.loginButton.textContent = "Open workspace";
+        els.loginButton.textContent = "Sign in";
       }
     });
 
