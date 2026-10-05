@@ -1,9 +1,7 @@
-<!-- Footer — quiet, two columns.
+<!-- Footer — quote and socials beside a compact navigation grid.
      Left: quote (top) + socials (bottom).
-     Right: nav (RSS last).
-     Socials baseline-align with RSS because both columns use flex-col
-     justify-between on md+, so the last item in each column sits at the
-     same row.
+     Right: nav (RSS last), two columns on desktop.
+     Socials baseline-align with the bottom row of navigation.
 -->
 <footer class="border-t border-border mt-24">
   <div class="max-w-page mx-auto px-6 md:px-8 py-12 md:py-16">
@@ -107,9 +105,11 @@
       <!-- Right: nav. RSS stays last so it baseline-aligns with the socials. -->
       <nav
         aria-label="Footer"
-        class="flex flex-col md:items-end gap-3 md:min-h-[14rem] md:justify-between"
+        class="flex flex-col md:items-end gap-3 md:min-h-[14rem] md:justify-end"
       >
-        <ul class="flex flex-col md:items-end gap-0 list-none m-0 p-0">
+        <ul
+          class="flex flex-col md:items-end lg:grid lg:grid-cols-2 lg:w-full lg:justify-items-end lg:gap-x-6 gap-0 list-none m-0 p-0"
+        >
           <li><a href="/writings/" class="nav-link block py-[0.85rem]">Writings</a></li>
           <li><a href="/notes/" class="nav-link block py-[0.85rem]">Notes</a></li>
           <li><a href="/library/" class="nav-link block py-[0.85rem]">Library</a></li>
