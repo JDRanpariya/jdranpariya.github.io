@@ -25,7 +25,8 @@ const index = await (await request("/index", 200)).text();
 if (
   !index.includes("Research index") ||
   !index.includes('id="index-data"') ||
-  index.includes("privateNotes")
+  index.includes("privateNotes") ||
+  index.includes('"researchFit"')
 ) {
   throw new Error("The selected index is missing or contains private fields.");
 }

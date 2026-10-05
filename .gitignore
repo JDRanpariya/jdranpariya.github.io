@@ -45,6 +45,9 @@ package-lock.json
 # scratch work (notecard source images, intermediate PNGs/SVGs)
 scratch/
 scripts/__pycache__/
+apps/research/scripts/__pycache__/
+# Private outreach research must never enter the public site repository.
+apps/research/data/source/elite_people_census.csv
 
 # agent context files
 AGENTS.md

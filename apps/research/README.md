@@ -36,13 +36,13 @@ bun run start
 
 Open `http://127.0.0.1:8790/`. Local private-library testing needs temporary local `RESEARCH_ADMIN_PASSPHRASE` and `RESEARCH_SESSION_SECRET` bindings. Never place production secrets in source, a checked-in file, or a command line. `wrangler dev` can read local values from an ignored `.dev.vars` file if Jay elects to create one.
 
-Run `bun run check` for lint, unit tests, and a fresh build. With the local Worker running, `bun run check:smoke` verifies the public pages and signed-out private boundary. Run `bun run catalog:build` after either source CSV changes, then build again.
+Run `bun run check` for lint, unit tests, and a fresh build. With the local Worker running, `bun run check:smoke` verifies the public pages and signed-out private boundary. Run `bun run catalog:build` after any source CSV changes, then build again. `data/source/additional_neuroai_people.csv` contains only public directory fields (name, institution, country, URL); the catalog build adds people not already represented by a NeuroAI lab lead. Never commit the private outreach census, fit rankings, recruiting status, contact rules, or evidence from the research-program folder. The Worker also strips source-only fields before sending records to either the private library or `/index`. Jay's own fit assessment is saved separately with his private annotations, initially unset.
 
 ## Deployment and boundaries
 
 The root personal site deploys separately to GitHub Pages. This app deploys to the existing `jdranpariya-research` Cloudflare Worker custom domain. `wrangler.jsonc` declares the existing D1 database binding and route. Cloudflare's static-assets binding serves Eleventy output, while Worker-first routes protect the library and render `/index` from D1. A deployment uploads both the Worker and the static pages together.
 
-After review, deploy from `apps/research` with:
+The editable fit field requires the additive `drizzle/0001_far_vampiro.sql` migration. Apply it to the intended D1 database before deploying this Worker; do not replace the database or rerun the initial schema against an existing one. After review and migration, deploy from `apps/research` with:
 
 ```sh
 bun run lint
@@ -51,7 +51,7 @@ bunx wrangler whoami
 bunx wrangler deploy --config wrangler.jsonc
 ```
 
-Confirm `whoami` identifies Jay's personal Cloudflare account before deploying. Never apply a D1 schema migration just to deploy content or interface changes. Existing session tokens remain valid because the Worker uses the same cookie name and HMAC format as the previous app. Existing D1 rows and secrets are reused; no data copy is part of this migration.
+Confirm `whoami` identifies Jay's personal Cloudflare account before deploying. The fit-column migration is required for this feature; do not apply unrelated schema migrations for content or interface-only changes. Existing session tokens remain valid because the Worker uses the same cookie name and HMAC format as the previous app. Existing D1 rows and secrets are reused; no data copy is part of this migration.
 
 Post-deploy checks: `/` and `/index` return `200`; a signed-out `/library/great-minds` redirects to `/login`; sign in once and confirm the editor loads, an annotation saves, and only deliberately published public notes appear on `/index`. The raw catalogs, private notes, and credentials must not appear in public HTML or static assets.
 

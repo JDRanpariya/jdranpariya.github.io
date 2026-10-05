@@ -1,9 +1,9 @@
 "use client";
 
-import type { CatalogRecord, CollectionId } from "@/lib/research-catalog";
+import type { CollectionId, PublicCatalogRecord } from "@/lib/research-catalog";
 import { useMemo, useState } from "react";
 
-export type PublishedRecord = CatalogRecord & {
+export type PublishedRecord = PublicCatalogRecord & {
   publicNotes: string;
   tags: string[];
   updatedAt: string;

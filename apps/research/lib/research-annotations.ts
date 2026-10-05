@@ -4,6 +4,8 @@ import { and, eq } from "drizzle-orm";
 import type { CollectionId } from "@/lib/research-catalog";
 
 export type Decision = "unreviewed" | "keep" | "maybe" | "remove";
+export const researchFitValues = ["", "strong", "partial", "low"] as const;
+export type ResearchFit = (typeof researchFitValues)[number];
 
 export async function getAnnotations(
   binding: D1Database,
@@ -50,6 +52,7 @@ export async function upsertAnnotation(binding: D1Database, annotation: Research
       set: {
         ownerEmail: annotation.ownerEmail,
         decision: annotation.decision,
+        researchFit: annotation.researchFit,
         privateNotes: annotation.privateNotes,
         publicNotes: annotation.publicNotes,
         tags: annotation.tags,

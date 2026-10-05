@@ -1,7 +1,11 @@
 import { PublicResearchIndex, type PublishedRecord } from "../components/public-research-index";
 import { getLibraryPage } from "../lib/library-data";
-import { getPublishedAnnotations, upsertAnnotation } from "../lib/research-annotations";
-import { getCatalogRecord, isCollectionId } from "../lib/research-catalog";
+import {
+  getPublishedAnnotations,
+  researchFitValues,
+  upsertAnnotation,
+} from "../lib/research-annotations";
+import { getCatalogRecord, isCollectionId, toPublicRecord } from "../lib/research-catalog";
 import {
   ADMIN_EMAIL,
   createSessionToken,
@@ -33,6 +37,7 @@ const annotationSchema = z.object({
   collection: z.enum(["great-minds", "neuroai"]),
   recordId: z.string().min(1).max(100),
   decision: z.enum(["unreviewed", "keep", "maybe", "remove"]),
+  researchFit: z.enum(researchFitValues),
   privateNotes: z.string().max(20_000),
   publicNotes: z.string().max(5_000),
   tags: z.string().max(2_000),
@@ -84,7 +89,7 @@ async function publicIndex(request: Request, env: Environment): Promise<Response
     if (!record) return [];
     return [
       {
-        ...record,
+        ...toPublicRecord(record),
         publicNotes: annotation.publicNotes,
         tags: annotation.tags
           .split(",")
@@ -213,6 +218,7 @@ async function annotations(request: Request, env: Environment): Promise<Response
       collection: parsed.collection,
       recordId: parsed.recordId,
       decision: parsed.decision,
+      researchFit: parsed.researchFit,
       privateNotes: parsed.privateNotes.trim(),
       publicNotes: parsed.publicNotes.trim(),
       tags: parsed.tags.trim(),

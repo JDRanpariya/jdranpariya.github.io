@@ -1,12 +1,13 @@
 "use client";
 
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
-import type { Decision } from "@/lib/research-annotations";
+import type { Decision, ResearchFit } from "@/lib/research-annotations";
 import type { CollectionId } from "@/lib/research-catalog";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 type Draft = {
   decision: Decision;
+  researchFit: ResearchFit;
   privateNotes: string;
   publicNotes: string;
   tags: string;
@@ -23,6 +24,21 @@ const decisions: Array<{ value: Decision; label: string }> = [
   { value: "remove", label: "Remove" },
 ];
 
+const researchFits: Array<{ value: ResearchFit; label: string }> = [
+  { value: "", label: "Not assessed" },
+  { value: "strong", label: "Strong" },
+  { value: "partial", label: "Partial" },
+  { value: "low", label: "Low" },
+];
+
+function fitLabel(value: ResearchFit): string {
+  return researchFits.find((option) => option.value === value)?.label ?? "Not assessed";
+}
+
+function normalizeResearchFit(value: string): ResearchFit {
+  return researchFits.find((option) => option.value === value)?.value ?? "";
+}
+
 const statusColor: Record<Decision, string> = {
   unreviewed: "bg-ink-muted",
   keep: "bg-success",
@@ -33,6 +49,7 @@ const statusColor: Record<Decision, string> = {
 function emptyDraft(): Draft {
   return {
     decision: "unreviewed",
+    researchFit: "",
     privateNotes: "",
     publicNotes: "",
     tags: "",
@@ -53,6 +70,7 @@ function draftsFromAnnotations(annotations: LibraryAnnotationView[]) {
       annotation.recordId,
       {
         decision: normalizeDecision(annotation.decision),
+        researchFit: normalizeResearchFit(annotation.researchFit),
         privateNotes: annotation.privateNotes,
         publicNotes: annotation.publicNotes,
         tags: annotation.tags,
@@ -69,7 +87,21 @@ function cacheKey(
   decision: Decision | "all",
   page: number
 ) {
-  return `${collection}\u0000${query}\u0000${decision}\u0000${page}`;
+  return [collection, query, decision, page].join("\u0000");
+}
+
+function libraryParams(
+  collection: CollectionId,
+  query: string,
+  decision: Decision | "all",
+  page: number
+) {
+  return new URLSearchParams({
+    collection,
+    q: query,
+    decision,
+    page: String(page),
+  });
 }
 
 export function LibraryWorkspace({
@@ -113,12 +145,7 @@ export function LibraryWorkspace({
     if (pageCache.current.has(key)) return;
 
     const controller = new AbortController();
-    const params = new URLSearchParams({
-      collection: otherCollection,
-      q: "",
-      decision: "all",
-      page: "1",
-    });
+    const params = libraryParams(otherCollection, "", "all", 1);
     void fetch(`/api/library/annotations?${params}`, {
       headers: { accept: "application/json" },
       cache: "no-store",
@@ -209,12 +236,7 @@ export function LibraryWorkspace({
 
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        collection: nextCollection,
-        q,
-        decision,
-        page: String(page),
-      });
+      const params = libraryParams(nextCollection, q, decision, page);
       const response = await fetch(`/api/library/annotations?${params}`, {
         headers: { accept: "application/json" },
         cache: "no-store",
@@ -272,6 +294,7 @@ export function LibraryWorkspace({
 
       const saved: Draft = {
         decision: normalizeDecision(result.annotation.decision),
+        researchFit: normalizeResearchFit(result.annotation.researchFit),
         privateNotes: result.annotation.privateNotes,
         publicNotes: result.annotation.publicNotes,
         tags: result.annotation.tags,
@@ -468,6 +491,11 @@ export function LibraryWorkspace({
                         {[record.institution, record.country].filter(Boolean).join(" · ") ||
                           record.primary}
                       </span>
+                      {activeCollection === "neuroai" && draft.researchFit ? (
+                        <span className="mt-1 block font-sans text-xs text-ink-muted">
+                          Fit: {fitLabel(draft.researchFit)}
+                        </span>
+                      ) : null}
                     </span>
                     {draft.isPublished ? (
                       <span className="ml-auto shrink-0 font-sans text-[0.625rem] text-ink-muted">
@@ -546,15 +574,6 @@ export function LibraryWorkspace({
                         {selected.topics.join(" · ")}
                       </p>
                     ) : null}
-                    {selected.evidenceUrls.length ? (
-                      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 font-sans text-xs">
-                        {selected.evidenceUrls.map((url, index) => (
-                          <a key={url} href={url} className="underline">
-                            Evidence {index + 1} →
-                          </a>
-                        ))}
-                      </div>
-                    ) : null}
                   </header>
 
                   <fieldset className="mt-5" disabled={currentSaveState?.kind === "saving"}>
@@ -584,6 +603,29 @@ export function LibraryWorkspace({
                   </fieldset>
 
                   <div className="mt-5 pt-1">
+                    {activeCollection === "neuroai" ? (
+                      <label className="mb-5 block max-w-xs">
+                        <span className="ui-label">Fit to my research</span>
+                        <select
+                          value={selectedDraft.researchFit}
+                          onChange={(event) =>
+                            updateLocal(selected.id, {
+                              researchFit: normalizeResearchFit(event.target.value),
+                            })
+                          }
+                          className="ui-control mt-1.5"
+                        >
+                          {researchFits.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="mt-1 block font-sans text-xs text-ink-muted">
+                          Your assessment. Details can go in private notes.
+                        </span>
+                      </label>
+                    ) : null}
                     <label className="block">
                       <span className="ui-label">Private notes</span>
                       <textarea
@@ -657,7 +699,7 @@ export function LibraryWorkspace({
                         disabled={currentSaveState?.kind === "saving"}
                         className="ui-button"
                       >
-                        Save notes
+                        Save changes
                       </button>
                       <p
                         className={`font-sans text-sm ${currentSaveState?.kind === "error" ? "text-danger" : "text-ink-muted"}`}
@@ -668,17 +710,6 @@ export function LibraryWorkspace({
                       </p>
                     </div>
                   </div>
-
-                  {selected.activity ? (
-                    <details className="mt-5 pt-2">
-                      <summary className="cursor-pointer font-sans text-sm text-ink-muted">
-                        Activity evidence
-                      </summary>
-                      <p className="mt-3 text-sm leading-7 text-ink-secondary">
-                        {selected.activity}
-                      </p>
-                    </details>
-                  ) : null}
                 </article>
               </div>
             ) : (

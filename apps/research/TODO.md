@@ -4,7 +4,8 @@
 
 - Eleventy 3 builds the public page shells; React hydrates only the interactive notes, index, and private editor.
 - A Cloudflare Worker serves Eleventy assets, protects the library, and renders the D1-backed public index.
-- Static source catalogs: 872 great minds and 422 countable NeuroAI research units.
+- Static source catalogs: 872 great minds and 487 NeuroAI records (422 research units + 65 additional public researcher directory entries).
+- NeuroAI library: Jay's fit assessment is editable and starts unset. Private outreach metadata is not part of the catalog; use private notes for context worth keeping. Apply the additive fit-column migration before deploying.
 - Canonical source: `apps/research` inside the personal site repository.
 - Private owner editor: `/library/great-minds` and `/library/neuroai`.
 - Public selected index: `/index`.

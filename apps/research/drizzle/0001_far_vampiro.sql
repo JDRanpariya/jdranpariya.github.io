@@ -1,0 +1,1 @@
+ALTER TABLE `research_annotations` ADD `research_fit` text DEFAULT '' NOT NULL;

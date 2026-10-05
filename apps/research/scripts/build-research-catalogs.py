@@ -7,8 +7,12 @@ import csv
 import hashlib
 import json
 import re
+import sys
 import unicodedata
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from research_people import lead_keys, person_key  # noqa: E402
 
 
 SITE_ROOT = Path(__file__).resolve().parent.parent
@@ -16,6 +20,7 @@ OUTPUT = SITE_ROOT / "data" / "catalogs"
 SOURCE = SITE_ROOT / "data" / "source"
 GREAT_MINDS = SOURCE / "great_minds_census.csv"
 NEUROAI = SOURCE / "neuroai_canonical_census.csv"
+ADDITIONAL_PEOPLE = SOURCE / "additional_neuroai_people.csv"
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -93,7 +98,40 @@ def neuroai() -> list[dict[str, object]]:
                 "activity": row["last_activity_evidence"],
             }
         )
+    merge_additional_people(output)
     return sorted(output, key=lambda item: str(item["name"]).casefold())
+
+
+def merge_additional_people(records: list[dict[str, object]]) -> None:
+    """Add public researcher directory entries not already represented by a lab lead."""
+    known_leads: set[str] = set()
+    for record in records:
+        known_leads.update(lead_keys(str(record["lead"])))
+    for person in read_csv(ADDITIONAL_PEOPLE):
+        if person_key(person["name"]) not in known_leads:
+            records.append(additional_person_record(person))
+
+
+def additional_person_record(person: dict[str, str]) -> dict[str, object]:
+    return {
+        "id": stable_id("ep", person["name"], person["url"]),
+        "collection": "neuroai",
+        "name": person["name"],
+        "entityType": "researcher",
+        "lead": "",
+        "institution": person["institution"],
+        "country": person["country"],
+        "city": "",
+        "url": person["url"],
+        "primary": "",
+        "topics": [],
+        "summary": "",
+        "question": "",
+        "questionBasis": "",
+        "evidenceUrls": [],
+        "status": "ADDITIONAL_RESEARCHER",
+        "activity": "",
+    }
 
 
 def main() -> None:
@@ -103,6 +141,9 @@ def main() -> None:
         "neuroai.json": neuroai(),
     }
     for filename, records in catalogs.items():
+        ids = [record["id"] for record in records]
+        if len(ids) != len(set(ids)):
+            raise SystemExit(f"{filename}: duplicate record ids")
         path = OUTPUT / filename
         path.write_text(json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
         print(f"{filename}: {len(records)} records, {path.stat().st_size} bytes")

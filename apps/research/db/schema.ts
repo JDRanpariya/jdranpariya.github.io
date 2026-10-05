@@ -8,6 +8,7 @@ export const researchAnnotations = sqliteTable(
     collection: text("collection").notNull(),
     recordId: text("record_id").notNull(),
     decision: text("decision").notNull().default("unreviewed"),
+    researchFit: text("research_fit").notNull().default(""),
     privateNotes: text("private_notes").notNull().default(""),
     publicNotes: text("public_notes").notNull().default(""),
     tags: text("tags").notNull().default(""),
