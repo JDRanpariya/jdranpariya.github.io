@@ -1,0 +1,55 @@
+html {
+  color-scheme: light;
+}
+body {
+  margin: 0;
+  background: var(--color-bg);
+}
+.admin-preview-page {
+  width: 100%;
+  max-width: 49.5rem;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+.admin-preview-page:not(.admin-research-page) {
+  max-width: 46.5rem;
+}
+.admin-preview-page .prose-site {
+  width: 100%;
+}
+.admin-preview-page .prose-site h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.admin-preview-page .research-intro h1 {
+  margin-top: 0;
+}
+.admin-research-page {
+  font-size: 17px;
+  line-height: 1.7;
+}
+.admin-research-page .research-note-content {
+  padding: 0;
+  min-height: 0;
+}
+.admin-research-page a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+}
+.admin-research-page .theme-list {
+  list-style: disc;
+}
+.admin-research-page .theme-list li::marker {
+  color: var(--color-accent);
+}
+.admin-preview-page img {
+  max-width: 100%;
+  height: auto;
+}
+@media (max-width: 480px) {
+  .admin-preview-page {
+    padding: 2rem 1.25rem 3rem;
+  }
+}

@@ -245,6 +245,16 @@ const researchWorker = {
       if (path === "/index/index.html" && request.method === "GET")
         return Response.redirect(new URL("/index", url), 301);
       if (path === "/" && request.method === "GET") return asset(request, env, "/index.html");
+      if (
+        (path === "/notes" || path.startsWith("/notes/")) &&
+        ["GET", "HEAD"].includes(request.method)
+      ) {
+        if (path.endsWith("/index.html"))
+          return Response.redirect(new URL(`${path.slice(0, -10)}${url.search}`, url), 301);
+        if (!url.pathname.endsWith("/"))
+          return Response.redirect(new URL(`${path}/${url.search}`, url), 301);
+        return asset(request, env, `${path}/index.html`);
+      }
       if (path === "/login" && request.method === "GET")
         return asset(request, env, "/login/index.html");
       if (path === "/login/index.html" && request.method === "GET")

@@ -11,7 +11,7 @@ eleventyExcludeFromCollections: true
     <meta name="robots" content="noindex, nofollow" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'self'"
+      content="default-src 'self'; connect-src 'self'; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'; object-src 'none'"
     />
     <title>Site admin</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png" />
@@ -29,6 +29,7 @@ eleventyExcludeFromCollections: true
       type="font/woff2"
       crossorigin
     />
+    <link rel="stylesheet" href="/css/style.css{{ '/css/style.css' | cacheBust }}" />
     <link rel="stylesheet" href="/assets/css/admin.css{{ '/assets/css/admin.css' | cacheBust }}" />
   </head>
   <body>
@@ -39,6 +40,35 @@ eleventyExcludeFromCollections: true
         >Jay's sites <span>/ admin</span></a
       >
       <div class="admin-account" id="admin-account" hidden>
+        <nav class="admin-layout-controls" aria-label="Workspace layout">
+          <button
+            class="admin-text-button"
+            type="button"
+            data-panel-toggle="files"
+            aria-pressed="true"
+          >
+            Files
+          </button>
+          <button
+            class="admin-text-button"
+            type="button"
+            data-panel-toggle="edit"
+            aria-pressed="true"
+          >
+            Editor
+          </button>
+          <button
+            class="admin-text-button"
+            type="button"
+            data-panel-toggle="preview"
+            aria-pressed="true"
+          >
+            Preview
+          </button>
+          <button class="admin-text-button" id="admin-reset-layout" type="button">
+            Reset layout
+          </button>
+        </nav>
         <span id="admin-identity"></span>
         <button class="admin-text-button" id="admin-logout" type="button">Sign out</button>
       </div>
@@ -70,16 +100,14 @@ eleventyExcludeFromCollections: true
           <div class="admin-panel-heading">
             <div>
               <p class="admin-eyebrow">Repository</p>
-              <h1>Markdown</h1>
+              <h1>Files</h1>
             </div>
-            <button
-              class="admin-icon-button"
-              id="admin-new"
-              type="button"
-              aria-label="Create a new file"
-            >
-              +
-            </button>
+            <div class="admin-create-toolbar">
+              <button class="admin-text-button" id="admin-new" type="button">New file</button>
+              <button class="admin-text-button" id="admin-new-folder" type="button">
+                New folder
+              </button>
+            </div>
           </div>
 
           <label class="admin-search">
@@ -93,22 +121,37 @@ eleventyExcludeFromCollections: true
           </label>
 
           <section class="admin-create" id="admin-create" hidden>
+            <h2 id="admin-create-heading">New file</h2>
+            <label>
+              <span>Inside folder</span>
+              <select id="admin-new-directory"></select>
+            </label>
             <label>
               <span>Title</span>
               <input id="admin-new-title" type="text" autocomplete="off" />
             </label>
             <label>
-              <span>File</span>
-              <input id="admin-new-path" type="text" spellcheck="false" />
+              <span id="admin-new-name-label">File name</span>
+              <input
+                id="admin-new-path"
+                type="text"
+                spellcheck="false"
+                aria-describedby="admin-new-target"
+              />
             </label>
-            <label>
+            <p class="admin-create-target" id="admin-new-target"></p>
+            <label id="admin-new-template-field">
               <span>Template</span>
               <select id="admin-new-template">
-                <option value="codex">Codex note</option>
-                <option value="writing">Writing</option>
-                <option value="blank">Blank Markdown</option>
+                <option value="auto">Match this folder</option>
+                <option value="blank">Standalone page</option>
               </select>
             </label>
+            <label id="admin-new-author-field" hidden>
+              <span>Book author</span>
+              <input id="admin-new-author" type="text" autocomplete="off" />
+            </label>
+            <p class="admin-create-help" id="admin-new-help"></p>
             <div class="admin-create-actions">
               <button class="admin-text-button" id="admin-new-cancel" type="button">Cancel</button>
               <button class="admin-solid-button" id="admin-new-create" type="button">
@@ -123,7 +166,27 @@ eleventyExcludeFromCollections: true
           </div>
 
           <nav class="admin-file-list" id="admin-file-list" aria-label="Markdown files"></nav>
+          <div class="admin-tree-controls">
+            <button class="admin-text-button" id="admin-expand-all" type="button">
+              Expand all
+            </button>
+            <button class="admin-text-button" id="admin-collapse-all" type="button">
+              Collapse all
+            </button>
+          </div>
         </aside>
+
+        <div
+          class="admin-divider"
+          id="admin-files-divider"
+          role="separator"
+          tabindex="0"
+          aria-label="Resize file panel"
+          aria-orientation="vertical"
+          aria-valuemin="180"
+          aria-valuemax="420"
+          aria-valuenow="260"
+        ></div>
 
         <section class="admin-editor" data-mobile-panel="edit">
           <header class="admin-document-bar">
@@ -143,6 +206,16 @@ eleventyExcludeFromCollections: true
               </button>
             </div>
           </header>
+          <div class="admin-mode-notice" id="admin-conflict-notice" hidden>
+            The repository version changed. Review it before replacing it with your draft.
+            <details>
+              <summary>Current repository source</summary>
+              <pre id="admin-conflict-source"></pre>
+            </details>
+            <button class="admin-text-button" id="admin-keep-draft" type="button">
+              I've reviewed it. Keep my draft.
+            </button>
+          </div>
           <textarea
             id="admin-source"
             aria-label="Markdown source"
@@ -154,16 +227,32 @@ eleventyExcludeFromCollections: true
           ></textarea>
         </section>
 
+        <div
+          class="admin-divider"
+          id="admin-preview-divider"
+          role="separator"
+          tabindex="0"
+          aria-label="Resize editor and preview"
+          aria-orientation="vertical"
+          aria-valuemin="25"
+          aria-valuemax="75"
+          aria-valuenow="50"
+        ></div>
+
         <section class="admin-preview" data-mobile-panel="preview">
           <header class="admin-preview-heading">
-            <p class="admin-eyebrow">Preview</p>
+            <p class="admin-eyebrow" id="admin-preview-label">Draft preview</p>
             <a id="admin-public-link" href="#" target="_blank" rel="noopener" hidden
               >Open published page ↗</a
             >
           </header>
-          <article class="admin-preview-content" id="admin-preview-content">
-            <p class="admin-preview-empty">The rendered note will appear here.</p>
-          </article>
+          <p class="admin-preview-notice" id="admin-preview-notice" role="status"></p>
+          <iframe
+            class="admin-preview-frame"
+            id="admin-preview-content"
+            title="Live draft preview"
+            sandbox="allow-same-origin"
+          ></iframe>
         </section>
       </section>
     </main>
@@ -176,7 +265,7 @@ eleventyExcludeFromCollections: true
 
     <div class="admin-status" id="admin-status" role="status" aria-live="polite"></div>
 
-    <script src="/assets/vendor/markdown-it/markdown-it.min.js" defer></script>
+    <script src="/assets/js/admin-renderer.js" defer></script>
     <script src="/assets/js/admin.js{{ '/assets/js/admin.js' | cacheBust }}" defer></script>
   </body>
 </html>

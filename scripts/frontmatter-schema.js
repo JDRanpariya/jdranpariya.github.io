@@ -6,7 +6,7 @@ const COMMON_REQUIRED = ["title", "description"];
 
 const SCHEMAS = {
   writings: {
-    glob: "src/writings/*.md",
+    glob: "src/writings/**/*.md",
     required: [...COMMON_REQUIRED, "published", "tags", "section", "layout"],
     enums: {
       status: ["draft", "published", undefined],
@@ -19,7 +19,7 @@ const SCHEMAS = {
     },
   },
   books: {
-    glob: "src/library/books/*.md",
+    glob: "src/library/books/**/*.md",
     required: [...COMMON_REQUIRED, "author", "published", "section", "layout"],
     enums: { section: ["books"] },
     types: {
@@ -29,7 +29,7 @@ const SCHEMAS = {
     },
   },
   lectures: {
-    glob: "src/library/lectures/*.md",
+    glob: "src/library/lectures/**/*.md",
     required: [...COMMON_REQUIRED, "published", "section", "layout"],
     enums: { section: ["lectures"] },
     types: {
@@ -39,7 +39,7 @@ const SCHEMAS = {
     },
   },
   papers: {
-    glob: "src/library/papers/*.md",
+    glob: "src/library/papers/**/*.md",
     required: ["title", "section", "layout"], // description optional — papers often have rich body prose
     enums: { section: ["papers"] },
     types: {
@@ -49,11 +49,19 @@ const SCHEMAS = {
     },
   },
   projects: {
-    glob: "src/projects/*.md",
-    // projects/<sub>/*.md exists too; this catches the top-level project entries
+    glob: "src/projects/**/*.md",
     required: [...COMMON_REQUIRED, "published", "tags", "layout"],
     enums: {
-      status: ["active", "finished", "archived", "idea", "under-review", "on-hold", undefined],
+      status: [
+        "draft",
+        "active",
+        "finished",
+        "archived",
+        "idea",
+        "under-review",
+        "on-hold",
+        undefined,
+      ],
     },
     types: {
       tags: "array",
@@ -71,6 +79,16 @@ const SCHEMAS = {
       lastUpdated: "date|undefined",
     },
   },
+};
+
+const FOLDER_SCHEMA = {
+  required: ["title", "layout", "permalink", "section"],
+  enums: { section: ["folder"], layout: ["layouts/folder.njk"], status: ["draft", "published"] },
+  types: { folderIndex: "boolean" },
+};
+const PAGE_SCHEMA = {
+  required: ["title", "layout", "permalink"],
+  enums: { section: ["pages"], status: ["draft", "published"] },
 };
 
 function typeOf(v) {
@@ -157,8 +175,14 @@ export function registerFrontmatterValidation(eleventyConfig) {
     for (const [name, schema] of Object.entries(SCHEMAS)) {
       const items = collectionApi.getFilteredByGlob(schema.glob);
       for (const item of items) {
+        if (item.data.folderIndex || item.data.standalonePage) continue;
         validateItem(item, schema, errors);
       }
+    }
+
+    for (const item of collectionApi.getAll()) {
+      if (item.data.folderIndex) validateItem(item, FOLDER_SCHEMA, errors);
+      else if (item.data.standalonePage) validateItem(item, PAGE_SCHEMA, errors);
     }
 
     validateTagCasing(collectionApi, errors);

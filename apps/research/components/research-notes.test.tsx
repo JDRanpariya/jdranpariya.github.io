@@ -48,6 +48,19 @@ describe("research note links", () => {
     assert.equal(link.props.href, "https://example.com/paper");
     assert.equal(link.props.target, "_blank");
   });
+
+  it("canonical note links resolve natively without treating the research hostname as external", () => {
+    const authored = { ...note, url: "/notes/learning/world-models/" };
+    const notes = new Map([[authored.slug, authored]]);
+    for (const href of [authored.url, `https://research.jdranpariya.com${authored.url}`]) {
+      const link = renderInline(`[Related](${href})`, notes).find(isValidElement) as ReactElement<{
+        href: string;
+        target?: string;
+      }>;
+      assert.equal(link.props.href, authored.url);
+      assert.equal(link.props.target, undefined);
+    }
+  });
 });
 
 describe("research homepage content", () => {

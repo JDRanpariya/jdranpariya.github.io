@@ -7,6 +7,7 @@ import {
   type WheelEvent,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -36,13 +37,18 @@ function resolveNote(reference: string, notes: ReadonlyMap<string, ResearchNote>
   const trimmed = reference.trim();
   return (
     notes.get(trimmed) ??
-    [...notes.values()].find((note) => note.title.toLowerCase() === trimmed.toLowerCase())
+    [...notes.values()].find(
+      (note) => note.title.toLowerCase() === trimmed.toLowerCase() || note.url === trimmed
+    )
   );
 }
 
 function noteReferenceFromDestination(destination?: string) {
   if (!destination) return undefined;
   if (destination.startsWith("note:")) return destination.slice(5);
+  if (destination.startsWith("/notes/")) return destination.split("#", 1)[0];
+  if (destination.startsWith("https://research.jdranpariya.com/notes/"))
+    return new URL(destination).pathname;
   if (destination.startsWith("/?")) {
     const query = destination.slice(2).split("#", 1)[0];
     return new URLSearchParams(query).getAll("notes").at(-1);
@@ -64,11 +70,11 @@ export function renderInline(
       const note = noteReference ? resolveNote(noteReference, notes) : undefined;
       const label = wikiLink ? (wikiLink[2] ?? note?.title ?? wikiLink[1]) : link![1];
       if (noteReference && !note) return label;
-      const isExternal = destination ? /^https?:\/\//u.test(destination) : false;
+      const isExternal = !note && destination ? /^https?:\/\//u.test(destination) : false;
       return (
         <a
           className={isExternal ? "research-outbound-link" : undefined}
-          href={note ? hrefForPath([note.slug]) : destination}
+          href={note ? note.url || hrefForPath([note.slug]) : destination}
           key={index}
           rel={isExternal ? "noreferrer" : undefined}
           target={isExternal ? "_blank" : undefined}
@@ -101,17 +107,21 @@ export function ResearchNotes({
   initialDocument,
   initialFocus,
   initialPath,
+  rootSlug,
 }: {
   initialDocument: ResearchHome;
   initialFocus: number;
   initialPath: string[];
+  rootSlug?: string;
 }) {
   const [researchDocument, setResearchDocument] = useState(initialDocument);
   const noteBySlug = useMemo(
     () => new Map(researchDocument.notes.map((note) => [note.slug, note])),
     [researchDocument.notes]
   );
-  const [path, setPath] = useState(() => normalizePath(initialPath, noteBySlug));
+  const [path, setPath] = useState(() =>
+    normalizePath(initialPath, noteBySlug).filter((slug) => slug !== rootSlug)
+  );
   const [focusIndex, setFocusIndex] = useState(() => initialFocus);
   const [obscured, setObscured] = useState<ReadonlySet<number>>(() => new Set());
   const pointerStartX = useRef<number | null>(null);
@@ -119,17 +129,64 @@ export function ResearchNotes({
   const horizontalGesture = useRef(false);
   const returnGesture = useRef(false);
   const scrollSettleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingRootPosition = useRef<{ index: number; offset: number } | null>(null);
+
+  const rememberRootPosition = useCallback(() => {
+    const scroll = window.document.querySelector<HTMLElement>(
+      '[data-pane-index="0"] .research-note-scroll'
+    );
+    if (!scroll) return;
+    const top = Math.max(0, scroll.getBoundingClientRect().top);
+    const blocks = [...scroll.querySelectorAll<HTMLElement>("h1,h2,h3,p,li,blockquote")];
+    const index = blocks.findIndex((block) => block.getBoundingClientRect().bottom > top);
+    if (index >= 0)
+      pendingRootPosition.current = {
+        index,
+        offset: blocks[index].getBoundingClientRect().top - top,
+      };
+  }, []);
+
+  useLayoutEffect(() => {
+    const position = pendingRootPosition.current;
+    if (!position) return;
+    pendingRootPosition.current = null;
+    const scroll = window.document.querySelector<HTMLElement>(
+      '[data-pane-index="0"] .research-note-scroll'
+    );
+    const block = scroll?.querySelectorAll<HTMLElement>("h1,h2,h3,p,li,blockquote")[position.index];
+    if (!scroll || !block) return;
+    if (path.length) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      scroll.scrollTo({
+        top:
+          scroll.scrollTop +
+          block.getBoundingClientRect().top -
+          scroll.getBoundingClientRect().top -
+          position.offset,
+        behavior: "instant",
+      });
+    } else {
+      window.scrollBy({
+        top: block.getBoundingClientRect().top - position.offset,
+        behavior: "instant",
+      });
+    }
+  }, [path.length]);
 
   const panels = useMemo(
     () => [
-      { slug: "research", title: "Research", note: undefined },
+      {
+        slug: rootSlug || "research",
+        title: rootSlug ? noteBySlug.get(rootSlug)?.title || "Research" : "Research",
+        note: rootSlug ? noteBySlug.get(rootSlug) : undefined,
+      },
       ...path.map((slug) => ({
         slug,
         title: noteBySlug.get(slug)?.title ?? slug,
         note: noteBySlug.get(slug),
       })),
     ],
-    [path, noteBySlug]
+    [path, noteBySlug, rootSlug]
   );
 
   const writeLocation = useCallback(
@@ -198,28 +255,34 @@ export function ResearchNotes({
     (index: number, mode: "push" | "replace" = "push") => {
       const bounded = Math.max(0, Math.min(index, path.length));
       const nextPath = path.slice(0, bounded);
+      if (!nextPath.length && path.length) rememberRootPosition();
       setPath(nextPath);
       setFocusIndex(bounded);
       writeLocation(nextPath, bounded, mode);
       requestAnimationFrame(() => scrollToPane(bounded));
     },
-    [path, scrollToPane, writeLocation]
+    [path, scrollToPane, writeLocation, rememberRootPosition]
   );
 
   const openTheme = useCallback(
     (slug: string, sourcePanelIndex: number) => {
       if (!noteBySlug.has(slug)) return;
+      if (slug === rootSlug) {
+        focusPane(0);
+        return;
+      }
       const existing = path.indexOf(slug);
       if (existing >= 0) {
         focusPane(existing + 1);
         return;
       }
       const nextPath = [...path.slice(0, sourcePanelIndex), slug];
+      if (!path.length) rememberRootPosition();
       setPath(nextPath);
       setFocusIndex(nextPath.length);
       writeLocation(nextPath, nextPath.length, "push");
     },
-    [focusPane, path, noteBySlug, writeLocation]
+    [focusPane, path, noteBySlug, writeLocation, rootSlug, rememberRootPosition]
   );
 
   useEffect(() => {
@@ -238,6 +301,8 @@ export function ResearchNotes({
     const handlePopState = () => {
       const params = new URL(window.location.href).searchParams;
       const nextPath = normalizePath(params.getAll("notes"), noteBySlug);
+      if ((!nextPath.length && path.length) || (nextPath.length && !path.length))
+        rememberRootPosition();
       const requestedFocus = Number.parseInt(
         params.get("noteFocus") ?? String(nextPath.length),
         10
@@ -247,7 +312,7 @@ export function ResearchNotes({
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [noteBySlug]);
+  }, [noteBySlug, path.length, rememberRootPosition]);
 
   useEffect(
     () => () => {
@@ -319,16 +384,16 @@ export function ResearchNotes({
   const applyPublishedMarkdown = useCallback((markdown: string) => {
     try {
       const next = parseResearchHome(markdown);
-      setResearchDocument(next);
-      setPath((current) =>
-        normalizePath(current, new Map(next.notes.map((note) => [note.slug, note])))
-      );
+      // A homepage text refresh must not discard the deployed note manifest or
+      // reset any open pane's scroll position.
+      setResearchDocument((current) => ({ ...next, notes: current.notes }));
     } catch {
       // Keep the bundled document visible if the published Markdown is malformed.
     }
   }, []);
 
   useEffect(() => {
+    if (rootSlug) return;
     if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return;
     const controller = new AbortController();
     const source = new URL(PUBLISHED_MARKDOWN);
@@ -346,7 +411,7 @@ export function ResearchNotes({
       });
 
     return () => controller.abort();
-  }, [applyPublishedMarkdown]);
+  }, [applyPublishedMarkdown, rootSlug]);
 
   return (
     <>
@@ -427,14 +492,47 @@ export function ResearchNotes({
               {panel.note ? (
                 <div className="research-note-content">
                   <h1>{panel.note.title}</h1>
-                  {panel.note.body
-                    .split(/\n\s*\n/u)
-                    .filter(Boolean)
-                    .map((paragraph, index) => (
-                      <p key={`${panel.slug}-${index}`}>
-                        {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, panelIndex))}
-                      </p>
-                    ))}
+                  {panel.note.html !== undefined ? (
+                    <div
+                      className="research-note-body"
+                      dangerouslySetInnerHTML={{ __html: panel.note.html }}
+                      onClick={(event) => {
+                        if (
+                          event.button !== 0 ||
+                          event.metaKey ||
+                          event.ctrlKey ||
+                          event.shiftKey ||
+                          event.altKey
+                        )
+                          return;
+                        const anchor = (event.target as Element).closest("a");
+                        if (
+                          !anchor ||
+                          !event.currentTarget.contains(anchor) ||
+                          anchor.target === "_blank"
+                        )
+                          return;
+                        const reference = noteReferenceFromDestination(
+                          anchor.getAttribute("href") || undefined
+                        );
+                        const note = reference ? resolveNote(reference, noteBySlug) : undefined;
+                        if (!note) return;
+                        event.preventDefault();
+                        openTheme(note.slug, panelIndex);
+                      }}
+                    />
+                  ) : (
+                    panel.note.body
+                      .split(/\n\s*\n/u)
+                      .filter(Boolean)
+                      .map((paragraph, index) => (
+                        <p key={`${panel.slug}-${index}`}>
+                          {renderInline(paragraph, noteBySlug, (slug) =>
+                            openTheme(slug, panelIndex)
+                          )}
+                        </p>
+                      ))
+                  )}
                 </div>
               ) : (
                 <div className="research-note-content research-root-note">
@@ -455,10 +553,18 @@ export function ResearchNotes({
                   <ul className="theme-list">
                     {researchDocument.themes.map((theme) => (
                       <li key={theme.slug}>
-                        <strong>{theme.title}</strong>: {renderInline(theme.questions, noteBySlug)}
+                        <strong>{theme.title}</strong>:{" "}
+                        {renderInline(theme.questions, noteBySlug, (slug) => openTheme(slug, 0))}
                       </li>
                     ))}
                   </ul>
+                  {researchDocument.notes.length ? (
+                    <nav className="research-notes-directory" aria-label="Research notes">
+                      {renderInline("[Browse research notes](/notes/)", noteBySlug, (slug) =>
+                        openTheme(slug, 0)
+                      )}
+                    </nav>
+                  ) : null}
                 </div>
               )}
             </div>

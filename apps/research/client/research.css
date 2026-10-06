@@ -323,8 +323,41 @@ a:hover {
     @apply text-[2rem] font-bold leading-[1.12] tracking-[-0.035em];
   }
 
-  .research-note-content > p {
+  .research-note-content > p,
+  .research-note-body > p {
     @apply mt-7 text-[1.125rem] leading-[1.72] text-ink-secondary;
+  }
+
+  .research-note-body h2,
+  .research-note-body h3 {
+    @apply mt-10 mb-4 font-sans text-xl font-semibold text-ink;
+  }
+
+  .research-note-body ul,
+  .research-note-body ol,
+  .research-note-content > nav ul {
+    @apply mt-6 space-y-3 pl-6 text-[1.125rem] leading-[1.72] text-ink-secondary;
+  }
+
+  .research-note-body ul,
+  .research-note-content > nav ul {
+    @apply list-disc;
+  }
+  .research-note-body ol {
+    @apply list-decimal;
+  }
+  .research-note-body blockquote {
+    @apply my-7 border-l-[3px] border-accent pl-5 italic;
+  }
+  .research-note-body pre {
+    @apply my-7 overflow-x-auto bg-surface p-4 text-sm;
+  }
+  .research-note-body img {
+    @apply my-7 max-w-full;
+  }
+
+  .research-notes-directory {
+    @apply mt-10 font-sans text-sm;
   }
 
   .research-note-spine {

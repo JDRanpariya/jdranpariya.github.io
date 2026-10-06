@@ -57,6 +57,10 @@ Post-deploy checks: `/` and `/index` return `200`; a signed-out `/library/great-
 
 ## Editing research notes
 
-There is no browser editor for public research notes. Edit `content/research-home.md` in the repository and rebuild/deploy. Theme headings use an explicit Markdown identifier such as `## Memory {#memory}`. The questions under each theme remain in the main body. The sliding interface is ready for separately authored notes when a source for them is added, but there are no demo notes or note pages. The published page also fetches the latest copy of the homepage Markdown from GitHub on load; the build remains its stable fallback.
+The personal site's authenticated `/admin/` editor supports both sites. In the Research site tree, every folder has New file and New folder actions. Creating a folder creates its `index.md`, with automatic links to immediate published children. New files and folders start as browser-local drafts, not repository changes. Markdown source belongs under `apps/research/content/`; `research-home.md` remains the homepage source.
+
+For example, `content/memory/index.md` becomes `/notes/memory/`, and `content/memory/sleep.md` becomes `/notes/memory/sleep/`. The generated frontmatter includes the correct research permalink and layout. Set `status: "published"` when ready. The admin Publish action saves the source to GitHub; new note pages require a research build/deploy to become live. Only published sources enter the static HTML, public bootstrap data and sitemap. `/notes/` lists top-level notes and folders when published notes exist. `/index` remains the separately curated D1-backed research index.
+
+Note pages render Markdown using the same renderer as the admin preview. Wiki links such as `[[Memory]]` and Markdown links to `/notes/memory/` open native sliding panes without refreshing the current note. They also have ordinary canonical URLs that work without JavaScript. Theme headings in the homepage still use explicit identifiers such as `## Memory {#memory}`; their questions stay in the main body, without generated demo pages. The homepage fetches its latest Markdown from GitHub on load while retaining the deployed note manifest and open panes; built HTML remains its stable fallback.
 
 The private library is for annotating census records, not editing the public research questions.

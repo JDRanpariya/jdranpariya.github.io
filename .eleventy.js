@@ -16,6 +16,7 @@ import { createHash } from "crypto";
 import { readFileSync, existsSync } from "fs";
 import { DateTime } from "luxon";
 import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
+import { folderChildren, contentEntry } from "./scripts/folder-index.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const markdownItKatex = typeof mk === "function" ? mk : mk.default;
@@ -60,6 +61,11 @@ const FAVORITE_WRITING_SLUGS = [
 
 export default function (eleventyConfig) {
   eleventyConfig.addGlobalData("nonContentTags", NON_CONTENT_TAGS);
+  const includeDrafts = process.env.ELEVENTY_ENV !== "prod";
+  const isContent = (item) => contentEntry(item, includeDrafts);
+  eleventyConfig.addFilter("folderChildren", (items, inputPath) =>
+    folderChildren(items, inputPath, includeDrafts)
+  );
 
   // Passthrough copy — only ship assets that are directly referenced in HTML.
   // Source images in assets/images/{projects,lectures}/ are NOT copied because
@@ -473,47 +479,54 @@ export default function (eleventyConfig) {
   );
 
   eleventyConfig.addCollection("books", (collection) => {
-    return collection.getFilteredByGlob("src/library/books/*.md").sort((a, b) => {
-      // compare titles alphabetically, case-insensitive
-      let titleA = a.data.title.toLowerCase();
-      let titleB = b.data.title.toLowerCase();
-      if (titleA < titleB) return -1;
-      if (titleA > titleB) return 1;
-      return 0;
-    });
+    return collection
+      .getFilteredByGlob("src/library/books/**/*.md")
+      .filter(isContent)
+      .sort((a, b) => {
+        // compare titles alphabetically, case-insensitive
+        let titleA = a.data.title.toLowerCase();
+        let titleB = b.data.title.toLowerCase();
+        if (titleA < titleB) return -1;
+        if (titleA > titleB) return 1;
+        return 0;
+      });
   });
 
   eleventyConfig.addCollection("lectures", (collection) =>
-    collection.getFilteredByGlob("src/library/lectures/*.md")
+    collection.getFilteredByGlob("src/library/lectures/**/*.md").filter(isContent)
   );
 
   eleventyConfig.addCollection("papers", (collection) =>
-    collection.getFilteredByGlob("src/library/papers/*.md")
+    collection.getFilteredByGlob("src/library/papers/**/*.md").filter(isContent)
   );
   // Projects
 
   eleventyConfig.addCollection("projects", (collection) =>
-    collection.getFilteredByGlob("src/projects/**/*.md")
+    collection.getFilteredByGlob("src/projects/**/*.md").filter(isContent)
   );
 
   // odysseys
   eleventyConfig.addCollection("odysseys", (collection) =>
-    collection.getFilteredByGlob("src/odysseys/**/*.md")
+    collection.getFilteredByGlob("src/odysseys/**/*.md").filter(isContent)
   );
 
   eleventyConfig.addCollection("reckoningTheDead", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/odysseys/reckoning-the-dead/*.md");
+    return collectionApi
+      .getFilteredByGlob("src/odysseys/reckoning-the-dead/**/*.md")
+      .filter(isContent);
   });
 
   eleventyConfig.addCollection("alchemistsHearth", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/odysseys/the-alchemists-hearth/*.md");
+    return collectionApi
+      .getFilteredByGlob("src/odysseys/the-alchemists-hearth/**/*.md")
+      .filter(isContent);
   });
 
   // Powers the "Read Next" fallback in post.njk, which looks up
   // collections[section] — odyssey subpages set section: "odyssey" (singular),
   // so without this the lookup silently fell through to collections.writings.
   eleventyConfig.addCollection("odyssey", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/odysseys/**/*.md");
+    return collectionApi.getFilteredByGlob("src/odysseys/**/*.md").filter(isContent);
   });
 
   eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
@@ -585,16 +598,16 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("writings", function (collection) {
     return collection
-      .getFilteredByGlob("src/writings/*.md")
-      .filter((item) => isDev || item.data.status !== "draft")
+      .getFilteredByGlob("src/writings/**/*.md")
+      .filter(isContent)
       .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
   });
 
   eleventyConfig.addCollection("favoriteWritings", function (collection) {
     const publishedBySlug = new Map(
       collection
-        .getFilteredByGlob("src/writings/*.md")
-        .filter((item) => isDev || item.data.status !== "draft")
+        .getFilteredByGlob("src/writings/**/*.md")
+        .filter(isContent)
         .map((item) => [path.basename(item.inputPath, ".md"), item])
     );
 
@@ -610,8 +623,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addCollection("writingTopics", function (collection) {
     const topics = new Set();
     collection
-      .getFilteredByGlob("src/writings/*.md")
-      .filter((item) => item.data.status !== "draft")
+      .getFilteredByGlob("src/writings/**/*.md")
+      .filter((item) => contentEntry(item))
       .forEach((item) => {
         for (const tag of item.data.tags || []) {
           if (!NON_CONTENT_TAGS.includes(tag)) topics.add(tag);
@@ -624,8 +637,8 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("notes", function (collection) {
     return collection
-      .getFilteredByGlob("src/notes/*.md")
-      .filter((item) => isDev || item.data.status !== "draft")
+      .getFilteredByGlob("src/notes/**/*.md")
+      .filter(isContent)
       .sort((a, b) => new Date(b.data.published) - new Date(a.data.published));
   });
 
@@ -701,16 +714,12 @@ export default function (eleventyConfig) {
   // Unified feed collection — all published content, sorted reverse-chronological
   eleventyConfig.addCollection("feedEntries", function (collectionApi) {
     return [
-      ...collectionApi
-        .getFilteredByGlob("src/writings/*.md")
-        .filter((item) => isDev || item.data.status !== "draft"),
-      ...collectionApi
-        .getFilteredByGlob("src/notes/*.md")
-        .filter((item) => isDev || item.data.status !== "draft"),
-      ...collectionApi.getFilteredByGlob("src/library/books/*.md"),
-      ...collectionApi.getFilteredByGlob("src/library/lectures/*.md"),
-      ...collectionApi.getFilteredByGlob("src/projects/**/*.md"),
-      ...collectionApi.getFilteredByGlob("src/odysseys/**/*.md"),
+      ...collectionApi.getFilteredByGlob("src/writings/**/*.md").filter(isContent),
+      ...collectionApi.getFilteredByGlob("src/notes/**/*.md").filter(isContent),
+      ...collectionApi.getFilteredByGlob("src/library/books/**/*.md").filter(isContent),
+      ...collectionApi.getFilteredByGlob("src/library/lectures/**/*.md").filter(isContent),
+      ...collectionApi.getFilteredByGlob("src/projects/**/*.md").filter(isContent),
+      ...collectionApi.getFilteredByGlob("src/odysseys/**/*.md").filter(isContent),
       ...collectionApi
         .getFilteredByGlob("src/now/updates/*.md")
         .filter((item) => getPostDate(item) >= nowFeedStart),

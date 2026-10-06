@@ -15,7 +15,7 @@ function readJson<T>(id: string): T {
 if (page === "research") {
   const root = document.getElementById("research-root");
   if (root) {
-    const documentData = readJson<ResearchHome>("research-home-data");
+    const documentData = readJson<ResearchHome & { rootNote?: string }>("research-home-data");
     const params = new URL(location.href).searchParams;
     const path = params
       .getAll("notes")
@@ -26,7 +26,12 @@ if (page === "research") {
       : path.length;
     void import("../components/research-notes").then(({ ResearchNotes }) => {
       const view = (
-        <ResearchNotes initialDocument={documentData} initialFocus={focus} initialPath={path} />
+        <ResearchNotes
+          initialDocument={documentData}
+          initialFocus={focus}
+          initialPath={path}
+          rootSlug={documentData.rootNote}
+        />
       );
       if (path.length) createRoot(root).render(view);
       else hydrateRoot(root, view);

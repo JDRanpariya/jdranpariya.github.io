@@ -7,4 +7,7 @@ eleventyExcludeFromCollections: true
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://research.jdranpariya.com/</loc></url>
   <url><loc>https://research.jdranpariya.com/index</loc></url>
+  {% for note in researchNotes %}
+    <url><loc>https://research.jdranpariya.com{{ note.url }}</loc></url>
+  {% endfor %}
 </urlset>
