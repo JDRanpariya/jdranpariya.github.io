@@ -3,6 +3,32 @@ import { readFile } from "node:fs/promises";
 import { buildFileTree, parseDocument, renderDocument, titleCase } from "./admin-renderer.mjs";
 import { sourceDirectories, creationPath, sourceUrl, newDocument } from "./admin-authoring.mjs";
 import { folderChildren, contentEntry } from "./folder-index.mjs";
+import MarkdownIt from "markdown-it";
+import { explicitAutoLinks } from "./markdown-links.mjs";
+import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
+
+test("degree abbreviations stay plain text while intentional links survive in every renderer", () => {
+  const body =
+    "My M.Sc., B.Sc. and Ph.D. example.com. https://example.com/research http://example.org jay@example.com [M.Sc.](https://example.edu/degree) <https://example.net/>";
+  const md = new MarkdownIt({ linkify: true }).use(explicitAutoLinks);
+  const renderers = [
+    () => md.render(body),
+    () => renderDocument(body, "src/about.md").bodyHtml,
+    () => noteHtml(body, { path: "apps/research/content/example.md", title: "Example" }),
+  ];
+  for (const render of renderers) {
+    const html = render();
+    expect(html).toContain("My M.Sc., B.Sc. and Ph.D. example.com.");
+    expect(html).not.toContain('href="http://M.Sc');
+    expect(html).not.toContain('href="http://B.Sc');
+    expect(html).not.toContain('href="http://example.com"');
+    expect(html).toContain('href="https://example.com/research"');
+    expect(html).toContain('href="http://example.org"');
+    expect(html).toContain('href="mailto:jay@example.com"');
+    expect(html).toContain('href="https://example.edu/degree"');
+    expect(html).toContain('href="https://example.net/"');
+  }
+});
 
 test("nested files keep their real directory and file names", () => {
   const paths = [

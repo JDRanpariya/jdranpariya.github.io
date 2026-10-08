@@ -18,6 +18,7 @@ import { DateTime } from "luxon";
 import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 import { folderChildren, contentEntry } from "./scripts/folder-index.mjs";
 import { photoGallery } from "./scripts/photo-gallery.mjs";
+import { explicitAutoLinks } from "./scripts/markdown-links.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const markdownItKatex = typeof mk === "function" ? mk : mk.default;
@@ -189,6 +190,7 @@ export default function (eleventyConfig) {
   registerFrontmatterValidation(eleventyConfig);
   // Configure Markdown with anchors, footnotes, and external link attributes
   const md = markdownIt({ html: true, linkify: true })
+    .use(explicitAutoLinks)
     .use(markdownItAnchor, { permalink: false })
     .use(markdownItFootnote)
     .use(markdownItObsidianCallouts)

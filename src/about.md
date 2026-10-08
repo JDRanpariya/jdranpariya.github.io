@@ -9,12 +9,10 @@ permalink: /about/
 lastUpdated: 2026-10-08
 ---
 
-At parties I'm usually the one who ends up talking too much about something I've been reading. I don't mean to, it just happens: someone asks a question and I suddenly have a lot of thoughts about Bell Labs or why sleep is fascinating or what Poincaré understood before everyone else did.
+I'm finishing my [thesis](https://contact-from-current.pages.dev) in multimodal imitation learning. My interest lies in reverse engineering intelligence via various approaches like [NeuroAI](https://jdranpariya.com/writings/neuro-ai/) and [Diverse Intelligence](https://www.mdpi.com/2409-9287/11/5/161) to build better [Physical AI](https://jdranpariya.com/writings/physical-ai-primer-intro/) Systems.
 
-I'm doing a master's in AI in Erlangen right now. The formal part is neural networks and algorithms. The part I actually think about is something harder to name: how intelligence emerges, what it means for a system to actually be alive to its environment rather than just solving a task. That's led me deep into physical AI: robots that learn from interaction, simulation that you can differentiate through, the gap between how things move in code and how they move in the world. I'm trying to build a full-stack understanding of it, from the molecules up to the policy. I don't have clean answers yet. I'm not sure I want them yet.
+Previously, I built the [Ball-on-Arc Benchmark](https://ball-on-arc.pages.dev) at [Fraunhofer IIS](https://www.iis.fraunhofer.de/en.html) during my M.Sc. at FAU Erlangen-Nürnberg. with a first-author manuscript and fully open source reproducible work. During that time, I also modelled the motor neuron sequences behind the _Drosophila_ larva's escape reflex with spiking neural networks in [Andreas Kist's lab](https://anki.xyz/), with [Peter Soba](https://www.sobalab.com/) and [Sebastian Lotter](https://www.symocads.research.fau.eu/person/dr-ing-sebastian-lotter/). I also worked with [Maximilian Schäfer](https://www.maximilianschaefer.org/) on Koopman and data-driven models of molecular communication transmitters. Before all of that, I studied Computer Science (Data Science) at [Jain University](https://jainuniversity.ac.in), Bengaluru, and interned as a software engineer at [Peliqan](https://peliqan.io) and in deep learning at Inferigence Quotient.
 
-Outside of that I read a lot, cook things I've never tried before, play frisbee, learn salsa badly, and fill Obsidian with notes I'll definitely revisit someday. I care a lot more than I probably show. About the work, about the people around me, about getting things right. It's something I'm still figuring out how to carry.
+I love [reading](https://www.goodreads.com/user/show/161877825-jay) non-fiction, although I might sometimes binge on fiction. Lately I've been playing Frisbee with [Erlangen Unwucht](https://unwucht-erlangen.de/).
 
-Oh, and don't forget to mark your presence in the [guestbook](/guestbook/).
-
-If something I've written here made you want to reach out, please do. Collaboration, a question, a recommendation, a conversation that doesn't have a point yet. All of it is good.
+I am very happy to receive mails at jay [at] jdranpariya [dot] com or you can message me on [twitter](https://x.com/jdranpariya)

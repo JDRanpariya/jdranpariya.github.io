@@ -3,32 +3,38 @@ layout: layouts/base.njk
 isPostLayout: true
 ---
 
+{% set tableOfContents = content | toc %}
+
 <section class="max-w-page mx-auto px-4 md:px-6 py-16 md:py-24">
   <div class="grid grid-cols-1 lg:grid-cols-[1fr_min(42.5rem,100%)_1fr] gap-6 lg:gap-8">
     <!-- ---------------------------------------------------------------- -->
     <!-- Left: TOC (desktop sidebar, collapsible)                          -->
     <!-- ---------------------------------------------------------------- -->
-    <aside class="hidden lg:block toc" aria-label="On this page">
-      <div class="sticky top-24">
-        <button type="button" class="toc-toggle" aria-expanded="true" aria-controls="toc-panel">
-          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          On this page
-        </button>
-        <div id="toc-panel" class="toc-content" aria-hidden="false">{{ content | toc | safe }}</div>
-      </div>
-    </aside>
+    {% if tableOfContents %}
+      <aside class="hidden lg:block toc" aria-label="On this page">
+        <div class="sticky top-24">
+          <button type="button" class="toc-toggle" aria-expanded="true" aria-controls="toc-panel">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            On this page
+          </button>
+          <div id="toc-panel" class="toc-content" aria-hidden="false">
+            {{ tableOfContents | safe }}
+          </div>
+        </div>
+      </aside>
+    {% endif %}
 
     <!-- ---------------------------------------------------------------- -->
     <!-- Center: article                                                   -->
     <!-- <article> is the landmark; outer <main> is in base.njk.           -->
     <!-- ---------------------------------------------------------------- -->
-    <article class="min-w-0">
+    <article class="min-w-0 lg:col-start-2">
       <div>
         <!-- Hero -->
         <header class="post-hero">
@@ -62,19 +68,21 @@ isPostLayout: true
         </header>
 
         <!-- Mobile TOC (collapsed by default; desktop version is in the sidebar) -->
-        <details class="lg:hidden mt-4 mb-8 toc">
-          <summary class="toc-toggle toc-summary">
-            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            On this page
-          </summary>
-          <div class="toc-content mt-3">{{ content | toc | safe }}</div>
-        </details>
+        {% if tableOfContents %}
+          <details class="lg:hidden mt-4 mb-8 toc">
+            <summary class="toc-toggle toc-summary">
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              On this page
+            </summary>
+            <div class="toc-content mt-3">{{ tableOfContents | safe }}</div>
+          </details>
+        {% endif %}
 
         <!-- Body -->
         <div class="prose-site">{{ content | safe }}</div>

@@ -17,6 +17,7 @@ import {
 import { folderChildren } from "./folder-index.mjs";
 import { noteHtml, researchRoute } from "../apps/research/lib/note-authoring.mjs";
 import { photoGallery } from "./photo-gallery.mjs";
+import { explicitAutoLinks } from "./markdown-links.mjs";
 
 export const escapeHtml = (s) =>
   String(s ?? "").replace(
@@ -53,6 +54,7 @@ export function titleCase(value) {
 }
 
 const md = new MarkdownIt({ html: true, linkify: true })
+  .use(explicitAutoLinks)
   .use(anchor, { permalink: false })
   .use(footnote)
   .use(callouts)
