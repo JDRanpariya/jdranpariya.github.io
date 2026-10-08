@@ -5,6 +5,17 @@ import buildTOC from "eleventy-plugin-toc/src/BuildTOC.js";
 import { parseDocument, renderDocument } from "./admin-renderer.mjs";
 import { adminInternals } from "../workers/request-intelligence/src/admin.js";
 
+test("mobile navigation can scroll to its final About link", () => {
+  const html = nunjucks.renderString(readFileSync("src/_includes/components/nav.njk", "utf8"), {
+    page: { url: "/about/" },
+  });
+  const menu = html.match(/<aside\b[^>]*id="mobile-menu"[^>]*>([\s\S]*?)<\/aside>/)?.[0];
+  expect(menu).toBeDefined();
+  expect(menu).toContain("overflow-y-auto");
+  expect(menu).toContain("overscroll-contain");
+  expect(menu).toMatch(/href="\/about\/"[\s\S]*?aria-current="page"[\s\S]*?>About<\/a\s*>/);
+});
+
 test("About is Markdown-editable and uses the same dedicated public layout", () => {
   const source = readFileSync("src/about.md", "utf8");
   const doc = parseDocument(source);
