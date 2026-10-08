@@ -18,7 +18,10 @@ test("About is Markdown-editable and uses the same dedicated public layout", () 
   expect(html.match(/<h1/g)).toHaveLength(1);
   expect(html).toContain("I'm finishing my");
   expect(html).toContain('href="https://contact-from-current.pages.dev"');
-  expect(html).toContain("during my M.Sc. at FAU");
+  expect(html).toMatch(/href="https:\/\/research\.jdranpariya\.com\/"[^>]*>interest<\/a>/);
+  expect(html).toContain("during my M.Sc. at");
+  expect(html).toContain('href="https://www.fau.eu/"');
+  expect(html).toContain('href="https://github.com/JDRanpariya/ball-balancing-on-arc"');
   expect(html).not.toContain('href="http://M.Sc"');
   expect(html).toContain('href="https://x.com/jdranpariya"');
   expect(html).not.toContain("Book a call");
