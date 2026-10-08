@@ -1,6 +1,6 @@
 <!-- Footer — quote and socials beside a compact navigation grid.
      Left: quote (top) + socials (bottom).
-     Right: nav (RSS last), two columns on desktop.
+     Right: nav (RSS last), two columns at every screen size.
      Socials baseline-align with the bottom row of navigation.
 -->
 <footer class="border-t border-border mt-24">
@@ -107,9 +107,7 @@
         aria-label="Footer"
         class="flex flex-col md:items-end gap-3 md:min-h-[14rem] md:justify-end"
       >
-        <ul
-          class="flex flex-col md:items-end lg:grid lg:grid-cols-2 lg:w-full lg:justify-items-end lg:gap-x-6 gap-0 list-none m-0 p-0"
-        >
+        <ul class="grid grid-cols-2 w-full lg:justify-items-end gap-x-6 gap-y-0 list-none m-0 p-0">
           <li><a href="/writings/" class="nav-link block py-[0.85rem]">Writings</a></li>
           <li><a href="/notes/" class="nav-link block py-[0.85rem]">Notes</a></li>
           <li><a href="/library/" class="nav-link block py-[0.85rem]">Library</a></li>

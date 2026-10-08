@@ -5,6 +5,28 @@ import buildTOC from "eleventy-plugin-toc/src/BuildTOC.js";
 import { parseDocument, renderDocument } from "./admin-renderer.mjs";
 import { adminInternals } from "../workers/request-intelligence/src/admin.js";
 
+test("footer keeps all eight navigation links in two columns on phones and desktops", () => {
+  const html = nunjucks.renderString(readFileSync("src/_includes/components/footer.njk", "utf8"));
+  const nav = html.match(/<nav\b[^>]*aria-label="Footer"[^>]*>([\s\S]*?)<\/nav>/)?.[0];
+  expect(nav).toBeDefined();
+  const list = nav.match(/<ul\b[^>]*>/)?.[0];
+  expect(list).toContain("grid grid-cols-2");
+  expect(list).not.toContain("lg:grid-cols-2");
+  expect(nav.match(/<li>/g)).toHaveLength(8);
+  for (const label of [
+    "Writings",
+    "Notes",
+    "Library",
+    "Research",
+    "Odysseys",
+    "Projects",
+    "Guestbook",
+    "RSS",
+  ]) {
+    expect(nav).toMatch(new RegExp(`>\\s*${label}\\s*</a\\s*>`));
+  }
+});
+
 test("mobile navigation can scroll to its final About link", () => {
   const html = nunjucks.renderString(readFileSync("src/_includes/components/nav.njk", "utf8"), {
     page: { url: "/about/" },
