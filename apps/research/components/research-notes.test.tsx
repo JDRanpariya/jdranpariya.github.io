@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { isValidElement, type ReactElement } from "react";
-import { renderInline } from "./research-notes";
-import { parseResearchHome, type ResearchNote } from "@/lib/research-home";
+import { renderInline, ResearchNotes } from "./research-notes";
+import { parseResearchHome, renderResearchHome, type ResearchNote } from "@/lib/research-home";
+import { renderToString } from "react-dom/server";
 
 const note: ResearchNote = {
   slug: "learning-simulation-world-models",
@@ -64,15 +65,47 @@ describe("research note links", () => {
 });
 
 describe("research homepage content", () => {
-  it("keeps theme questions in the main body without creating note pages", () => {
+  it("renders headings as Markdown without creating note pages or artificial bullets", () => {
     const document = parseResearchHome(
       "# Research\n\n## Example theme {#example-theme}\n\nA question worth keeping?"
     );
-    assert.equal(document.themes[0].questions, "A question worth keeping?");
+    const html = renderResearchHome(document);
+    assert.ok(html.includes('<h2 id="example-theme">Example theme</h2>'));
+    assert.ok(html.includes("<p>A question worth keeping?</p>"));
+    assert.ok(!html.includes("<li>"));
     assert.deepEqual(document.notes, []);
     assert.equal(
       renderInline("[[example-theme|demo note]]", new Map(document.notes)).join(""),
       "demo note"
     );
+  });
+
+  it("keeps normal blocks, paragraphs and the final italic note in document order", () => {
+    const source =
+      "# Research\n\n## Learning {#learning}\n\nQuestion?\n\n- One\n- Two\n\n*My closing note.*\n\n---\n\n### A plain heading\n\n**Bold** and `code`.";
+    const doc = parseResearchHome(source);
+    assert.equal(doc.body, source);
+    const html = renderResearchHome(doc);
+    assert.ok(html.includes("</ul>\n<p><em>My closing note.</em></p>"));
+    assert.ok(html.includes("<hr>"));
+    assert.ok(html.includes("<h3>A plain heading</h3>"));
+    assert.ok(html.includes("<strong>Bold</strong> and <code>code</code>"));
+    const page = renderToString(
+      <ResearchNotes initialDocument={doc} initialFocus={0} initialPath={[]} />
+    );
+    assert.ok(page.includes(html));
+    assert.ok(!page.includes('class="theme-list"'));
+  });
+
+  it("uses canonical note links and escapes untrusted source HTML", () => {
+    const doc = parseResearchHome(
+      "# Research\n\n[[memory|Memory]]\n\n<script>alert(1)</script>\n\n[Bad](javascript:alert(1))\n\n> Quote\n> — <img src=x onerror=alert(1)>"
+    );
+    doc.notes = [{ slug: "memory", title: "Memory", body: "", url: "/notes/memory/" }];
+    const html = renderResearchHome(doc);
+    assert.ok(html.includes('href="/notes/memory/"'));
+    assert.ok(!html.includes("<script>"));
+    assert.ok(!html.includes('href="javascript:'));
+    assert.ok(html.includes("<cite>&lt;img src=x onerror=alert(1)&gt;</cite>"));
   });
 });

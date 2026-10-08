@@ -32,6 +32,50 @@ const escape = (s) =>
 const md = new MarkdownIt({ html: false, linkify: true });
 md.use(explicitAutoLinks);
 md.use(photoGallery);
+const linkOpen = md.renderer.rules.link_open;
+md.renderer.rules.link_open = (tokens, index, options, env, self) => {
+  const token = tokens[index];
+  const href = token.attrGet("href") || "";
+  if (/^https?:\/\//i.test(href) && !href.startsWith("https://research.jdranpariya.com/")) {
+    token.attrSet("target", "_blank");
+    token.attrSet("rel", "noopener noreferrer");
+    token.attrJoin("class", "research-outbound-link");
+  }
+  return linkOpen
+    ? linkOpen(tokens, index, options, env, self)
+    : self.renderToken(tokens, index, options);
+};
+
+// Preserve authored anchors without imposing any document structure.
+md.core.ruler.before("inline", "explicit-heading-ids", (state) => {
+  state.tokens.forEach((token, index) => {
+    if (token.type !== "heading_open") return;
+    const inline = state.tokens[index + 1];
+    const id = inline?.content.match(/\s+\{#([a-zA-Z0-9_-]+)\}\s*$/);
+    if (!id) return;
+    token.attrSet("id", id[1]);
+    inline.content = inline.content.slice(0, id.index).trimEnd();
+  });
+});
+
+// A final attribution line in a Markdown quote keeps the existing cite style.
+md.core.ruler.after("inline", "quote-attributions", (state) => {
+  const quotes = [];
+  for (const token of state.tokens) {
+    if (token.type === "blockquote_open") quotes.push(token);
+    if (token.type === "blockquote_close") quotes.pop();
+    if (token.type !== "inline" || !quotes.length) continue;
+    const children = token.children || [];
+    const last = children.at(-1);
+    const previous = children.at(-2);
+    const attribution = last?.type === "text" && last.content.match(/^—\s+(.+)$/);
+    if (!attribution || previous?.type !== "softbreak") continue;
+    const cite = new state.Token("html_inline", "", 0);
+    cite.content = `<cite>${escape(attribution[1])}</cite>`;
+    children.splice(-2, 2, cite);
+    quotes.at(-1).attrJoin("class", "research-quote");
+  }
+});
 
 // Both the live site and the admin preview use this renderer. No source HTML or
 // executable templates are accepted, and unresolved wiki links remain plain text.

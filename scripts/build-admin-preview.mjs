@@ -29,7 +29,7 @@ function collectRules(container, target) {
   for (const node of container.nodes || []) {
     if (
       node.type === "rule" &&
-      /^\.(research-intro|research-quote|theme-list|research-note-content|research-note-body|photo-gallery)/.test(
+      /^\.(research-home-body|research-quote|research-note-content|research-note-body|photo-gallery)/.test(
         node.selector
       )
     ) {
@@ -51,7 +51,7 @@ collectRules(research, shared);
 const css = await postcss([
   tailwind({
     ...config,
-    content: [{ raw: "research-intro research-quote theme-list", extension: "html" }],
+    content: [{ raw: "research-home-body research-quote", extension: "html" }],
   }),
 ]).process(shared.toString(), {
   from: undefined,

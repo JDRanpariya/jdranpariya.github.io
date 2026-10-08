@@ -6,6 +6,7 @@ import { folderChildren, contentEntry } from "./folder-index.mjs";
 import MarkdownIt from "markdown-it";
 import { explicitAutoLinks } from "./markdown-links.mjs";
 import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
+import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
 
 test("degree abbreviations stay plain text while intentional links survive in every renderer", () => {
   const body =
@@ -200,7 +201,17 @@ test("research uses its actual homepage structure with one title", async () => {
   expect(result.research).toBe(true);
   expect(result.html.match(/<h1/g).length).toBe(1);
   expect(result.html).not.toContain(">research home<");
-  expect(result.html).toContain('class="theme-list"');
+  expect(result.html).toContain('class="research-note-body research-home-body"');
+  expect(result.html).toContain(renderResearchHome(parseResearchHome(source)));
+  expect(result.html.match(/<li>/g)).toHaveLength(5);
+  expect(result.html).toContain("<h2>Areas of Interest</h2>");
+  expect(result.html).toContain("<p><em>Embodied Intelligence");
+  expect(result.html).toContain("<strong>Art of Formalization</strong>:");
+  expect(result.html).toContain("<strong>Learning and Memory</strong>:");
+  expect(result.html).toContain("</ul>\n<p><em>Embodied Intelligence");
+  expect(result.html).toContain(
+    "how to map pure math efficiently on natural sciences and engineering?"
+  );
   expect(result.html).not.toContain("{#");
 });
 

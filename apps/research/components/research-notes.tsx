@@ -1,6 +1,11 @@
 "use client";
 
-import { parseResearchHome, type ResearchHome, type ResearchNote } from "@/lib/research-home";
+import {
+  parseResearchHome,
+  renderResearchHome,
+  type ResearchHome,
+  type ResearchNote,
+} from "@/lib/research-home";
 import { PhotoGallery } from "./photo-gallery";
 import {
   type CSSProperties,
@@ -123,6 +128,7 @@ export function ResearchNotes({
     () => new Map(researchDocument.notes.map((note) => [note.slug, note])),
     [researchDocument.notes]
   );
+  const homeHtml = useMemo(() => renderResearchHome(researchDocument), [researchDocument]);
   const [path, setPath] = useState(() =>
     normalizePath(initialPath, noteBySlug).filter((slug) => slug !== rootSlug)
   );
@@ -540,32 +546,34 @@ export function ResearchNotes({
                 </div>
               ) : (
                 <div className="research-note-content research-root-note">
-                  <header className="research-intro">
-                    <h1>{researchDocument.title}</h1>
-                    {researchDocument.introduction.map((paragraph) =>
-                      paragraph.startsWith("::: gallery") ? (
-                        <div key={paragraph}>{renderInline(paragraph, noteBySlug)}</div>
-                      ) : (
-                        <p key={paragraph}>
-                          {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, 0))}
-                        </p>
+                  <div
+                    className="research-note-body research-home-body"
+                    dangerouslySetInnerHTML={{ __html: homeHtml }}
+                    onClick={(event) => {
+                      if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
                       )
-                    )}
-                    {researchDocument.quote ? (
-                      <blockquote className="research-quote">
-                        <p>{researchDocument.quote.text}</p>
-                        <cite>{researchDocument.quote.attribution}</cite>
-                      </blockquote>
-                    ) : null}
-                  </header>
-                  <ul className="theme-list">
-                    {researchDocument.themes.map((theme) => (
-                      <li key={theme.slug}>
-                        <strong>{theme.title}</strong>:{" "}
-                        {renderInline(theme.questions, noteBySlug, (slug) => openTheme(slug, 0))}
-                      </li>
-                    ))}
-                  </ul>
+                        return;
+                      const anchor = (event.target as Element).closest("a");
+                      if (
+                        !anchor ||
+                        !event.currentTarget.contains(anchor) ||
+                        anchor.target === "_blank"
+                      )
+                        return;
+                      const reference = noteReferenceFromDestination(
+                        anchor.getAttribute("href") || undefined
+                      );
+                      const note = reference ? resolveNote(reference, noteBySlug) : undefined;
+                      if (!note) return;
+                      event.preventDefault();
+                      openTheme(note.slug, panelIndex);
+                    }}
+                  />
                   {researchDocument.notes.length ? (
                     <nav className="research-notes-directory" aria-label="Research notes">
                       {renderInline("[Browse research notes](/notes/)", noteBySlug, (slug) =>

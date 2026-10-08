@@ -6,7 +6,7 @@ import tasks from "markdown-it-task-lists";
 import container from "markdown-it-container";
 import katex from "@vscode/markdown-it-katex";
 import { load } from "js-yaml";
-import { parseResearchHome } from "../apps/research/lib/research-home.ts";
+import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
 import {
   sourceDirectories,
   creationPath,
@@ -75,17 +75,7 @@ md.use(photoGallery);
 
 function renderResearch(source) {
   const doc = parseResearchHome(source);
-  // The public research homepage uses this same parser and paragraph/theme structure.
-  const inline = (text) =>
-    md.renderInline(
-      text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, name, label) => label || name)
-    );
-  const blocks = (text) =>
-    text
-      .split(/(::: gallery\s*\n[\s\S]*?\n:::)/g)
-      .map((part) => (part.startsWith("::: gallery") ? md.render(part) : inline(part)))
-      .join("");
-  return `<div class="research-root-note"><header class="research-intro"><h1>${escapeHtml(doc.title)}</h1>${doc.introduction.map((p) => (p.startsWith("::: gallery") ? md.render(p) : `<p>${inline(p)}</p>`)).join("")}${doc.quote ? `<blockquote class="research-quote"><p>${escapeHtml(doc.quote.text)}</p><cite>${escapeHtml(doc.quote.attribution)}</cite></blockquote>` : ""}</header><ul class="theme-list">${doc.themes.map((t) => `<li><strong>${escapeHtml(t.title)}</strong>: ${blocks(t.questions)}</li>`).join("")}</ul></div>`;
+  return `<div class="research-root-note"><div class="research-note-body research-home-body">${renderResearchHome(doc)}</div></div>`;
 }
 
 export function renderDocument(source, path, files = []) {

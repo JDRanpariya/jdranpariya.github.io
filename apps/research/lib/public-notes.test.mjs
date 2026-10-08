@@ -29,7 +29,7 @@ test("nested research sources produce actual Eleventy pages, child indexes and s
     expect(folder.html).toContain('href="/notes/learning/sub/"');
     expect(folder.html).not.toContain("Secret draft");
     expect(folder.html).not.toContain('href="/notes/learning/sub/deep/"');
-    const home = { title: "Research", introduction: [], themes: [], notes };
+    const home = { title: "Research", body: "# Research", notes };
     const pages = notes.map((note) => ({
       ...note,
       description: "",

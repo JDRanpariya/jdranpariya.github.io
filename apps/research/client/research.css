@@ -280,12 +280,8 @@ a:hover {
     @apply font-semibold text-ink;
   }
 
-  .research-intro h1 {
+  .research-home-body h1 {
     @apply text-[1.25rem] font-bold leading-7;
-  }
-
-  .research-intro p {
-    @apply mt-5 text-[1.0625rem] leading-[1.72] text-ink-secondary;
   }
 
   .research-quote {
@@ -298,10 +294,6 @@ a:hover {
 
   .research-quote cite {
     @apply ml-auto mt-2 block w-[90%] text-right text-[0.95rem] font-medium italic text-ink-muted;
-  }
-
-  .theme-list {
-    @apply mt-6 list-disc space-y-3 pl-7 text-[1.0625rem] leading-[1.8] marker:text-accent;
   }
 
   .research-note-stack {
@@ -388,6 +380,10 @@ a:hover {
     @apply mt-7 text-[1.125rem] leading-[1.72] text-ink-secondary;
   }
 
+  .research-home-body > p {
+    @apply mt-5 text-[1.0625rem] leading-[1.72] text-ink-secondary;
+  }
+
   .research-note-body h2,
   .research-note-body h3 {
     @apply mt-10 mb-4 font-sans text-xl font-semibold text-ink;
@@ -406,8 +402,17 @@ a:hover {
   .research-note-body ol {
     @apply list-decimal;
   }
+  .research-home-body > ul {
+    @apply mt-6 list-disc space-y-3 pl-7 text-[1.0625rem] leading-[1.8] marker:text-accent;
+  }
   .research-note-body blockquote {
     @apply my-7 border-l-[3px] border-accent pl-5 italic;
+  }
+  .research-note-body blockquote.research-quote {
+    @apply not-italic;
+  }
+  .research-home-body h2 {
+    @apply mt-10 mb-4;
   }
   .research-note-body pre {
     @apply my-7 overflow-x-auto bg-surface p-4 text-sm;

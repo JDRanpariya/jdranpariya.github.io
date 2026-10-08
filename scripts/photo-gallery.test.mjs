@@ -4,7 +4,7 @@ import { galleryMarkdown, photoGallery } from "./photo-gallery.mjs";
 import { renderDocument } from "./admin-renderer.mjs";
 import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
 import { galleryItems, galleryBlockAtCursor } from "./gallery-data.mjs";
-import { parseResearchHome } from "../apps/research/lib/research-home.ts";
+import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
 
 const photo = (alt, caption = "") => ({ src: "/assets/images/uploads/test.jpg", alt, caption });
 test("gallery blocks can be absent, single, multiple and repeated without leaking state", () => {
@@ -49,7 +49,9 @@ test("gallery edits round-trip metadata and research home preserves quotes and b
   const home = parseResearchHome(
     `# Test\n\nIntroduction\n${block}\n> Quote\n> — Simon\n\n## Learning {#learning}\nQuestion\n${block}`
   );
-  expect(home.quote).toEqual({ text: "Quote", attribution: "Simon" });
-  expect(home.introduction).toContain(block.trim());
-  expect(home.themes[0].questions).toContain("::: gallery");
+  const html = renderResearchHome(home);
+  expect(html).toContain("<cite>Simon</cite>");
+  expect(html.match(/class="photo-gallery"/g)).toHaveLength(2);
+  expect(html).toContain('<h2 id="learning">Learning</h2>');
+  expect(html).not.toContain("::: gallery");
 });
