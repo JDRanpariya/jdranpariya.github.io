@@ -1,5 +1,41 @@
 import { test, expect } from "bun:test";
-import { draftConflicts, publishedCurrent, conflictedCurrent } from "../admin/lib/conflict.js";
+import {
+  draftConflicts,
+  publishedCurrent,
+  conflictedCurrent,
+  repositoryCurrent,
+  restoredCurrent,
+} from "../admin/lib/conflict.js";
+
+test("choosing the repository adopts its latest SHA without leaving a publishable draft", () => {
+  const previous = { content: "Old draft", sha: "old" };
+  const current = { path: "src/test.md", content: previous.content, dirty: true, conflict: true };
+  const next = repositoryCurrent(current, { content: "Latest repo", sha: "latest" }, previous);
+  expect(next).toMatchObject({
+    path: current.path,
+    content: "Latest repo",
+    remoteContent: "Latest repo",
+    sha: "latest",
+    draftSha: "latest",
+    dirty: false,
+    conflict: false,
+    draftSaved: true,
+    recoveryDraft: previous,
+  });
+});
+
+test("restoring a displaced draft retains its base and checks the freshest repository", () => {
+  const draft = { content: "Saved draft", sha: "old" };
+  const next = restoredCurrent({ path: "src/test.md" }, { content: "Repo", sha: "new" }, draft);
+  expect(next).toMatchObject({
+    content: "Saved draft",
+    draftSha: "old",
+    sha: "new",
+    dirty: true,
+    conflict: true,
+  });
+  expect(restoredCurrent(next, { content: "Repo", sha: "old" }, draft).conflict).toBe(false);
+});
 
 test("a new local draft conflicts with a file created remotely at the same path", () => {
   expect(draftConflicts({ sha: null, content: "Local" }, { sha: "new", content: "Remote" })).toBe(

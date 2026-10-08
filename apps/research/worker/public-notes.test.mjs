@@ -1,5 +1,14 @@
 import { test, expect } from "bun:test";
 import worker from "./index";
+import { readFileSync } from "node:fs";
+
+test("the index exposes both collections and sign-in even with no published entries", () => {
+  const source = readFileSync(new URL("../site/index/index.njk", import.meta.url), "utf8");
+  expect(source).toContain('href="/library/great-minds"');
+  expect(source).toContain('href="/library/neuroai"');
+  expect(source).toContain('href="/login?returnTo=%2Flibrary%2Fgreat-minds"');
+  expect(source).toContain('aria-label="Research collections"');
+});
 
 test("public notes route to generated assets, not the private database index", async () => {
   const paths = [];

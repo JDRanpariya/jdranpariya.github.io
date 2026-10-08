@@ -11,6 +11,8 @@ export function Editor({
   onChange,
   onPublish,
   onReview,
+  onUseRepository,
+  onRestoreDraft,
   onLink,
   onNewLinked,
   showMedia,
@@ -34,6 +36,11 @@ export function Editor({
           </span>
         </div>
         <div className="admin-document-actions">
+          {current?.dirty && current.sha && !current.conflict && (
+            <button className="admin-text-button" disabled={busy} onClick={onUseRepository}>
+              Use repository version
+            </button>
+          )}
           <button
             className="admin-text-button"
             id="admin-add-photos"
@@ -64,7 +71,7 @@ export function Editor({
             disabled={readOnly || !current?.dirty || current?.conflict || busy}
             onClick={onPublish}
           >
-            {busy ? "Publishing…" : readOnly ? "Preview only" : "Publish"}
+            {busy ? "Working…" : readOnly ? "Preview only" : "Publish"}
           </button>
         </div>
       </header>
@@ -75,10 +82,30 @@ export function Editor({
             <summary>Current repository source</summary>
             <pre id="admin-conflict-source">{current.remoteContent}</pre>
           </details>
-          <button className="admin-text-button" onClick={onReview}>
+          <button className="admin-text-button" disabled={busy} onClick={onUseRepository}>
+            Use repository version
+          </button>
+          <button className="admin-text-button" disabled={busy} onClick={onReview}>
             I've reviewed it. Keep my draft.
           </button>
         </div>
+      )}
+      {current?.recoveryDraft && (
+        <details className="admin-draft-recovery" key={current.path}>
+          <summary>Previous browser draft</summary>
+          <p>Saved only in this browser. Restoring it does not publish it.</p>
+          <button
+            className="admin-text-button"
+            disabled={busy || current.content === current.recoveryDraft.content}
+            onClick={onRestoreDraft}
+          >
+            Restore previous draft
+          </button>
+          <details>
+            <summary>View saved source</summary>
+            <pre>{current.recoveryDraft.content}</pre>
+          </details>
+        </details>
       )}
       {showMedia && (
         <MediaPanel

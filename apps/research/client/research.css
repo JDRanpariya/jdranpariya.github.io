@@ -496,11 +496,19 @@ a:hover {
   }
 
   .index-heading {
-    @apply flex items-baseline justify-between gap-5;
+    @apply flex flex-wrap items-baseline justify-between gap-5;
   }
 
   .index-heading h1 {
     @apply text-[1.25rem] font-bold leading-7;
+  }
+
+  .index-collections {
+    @apply mt-6 flex flex-wrap gap-6 font-sans text-sm;
+  }
+
+  .index-collections a {
+    @apply py-2 underline underline-offset-4 hover:text-accent;
   }
 
   .index-tools {

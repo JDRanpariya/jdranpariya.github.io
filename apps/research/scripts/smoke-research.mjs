@@ -33,6 +33,13 @@ if (
 if (!index.includes('data-domains="research.jdranpariya.com"')) {
   throw new Error("The selected index is missing public analytics.");
 }
+for (const href of [
+  "/library/great-minds",
+  "/library/neuroai",
+  "/login?returnTo=%2Flibrary%2Fgreat-minds",
+]) {
+  if (!index.includes(`href="${href}"`)) throw new Error(`Index access link missing: ${href}`);
+}
 
 const login = await (await request("/login", 200)).text();
 if (login.includes('data-domains="research.jdranpariya.com"')) {

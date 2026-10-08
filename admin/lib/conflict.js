@@ -6,6 +6,33 @@ export function draftConflicts(draft, remote) {
   );
 }
 
+export function repositoryCurrent(current, remote, recoveryDraft) {
+  return {
+    ...current,
+    content: remote.content,
+    remoteContent: remote.content,
+    sha: remote.sha,
+    draftSha: remote.sha,
+    draftSaved: true,
+    dirty: false,
+    conflict: false,
+    recoveryDraft,
+  };
+}
+
+export function restoredCurrent(current, remote, draft) {
+  return {
+    ...current,
+    content: draft.content,
+    remoteContent: remote.content,
+    sha: remote.sha,
+    draftSha: draft.sha,
+    draftSaved: true,
+    dirty: draft.content !== remote.content,
+    conflict: draftConflicts(draft, remote),
+  };
+}
+
 export function publishedCurrent(active, current, sha) {
   if (current?.path !== active.path) return current;
   return {

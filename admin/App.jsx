@@ -53,6 +53,8 @@ export function App() {
     rememberPhoto,
     insertPhotos,
     publish,
+    useRepositoryVersion,
+    restorePreviousDraft,
     editingGallery,
     toggle,
   } = useWorkspace();
@@ -251,6 +253,8 @@ export function App() {
                 captureSelection={captureSelection}
                 onChange={change}
                 onPublish={publish}
+                onUseRepository={useRepositoryVersion}
+                onRestoreDraft={restorePreviousDraft}
                 onReview={() => {
                   try {
                     saveDraft(current.path, current.content, current.sha);

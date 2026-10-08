@@ -4,6 +4,8 @@ import { sourceUrl } from "../../scripts/admin-authoring.mjs";
 import { buildFileTree } from "../../scripts/admin-renderer.mjs";
 import {
   readDrafts,
+  readDraftRecovery,
+  adoptRepositoryDraft,
   saveDraft,
   forgetDraft,
   readLayout,
@@ -13,7 +15,13 @@ import {
 } from "../lib/storage.js";
 import { encodePhoto } from "../lib/media.js";
 import { galleryBlockAtCursor } from "../../scripts/gallery-data.mjs";
-import { draftConflicts, publishedCurrent, conflictedCurrent } from "../lib/conflict.js";
+import {
+  draftConflicts,
+  publishedCurrent,
+  conflictedCurrent,
+  repositoryCurrent,
+  restoredCurrent,
+} from "../lib/conflict.js";
 
 export function completeRepository(payload, label = "Repository") {
   if (payload.truncated)
@@ -176,6 +184,7 @@ export function useWorkspace() {
         draftSaved: Boolean(draft),
         dirty: content !== remote.content || !remote.sha,
         conflict: draftConflicts(draft, remote),
+        recoveryDraft: readDraftRecovery(path),
       });
       try {
         const frontmatter = parseDocument(content).frontmatter;
@@ -194,6 +203,71 @@ export function useWorkspace() {
     }
   }
   openRef.current = open;
+  async function chooseSavedSource(restore = false) {
+    const active = currentRef.current;
+    if (!active || busy || !active.sha || (restore && !active.recoveryDraft)) return;
+    const id = ++request.current;
+    setBusy(true);
+    try {
+      const remote = await api(`/file?path=${encodeURIComponent(active.path)}`, {
+        cache: "no-store",
+      });
+      // Never replace a different file or text edited while the request ran.
+      if (
+        id !== request.current ||
+        currentRef.current?.path !== active.path ||
+        currentRef.current.content !== active.content
+      )
+        return;
+      let next;
+      if (restore) {
+        const draft = active.recoveryDraft;
+        let recoveryDraft = draft;
+        if (active.dirty) {
+          recoveryDraft = adoptRepositoryDraft(
+            active.path,
+            { content: active.content, sha: active.conflict ? active.draftSha : active.sha },
+            draft
+          );
+        } else saveDraft(active.path, draft.content, draft.sha);
+        next = restoredCurrent(active, remote, active.recoveryDraft);
+        next.recoveryDraft = recoveryDraft;
+      } else {
+        const recoveryDraft = adoptRepositoryDraft(
+          active.path,
+          { content: active.content, sha: active.conflict ? active.draftSha : active.sha },
+          remote
+        );
+        next = repositoryCurrent(active, remote, recoveryDraft);
+      }
+      currentRef.current = next;
+      setCurrent(next);
+      try {
+        const frontmatter = parseDocument(next.content).frontmatter;
+        setFiles((prev) =>
+          prev.map((file) =>
+            file.path === active.path
+              ? { ...file, sha: remote.sha, frontmatter, localOnly: false }
+              : file
+          )
+        );
+      } catch {}
+      setSelection(null);
+      setLinkSelection(null);
+      setShowMedia(false);
+      notify(
+        restore
+          ? "Previous browser draft restored. Nothing was published."
+          : "Repository version loaded. Previous draft is recoverable in this browser. Nothing was published."
+      );
+    } catch (error) {
+      notify(
+        `Could not ${restore ? "restore the draft" : "load the repository version"}. Your editor text was kept. ${error.message}`
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -271,6 +345,7 @@ export function useWorkspace() {
               draftSaved: Boolean(draft),
               dirty: content !== remote.content || !remote.sha,
               conflict: draftConflicts(draft, remote),
+              recoveryDraft: readDraftRecovery(last),
             });
           }
         }
@@ -538,6 +613,8 @@ export function useWorkspace() {
     rememberPhoto,
     insertPhotos,
     publish,
+    useRepositoryVersion: () => chooseSavedSource(false),
+    restorePreviousDraft: () => chooseSavedSource(true),
     editingGallery,
     toggle,
   };
