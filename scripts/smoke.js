@@ -30,7 +30,10 @@ const required = [
   "guestbook/index.html",
   "admin/index.html",
   "assets/css/admin.css",
-  "assets/js/admin.js",
+  "assets/js/admin-app.js",
+  "assets/js/admin-templates.js",
+  "assets/admin-preview.html",
+  "assets/admin-post-data.json",
   "assets/vendor/markdown-it/markdown-it.min.js",
   "404.html",
   "sitemap.xml",
@@ -46,6 +49,12 @@ for (const p of required) {
     fail(`missing or empty: ${p}`);
   }
 }
+
+// Markdown components need to survive both Tailwind's content scan and PurgeCSS.
+const stylesheet = readFileSync(join(BUILD, "css/style.css"), "utf8");
+if (stylesheet.includes(".photo-gallery") && stylesheet.includes("scroll-snap-type:x proximity"))
+  ok("responsive photo gallery rules survive production CSS processing");
+else fail("photo gallery component styles are missing from production CSS");
 
 // 2. Sitemap is valid XML and contains expected URLs
 console.log("\n[2] sitemap.xml");

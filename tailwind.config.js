@@ -6,6 +6,8 @@
  */
 export default {
   content: ["./src/**/*.{html,njk,js,md}"],
+  // Emitted by the shared Markdown renderer, not literal template markup.
+  safelist: ["photo-gallery", "photo-figure"],
   theme: {
     extend: {
       colors: {

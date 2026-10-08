@@ -37,11 +37,33 @@ const server = Bun.serve({
     if (request.method !== "GET")
       return json({ error: "This local preview cannot publish or change repository files." }, 403);
     if (url.pathname === "/api/admin/session")
-      return json({ authenticated: true, login: "local-preview", csrf: "", readOnly: true });
+      return json({
+        authenticated: true,
+        login: "local-preview",
+        csrf: "",
+        readOnly: true,
+        features: { mediaPublish: true },
+      });
     if (url.pathname === "/api/admin/files")
       return json({
         files: [...(await filesUnder("src")), ...(await filesUnder("apps/research/content"))],
       });
+    if (url.pathname === "/api/admin/media") {
+      const { libraryMediaPath } =
+        await import("../workers/request-intelligence/src/admin-media.js");
+      const images = [];
+      async function walk(directory) {
+        for (const entry of await readdir(resolve(projectRoot, directory), {
+          withFileTypes: true,
+        })) {
+          const path = `${directory}/${entry.name}`;
+          if (entry.isDirectory()) await walk(path);
+          else if (libraryMediaPath(path)) images.push({ path });
+        }
+      }
+      await walk("assets/images");
+      return json({ files: images });
+    }
     if (url.pathname === "/api/admin/file") {
       const path = adminInternals.safeSourcePath(url.searchParams.get("path"));
       if (!path) return json({ error: "Invalid source path." }, 400);

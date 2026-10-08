@@ -1,4 +1,6 @@
 const API_ROOT = "/api/admin";
+import { libraryMediaPath, safeMediaPath, validateMedia, publishWithMedia } from "./admin-media.js";
+import { boundedJson, validateAdminSource } from "./admin-source.js";
 const SESSION_COOKIE = "jay_admin_session";
 const REPOSITORY = "JDRanpariya/jdranpariya.github.io";
 const DEFAULT_BRANCH = "main";
@@ -166,10 +168,15 @@ async function login(request, env) {
   if (!validMutationOrigin(request)) return json({ error: "Invalid request." }, 403);
   let body;
   try {
-    body = await request.json();
+    body = await boundedJson(request, 8192);
   } catch (error) {
-    return json({ error: "Invalid request." }, 400);
+    return json(
+      { error: error.status === 413 ? "The request is too large." : "Invalid request." },
+      error.status || 400
+    );
   }
+  if (!body || typeof body !== "object" || Array.isArray(body) || typeof body.password !== "string")
+    return json({ error: "A passphrase is required." }, 400);
   if (!(await sameSecret(body.password, env.ADMIN_PASSWORD))) {
     return json({ error: "The passphrase is incorrect." }, 401);
   }
@@ -237,22 +244,62 @@ async function publishFile(request, auth, env) {
     return authenticatedJson(auth, { error: "Invalid request." }, 403);
   let body;
   try {
-    body = await request.json();
+    body = await boundedJson(request, 24_000_000);
   } catch (error) {
-    return authenticatedJson(auth, { error: "Invalid JSON body." }, 400);
+    return authenticatedJson(
+      auth,
+      { error: error.status === 413 ? "The publish is too large." : "Invalid JSON body." },
+      error.status || 400
+    );
   }
+  if (!body || typeof body !== "object" || Array.isArray(body))
+    return authenticatedJson(auth, { error: "The publish body must be an object." }, 400);
   const sourcePath = safeSourcePath(body.path);
   const content = typeof body.content === "string" ? body.content : null;
   if (!sourcePath || content === null)
     return authenticatedJson(auth, { error: "A Markdown path and content are required." }, 400);
   if (encoder.encode(content).byteLength > 1_500_000)
     return authenticatedJson(auth, { error: "The file is too large." }, 413);
+  try {
+    validateAdminSource(sourcePath, content);
+  } catch (error) {
+    return authenticatedJson(auth, { error: error.message }, 400);
+  }
   const requestedMessage = String(body.message || "")
     .trim()
     .replace(/\s+/g, " ")
     .slice(0, 120);
   const message =
     requestedMessage || `${body.sha ? "update" : "add"} ${sourcePath.split("/").pop()}`;
+  if (body.media !== undefined && !Array.isArray(body.media))
+    return authenticatedJson(auth, { error: "Photos must be an array." }, 400);
+  if (body.media?.length) {
+    try {
+      const media = await validateMedia(body.media, content);
+      const result = await publishWithMedia({
+        github: (path, init) => githubFetch(path, env.GITHUB_CONTENT_TOKEN, init),
+        repository: REPOSITORY,
+        branch: DEFAULT_BRANCH,
+        path: sourcePath,
+        sha: body.sha,
+        content,
+        message,
+        media,
+      });
+      return result.conflict
+        ? authenticatedJson(
+            auth,
+            {
+              error:
+                "The repository changed while publishing. Reload the file and review your draft before retrying.",
+            },
+            409
+          )
+        : authenticatedJson(auth, result);
+    } catch (error) {
+      return authenticatedJson(auth, { error: error.message }, 400);
+    }
+  }
   const encoded = toBase64(encoder.encode(content));
   const payload = { message, content: encoded, branch: DEFAULT_BRANCH };
   if (body.sha) payload.sha = String(body.sha);
@@ -311,9 +358,54 @@ export async function handleAdminRequest(request, env) {
       csrf: auth.session.csrf,
       repository: REPOSITORY,
       branch: DEFAULT_BRANCH,
+      features: { mediaPublish: true },
     });
   }
   if (url.pathname === `${API_ROOT}/files` && request.method === "GET") return listFiles(auth, env);
+  if (url.pathname === `${API_ROOT}/media` && request.method === "GET") {
+    const { response, payload } = await githubFetch(
+      `/repos/${REPOSITORY}/git/trees/${DEFAULT_BRANCH}?recursive=1`,
+      env.GITHUB_CONTENT_TOKEN
+    );
+    if (!response.ok)
+      return authenticatedJson(
+        auth,
+        { error: payload.message || "Could not load photos." },
+        response.status
+      );
+    return authenticatedJson(auth, {
+      files: (payload.tree || [])
+        .filter((file) => file.type === "blob" && libraryMediaPath(file.path))
+        .map((file) => ({ path: file.path, sha: file.sha, size: file.size })),
+      truncated: payload.truncated === true,
+    });
+  }
+  if (url.pathname === `${API_ROOT}/photo` && request.method === "GET") {
+    const path = safeMediaPath(url.searchParams.get("path"));
+    if (!path) return authenticatedJson(auth, { error: "Invalid photo path." }, 400);
+    const { response, payload } = await githubFetch(
+      `/repos/${REPOSITORY}/contents/${path}?ref=${DEFAULT_BRANCH}`,
+      env.GITHUB_CONTENT_TOKEN
+    );
+    if (!response.ok)
+      return authenticatedJson(
+        auth,
+        { error: payload.message || "Could not read the photo." },
+        response.status
+      );
+    if (payload.encoding !== "base64" || payload.size > 2 * 1024 * 1024)
+      return authenticatedJson(auth, { error: "This photo cannot be previewed." }, 413);
+    const bytes = Uint8Array.from(atob(payload.content.replaceAll("\n", "")), (c) =>
+      c.charCodeAt(0)
+    );
+    return new Response(bytes, {
+      headers: {
+        "Content-Type": "image/jpeg",
+        "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+  }
   if (url.pathname === `${API_ROOT}/file` && request.method === "GET")
     return readFile(request, auth, env);
   if (url.pathname === `${API_ROOT}/file` && request.method === "PUT")

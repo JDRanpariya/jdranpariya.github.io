@@ -1,5 +1,6 @@
 import MarkdownIt from "markdown-it";
 import { load } from "js-yaml";
+import { photoGallery } from "../../../scripts/photo-gallery.mjs";
 
 export const researchContentRoot = "apps/research/content";
 export function researchRoute(path) {
@@ -28,6 +29,7 @@ const escape = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
   );
 const md = new MarkdownIt({ html: false, linkify: true });
+md.use(photoGallery);
 
 // Both the live site and the admin preview use this renderer. No source HTML or
 // executable templates are accepted, and unresolved wiki links remain plain text.

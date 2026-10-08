@@ -112,6 +112,8 @@ test("lists only editable Markdown files", async () => {
 });
 
 test("publishes UTF-8 Markdown with conflict protection", async () => {
+  const content =
+    "---\ntitle: café\ndescription: café\npublished: 2026-10-08\ntags: []\nsection: writings\nlayout: layouts/post.njk\n---\n# café\n";
   let githubBody;
   const previousFetch = globalThis.fetch;
   globalThis.fetch = async (_input, init) => {
@@ -130,18 +132,71 @@ test("publishes UTF-8 Markdown with conflict protection", async () => {
       headers: { "content-type": "application/json", "x-csrf-token": "test-csrf" },
       body: JSON.stringify({
         path: "src/writings/one.md",
-        content: "# café\n",
+        content,
         sha: "old-sha",
         message: "update one",
       }),
     });
     const response = await handleAdminRequest(request, env);
     assert.equal(response.status, 200);
-    assert.equal(Buffer.from(githubBody.content, "base64").toString("utf8"), "# café\n");
+    assert.equal(Buffer.from(githubBody.content, "base64").toString("utf8"), content);
     assert.equal(githubBody.sha, "old-sha");
     assert.equal(githubBody.branch, "main");
   } finally {
     globalThis.fetch = previousFetch;
+  }
+});
+
+test("rejects invalid content before any GitHub write", async () => {
+  const previousFetch = globalThis.fetch;
+  let requests = 0;
+  globalThis.fetch = async () => {
+    requests += 1;
+    throw new Error("GitHub must not be called");
+  };
+  try {
+    for (const content of [
+      "# Missing frontmatter",
+      "---\ntitle: [\n---\nBody",
+      "---\ntitle: Note\n---\nBody",
+    ]) {
+      const response = await handleAdminRequest(
+        await authenticatedRequest("/api/admin/file", {
+          method: "PUT",
+          headers: { "content-type": "application/json", "x-csrf-token": "test-csrf" },
+          body: JSON.stringify({ path: "src/writings/test.md", content }),
+        }),
+        env
+      );
+      assert.equal(response.status, 400);
+    }
+    assert.equal(requests, 0);
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("login rejects nonobject, missing and oversized bodies without throwing", async () => {
+  for (const body of [
+    "null",
+    "[]",
+    "{}",
+    '{"password":42}',
+    JSON.stringify({ password: "x".repeat(9000) }),
+  ]) {
+    const response = await handleAdminRequest(
+      new Request("https://jdranpariya.com/api/admin/auth/login", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          origin: "https://jdranpariya.com",
+          "content-length": "1",
+        },
+        body,
+      }),
+      env
+    );
+    assert.equal(response.status, body.length > 8192 ? 413 : 400);
   }
 });
 
@@ -153,4 +208,24 @@ test("rejects a publish without the session CSRF token", async () => {
   });
   const response = await handleAdminRequest(request, env);
   assert.equal(response.status, 403);
+});
+
+test("rejects malformed publish objects and media before any GitHub request", async () => {
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new Error("GitHub must not be called");
+  };
+  try {
+    for (const body of [null, [], { path: "src/writings/test.md", content: "Test", media: {} }]) {
+      const request = await authenticatedRequest("/api/admin/file", {
+        method: "PUT",
+        headers: { "content-type": "application/json", "x-csrf-token": "test-csrf" },
+        body: JSON.stringify(body),
+      });
+      const response = await handleAdminRequest(request, env);
+      assert.equal(response.status, 400);
+    }
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
 });

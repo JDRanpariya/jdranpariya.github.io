@@ -33,6 +33,7 @@ export default {
               // still get dropped — safelist defensively.
               greedy: [
                 /^prose-site/,
+                /^photo-(gallery|figure)$/,
                 /^btn(-primary|-ghost|-link)?$/,
                 /^chip$/,
                 /^badge$/,

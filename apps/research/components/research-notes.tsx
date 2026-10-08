@@ -1,6 +1,7 @@
 "use client";
 
 import { parseResearchHome, type ResearchHome, type ResearchNote } from "@/lib/research-home";
+import { PhotoGallery } from "./photo-gallery";
 import {
   type CSSProperties,
   type ReactNode,
@@ -61,42 +62,45 @@ export function renderInline(
   notes: ReadonlyMap<string, ResearchNote>,
   openNote?: (slug: string) => void
 ): ReactNode[] {
-  return text.split(/(\[\[[^\]]+\]\]|\[[^\]]+\]\([^)]+\)|_[^_]+_)/g).map((part, index) => {
-    const wikiLink = part.match(/^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/);
-    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-    if (wikiLink || link) {
-      const destination = link?.[2];
-      const noteReference = wikiLink?.[1] ?? noteReferenceFromDestination(destination);
-      const note = noteReference ? resolveNote(noteReference, notes) : undefined;
-      const label = wikiLink ? (wikiLink[2] ?? note?.title ?? wikiLink[1]) : link![1];
-      if (noteReference && !note) return label;
-      const isExternal = !note && destination ? /^https?:\/\//u.test(destination) : false;
-      return (
-        <a
-          className={isExternal ? "research-outbound-link" : undefined}
-          href={note ? note.url || hrefForPath([note.slug]) : destination}
-          key={index}
-          rel={isExternal ? "noreferrer" : undefined}
-          target={isExternal ? "_blank" : undefined}
-          onClick={
-            note && openNote
-              ? (event) => {
-                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-                  event.preventDefault();
-                  openNote(note.slug);
-                }
-              : undefined
-          }
-        >
-          {label}
-        </a>
-      );
-    }
-    if (part.startsWith("_") && part.endsWith("_")) {
-      return <em key={index}>{part.slice(1, -1)}</em>;
-    }
-    return part;
-  });
+  return text
+    .split(/(::: gallery\s*\n[\s\S]*?\n:::|\[\[[^\]]+\]\]|\[[^\]]+\]\([^)]+\)|_[^_]+_)/g)
+    .map((part, index) => {
+      if (part.startsWith("::: gallery")) return <PhotoGallery key={index} source={part} />;
+      const wikiLink = part.match(/^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/);
+      const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (wikiLink || link) {
+        const destination = link?.[2];
+        const noteReference = wikiLink?.[1] ?? noteReferenceFromDestination(destination);
+        const note = noteReference ? resolveNote(noteReference, notes) : undefined;
+        const label = wikiLink ? (wikiLink[2] ?? note?.title ?? wikiLink[1]) : link![1];
+        if (noteReference && !note) return label;
+        const isExternal = !note && destination ? /^https?:\/\//u.test(destination) : false;
+        return (
+          <a
+            className={isExternal ? "research-outbound-link" : undefined}
+            href={note ? note.url || hrefForPath([note.slug]) : destination}
+            key={index}
+            rel={isExternal ? "noreferrer" : undefined}
+            target={isExternal ? "_blank" : undefined}
+            onClick={
+              note && openNote
+                ? (event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    openNote(note.slug);
+                  }
+                : undefined
+            }
+          >
+            {label}
+          </a>
+        );
+      }
+      if (part.startsWith("_") && part.endsWith("_")) {
+        return <em key={index}>{part.slice(1, -1)}</em>;
+      }
+      return part;
+    });
 }
 
 function paneScrollLeft(index: number, paneWidth: number, paneEdge: number, maximum: number) {
@@ -538,11 +542,15 @@ export function ResearchNotes({
                 <div className="research-note-content research-root-note">
                   <header className="research-intro">
                     <h1>{researchDocument.title}</h1>
-                    {researchDocument.introduction.map((paragraph) => (
-                      <p key={paragraph}>
-                        {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, 0))}
-                      </p>
-                    ))}
+                    {researchDocument.introduction.map((paragraph) =>
+                      paragraph.startsWith("::: gallery") ? (
+                        <div key={paragraph}>{renderInline(paragraph, noteBySlug)}</div>
+                      ) : (
+                        <p key={paragraph}>
+                          {renderInline(paragraph, noteBySlug, (slug) => openTheme(slug, 0))}
+                        </p>
+                      )
+                    )}
                     {researchDocument.quote ? (
                       <blockquote className="research-quote">
                         <p>{researchDocument.quote.text}</p>

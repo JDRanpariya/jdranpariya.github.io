@@ -16,6 +16,7 @@ import {
 } from "./admin-authoring.mjs";
 import { folderChildren } from "./folder-index.mjs";
 import { noteHtml, researchRoute } from "../apps/research/lib/note-authoring.mjs";
+import { photoGallery } from "./photo-gallery.mjs";
 
 export const escapeHtml = (s) =>
   String(s ?? "").replace(
@@ -68,6 +69,8 @@ const md = new MarkdownIt({ html: true, linkify: true })
         : "</details>\n",
   });
 
+md.use(photoGallery);
+
 function renderResearch(source) {
   const doc = parseResearchHome(source);
   // The public research homepage uses this same parser and paragraph/theme structure.
@@ -75,7 +78,12 @@ function renderResearch(source) {
     md.renderInline(
       text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, name, label) => label || name)
     );
-  return `<div class="research-root-note"><header class="research-intro"><h1>${escapeHtml(doc.title)}</h1>${doc.introduction.map((p) => `<p>${inline(p)}</p>`).join("")}${doc.quote ? `<blockquote class="research-quote"><p>${escapeHtml(doc.quote.text)}</p><cite>${escapeHtml(doc.quote.attribution)}</cite></blockquote>` : ""}</header><ul class="theme-list">${doc.themes.map((t) => `<li><strong>${escapeHtml(t.title)}</strong>: ${inline(t.questions)}</li>`).join("")}</ul></div>`;
+  const blocks = (text) =>
+    text
+      .split(/(::: gallery\s*\n[\s\S]*?\n:::)/g)
+      .map((part) => (part.startsWith("::: gallery") ? md.render(part) : inline(part)))
+      .join("");
+  return `<div class="research-root-note"><header class="research-intro"><h1>${escapeHtml(doc.title)}</h1>${doc.introduction.map((p) => (p.startsWith("::: gallery") ? md.render(p) : `<p>${inline(p)}</p>`)).join("")}${doc.quote ? `<blockquote class="research-quote"><p>${escapeHtml(doc.quote.text)}</p><cite>${escapeHtml(doc.quote.attribution)}</cite></blockquote>` : ""}</header><ul class="theme-list">${doc.themes.map((t) => `<li><strong>${escapeHtml(t.title)}</strong>: ${blocks(t.questions)}</li>`).join("")}</ul></div>`;
 }
 
 export function renderDocument(source, path, files = []) {
@@ -156,6 +164,7 @@ export function renderDocument(source, path, files = []) {
       : "";
   return {
     html: `${hero}<div class="prose-site">${md.render(prepared)}</div>${index}`,
+    bodyHtml: md.render(prepared),
     frontmatter,
     research: false,
     warnings,

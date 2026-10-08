@@ -50,7 +50,7 @@
     "css:build:prod": "ELEVENTY_ENV=prod bunx postcss src/css/input.css --o build/css/style.css",
     "css:watch": "bunx postcss src/css/input.css --o build/css/style.css --watch",
     "check": "bun run build:prod && bun run check:smoke && bun run check:admin && bun run check:worker && bun run check:links && bun run check:a11y && bun run check:lh",
-    "check:admin": "bun test scripts/admin-renderer.test.mjs scripts/admin-indexing.test.mjs",
+    "check:admin": "bun test scripts/admin-renderer.test.mjs scripts/admin-indexing.test.mjs scripts/photo-gallery.test.mjs scripts/admin-app.test.jsx scripts/admin-conflict.test.mjs scripts/admin-workspace-recovery.test.jsx scripts/about-page.test.mjs",
     "check:smoke": "bun scripts/smoke.js",
     "check:worker": "node --test workers/request-intelligence/test/*.test.js",
     "check:links": "start-server-and-test 'node node_modules/http-server/bin/http-server build -p 8082 -s' 8082 'linkinator http://localhost:8082/ --recurse --retry --skip \"^(?!http://localhost:8082)\"'",
@@ -62,6 +62,10 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "nunjucks": "^3.2.4",
+    "js-yaml": "^4.1.1",
     "@11ty/eleventy-img": "^6.0.4",
     "@11ty/eleventy-plugin-rss": "^3.0.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",

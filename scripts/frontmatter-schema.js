@@ -134,6 +134,30 @@ function validateItem(item, schema, errors) {
   }
 }
 
+// Reuse the build's field rules in the authenticated editor before committing.
+// Cross-document checks (tag casing and output-route collisions) still belong
+// to the complete Eleventy build, not an isolated edited document.
+export function validateSourceData(data, inputPath) {
+  const errors = [];
+  const path = inputPath.replace(/^\.\//, "");
+  const item = { inputPath: path, data };
+  if (data.folderIndex) validateItem(item, FOLDER_SCHEMA, errors);
+  else if (data.standalonePage) validateItem(item, PAGE_SCHEMA, errors);
+  else {
+    const schema = Object.values(SCHEMAS).find(({ glob }) => {
+      const expression = glob
+        .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
+        .replace(/\*\*/g, "\0")
+        .replace(/\*/g, "[^/]*")
+        .replace(/\0\//g, "(?:.*/)?")
+        .replace(/\0/g, ".*");
+      return new RegExp(`^${expression}$`).test(path);
+    });
+    if (schema) validateItem(item, schema, errors);
+  }
+  return errors;
+}
+
 // Detect tags that slug to the same URL but differ in casing or whitespace
 // (e.g. "AI" and "ai" both slug to "ai"). Two posts using different strings
 // would yield phantom duplicates in /tags/ and could collide at pagination.

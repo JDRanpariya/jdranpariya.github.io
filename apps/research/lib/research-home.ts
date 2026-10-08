@@ -27,19 +27,38 @@ export type ResearchHome = {
 
 const sectionPattern = /^##\s+(.+?)\s+\{#([a-z0-9-]+)\}\s*$/gm;
 
-function paragraphs(markdown: string) {
-  return markdown
+function markdownBlocks(markdown: string) {
+  const galleries: string[] = [];
+  const prepared = markdown.replace(/^::: gallery\s*\n[\s\S]*?\n:::\s*$/gm, (block) => {
+    galleries.push(block.trim());
+    return `\n\nGALLERYBLOCK${galleries.length - 1}\n\n`;
+  });
+  return prepared
     .trim()
     .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.replace(/\s*\n\s*/g, " ").trim())
+    .map((paragraph) =>
+      /^GALLERYBLOCK\d+$/.test(paragraph.trim())
+        ? galleries[Number(paragraph.trim().slice(12))]
+        : paragraph.trim()
+    )
     .filter(Boolean);
+}
+
+function paragraphs(markdown: string) {
+  return markdownBlocks(markdown).map((block) =>
+    block.startsWith("::: gallery") ? block : block.replace(/\s*\n\s*/g, " ")
+  );
 }
 
 function introduction(markdown: string) {
   const copy: string[] = [];
   let quote: ResearchHome["quote"];
 
-  for (const block of markdown.trim().split(/\n\s*\n/)) {
+  for (const block of markdownBlocks(markdown)) {
+    if (block.startsWith("::: gallery")) {
+      copy.push(block);
+      continue;
+    }
     const lines = block
       .split("\n")
       .map((line) => line.trim())

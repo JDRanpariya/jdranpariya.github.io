@@ -1,0 +1,23 @@
+---
+layout: layouts/base.njk
+---
+
+<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">
+  <header class="space-y-4">
+    <h1 class="font-serif text-display text-ink">Hi, I'm Jay.</h1>
+  </header>
+
+  <div class="prose-site text-ink-secondary">{{ content | safe }}</div>
+
+  <div class="flex flex-col sm:flex-row gap-4 pt-4">
+    <a
+      href="https://calendly.com/jaydeepranpariya037/30min"
+      class="btn btn-primary"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Book a call
+    </a>
+    <a href="mailto:jaydeepranpariya037@gmail.com" class="btn btn-ghost"> Send me an email </a>
+  </div>
+</section>

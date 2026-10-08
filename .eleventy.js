@@ -17,6 +17,7 @@ import { readFileSync, existsSync } from "fs";
 import { DateTime } from "luxon";
 import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 import { folderChildren, contentEntry } from "./scripts/folder-index.mjs";
+import { photoGallery } from "./scripts/photo-gallery.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const markdownItKatex = typeof mk === "function" ? mk : mk.default;
@@ -82,6 +83,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "assets/models": "assets/models" });
   eleventyConfig.addPassthroughCopy({ "assets/images/notecards": "assets/images/notecards" });
   eleventyConfig.addPassthroughCopy({ "assets/images/stamps": "assets/images/stamps" });
+  eleventyConfig.addPassthroughCopy({ "assets/images/uploads": "assets/images/uploads" });
   eleventyConfig.addPassthroughCopy({ "src/interactive": "interactive" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   // Persist the GitHub Pages custom-domain binding in every deploy artifact.
@@ -386,6 +388,8 @@ export default function (eleventyConfig) {
       return `<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy">`;
     }
   };
+
+  md.use(photoGallery);
 
   // Suppress hidden paragraph tokens (used by ::: interactive to consume
   // config lines without rendering them as <p> tags).
