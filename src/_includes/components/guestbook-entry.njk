@@ -3,7 +3,7 @@
 {% if not entryTheme %}{% set entryTheme = notecardThemes.themes[0] %}{% endif %}
 {% set rot = (((seed * 73 + 11) % 41) - 20) / 10 %}
 <li
-  class="notecard relative aspect-[4/3] w-[clamp(18rem,88vw,26.25rem)] max-w-full flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)]"
+  class="notecard relative aspect-[4/3] w-full min-w-0 flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)]"
   data-theme="{{ entryTheme.key }}"
   style="--rotation: {{ rot }}deg"
 >

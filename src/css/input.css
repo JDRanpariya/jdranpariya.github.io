@@ -1639,6 +1639,7 @@ details:not([open]) > .toc-toggle svg {
  *
  * Most layout + typography is Tailwind utilities in src/guestbook.njk.
  * Only these live here:
+ *   - responsive wall columns
  *   - paper/ink/red tokens for the guestbook's illustrated cards
  *   - per-theme ink overrides for dark papers
  *   - rotation + hover-settle transform (needs --rotation custom prop)
@@ -1659,6 +1660,29 @@ details:not([open]) > .toc-toggle svg {
   --notecard-pill-shadow:
     0 0.6px 0.6px rgba(52, 28, 8, 0.14), 0 1.6px 1.6px -1.2px rgba(52, 28, 8, 0.12),
     0 4.7px 4.6px -2.3px rgba(52, 28, 8, 0.08), 0 12.5px 12.2px -3.5px rgba(52, 28, 8, 0.05);
+}
+
+/* Use CSS viewport width, not the screen's physical resolution. Keep
+ * normal desktops to two cards; add a third only on wide viewports. */
+.guestbook-wall {
+  display: grid;
+  grid-template-columns: minmax(0, 26.25rem);
+  justify-content: center;
+  align-items: start;
+  column-gap: 3rem;
+  row-gap: 3.75rem;
+}
+
+@media (min-width: 1024px) {
+  .guestbook-wall {
+    grid-template-columns: repeat(2, minmax(0, 26.25rem));
+  }
+}
+
+@media (min-width: 1920px) {
+  .guestbook-wall {
+    grid-template-columns: repeat(3, minmax(0, 26.25rem));
+  }
 }
 
 /* The card itself. Everything else (padding, aspect, width, typography)

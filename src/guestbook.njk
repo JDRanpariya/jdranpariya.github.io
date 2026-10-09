@@ -12,9 +12,9 @@ section: "guest book"
   {# Wall: composer lives inside as the first card, so it grid-aligns with
      the rest of the wall. Every theme is image-kind (a WebP illustration
      in assets/images/notecards/). See src/_data/notecardThemes.js. #}
-  <ul id="guestbook-wall" class="list-none m-0 p-0 pt-8 flex flex-wrap justify-center items-start gap-y-[3.75rem] gap-x-12">
+  <ul id="guestbook-wall" class="guestbook-wall list-none m-0 p-0 pt-8">
     {# ----- Composer ----- #}
-    <li class="w-[clamp(18rem,88vw,26.25rem)] max-w-full">
+    <li class="w-full min-w-0">
       {% set initialTheme = notecardThemes.themes[0] %}
       <form
         id="guestbookForm"
