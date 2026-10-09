@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { renderDocument } from "../../scripts/admin-renderer.mjs";
 import { renderPage, sanitizePreview, templateEnvironment } from "../lib/preview.js";
+import { initPostFootnotes } from "../../assets/js/post-footnotes.js";
 
 export function Preview({ current, files, manifest, imageMap, onOpen, publicUrl, notify }) {
   const frame = useRef(null),
+    footnotes = useRef(null),
     viewport = useRef(null),
     [ready, setReady] = useState(false),
     [mode, setMode] = useState("responsive"),
@@ -27,11 +29,14 @@ export function Preview({ current, files, manifest, imageMap, onOpen, publicUrl,
     try {
       const result = renderDocument(current.content, current.path, files);
       const enriched = files.map((file) => ({ ...file, url: publicUrl(file.path) }));
-      root.className = result.research ? "admin-preview-page admin-research-page" : "";
-      root.innerHTML = sanitizePreview(
+      const html = sanitizePreview(
         renderPage(env, result, current.path, enriched, manifest),
         imageMap
       );
+      footnotes.current?.();
+      root.className = result.research ? "admin-preview-page admin-research-page" : "";
+      root.innerHTML = html;
+      footnotes.current = initPostFootnotes(doc, doc.defaultView);
       doc.documentElement.scrollTop = scroll;
       setNotice(
         result.warnings.join(" ") ||
@@ -45,11 +50,13 @@ export function Preview({ current, files, manifest, imageMap, onOpen, publicUrl,
       setFailed(true);
     }
   }, [ready, current?.content, current?.path, current?.dirty, manifest, imageMap, files, env]);
+  useEffect(() => () => footnotes.current?.(), []);
   useEffect(() => {
     if (!ready) return;
     const doc = frame.current.contentDocument;
     const preventSubmit = (event) => event.preventDefault();
     const click = (event) => {
+      if (event.defaultPrevented) return;
       const target = event.target.closest("a");
       if (!target) return;
       event.preventDefault();

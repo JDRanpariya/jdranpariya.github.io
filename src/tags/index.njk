@@ -5,10 +5,10 @@ section: "tags index"
 permalink: /tags/
 ---
 
-<section class="max-w-wide mx-auto px-6 py-16 md:py-24 space-y-10">
-  <header class="space-y-4">
-    <h1 class="font-serif text-display text-ink">All Tags</h1>
-  </header>
+{% from "components/post-index.njk" import indexHeader, postList %}
+
+<section class="post-index">
+  {{ indexHeader(title) }}
 
   <ul class="chip-list leading-loose">
     {% for tag in collections.tagListMulti %}

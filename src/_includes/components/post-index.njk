@@ -1,0 +1,38 @@
+{% macro indexHeader(title, description="") %}
+  <header class="post-index__header">
+    <h1 class="post-index__heading">{{ title | smartTitleCase }}</h1>
+    {% if description %}<p class="post-index__lead">{{ description }}</p>{% endif %}
+  </header>
+{% endmacro %}
+
+{% macro postRow(post, dated=true, level=2, fullTitles=false, sourceLinks=false) %}
+  {% set data = post.data or post %}
+  {% set url = data.link if sourceLinks and data.link else post.url %}
+  {% set title = data.fullTitle if fullTitles and data.fullTitle else data.title %}
+  <li>
+    <a
+      href="{{ url }}"
+      class="post-list__link"
+      data-dated="{{ 'true' if dated and data.published else 'false' }}"
+      {% if sourceLinks and data.link %}target="_blank" rel="noopener noreferrer"{% endif %}
+    >
+      {% if dated and data.published %}
+        {% set date = data.published | isoDate %}
+        <time datetime="{{ date }}" class="post-list__date"
+          >{{ date.slice(0, 4) }} · {{ date.slice(5, 7) }}</time
+        >
+      {% endif %}
+      {% if level == 3 %}
+        <h3 class="post-list__title">{{ (title or post.url) | smartTitleCase }}</h3>
+      {% else %}
+        <h2 class="post-list__title">{{ (title or post.url) | smartTitleCase }}</h2>
+      {% endif %}
+    </a>
+  </li>
+{% endmacro %}
+
+{% macro postList(posts, dated=true, level=2, fullTitles=false, sourceLinks=false) %}
+  <ol class="post-list">
+    {% for post in posts %}{{ postRow(post, dated, level, fullTitles, sourceLinks) }}{% endfor %}
+  </ol>
+{% endmacro %}

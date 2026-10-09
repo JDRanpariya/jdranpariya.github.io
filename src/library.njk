@@ -5,13 +5,13 @@ layout: layouts/base
 section: "library"
 ---
 
+{% from "components/post-index.njk" import indexHeader, postList %}
+
 <section class="max-w-wide mx-auto px-6 py-16 md:py-24 space-y-20 md:space-y-24">
   <!-- Page header -->
-  <header class="space-y-4">
-    <h1 class="font-serif text-display text-ink">Library</h1>
-    <p class="text-lead text-ink-secondary max-w-xl">
-      Books, lectures, and papers that shaped how I think.
-    </p>
+  <header class="post-index__header">
+    <h1 class="post-index__heading">Library</h1>
+    <p class="post-index__lead">Books, lectures, and papers that shaped how I think.</p>
   </header>
 
   <!-- ================= Books ================= -->
@@ -74,21 +74,6 @@ section: "library"
   <section aria-labelledby="library-papers" class="space-y-8">
     <h2 id="library-papers" class="font-serif text-h2 text-ink">Papers</h2>
 
-    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none m-0 p-0">
-      {% for paper in collections.papers %}
-        <li>
-          <a
-            href="{{ paper.data.link or paper.url }}"
-            {% if paper.data.link %}target="_blank" rel="noopener noreferrer"{% endif %}
-            class="block p-5 rounded-md bg-surface border border-border hover:border-accent transition-colors duration-base"
-          >
-            <h3 class="font-serif text-h4 text-ink">{{ paper.data.title }}</h3>
-            {% if paper.data.author %}
-              <p class="mt-2 font-sans text-ui-sm text-ink-muted">{{ paper.data.author }}</p>
-            {% endif %}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+    <div class="max-w-content">{{ postList(collections.papers, true, 3, false, true) }}</div>
   </section>
 </section>

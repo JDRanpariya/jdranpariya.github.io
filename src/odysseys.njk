@@ -5,33 +5,17 @@ layout: layouts/base
 section: "odysseys"
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24">
-  <header class="mb-16 space-y-4">
-    <h1 class="font-serif text-display text-ink">Odysseys</h1>
-    <p class="text-lead text-ink-secondary max-w-xl">
-      Ongoing explorations I don't expect to finish.
-    </p>
-  </header>
+{% from "components/post-index.njk" import indexHeader, postList %}
 
-  <ol class="m-0 list-none space-y-3 p-0">
-    {%
-      set items = [
-        ["/odysseys/purpose/",                     "Purpose",                    "Compass for what I work on and why."],
-        ["/odysseys/the-codex-of-understanding/",  "The Codex of Understanding", "Systematic mapping of what I'm learning."],
-        ["/odysseys/reckoning-the-dead/",          "Reckoning the Dead",         "Unearthing greats lost to time."],
-        ["/odysseys/the-alchemists-hearth/",       "The Alchemist's Hearth", "Kitchen experiments and what I learned from them."]
-      ]
-    %}
-    {% for item in items %}
-      <li>
-        <a href="{{ item[0] }}" class="group block py-1">
-          <h2
-            class="m-0 font-serif text-body-sm font-normal text-ink transition-colors duration-base group-hover:text-accent"
-          >
-            {{ item[1] }}
-          </h2>
-        </a>
-      </li>
-    {% endfor %}
-  </ol>
+<section class="post-index">
+  {{ indexHeader(title, "Ongoing explorations I don't expect to finish.") }}
+  {%
+    set items = [
+      {url: "/odysseys/purpose/", title: "Purpose"},
+      {url: "/odysseys/the-codex-of-understanding/", title: "The Codex of Understanding"},
+      {url: "/odysseys/reckoning-the-dead/", title: "Reckoning the Dead"},
+      {url: "/odysseys/the-alchemists-hearth/", title: "The Alchemist's Hearth"}
+    ]
+  %}
+  {{ postList(items, false) }}
 </section>

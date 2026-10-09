@@ -2,29 +2,13 @@
 layout: layouts/base.njk
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24">
-  <header class="post-hero">
-    <h1 class="post-hero__title">{{ title | smartTitleCase }}</h1>
-    {% if description and description != title %}
-      <p class="post-hero__lead">{{ description }}</p>
-    {% endif %}
-  </header>
+{% from "components/post-index.njk" import indexHeader, postList %}
+
+<section class="post-index">
+  {{ indexHeader(title, description if description != title else "") }}
   {% if content %}<div class="prose-site mb-16">{{ content | safe }}</div>{% endif %}
   {% set children = collections.all | folderChildren(page.inputPath) %}
   {% if children.length %}
-    <nav aria-label="Pages in this folder">
-      <ul class="index-list list-none m-0 p-0">
-        {% for child in children %}
-          <li>
-            <a class="index-row" href="{{ child.url }}">
-              <h2 class="index-row__title">{{ child.data.title | smartTitleCase }}</h2>
-              {% if child.data.description and child.data.description != child.data.title %}
-                <p class="index-row__desc">{{ child.data.description }}</p>
-              {% endif %}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </nav>
+    <nav aria-label="Pages in this folder">{{ postList(children) }}</nav>
   {% endif %}
 </section>

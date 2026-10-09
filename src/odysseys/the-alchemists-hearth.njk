@@ -4,15 +4,11 @@ layout: layouts/base
 section: "alchemists-hearth"
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-12">
+{% from "components/post-index.njk" import indexHeader, postList %}
 
-  <header class="space-y-4">
-    <h1 class="font-serif text-display text-ink">The Alchemist's Hearth</h1>
-    <p class="text-lead text-ink-secondary max-w-xl">
-      My kitchen experiments, cooking failures, and the occasional dish that
-      actually turns out great.
-    </p>
-  </header>
+<section class="post-index space-y-12">
+
+  {{ indexHeader(title, "My kitchen experiments, cooking failures, and the occasional dish that actually turns out great.") }}
 
   <div class="prose-site text-ink-secondary">
     <p>
@@ -26,17 +22,6 @@ section: "alchemists-hearth"
     </p>
   </div>
 
-  <ol class="index-list list-none m-0 p-0">
-    {% for post in collections.alchemistsHearth %}
-      <li>
-        <a href="{{ post.url }}" class="index-row">
-          <h2 class="index-row__title">{{ post.data.title | smartTitleCase }}</h2>
-          {% if post.data.description %}
-            <p class="index-row__desc">{{ post.data.description }}</p>
-          {% endif %}
-        </a>
-      </li>
-    {% endfor %}
-  </ol>
+  {{ postList(collections.alchemistsHearth) }}
 
 </section>

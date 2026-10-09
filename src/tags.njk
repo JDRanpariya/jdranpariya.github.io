@@ -12,7 +12,9 @@ eleventyComputed:
   description: "Items tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
 ---
 
-<section class="max-w-content mx-auto space-y-10 px-6 py-12 md:py-20">
+{% from "components/post-index.njk" import indexHeader, postList %}
+
+<section class="post-index space-y-10">
   {% set writings = (collections.writings or []) | filterByTag(tag) %}
   {% set lectures = (collections.lectures or []) | filterByTag(tag) %}
   {% set odysseys = (collections.odysseys or []) | filterByTag(tag) %}
@@ -22,8 +24,8 @@ eleventyComputed:
   {% set notes    = (collections.notes    or []) | filterByTag(tag) %}
   {% set itemCount = (writings | length) + (lectures | length) + (odysseys | length) + (books | length) + (projects | length) + (papers | length) + (notes | length) %}
 
-  <header class="space-y-3">
-    <h1 class="font-heading text-h2 text-ink">{{ tag | replace("-", " ") | smartTitleCase }}</h1>
+  <header class="post-index__header">
+    <h1 class="post-index__heading">{{ tag | replace("-", " ") | smartTitleCase }}</h1>
     <p class="font-sans text-body-sm text-ink-muted">
       {{ itemCount }} item{% if itemCount != 1 %}s{% endif %}
     </p>
@@ -47,25 +49,7 @@ eleventyComputed:
     {% if items | length %}
       <section class="space-y-3" aria-labelledby="tag-{{ label | slug }}">
         <h2 id="tag-{{ label | slug }}" class="font-heading text-h4 text-ink">{{ label }}</h2>
-        <ol class="m-0 list-none space-y-3 p-0">
-          {% for post in items %}
-            <li>
-              <a href="{{ post.url }}" class="index-row">
-                {% if post.data.published %}
-                  <time class="index-row__meta" datetime="{{ post.data.published | isoDate }}">
-                    {{ post.data.published | formatDate }}
-                  </time>
-                {% endif %}
-                <h3 class="index-row__title">
-                  {{ (post.data.fullTitle or post.data.title) | smartTitleCase }}
-                </h3>
-                {% if post.data.description %}
-                  <p class="index-row__desc">{{ post.data.description }}</p>
-                {% endif %}
-              </a>
-            </li>
-          {% endfor %}
-        </ol>
+        {{ postList(items, true, 3, true) }}
       </section>
     {% endif %}
   {% endfor %}

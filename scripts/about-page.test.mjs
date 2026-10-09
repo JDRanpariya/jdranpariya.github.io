@@ -70,6 +70,7 @@ test("post TOC only renders when the article body has indexed headings", () => {
   env.addFilter("toc", (content) => buildTOC(content, { tags: ["h2", "h3"] }));
   env.addFilter("smartTitleCase", (value) => value);
   env.addFilter("relatedPosts", () => []);
+  env.addFilter("cacheBust", () => "");
   const render = (content) =>
     env.renderString(layout, {
       content,

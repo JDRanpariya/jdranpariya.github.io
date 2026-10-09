@@ -201,7 +201,7 @@ isPostLayout: true
   </div>
 </section>
 
-<script src="/assets/js/post.js" defer></script>
+<script type="module" src="/assets/js/post.js{{ '/assets/js/post.js' | cacheBust }}"></script>
 {% if page.url and "/odysseys/the-codex-of-understanding/" in page.url %}
   <script
     src="/assets/js/codex-notes.js{{ '/assets/js/codex-notes.js' | cacheBust }}"

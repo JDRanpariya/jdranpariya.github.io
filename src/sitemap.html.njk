@@ -6,13 +6,10 @@ title: Sitemap
 description: All discoverable pages on this site, listed for search engines.
 ---
 
-<section class="max-w-content mx-auto px-6 py-16 md:py-24 space-y-16 md:space-y-20">
-    <header class="space-y-4">
-      <h1 class="font-serif text-display text-ink">Sitemap</h1>
-      <p class="text-lead text-ink-secondary max-w-xl">
-        Every discoverable page on this site. Listed here so search engines can find everything.
-      </p>
-    </header>
+{% from "components/post-index.njk" import indexHeader, postRow %}
+
+<section class="post-index space-y-16 md:space-y-20">
+    {{ indexHeader(title, "Every discoverable page on this site. Listed here so search engines can find everything.") }}
 
     {%- macro sectionHeading(icon, label, id) %}
       <h2{% if id %} id="{{ id }}"{% endif %} class="font-heading text-h3 text-ink mb-2">{{ icon }} {{ label }}</h2>
@@ -27,14 +24,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-pages">
           {{ sectionHeading("⌂", "Pages", "section-pages") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ "jdranpariya.com" if item.url == "/" else d.title or item.url }}</h3>
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -48,15 +40,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-writings">
           {{ sectionHeading("✎", "Writings", "section-writings") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            {%- if d.published %}<p class="index-row__meta">{{ d.published | formatDate }}</p>{%- endif %}
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -70,15 +56,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-notes">
           {{ sectionHeading("✎", "Notes", "section-notes") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            {%- if d.published %}<p class="index-row__meta">{{ d.published | formatDate }}</p>{%- endif %}
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -92,15 +72,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-library">
           {{ sectionHeading("◈", "Library", "section-library") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            {%- if d.author %}<p class="index-row__meta">{{ d.author }}</p>{%- endif %}
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -114,14 +88,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-projects">
           {{ sectionHeading("⊞", "Projects", "section-projects") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -135,14 +104,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-odysseys">
           {{ sectionHeading("◇", "Odysseys", "section-odysseys") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}
@@ -156,14 +120,9 @@ description: All discoverable pages on this site, listed for search engines.
           {%- set found = true %}
           <section aria-labelledby="section-tags">
           {{ sectionHeading("#", "Tags", "section-tags") }}
-          <ol class="index-list list-none m-0 p-0">
+          <ol class="post-list">
         {%- endif %}
-        <li>
-          <a href="{{ site.url }}{{ item.url }}" class="index-row">
-            <h3 class="index-row__title">{{ d.title or item.url }}</h3>
-            <p class="index-row__desc font-mono text-ui-xs tracking-wider uppercase">{{ item.url }}</p>
-          </a>
-        </li>
+        {{ postRow(item, d.published, 3) }}
       {%- endif %}
     {%- endfor %}
     {%- if found %}</ol></section>{%- endif %}

@@ -43,6 +43,8 @@ export default {
                 /^card-media(__.*)?$/,
                 /^project-modal(__.*)?$/,
                 /^post-hero(__.*)?$/,
+                // Shared index variants include data attributes rendered by Nunjucks.
+                /^post-(index|list)/,
                 /^field(-label|-input|-help)?$/,
                 /^callout/,
                 // markdown-it-task-lists injects these at markdown-render

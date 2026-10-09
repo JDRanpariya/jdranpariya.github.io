@@ -1,7 +1,7 @@
 ---
 title: don't be the drunken sailor
 published: 2026-02-05
-lastUpdated: 2026-05-24
+lastUpdated: 2026-10-09
 tags: [life, growth]
 section: writings
 layout: layouts/post.njk
@@ -10,12 +10,12 @@ readNext: /library/lectures/the-art-of-doing-science-and-engineering/
 ---
 
 Have you ever felt lost even though nothing is actually wrong? Studies are going
-well, you're socializing, your career is taking off but there's this hollow feeling underneath. Like you're going through motions that someone else set up for you.
+well, you're socializing, your career is taking off but there's this hollow feeling underneath. Like you're on default mode network, guided by society and peers like a sheep.
 
-That was my first semester of masters in Germany. Everything was objectively
-fine and still it felt empty. That feeling sent me searching for what, I didn't know at first, eventually I'd call it [purpose](/odysseys/purpose/). But before I got there, a lot had to crack open first.
+That's how I felt during my first semester in Germany. Everything was objectively
+fine and still it felt empty. That feeling sent me searching for something I didn't know at first, but eventually I'd call it [purpose](/odysseys/purpose/). But before that, a lot had to crack open first.
 
-## The Life You Didn't Choose
+## Through lens of caregivers
 
 When you're a child, parents take care of things for you. Which school you go
 to, what food you eat, what festivals you celebrate. It's not just parents, to a certain
@@ -46,7 +46,7 @@ thinking in their own terms and knowingly or unknowingly nudging you towards wha
 
 **So who's looking out for you?**
 
-## The Question I Couldn't Answer
+## Lack of clarity
 
 Toward the end of undergrad I got an internship. I was making enough to not burden the family and for the first time there was room to breathe, to think about things beyond career. Good times. Felt like I wanted more out of life than just money and good grades.
 
@@ -122,8 +122,8 @@ that one obsession. By my measure of "balanced" it wasn't a balanced life at all
 
 ## Finding What Matters To You
 
-There's no absolute recipe for your excellent life, you have to find it for
-yourself. I'm merely trying to nudge you to be intentional about it and want to show how I approached things. Hopefully it nudges you to explore different frameworks or build your own.
+There's no absolute recipe for excellent life, you have to find it for
+yourself. I'm merely trying to nudge you to be intentional about it and want to show how I approached things. Hopefully it nudges you to explore it on your own way.
 
 Given my thoroughness and perfectionist mindset, I wanted to learn every framework that existed for leading a good life. I looked at a lot: Maslow's hierarchy, the Indian framework of artha, dharma, kama, moksha, Scott Young's Foundations, and more. I'd suggest exploring a few yourself and seeing what resonates, or build your own.
 
@@ -170,12 +170,12 @@ enough discipline, but doing this increases the chances of me doing it and when
 you make it easy it stops requiring much willpower.
 
 Whatever frameworks you end up using, make sure to distill things into small
-habits you can weave into your day. That's where life actually changes, knowing
-ain't gonna make a single dent.
+habits you can weave into your day. That's where life actually changes, just knowing
+ain't gonna make a dent.
 
 ______________________________________________________________________
 
-This isn't a rigid plan you set once and execute forever. It's something you come back to when things feel off. Do the things you believed in still give your life meaning? Or did you learn something new and need to update? The vision can evolve. **The commitment to having one shouldn't.**
+Change is natural, you don't have to be too rigid about having to follow for life, just start somewhere and let it guide you. Once in a while come back to it when things feel off and make changes as it suits you. Your vision can evolve, but **commitment to having one shouldn't.**
 
 I'm still learning. Still figuring things out. Still staggering left and right honestly, but there's a pretty girl in one direction now, and the steps are adding up.
 

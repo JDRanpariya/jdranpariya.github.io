@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { App } from "../admin/App.jsx";
 import { galleryBlockAtCursor } from "./gallery-data.mjs";
 import { GuestbookReview } from "../admin/components/GuestbookReview.jsx";
+import "./post-footnotes.test.mjs";
+import "./post-index.test.mjs";
 
 test("guestbook moderation is a separate React workspace with reversible actions", () => {
   const html = renderToStaticMarkup(<GuestbookReview api={() => {}} onClose={() => {}} />);

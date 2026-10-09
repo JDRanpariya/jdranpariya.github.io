@@ -38,10 +38,15 @@ test("actual Eleventy builds nested folder routes, child indices and sitemap wit
     output = join(fixture, "output");
   try {
     await mkdir(join(input, "_includes/layouts"), { recursive: true });
+    await mkdir(join(input, "_includes/components"), { recursive: true });
     await mkdir(join(input, "notes/topic/sub"), { recursive: true });
     await writeFile(
       join(input, "_includes/layouts/folder.njk"),
       await readFile("src/_includes/layouts/folder.njk", "utf8")
+    );
+    await writeFile(
+      join(input, "_includes/components/post-index.njk"),
+      await readFile("src/_includes/components/post-index.njk", "utf8")
     );
     await writeFile(
       join(input, "_includes/layouts/base.njk"),
@@ -75,7 +80,7 @@ test("actual Eleventy builds nested folder routes, child indices and sitemap wit
       config: (config) => {
         config.addGlobalData("site", { url: "https://example.test" });
         config.addGlobalData("eleventyComputed", globals.get("eleventyComputed"));
-        for (const name of ["smartTitleCase", "dateToFormat", "folderChildren"])
+        for (const name of ["smartTitleCase", "dateToFormat", "isoDate", "folderChildren"])
           config.addFilter(name, filters.get(name));
         config.addCollection("__validateFrontmatter", collections.get("__validateFrontmatter"));
       },

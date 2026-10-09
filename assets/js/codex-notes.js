@@ -201,6 +201,13 @@
     stack.scrollTo({ left: paneFocusScrollLeft(index, stack, pane), behavior });
   }
 
+  function restorePaneScroll(scroll, top) {
+    const previousBehavior = scroll.style.scrollBehavior;
+    scroll.style.scrollBehavior = "auto";
+    scroll.scrollTop = top;
+    scroll.style.scrollBehavior = previousBehavior;
+  }
+
   function measureObscuredPanes() {
     const panes = [...section.querySelectorAll(".codex-note-pane")];
     panes.forEach((pane, index) => {
@@ -240,7 +247,7 @@
     return path;
   }
 
-  function render({ focusHeading = false, behavior = "smooth" } = {}) {
+  function render({ focusHeading = false, behavior = "smooth", nativeAnchor = null } = {}) {
     hidePreview();
     const wasStacked = section.classList.contains("codex-stack-section");
     section.querySelectorAll(".codex-note-pane").forEach((pane) => {
@@ -304,8 +311,15 @@
     requestAnimationFrame(() => {
       stack.querySelectorAll(".codex-note-pane").forEach((pane) => {
         const scroll = pane.querySelector(".codex-pane-scroll");
-        if (scroll) scroll.scrollTop = scrollPositions.get(pane.dataset.noteUrl) || 0;
+        if (scroll) restorePaneScroll(scroll, scrollPositions.get(pane.dataset.noteUrl) || 0);
       });
+      if (nativeAnchor && nativeAnchor.index >= 0) {
+        const rootScroll = stack.querySelector('[data-trail-index="0"] .codex-pane-scroll');
+        const rootLink = rootScroll?.querySelectorAll(".prose-site a[href]")[nativeAnchor.index];
+        if (rootLink) {
+          restorePaneScroll(rootScroll, rootScroll.scrollTop + rootLink.getBoundingClientRect().top - nativeAnchor.top);
+        }
+      }
       scrollPaneToIndex(focusIndex, behavior);
       measureObscuredPanes();
       if (focusHeading) {
@@ -334,7 +348,7 @@
     setHistory(historyMode);
   }
 
-  async function openNote(value, sourceIndex) {
+  async function openNote(value, sourceIndex, sourceLink) {
     const targetUrl = canonicalUrl(value);
     const existingIndex = entries.findIndex((entry) => entry.url.pathname === targetUrl.pathname);
     if (existingIndex >= 0) {
@@ -344,9 +358,15 @@
 
     try {
       const note = await loadNote(targetUrl);
+      const nativeAnchor = sourceLink?.isConnected && !section.classList.contains("codex-stack-section")
+        ? {
+            index: [...sourceArticle.querySelectorAll(".prose-site a[href]")].indexOf(sourceLink),
+            top: sourceLink.getBoundingClientRect().top,
+          }
+        : null;
       entries = [...entries.slice(0, sourceIndex + 1), note];
       focusIndex = entries.length - 1;
-      render({ focusHeading: true });
+      render({ focusHeading: true, nativeAnchor });
       setHistory("push");
     } catch {
       window.location.assign(targetUrl.href);
@@ -441,7 +461,7 @@
     if (url.pathname === entries[sourceIndex].url.pathname && url.hash) return;
     event.preventDefault();
     hidePreview();
-    void openNote(url, sourceIndex);
+    void openNote(url, sourceIndex, link);
   });
 
   section.addEventListener("pointerover", function (event) {
