@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
 import json
@@ -21,6 +22,8 @@ SOURCE = SITE_ROOT / "data" / "source"
 GREAT_MINDS = SOURCE / "great_minds_census.csv"
 NEUROAI = SOURCE / "neuroai_canonical_census.csv"
 ADDITIONAL_PEOPLE = SOURCE / "additional_neuroai_people.csv"
+# Reinforcement-learning census. Europe first: on a duplicate, the earlier file wins.
+RL_SOURCES = [SOURCE / "rl_census_europe.csv", SOURCE / "rl_census_world.csv"]
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -134,19 +137,85 @@ def additional_person_record(person: dict[str, str]) -> dict[str, object]:
     }
 
 
+def url_key(url: str) -> str:
+    """Scheme-, www-, query-, fragment- and trailing-slash-insensitive URL key."""
+    key = (url or "").strip().casefold()
+    key = re.sub(r"^[a-z][a-z0-9+.-]*://", "", key)
+    key = re.sub(r"^www\.", "", key)
+    key = re.split(r"[?#]", key, maxsplit=1)[0]
+    return key.rstrip("/")
+
+
+def name_key(name: str) -> str:
+    normalized = unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().casefold()
+    return re.sub(r"[^a-z0-9]+", " ", normalized).strip()
+
+
+def rl(sources: list[Path] | None = None) -> list[dict[str, object]]:
+    """Merge the RL census files, dropping rows whose normalized URL or name was already seen."""
+    output: list[dict[str, object]] = []
+    seen_urls: set[str] = set()
+    seen_names: set[str] = set()
+    for path in sources if sources is not None else RL_SOURCES:
+        if not path.exists():
+            print(f"rl: {path.name} not found; skipped", file=sys.stderr)
+            continue
+        for row in read_csv(path):
+            name, url = row.get("name", ""), row.get("url", "")
+            if not name:
+                continue
+            keys_url, keys_name = url_key(url), name_key(name)
+            if (keys_url and keys_url in seen_urls) or keys_name in seen_names:
+                continue
+            if keys_url:
+                seen_urls.add(keys_url)
+            seen_names.add(keys_name)
+            topics = values(row.get("topics", ""))
+            output.append(
+                {
+                    "id": stable_id("rl", name, url_key(url)),
+                    "collection": "rl",
+                    "name": name,
+                    "entityType": row.get("entity_type", ""),
+                    "lead": row.get("lead", ""),
+                    "institution": row.get("institution", ""),
+                    "country": row.get("country", ""),
+                    "city": row.get("city", ""),
+                    "url": url,
+                    "primary": row.get("primary", "") or (topics[0] if topics else ""),
+                    "topics": topics,
+                    "summary": row.get("summary", ""),
+                    "question": row.get("question", ""),
+                    "questionBasis": row.get("question_basis", ""),
+                    "evidenceUrls": values(row.get("evidence_url_1", ""), row.get("evidence_url_2", "")),
+                    "status": "active",
+                    "activity": row.get("active_as_of", ""),
+                    "elite": row.get("elite", "").casefold() == "yes",
+                }
+            )
+    return sorted(output, key=lambda item: str(item["name"]).casefold())
+
+
+def write_catalog(path: Path, records: list[dict[str, object]]) -> None:
+    ids = [record["id"] for record in records]
+    if len(ids) != len(set(ids)):
+        raise SystemExit(f"{path.name}: duplicate record ids")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    print(f"{path.name}: {len(records)} records, {path.stat().st_size} bytes")
+
+
 def main() -> None:
-    OUTPUT.mkdir(parents=True, exist_ok=True)
-    catalogs = {
-        "great-minds.json": great_minds(),
-        "neuroai.json": neuroai(),
-    }
-    for filename, records in catalogs.items():
-        ids = [record["id"] for record in records]
-        if len(ids) != len(set(ids)):
-            raise SystemExit(f"{filename}: duplicate record ids")
-        path = OUTPUT / filename
-        path.write_text(json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-        print(f"{filename}: {len(records)} records, {path.stat().st_size} bytes")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--rl-only", action="store_true", help="build only the RL catalog")
+    parser.add_argument("--rl-source", action="append", type=Path, help="RL census CSV (repeatable)")
+    parser.add_argument("--rl-output", type=Path, default=OUTPUT / "rl.json")
+    args = parser.parse_args()
+
+    if not args.rl_only:
+        write_catalog(OUTPUT / "great-minds.json", great_minds())
+        write_catalog(OUTPUT / "neuroai.json", neuroai())
+    write_catalog(args.rl_output, rl(args.rl_source))
 
 
 if __name__ == "__main__":

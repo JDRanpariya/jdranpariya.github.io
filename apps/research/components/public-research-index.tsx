@@ -1,12 +1,26 @@
 "use client";
 
-import type { CollectionId, PublicCatalogRecord } from "@/lib/research-catalog";
+import type { PublicCatalogRecord } from "@/lib/research-catalog";
+import type { CollectionId } from "@/lib/research-collections";
 import { useMemo, useState } from "react";
 
 export type PublishedRecord = PublicCatalogRecord & {
   publicNotes: string;
   tags: string[];
   updatedAt: string;
+};
+
+const collectionFilters: Array<[CollectionId | "all", string]> = [
+  ["all", "All"],
+  ["great-minds", "People"],
+  ["neuroai", "NeuroAI"],
+  ["rl", "Reinforcement learning"],
+];
+
+const collectionBadge: Record<CollectionId, string> = {
+  "great-minds": "Person",
+  neuroai: "NeuroAI",
+  rl: "Reinforcement learning",
 };
 
 export function PublicResearchIndex({ records }: { records: PublishedRecord[] }) {
@@ -38,13 +52,7 @@ export function PublicResearchIndex({ records }: { records: PublishedRecord[] })
       {records.length > 0 ? (
         <div className="index-tools">
           <nav aria-label="Index collections" className="index-filters">
-            {(
-              [
-                ["all", "All"],
-                ["great-minds", "People"],
-                ["neuroai", "NeuroAI"],
-              ] as const
-            ).map(([value, label]) => (
+            {collectionFilters.map(([value, label]) => (
               <button
                 type="button"
                 key={value}
@@ -94,7 +102,7 @@ export function PublicResearchIndex({ records }: { records: PublishedRecord[] })
               ) : null}
             </div>
             <p className="font-sans text-xs uppercase tracking-wide text-ink-muted md:text-right">
-              {record.collection === "great-minds" ? "Person" : "NeuroAI"}
+              {collectionBadge[record.collection]}
             </p>
           </article>
         ))}

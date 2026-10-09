@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { filterLibraryRecords } from "./library-data";
 import {
   catalogRecordSchema,
+  collectionIds,
   getCatalog,
   toPublicRecord,
   type CatalogRecord,
@@ -58,7 +59,7 @@ describe("generated catalogs", () => {
   const neuroai = getCatalog("neuroai");
 
   it("match the catalog schema with unique ids", () => {
-    for (const collection of ["great-minds", "neuroai"] as const) {
+    for (const collection of collectionIds) {
       const catalog = getCatalog(collection);
       for (const item of catalog) catalogRecordSchema.parse(item);
       assert.equal(new Set(catalog.map((item) => item.id)).size, catalog.length);

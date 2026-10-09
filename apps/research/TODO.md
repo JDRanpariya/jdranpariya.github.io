@@ -7,7 +7,7 @@
 - Static source catalogs: 872 great minds and 487 NeuroAI records (422 research units + 65 additional public researcher directory entries).
 - NeuroAI library: Jay's fit assessment is editable and starts unset. Private outreach metadata is not part of the catalog; use private notes for context worth keeping. Apply the additive fit-column migration before deploying.
 - Canonical source: `apps/research` inside the personal site repository.
-- Private owner editor: `/library/great-minds` and `/library/neuroai`.
+- Private owner editor: `/library/great-minds`, `/library/neuroai` and `/library/rl`.
 - Public selected index: `/index`.
 - D1 stores decisions and notes only; catalog source rows remain immutable.
 - A record appears publicly only after `Keep` and `Publish` are both selected.
@@ -29,6 +29,8 @@
 ## Source regeneration
 
 Run `bun run catalog:build` after a source census changes.
+
+- RL collection (2026-10-09): wired end to end; `data/catalogs/rl.json` is empty until `data/source/rl_census_europe.csv` and `rl_census_world.csv` land. Then run `bun run catalog:build` and `bun run check`. No D1 migration is needed (`collection` is free text; validation is in the Worker).
 
 ## Next
 

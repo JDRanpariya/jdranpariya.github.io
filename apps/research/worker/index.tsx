@@ -5,7 +5,12 @@ import {
   researchFitValues,
   upsertAnnotation,
 } from "../lib/research-annotations";
-import { getCatalogRecord, isCollectionId, toPublicRecord } from "../lib/research-catalog";
+import {
+  collectionIds,
+  getCatalogRecord,
+  isCollectionId,
+  toPublicRecord,
+} from "../lib/research-catalog";
 import {
   ADMIN_EMAIL,
   createSessionToken,
@@ -27,14 +32,14 @@ const loginSchema = z.object({
 });
 
 const pageQuerySchema = z.object({
-  collection: z.enum(["great-minds", "neuroai"]),
+  collection: z.enum(collectionIds),
   q: z.string().max(300).default(""),
   decision: z.enum(["all", "unreviewed", "keep", "maybe", "remove"]).default("all"),
   page: z.coerce.number().int().min(1).max(10_000).default(1),
 });
 
 const annotationSchema = z.object({
-  collection: z.enum(["great-minds", "neuroai"]),
+  collection: z.enum(collectionIds),
   recordId: z.string().min(1).max(100),
   decision: z.enum(["unreviewed", "keep", "maybe", "remove"]),
   researchFit: z.enum(researchFitValues),
@@ -263,10 +268,9 @@ const researchWorker = {
         return Response.redirect(new URL("/index", url), 302);
       if (path === "/library" && request.method === "GET")
         return Response.redirect(new URL("/library/great-minds", url), 302);
-      if (path === "/library/great-minds/index.html" && request.method === "GET")
-        return Response.redirect(new URL("/library/great-minds", url), 301);
-      if (path === "/library/neuroai/index.html" && request.method === "GET")
-        return Response.redirect(new URL("/library/neuroai", url), 301);
+      const libraryIndexHtml = /^\/library\/([^/]+)\/index\.html$/u.exec(path);
+      if (libraryIndexHtml && isCollectionId(libraryIndexHtml[1]) && request.method === "GET")
+        return Response.redirect(new URL(`/library/${libraryIndexHtml[1]}`, url), 301);
       if (path.startsWith("/library/") && request.method === "GET")
         return libraryPage(request, env, path.slice("/library/".length));
       if (path === "/api/admin/session")

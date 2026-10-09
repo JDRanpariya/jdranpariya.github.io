@@ -1,5 +1,6 @@
 import type { PublishedRecord } from "../components/public-research-index";
 import type { LibraryPageData } from "../lib/library-data";
+import { isCollectionId } from "../lib/research-collections";
 import type { ResearchHome } from "../lib/research-home";
 import "./research.css";
 import { createRoot, hydrateRoot } from "react-dom/client";
@@ -54,7 +55,7 @@ if (page === "library") {
   if (root) {
     const payload = readJson<{ data: LibraryPageData; email: string }>("library-data");
     const collection = location.pathname.split("/")[2];
-    if (collection === "great-minds" || collection === "neuroai") {
+    if (collection && isCollectionId(collection)) {
       void import("../components/library-workspace").then(({ LibraryWorkspace }) => {
         createRoot(root).render(
           <LibraryWorkspace

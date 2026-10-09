@@ -2,7 +2,7 @@
 
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
 import type { Decision, ResearchFit } from "@/lib/research-annotations";
-import type { CollectionId } from "@/lib/research-catalog";
+import { collectionIds, collectionMeta, type CollectionId } from "@/lib/research-collections";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 type Draft = {
@@ -30,6 +30,17 @@ const researchFits: Array<{ value: ResearchFit; label: string }> = [
   { value: "partial", label: "Partial" },
   { value: "low", label: "Low" },
 ];
+
+const searchPlaceholder: Record<CollectionId, string> = {
+  "great-minds": "Search people",
+  neuroai: "Search NeuroAI groups",
+  rl: "Search reinforcement learning labs",
+};
+
+/** Collections whose records are research units Jay rates for fit (not individual people). */
+function assessesFit(collection: CollectionId): boolean {
+  return collection !== "great-minds";
+}
 
 function fitLabel(value: ResearchFit): string {
   return researchFits.find((option) => option.value === value)?.label ?? "Not assessed";
@@ -140,23 +151,25 @@ export function LibraryWorkspace({
   );
 
   useEffect(() => {
-    const otherCollection: CollectionId = collection === "great-minds" ? "neuroai" : "great-minds";
-    const key = cacheKey(otherCollection, "", "all", 1);
-    if (pageCache.current.has(key)) return;
-
     const controller = new AbortController();
-    const params = libraryParams(otherCollection, "", "all", 1);
-    void fetch(`/api/library/annotations?${params}`, {
-      headers: { accept: "application/json" },
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) return;
-        const result = (await response.json()) as LibraryPageData;
-        pageCache.current.set(key, result);
+    for (const otherCollection of collectionIds) {
+      if (otherCollection === collection) continue;
+      const key = cacheKey(otherCollection, "", "all", 1);
+      if (pageCache.current.has(key)) continue;
+
+      const params = libraryParams(otherCollection, "", "all", 1);
+      void fetch(`/api/library/annotations?${params}`, {
+        headers: { accept: "application/json" },
+        cache: "no-store",
+        signal: controller.signal,
       })
-      .catch(() => undefined);
+        .then(async (response) => {
+          if (!response.ok) return;
+          const result = (await response.json()) as LibraryPageData;
+          pageCache.current.set(key, result);
+        })
+        .catch(() => undefined);
+    }
 
     return () => controller.abort();
   }, [collection]);
@@ -388,23 +401,21 @@ export function LibraryWorkspace({
           </span>
         </div>
 
-        <nav aria-label="Research collections" className="mt-6 flex gap-5 font-sans text-sm">
-          <a
-            href="/library/great-minds"
-            onClick={(event) => void switchCollection(event, "great-minds")}
-            aria-current={activeCollection === "great-minds" ? "page" : undefined}
-            className={`min-h-10 py-2 no-underline ${activeCollection === "great-minds" ? "font-semibold text-ink" : "text-ink-muted"}`}
-          >
-            Great minds
-          </a>
-          <a
-            href="/library/neuroai"
-            onClick={(event) => void switchCollection(event, "neuroai")}
-            aria-current={activeCollection === "neuroai" ? "page" : undefined}
-            className={`min-h-10 py-2 no-underline ${activeCollection === "neuroai" ? "font-semibold text-ink" : "text-ink-muted"}`}
-          >
-            NeuroAI
-          </a>
+        <nav
+          aria-label="Research collections"
+          className="mt-6 flex flex-wrap gap-x-5 font-sans text-sm"
+        >
+          {collectionIds.map((id) => (
+            <a
+              key={id}
+              href={`/library/${id}`}
+              onClick={(event) => void switchCollection(event, id)}
+              aria-current={activeCollection === id ? "page" : undefined}
+              className={`min-h-10 py-2 no-underline ${activeCollection === id ? "font-semibold text-ink" : "text-ink-muted"}`}
+            >
+              {collectionMeta[id].label}
+            </a>
+          ))}
         </nav>
 
         <section
@@ -417,9 +428,7 @@ export function LibraryWorkspace({
               type="search"
               value={query}
               onChange={(event) => search(event.target.value)}
-              placeholder={
-                activeCollection === "great-minds" ? "Search people" : "Search NeuroAI groups"
-              }
+              placeholder={searchPlaceholder[activeCollection]}
               className="library-search w-full appearance-none bg-transparent px-0 py-2 font-sans text-base text-ink placeholder:text-ink-muted md:text-sm"
             />
           </label>
@@ -491,7 +500,7 @@ export function LibraryWorkspace({
                         {[record.institution, record.country].filter(Boolean).join(" · ") ||
                           record.primary}
                       </span>
-                      {activeCollection === "neuroai" && draft.researchFit ? (
+                      {assessesFit(activeCollection) && draft.researchFit ? (
                         <span className="mt-1 block font-sans text-xs text-ink-muted">
                           Fit: {fitLabel(draft.researchFit)}
                         </span>
@@ -603,7 +612,7 @@ export function LibraryWorkspace({
                   </fieldset>
 
                   <div className="mt-5 pt-1">
-                    {activeCollection === "neuroai" ? (
+                    {assessesFit(activeCollection) ? (
                       <label className="mb-5 block max-w-xs">
                         <span className="ui-label">Fit to my research</span>
                         <select

@@ -1,9 +1,11 @@
 import greatMinds from "@/data/catalogs/great-minds.json";
 import neuroAi from "@/data/catalogs/neuroai.json";
+import rl from "@/data/catalogs/rl.json";
+import { collectionIds, type CollectionId } from "@/lib/research-collections";
 import { z } from "zod";
 
-export const collectionIds = ["great-minds", "neuroai"] as const;
-export type CollectionId = (typeof collectionIds)[number];
+export { collectionIds, collectionMeta, isCollectionId } from "@/lib/research-collections";
+export type { CollectionId } from "@/lib/research-collections";
 
 export const fitValues = ["strong", "partial", ""] as const;
 export const tierValues = ["1", "2", "3", ""] as const;
@@ -26,7 +28,7 @@ export const catalogRecordSchema = z.object({
   evidenceUrls: z.array(z.string()),
   status: z.string(),
   activity: z.string(),
-  // Private triage fields (NeuroAI only). Never sent to the public index.
+  // Private triage fields (NeuroAI and RL). Never sent to the library or public index.
   elite: z.boolean().optional(),
   fit: z.enum(fitValues).optional(),
   tier: z.enum(tierValues).optional(),
@@ -59,19 +61,11 @@ export function toPublicRecord(record: CatalogRecord): PublicCatalogRecord {
   return copy as PublicCatalogRecord;
 }
 
-export const collectionMeta: Record<CollectionId, { label: string; noun: string }> = {
-  "great-minds": { label: "Great minds", noun: "people" },
-  neuroai: { label: "NeuroAI", noun: "groups" },
-};
-
 const catalogs: Record<CollectionId, CatalogRecord[]> = {
   "great-minds": greatMinds as CatalogRecord[],
   neuroai: neuroAi as CatalogRecord[],
+  rl: rl as CatalogRecord[],
 };
-
-export function isCollectionId(value: string): value is CollectionId {
-  return collectionIds.includes(value as CollectionId);
-}
 
 export function getCatalog(collection: CollectionId): CatalogRecord[] {
   return catalogs[collection];

@@ -1,0 +1,3 @@
+name,entity_type,lead,institution,country,city,url,primary,topics,summary,question,question_basis,evidence_url_1,evidence_url_2,active_as_of,elite
+Example Learning Lab (duplicate),lab,Ada Example,Example University,Germany,Berlin,http://www.example.org/lab,model-based RL,exploration,Duplicate row.,,,,,2026-09,yes
+Sample Agents Group,group,Ben Sample,Sample Institute,Canada,Edmonton,https://sample.example/agents,continual RL,continual RL;  ; continual RL; reward design,Second test summary.,,,https://sample.example/paper,,2026-08,no

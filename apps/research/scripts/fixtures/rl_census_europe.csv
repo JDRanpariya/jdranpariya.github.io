@@ -1,0 +1,2 @@
+name,entity_type,lead,institution,country,city,url,primary,topics,summary,question,question_basis,evidence_url_1,evidence_url_2,active_as_of,elite
+Example Learning Lab,lab,Ada Example,Example University,Germany,Berlin,https://example.org/lab/,model-based RL,model-based RL; exploration,Test summary.,Test question?,Test basis.,https://example.org/paper-1,https://example.org/paper-2,2026-09,yes

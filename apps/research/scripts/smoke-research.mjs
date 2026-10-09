@@ -36,6 +36,7 @@ if (!index.includes('data-domains="research.jdranpariya.com"')) {
 for (const href of [
   "/library/great-minds",
   "/library/neuroai",
+  "/library/rl",
   "/login?returnTo=%2Flibrary%2Fgreat-minds",
 ]) {
   if (!index.includes(`href="${href}"`)) throw new Error(`Index access link missing: ${href}`);
@@ -52,8 +53,11 @@ if (!library.headers.get("location")?.includes("/login?returnTo=")) {
 await request("/library/great-minds/index.html", 301);
 await request("/library/neuroai", 302);
 await request("/library/neuroai/index.html", 301);
+await request("/library/rl", 302);
+await request("/library/rl/index.html", 301);
 await request("/api/library/annotations?collection=great-minds", 401);
 await request("/api/library/annotations?collection=neuroai", 401);
+await request("/api/library/annotations?collection=rl", 401);
 await request("/robots.txt", 200);
 await request("/sitemap.xml", 200);
 await request("/assets/research.css", 200);
