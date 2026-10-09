@@ -1,6 +1,7 @@
 const API_ROOT = "/api/admin";
 import { libraryMediaPath, safeMediaPath, validateMedia, publishWithMedia } from "./admin-media.js";
 import { boundedJson, validateAdminSource } from "./admin-source.js";
+import { manageGuestbook } from "./guestbook.js";
 const SESSION_COOKIE = "jay_admin_session";
 const REPOSITORY = "JDRanpariya/jdranpariya.github.io";
 const DEFAULT_BRANCH = "main";
@@ -358,8 +359,13 @@ export async function handleAdminRequest(request, env) {
       csrf: auth.session.csrf,
       repository: REPOSITORY,
       branch: DEFAULT_BRANCH,
-      features: { mediaPublish: true },
+      features: { mediaPublish: true, guestbook: Boolean(env.GUESTBOOK_DB) },
     });
+  }
+  if (url.pathname === `${API_ROOT}/guestbook`) {
+    if (request.method !== "GET" && !requireCsrf(request, auth))
+      return authenticatedJson(auth, { error: "Invalid request." }, 403);
+    return manageGuestbook(request, env);
   }
   if (url.pathname === `${API_ROOT}/files` && request.method === "GET") return listFiles(auth, env);
   if (url.pathname === `${API_ROOT}/media` && request.method === "GET") {

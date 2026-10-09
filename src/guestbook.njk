@@ -12,15 +12,14 @@ section: "guest book"
   {# Wall: composer lives inside as the first card, so it grid-aligns with
      the rest of the wall. Every theme is image-kind (a WebP illustration
      in assets/images/notecards/). See src/_data/notecardThemes.js. #}
-  <ul class="list-none m-0 p-0 pt-8 flex flex-wrap justify-center items-start gap-y-[3.75rem] gap-x-12">
+  <ul id="guestbook-wall" class="list-none m-0 p-0 pt-8 flex flex-wrap justify-center items-start gap-y-[3.75rem] gap-x-12">
     {# ----- Composer ----- #}
     <li class="w-[clamp(18rem,88vw,26.25rem)] max-w-full">
       {% set initialTheme = notecardThemes.themes[0] %}
       <form
         id="guestbookForm"
-        action="https://docs.google.com/forms/d/e/1FAIpQLScDWne1tW12O_C6yMWjFv-5dGWqJFxElwSoItITAkU90HwOFA/formResponse"
+        action="/api/guestbook"
         method="POST"
-        target="hidden_iframe"
         class="notecard notecard--composer relative pb-[1.4rem]"
       >
         <div
@@ -65,7 +64,7 @@ section: "guest book"
           #}
           <textarea
             id="message"
-            name="entry.736310078"
+            name="message"
             class="relative z-[1] flex-1 min-h-0 w-full bg-transparent border-0 resize-none overflow-hidden font-inherit text-inherit leading-inherit whitespace-pre-wrap break-words focus:outline-none focus-visible:outline-none placeholder:text-notecard-ink placeholder:opacity-75"
             rows="5"
             maxlength="175"
@@ -78,7 +77,7 @@ section: "guest book"
             <label for="name" class="sr-only">Your name</label>
             <input
               id="name"
-              name="entry.1611923301"
+              name="name"
               class="w-3/5 max-w-[240px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="text"
               placeholder="Your name"
@@ -89,11 +88,12 @@ section: "guest book"
             <label for="url" class="sr-only">Your URL (optional)</label>
             <input
               id="url"
-              name="entry.2008969763"
+              name="url"
               class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="text"
               placeholder="URL (optional)"
               autocomplete="url"
+              maxlength="500"
             />
             <label for="email" class="sr-only">Email (optional, so I can reply)</label>
             {#
@@ -104,7 +104,7 @@ section: "guest book"
             #}
             <input
               id="email"
-              name="entry.1366435166"
+              name="email"
               class="w-4/5 max-w-[280px] bg-transparent border-0 text-notecard-ink text-right font-inherit placeholder:text-notecard-ink placeholder:opacity-75 focus:outline-none focus-visible:outline-none focus-visible:[box-shadow:inset_0_-2px_0_0_var(--notecard-ink)] py-1.5"
               type="email"
               placeholder="email (optional)"
@@ -114,14 +114,13 @@ section: "guest book"
           </div>
         </div>
 
-        {# Hidden field carries chosen theme. Google Forms keys every
-           answer on entry.<id> — a plain name="theme" is dropped
-           server-side. Default is the first theme in the registry. #}
-        <input type="hidden" id="themeField" name="entry.901424146" value="{{ initialTheme.key }}" />
+        <input type="hidden" id="themeField" name="theme" value="{{ initialTheme.key }}" />
 
-        {# Hidden field carries chosen stamp slug. Updated by JS on
-           randomization. Uses a new Google Forms entry ID. #}
-        <input type="hidden" id="stampField" name="entry.2085794500" value="" />
+        <input type="hidden" id="stampField" name="stamp" value="" />
+        <div class="guestbook-honeypot" aria-hidden="true">
+          <label for="guestbook-company">Leave this blank</label>
+          <input id="guestbook-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+        </div>
 
         {# Controls row overlaps the card's bottom edge. Sits above the
            card via z-index so buttons remain tappable on iOS Safari. #}
@@ -165,6 +164,7 @@ section: "guest book"
 
           <button
             type="submit"
+            disabled
             class="composer__submit inline-flex items-center justify-center gap-2 rounded-full bg-notecard-pill text-notecard-pill-ink shadow-notecard-pill border-0 py-[0.7rem] px-5 text-base font-medium leading-none cursor-pointer active:scale-[0.96] transition-transform duration-fast focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[3px]"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0">
@@ -185,84 +185,24 @@ section: "guest book"
         role="status"
         hidden
       >
-        Thanks. I read every note myself. Give me a day, then come back.
+        Your note will appear here once it has been saved.
       </p>
     </li>
 
     {# ----- Posted notes ----- #}
     {% for entry in guestbook %}
-      {# Look up the theme. Unknown / missing / retired themes fall back
-         to the first theme in the registry (alphabetically first image
-         theme, currently "beige") so old Google Form responses keep
-         rendering even if their theme key is blank or renamed. #}
-      {% set entryKey = entry.theme or notecardThemes.themes[0].key %}
-      {% set entryTheme = notecardThemes.themes | findBy("key", entryKey) %}
-      {% if not entryTheme %}{% set entryTheme = notecardThemes.themes[0] %}{% endif %}
-
       {% set seed = loop.index0 %}
-      {% set rot  = (((seed * 73 + 11) % 41) - 20) / 10 %}
-      <li
-        class="notecard relative aspect-[4/3] w-[clamp(18rem,88vw,26.25rem)] max-w-full flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)]"
-        data-theme="{{ entryTheme.key }}"
-        style="--rotation: {{ rot }}deg"
-      >
-        <img
-          class="notecard__texture"
-          src="{{ entryTheme.src }}"
-          alt=""
-          role="presentation"
-          aria-hidden="true"
-          loading="lazy"
-        />
-
-        {# Corner illustration stamp.
-           Only rendered if entry has a saved stamp slug. #}
-        {% if entry.stamp and notecardStamps.length %}
-          {% set stampPath = "/assets/images/stamps/stamp-" + entry.stamp + ".webp" %}
-          {% if stampPath in notecardStamps %}
-            <img
-              class="notecard__stamp"
-              src="{{ stampPath }}"
-              alt=""
-              role="presentation"
-              aria-hidden="true"
-              loading="lazy"
-            />
-          {% endif %}
-        {% endif %}
-
-        <p class="relative z-[1] flex-1 m-0 text-base whitespace-pre-wrap break-words" dir="auto">{{ entry.message }}</p>
-
-        {# Signature
-           - If entry.url resolves to a real URL (http(s) or bare domain),
-             render the name as a link. Otherwise render as plain text.
-           - Date renders as a relative phrase via the            filter;
-             the raw ISO date stays in datetime="…" for a11y / schema.
-           - See .eleventy.js for       ,       , and              . #}
-        {% set linkInfo = entry.url | toHref %}
-        <div class="relative z-[1] self-end text-right mt-4 italic text-notecard-ink" dir="auto">
-          <span class="block text-base font-semibold before:content-none">
-            {% if linkInfo.isUrl %}
-              <a
-                href="{{ linkInfo.href }}"
-                class="text-inherit underline underline-offset-2 decoration-1 hover:decoration-2 hover:font-semibold"
-                rel="ugc nofollow noopener noreferrer"
-                target="_blank"
-                >{{ entry.name }}</a
-              >
-            {% else %}
-              {{ entry.name }}
-            {% endif %}
-          </span>
-          {% if entry.date %}
-            <time class="block mt-[0.2rem] font-serif not-italic text-[0.8rem] opacity-75 tracking-[0.02em] text-notecard-ink" datetime="{{ entry.date }}"
-              >{{ entry.date | relativeDate }}</time
-            >
-          {% endif %}
-        </div>
-      </li>
+      {% include "components/guestbook-entry.njk" %}
     {% endfor %}
   </ul>
+  <p class="text-center"><button id="guestbook-more" class="btn-ghost" type="button" hidden>More notes</button></p>
+  <p class="text-center text-ui-sm text-ink-muted">Email is optional and never displayed publicly.</p>
+  <noscript><p class="text-center">JavaScript is needed to sign the guestbook. Existing notes are still readable.</p></noscript>
+  <template id="guestbook-entry-template">
+    {% set entry = {} %}
+    {% set seed = 0 %}
+    {% include "components/guestbook-entry.njk" %}
+  </template>
 
   <p class="mt-16 text-center font-serif italic text-[0.85rem] text-ink-muted">
     Inspired by
@@ -275,15 +215,6 @@ section: "guest book"
     >.
   </p>
 
-  <iframe
-    name="hidden_iframe"
-    id="hidden_iframe"
-    title="Guestbook form target"
-    aria-hidden="true"
-    tabindex="-1"
-    sandbox="allow-forms allow-same-origin"
-    class="hidden"
-  ></iframe>
 </section>
 
 {# Theme list is injected so assets/js/guestbook.js doesn't need to
@@ -293,4 +224,4 @@ section: "guest book"
   window.NOTECARD_THEMES = {{ notecardThemes.themes | dump | safe }};
   window.NOTECARD_STAMPS = {{ notecardStamps | dump | safe }};
 </script>
-<script src="/assets/js/guestbook.js" defer></script>
+<script type="module" src="/assets/js/guestbook.js{{ '/assets/js/guestbook.js' | cacheBust }}"></script>

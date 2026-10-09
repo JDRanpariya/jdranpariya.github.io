@@ -421,6 +421,40 @@ textarea:focus-visible {
   cursor: pointer;
 }
 
+.admin-guestbook {
+  height: 100%;
+  overflow: auto;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.admin-guestbook-list {
+  padding: 0;
+  list-style: none;
+}
+
+.admin-guestbook-list li {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--admin-line);
+}
+
+.admin-guestbook-list header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.admin-guestbook-list p {
+  overflow-wrap: anywhere;
+}
+
+.admin-guestbook-message {
+  font-family: "Source Serif 4", Georgia, serif;
+  white-space: pre-wrap;
+}
+
 .admin-draft-recovery pre,
 #admin-conflict-source {
   max-height: 12rem;
@@ -670,7 +704,8 @@ textarea:focus-visible {
     left: 0;
     display: grid;
     height: 3rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     border-top: 1px solid var(--admin-line);
     background: var(--admin-bg);
   }

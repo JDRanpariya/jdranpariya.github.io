@@ -1,0 +1,60 @@
+{% set entryKey = entry.theme or notecardThemes.themes[0].key %}
+{% set entryTheme = notecardThemes.themes | findBy("key", entryKey) %}
+{% if not entryTheme %}{% set entryTheme = notecardThemes.themes[0] %}{% endif %}
+{% set rot = (((seed * 73 + 11) % 41) - 20) / 10 %}
+<li
+  class="notecard relative aspect-[4/3] w-[clamp(18rem,88vw,26.25rem)] max-w-full flex flex-col justify-between rounded-sm bg-notecard-paper text-notecard-ink font-serif text-base leading-[1.55] p-[clamp(1.75rem,0.875rem+2.75vw,3.25rem)]"
+  data-theme="{{ entryTheme.key }}"
+  style="--rotation: {{ rot }}deg"
+>
+  <img
+    class="notecard__texture"
+    src="{{ entryTheme.src }}"
+    alt=""
+    role="presentation"
+    aria-hidden="true"
+    loading="lazy"
+  />
+  {% set stampPath = "/assets/images/stamps/stamp-" + (entry.stamp or "") + ".webp" %}
+  {% set hasStamp = entry.stamp and stampPath in notecardStamps %}
+  <img
+    class="notecard__stamp"
+    data-guestbook-stamp
+    src="{% if hasStamp %}{{ stampPath }}{% else %}{{ notecardStamps[0] or entryTheme.src }}{% endif %}"
+    alt=""
+    role="presentation"
+    aria-hidden="true"
+    loading="lazy"
+    {% if not hasStamp %}hidden{% endif %}
+  />
+  <p
+    data-guestbook-message
+    class="relative z-[1] flex-1 m-0 text-base whitespace-pre-wrap break-words"
+    dir="auto"
+  >
+    {{ entry.message }}
+  </p>
+  {% set linkInfo = entry.url | toHref %}
+  <div class="relative z-[1] self-end text-right mt-4 italic text-notecard-ink" dir="auto">
+    <span data-guestbook-name class="block text-base font-semibold before:content-none">
+      {% if linkInfo.isUrl %}
+        <a
+          href="{{ linkInfo.href }}"
+          class="text-inherit underline underline-offset-2 decoration-1 hover:decoration-2 hover:font-semibold"
+          rel="ugc nofollow noopener noreferrer"
+          target="_blank"
+          >{{ entry.name }}</a
+        >
+      {% else %}
+        {{ entry.name }}
+      {% endif %}
+    </span>
+    <time
+      data-guestbook-date
+      class="block mt-[0.2rem] font-serif not-italic text-[0.8rem] opacity-75 tracking-[0.02em] text-notecard-ink"
+      datetime="{{ entry.date }}"
+      {% if not entry.date %}hidden{% endif %}
+      >{{ entry.date | relativeDate }}</time
+    >
+  </div>
+</li>

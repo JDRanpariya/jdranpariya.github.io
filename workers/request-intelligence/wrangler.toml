@@ -14,3 +14,9 @@ zone_name = "jdranpariya.com"
 [vars]
 TELEMETRY_INGEST_URL = "https://jay-cloud.vercel.app/api/telemetry"
 TELEMETRY_WEBSITE_ID = "a210a5bb-3c45-4542-be4e-d3b7efa3de33"
+
+[[d1_databases]]
+binding = "GUESTBOOK_DB"
+database_name = "jdranpariya-research"
+database_id = "a66ff6a4-351a-48b2-bb4a-f9d48b42b500"
+migrations_dir = "migrations"

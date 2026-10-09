@@ -22,3 +22,10 @@ TELEMETRY_WEBSITE_ID = "replace-with-umami-website-uuid"
 # Set these with `wrangler secret put`; do not put keys in this file:
 # IP_HASH_SECRET
 # TELEMETRY_INGEST_TOKEN
+
+# Reuse the existing D1 database, with an additive guestbook-only table.
+[[d1_databases]]
+binding = "GUESTBOOK_DB"
+database_name = "jdranpariya-research"
+database_id = "replace-with-existing-d1-database-id"
+migrations_dir = "migrations"

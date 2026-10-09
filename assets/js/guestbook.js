@@ -1,3 +1,4 @@
+import { createGuestbookCard, guestbookFetch } from "./guestbook-api.js";
 // /guestbook composer behaviour.
 //
 // Loaded via <script defer src="/assets/js/guestbook.js">.
@@ -102,18 +103,12 @@
     const themeName = theme.label || titleFromKey(theme.key);
     if (prevBtn) {
       const t = THEMES[(idx - 1 + THEMES.length) % THEMES.length];
-      prevBtn.setAttribute(
-        "aria-label",
-        "Previous style (current: " + themeName + ")",
-      );
+      prevBtn.setAttribute("aria-label", "Previous style (current: " + themeName + ")");
       prevBtn.setAttribute("title", "Previous: " + (t.label || titleFromKey(t.key)));
     }
     if (nextBtn) {
       const t = THEMES[(idx + 1) % THEMES.length];
-      nextBtn.setAttribute(
-        "aria-label",
-        "Next style (current: " + themeName + ")",
-      );
+      nextBtn.setAttribute("aria-label", "Next style (current: " + themeName + ")");
       nextBtn.setAttribute("title", "Next: " + (t.label || titleFromKey(t.key)));
     }
   }
@@ -143,20 +138,95 @@
     });
   }
 
-  // Submit: the hidden iframe eats the response. Show the status note
-  // and clear the textarea so it's obvious the entry was sent. We can't
-  // detect Google Forms failures cross-origin; this is best-effort UI.
-  form.addEventListener("submit", function () {
-    window.setTimeout(function () {
-      if (status) {
-        status.hidden = false;
-      }
-      const textarea = form.querySelector("#message");
-      if (textarea) {
-        textarea.value = "";
-        if (typeof updateHint === "function") updateHint();
-      }
-    }, 200);
+  const submit = form.querySelector('button[type="submit"]');
+  const wall = document.getElementById("guestbook-wall");
+  const template = document.getElementById("guestbook-entry-template");
+  const more = document.getElementById("guestbook-more");
+  const seen = new Set();
+  let challenge = null,
+    nextPage = null,
+    lastLive = null,
+    sending = false;
+  function showStatus(message) {
+    status.textContent = message;
+    status.hidden = false;
+  }
+  function insertEntry(entry, first = false) {
+    if (seen.has(entry.id)) return;
+    const card = createGuestbookCard(entry, template, THEMES, STAMPS);
+    if (first || !lastLive) wall.firstElementChild.after(card);
+    else lastLive.after(card);
+    if (!first || !lastLive) lastLive = card;
+    seen.add(entry.id);
+  }
+  async function prepareSigning() {
+    challenge = null;
+    submit.disabled = true;
+    try {
+      challenge = (await guestbookFetch("/api/guestbook/challenge")).challenge;
+      submit.disabled = false;
+    } catch (error) {
+      showStatus(error.message);
+    }
+  }
+  async function loadEntries(before = null) {
+    more.disabled = true;
+    try {
+      const result = await guestbookFetch(`/api/guestbook${before ? `?before=${before}` : ""}`);
+      result.entries.forEach((entry) => insertEntry(entry));
+      nextPage = result.next;
+      more.hidden = !nextPage;
+    } catch (error) {
+      showStatus(error.message);
+    } finally {
+      more.disabled = false;
+    }
+  }
+  more.addEventListener("click", () => loadEntries(nextPage));
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    if (sending || !challenge) return;
+    sending = true;
+    submit.disabled = true;
+    const input = Object.fromEntries(new FormData(form));
+    const fields = [...form.querySelectorAll("input, textarea, button")].filter(
+      (field) => field !== submit
+    );
+    fields.forEach((field) => {
+      field.disabled = true;
+    });
+    try {
+      const result = await guestbookFetch("/api/guestbook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...input, challenge }),
+      });
+      if (result.entry) insertEntry(result.entry, true);
+      showStatus(
+        result.entry
+          ? "Thanks. Your note is now on the wall."
+          : "Thanks. Your note has been saved for review."
+      );
+      form.reset();
+      applyTheme(current);
+      updateHint();
+      challenge = null;
+      // The successful note stays visible; do not issue another challenge
+      // until the next visit (the server permits one note per day).
+    } catch (error) {
+      // Invalid/expired challenges never saved a note. Refresh them without
+      // asking the visitor to reload and lose their message. Network failures
+      // keep the same challenge so a retry can acknowledge an earlier save.
+      if (error.status === 400) await prepareSigning();
+      showStatus(error.message);
+      submit.disabled = !challenge;
+      // Keep all fields and the same challenge for a safe network retry.
+    } finally {
+      sending = false;
+      fields.forEach((field) => {
+        field.disabled = false;
+      });
+    }
   });
 
   // Character hint — gentle "running out of ink" feel.
@@ -197,4 +267,6 @@
   textarea.addEventListener("input", updateHint);
 
   applyTheme(current);
+  prepareSigning();
+  loadEntries();
 })();

@@ -1,4 +1,5 @@
 import { handleAdminRequest } from "./admin.js";
+import { handleGuestbookRequest } from "./guestbook.js";
 
 /*
  * Crawler and request telemetry for jdranpariya.com.
@@ -211,6 +212,8 @@ export default {
 
     const adminResponse = await handleAdminRequest(request, env);
     if (adminResponse) return adminResponse;
+    const guestbookResponse = await handleGuestbookRequest(request, env);
+    if (guestbookResponse) return guestbookResponse;
 
     // Human analytics remain in Umami. Keep this endpoint as a harmless
     // compatibility response for older local builds that still call it.

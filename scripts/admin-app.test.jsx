@@ -2,6 +2,15 @@ import { test, expect } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { App } from "../admin/App.jsx";
 import { galleryBlockAtCursor } from "./gallery-data.mjs";
+import { GuestbookReview } from "../admin/components/GuestbookReview.jsx";
+
+test("guestbook moderation is a separate React workspace with reversible actions", () => {
+  const html = renderToStaticMarkup(<GuestbookReview api={() => {}} onClose={() => {}} />);
+  expect(html).toContain("Guestbook review");
+  expect(html).toContain("Back to editor");
+  expect(html).toContain("Hiding a note is reversible");
+  expect(html).not.toContain("Publish");
+});
 
 test("a clean browser with no remembered file can open the React admin", () => {
   expect(() => renderToStaticMarkup(<App />)).not.toThrow();

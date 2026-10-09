@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useWorkspace } from "./hooks/useWorkspace.js";
 import { defaultLayout, saveDraft } from "./lib/storage.js";
 import { buildFileTree } from "../scripts/admin-renderer.mjs";
@@ -7,8 +7,10 @@ import { CreateDocument } from "./components/CreateDocument.jsx";
 import { Divider } from "./components/Divider.jsx";
 import { Editor } from "./components/Editor.jsx";
 import { Preview } from "./components/Preview.jsx";
+import { GuestbookReview } from "./components/GuestbookReview.jsx";
 
 export function App() {
+  const [reviewGuestbook, setReviewGuestbook] = useState(false);
   const {
     session,
     setSession,
@@ -99,6 +101,15 @@ export function App() {
             <span id="admin-identity">
               {session.readOnly ? "Local preview" : `@${session.login}`}
             </span>
+            {session.features?.guestbook && (
+              <button
+                className="admin-text-button"
+                onClick={() => setReviewGuestbook(!reviewGuestbook)}
+                aria-pressed={reviewGuestbook}
+              >
+                Guestbook
+              </button>
+            )}
             {!session.readOnly && (
               <button
                 className="admin-text-button"
@@ -146,6 +157,8 @@ export function App() {
               <button className="admin-primary-link">Sign in</button>
             </form>
           </section>
+        ) : reviewGuestbook ? (
+          <GuestbookReview api={api} onClose={() => setReviewGuestbook(false)} />
         ) : (
           <section
             className="admin-workspace"
@@ -312,19 +325,28 @@ export function App() {
       </main>
       {session?.authenticated && (
         <nav className="admin-mobile-tabs" aria-label="Workspace panels">
-          {["files", "edit", "preview"].map((panel) => (
-            <button
-              key={panel}
-              data-admin-tab={panel}
-              aria-pressed={mobile === panel}
-              onClick={() => {
-                setMobile(panel);
-                setLayout((prev) => ({ ...prev, hidden: prev.hidden.filter((p) => p !== panel) }));
-              }}
-            >
-              {panel === "edit" ? "Editor" : panel[0].toUpperCase() + panel.slice(1)}
-            </button>
-          ))}
+          {["files", "edit", "preview", ...(session.features?.guestbook ? ["guestbook"] : [])].map(
+            (panel) => (
+              <button
+                key={panel}
+                data-admin-tab={panel}
+                aria-pressed={
+                  panel === "guestbook" ? reviewGuestbook : !reviewGuestbook && mobile === panel
+                }
+                onClick={() => {
+                  setReviewGuestbook(panel === "guestbook");
+                  if (panel === "guestbook") return;
+                  setMobile(panel);
+                  setLayout((prev) => ({
+                    ...prev,
+                    hidden: prev.hidden.filter((p) => p !== panel),
+                  }));
+                }}
+              >
+                {panel === "edit" ? "Editor" : panel[0].toUpperCase() + panel.slice(1)}
+              </button>
+            )
+          )}
         </nav>
       )}
       <div
