@@ -20,10 +20,16 @@ export default function configureResearchSite(eleventyConfig) {
     readFileSync(new URL("./.cache/research-home.json", import.meta.url), "utf8")
   );
   eleventyConfig.addGlobalData("researchNotes", notes);
+  eleventyConfig.addCollection("publicPages", (collection) =>
+    collection
+      .getAll()
+      .filter((page) => page.data.canonical && !page.data.noindex && !page.data.pagination)
+  );
 
   return {
     dir: { input: "site", output: "_site", includes: "_includes" },
-    templateFormats: ["njk"],
+    templateFormats: ["njk", "md"],
+    markdownTemplateEngine: false,
     htmlTemplateEngine: "njk",
   };
 }

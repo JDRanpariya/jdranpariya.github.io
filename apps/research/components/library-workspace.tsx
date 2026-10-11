@@ -394,6 +394,7 @@ export function LibraryWorkspace({
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
           <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
             <a href="/">Research</a>
+            <a href="/reinforcement-learning/">RL</a>
             <a href="/index">Index</a>
             <a href="/logout?returnTo=%2F" title={`Signed in as ${ownerEmail}`}>
               Sign out

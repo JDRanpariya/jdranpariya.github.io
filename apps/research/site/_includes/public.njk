@@ -9,14 +9,21 @@ layout: base.njk
       <a href="/" class="research-navigation-name">Jay Ranpariya</a>
       <span class="research-navigation-links">
         <a href="/" {% if pageKind == "research" %}aria-current="page"{% endif %}>Research</a>
+        <a href="/reinforcement-learning/" {% if pageKind == "rl" %}aria-current="page"{% endif %}
+          >RL</a
+        >
         <a href="/index" {% if pageKind == "index" %}aria-current="page"{% endif %}>Index</a>
       </span>
     </nav>
   </div>
   <main
     id="main"
-    class="{% if pageKind == 'research' %}research-notes-page{% else %}research-index-page{% endif %}"
+    class="{% if pageKind == 'research' %}research-notes-page{% elif pageKind == 'rl' %}research-reading-page{% else %}research-index-page{% endif %}"
   >
-    {{ content | safe }}
+    {% if pageKind == "rl" %}
+      <article class="research-reading-body">{{ content | safe }}</article>
+    {% else %}
+      {{ content | safe }}
+    {% endif %}
   </main>
 </div>

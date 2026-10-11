@@ -5,8 +5,9 @@ eleventyExcludeFromCollections: true
 
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://research.jdranpariya.com/</loc></url>
-  <url><loc>https://research.jdranpariya.com/index</loc></url>
+  {% for entry in collections.publicPages %}
+    <url><loc>{{ entry.data.canonical }}</loc></url>
+  {% endfor %}
   {% for note in researchNotes %}
     <url><loc>https://research.jdranpariya.com{{ note.url }}</loc></url>
   {% endfor %}

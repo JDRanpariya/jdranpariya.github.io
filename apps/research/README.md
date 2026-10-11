@@ -6,6 +6,7 @@ Source for [research.jdranpariya.com](https://research.jdranpariya.com), in the 
 
 - `/`: public research questions. `content/research-home.md` is the only source for this prose. Eleventy builds the initial HTML so the page is readable without JavaScript. React hydrates the sliding-note interface. No public note pages have been authored yet.
 - `/index`: entries Jay has chosen to publish. The Worker reads D1 on each request and server-renders the selected records. Only records marked `Keep` **and** `Publish` appear. The page works without JavaScript; React adds filtering and search.
+- `/reinforcement-learning/`: Jay's public RL topic groups and linked review-paper reading list, authored in `site/reinforcement-learning/index.md`. Eleventy renders ordinary Markdown headings and paper lists without a login or JavaScript. The shared navigation links to it as RL, between Research and Index. The private `/library/rl` lab workspace remains separate.
 - `/library/great-minds`, `/library/neuroai` and `/library/rl` (reinforcement learning labs): private annotation workspace. The Worker authenticates before serving a page or record data. The browser receives only the current 40-record page, not the entire catalogs.
 - `data/source/`: reviewed census snapshots. `data/catalogs/`: generated JSON bundled only in the Worker, not the public client JavaScript. D1 stores decisions and notes; source rows remain unchanged.
 

@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 const origin = process.env.RESEARCH_BASE_URL ?? "http://127.0.0.1:8790";
 let checks = 0;
 
@@ -33,6 +35,43 @@ if (
 if (!index.includes('data-domains="research.jdranpariya.com"')) {
   throw new Error("The selected index is missing public analytics.");
 }
+const rl = await (await request("/reinforcement-learning/", 200)).text();
+for (const text of [
+  "Reinforcement learning interests",
+  "Start here",
+  "Safety and trust",
+  "Learning on real systems",
+  "Continual adaptation",
+  "Temporal abstraction and credit assignment",
+  "Interesting reads",
+  "Deep Reinforcement Learning for Robotics: A Survey of Real-World Successes",
+  "A Survey of Temporal Credit Assignment in Deep Reinforcement Learning",
+]) {
+  if (!rl.includes(text)) throw new Error(`Public RL interests missing: ${text}`);
+}
+if (rl.includes('name="robots" content="noindex') || rl.includes("<details")) {
+  throw new Error("RL must remain publicly indexable with visible reading lists.");
+}
+const rlSource = readFileSync(
+  new URL("../site/reinforcement-learning/index.md", import.meta.url),
+  "utf8"
+);
+const paperUrls = [...rlSource.matchAll(/^\s*- \[[^\]]+\]\((https:\/\/[^)]+)\)/gmu)].map(
+  (match) => match[1]
+);
+for (const url of paperUrls) {
+  if (!rl.includes(`href="${url}"`))
+    throw new Error(`RL paper link missing from public HTML: ${url}`);
+}
+if (!rl.includes('data-domains="research.jdranpariya.com"')) {
+  throw new Error("The RL page is missing public analytics.");
+}
+for (const html of [home, index, rl]) {
+  if (!html.includes('href="/reinforcement-learning/"'))
+    throw new Error("Public RL navigation missing.");
+}
+await request("/reinforcement-learning", 301);
+await request("/reinforcement-learning/index.html", 301);
 for (const href of [
   "/library/great-minds",
   "/library/neuroai",
@@ -59,7 +98,15 @@ await request("/api/library/annotations?collection=great-minds", 401);
 await request("/api/library/annotations?collection=neuroai", 401);
 await request("/api/library/annotations?collection=rl", 401);
 await request("/robots.txt", 200);
-await request("/sitemap.xml", 200);
+const sitemap = await (await request("/sitemap.xml", 200)).text();
+for (const url of [
+  "https://research.jdranpariya.com/",
+  "https://research.jdranpariya.com/index",
+  "https://research.jdranpariya.com/reinforcement-learning/",
+]) {
+  if (!sitemap.includes(`<loc>${url}</loc>`))
+    throw new Error(`Public page missing from sitemap: ${url}`);
+}
 await request("/assets/research.css", 200);
 await request("/assets/research.js", 200);
 await request("/nonexistent-research-page", 404);

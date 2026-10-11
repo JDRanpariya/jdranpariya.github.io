@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/assets/research.css" />
     {% if noindex %}<meta name="robots" content="noindex, nofollow" />{% endif %}
     {% if canonical %}<link rel="canonical" href="{{ canonical }}" />{% endif %}
-    {% if pageKind == "research" or pageKind == "index" %}
+    {% if pageKind == "research" or pageKind == "index" or pageKind == "rl" %}
       <script
         src="https://jay-cloud.vercel.app/script.js"
         data-website-id="f52a832a-723d-4d1f-9268-e8415f723a2b"
@@ -19,7 +19,7 @@
         defer
       ></script>
     {% endif %}
-    <script type="module" src="/assets/research.js"></script>
+    {% if pageKind != "rl" %}<script type="module" src="/assets/research.js"></script>{% endif %}
   </head>
   <body class="antialiased" data-page="{{ pageKind }}">
     {{ content | safe }}
