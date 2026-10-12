@@ -41,6 +41,8 @@ for (const text of [
   "Start here",
   "Safety and trust",
   "Learning on real systems",
+  "Differentiable simulation",
+  "Causality in robotics",
   "Continual adaptation",
   "Temporal abstraction and credit assignment",
   "Interesting reads",
@@ -56,11 +58,12 @@ const rlSource = readFileSync(
   new URL("../site/reinforcement-learning/index.md", import.meta.url),
   "utf8"
 );
-const paperUrls = [...rlSource.matchAll(/^\s*- \[[^\]]+\]\((https:\/\/[^)]+)\)/gmu)].map(
+const paperUrls = [...rlSource.matchAll(/^\s*- \[[^\]]+\]\((https?:\/\/[^)]+)\)/gmu)].map(
   (match) => match[1]
 );
+if (paperUrls.length !== 76) throw new Error("Expected all 76 RL reading links.");
 for (const url of paperUrls) {
-  if (!rl.includes(`href="${url}"`))
+  if (!rl.includes(`href="${url.replaceAll("&", "&amp;")}"`))
     throw new Error(`RL paper link missing from public HTML: ${url}`);
 }
 if (!rl.includes('data-domains="research.jdranpariya.com"')) {

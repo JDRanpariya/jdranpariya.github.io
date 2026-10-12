@@ -13,15 +13,18 @@ test("the index exposes both collections and sign-in even with no published entr
   expect(source).toContain('aria-label="Research collections"');
 });
 
-test("RL interests are ordinary public Markdown with all 60 supplied paper links", () => {
+test("RL interests are ordinary public Markdown with all 76 supplied reading links", () => {
   const source = readFileSync(
     new URL("../site/reinforcement-learning/index.md", import.meta.url),
     "utf8"
   );
   expect(source).toContain("permalink: /reinforcement-learning/index.html");
   expect(source).toContain("status: published");
-  expect(source.match(/^- \[[^\]]+\]\(https:\/\/[^)]+\)/gmu)).toHaveLength(60);
+  expect(source.match(/^- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu)).toHaveLength(76);
   expect(source.match(/^## /gmu)).toHaveLength(7);
+  expect(source.match(/^### /gmu)).toHaveLength(14);
+  expect(source).toContain("### Differentiable simulation {#differentiable-simulation}");
+  expect(source).toContain("### Causality in robotics {#causality-in-robotics}");
   expect(source).not.toContain("<details");
   expect(source).not.toContain("05b-rl-review-papers.md");
   expect(source).not.toContain("117 checked reviews");
@@ -56,7 +59,7 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
 });
 
 test.each([
-  ["reinforcement-learning", 12, 4],
+  ["reinforcement-learning", 14, 4],
   ["neuro-ai", 14, 4],
   ["bio-inspired", 15, 5],
   ["ai-for-science", 14, 6],
