@@ -545,19 +545,25 @@ a:hover {
   }
 
   .research-interest-overview > ul:first-of-type {
-    @apply my-6 grid list-none grid-cols-1 gap-x-10 gap-y-6 space-y-0 pl-0 sm:grid-cols-2;
+    @apply my-6 list-none gap-x-10 space-y-0 pl-0;
+    columns: 16rem 2;
   }
 
   .research-interest-overview > ul:first-of-type > li {
-    @apply text-sm leading-7;
+    @apply break-inside-avoid text-sm leading-relaxed;
+    margin-block: 0 1.5rem;
+  }
+
+  .research-interest-overview > ul:first-of-type > li > p {
+    @apply m-0;
   }
 
   .research-interest-overview > ul:first-of-type strong {
-    @apply block text-base font-semibold text-ink;
+    @apply block text-base font-semibold leading-6 text-ink;
   }
 
   .research-interest-overview > ul:first-of-type ul {
-    @apply my-2 list-disc space-y-1 pl-5;
+    @apply mt-2 mb-0 list-disc space-y-1 pl-5;
   }
 
   .research-reading-body h2,
