@@ -6,11 +6,15 @@ Source for [research.jdranpariya.com](https://research.jdranpariya.com), in the 
 
 - `/`: public research questions. `content/research-home.md` is the only source for this prose. Eleventy builds the initial HTML so the page is readable without JavaScript. React hydrates the sliding-note interface. No public note pages have been authored yet.
 - `/index`: entries Jay has chosen to publish. The Worker reads D1 on each request and server-renders the selected records. Only records marked `Keep` **and** `Publish` appear. The page works without JavaScript; React adds filtering and search.
-- `/reinforcement-learning/`: Jay's public RL topic groups and linked review-paper reading list, authored in `site/reinforcement-learning/index.md`. Eleventy renders ordinary Markdown headings and paper lists without a login or JavaScript. The shared navigation links to it as RL, between Research and Index. The private `/library/rl` lab workspace remains separate.
+- `/reinforcement-learning/`: Jay's public RL topic groups and linked review-paper reading list, authored in `site/reinforcement-learning/index.md`. Eleventy renders ordinary Markdown headings and paper lists without a login or JavaScript. The shared navigation links to it as RL. The private `/library/rl` lab workspace remains separate.
+- `/neuro-ai/`: Jay's public NeuroAI topic groups and linked review-paper reading list, authored in `site/neuro-ai/index.md`. It uses the same static reading layout as RL. This reading list is separate from the authenticated `/library/neuroai` lab workspace.
+- `/bio-inspired/`: Jay's public bio-inspired topic groups and linked review-paper reading list, authored in `site/bio-inspired/index.md`. It shares the RL and NeuroAI reading layout. The section navigation is RL · NeuroAI · Bio-inspired · Index; Jay Ranpariya links back to the homepage without a separate Research item.
 - `/library/great-minds`, `/library/neuroai` and `/library/rl` (reinforcement learning labs): private annotation workspace. The Worker authenticates before serving a page or record data. The browser receives only the current 40-record page, not the entire catalogs.
 - `data/source/`: reviewed census snapshots. `data/catalogs/`: generated JSON bundled only in the Worker, not the public client JavaScript. D1 stores decisions and notes; source rows remain unchanged.
 
 The research subdomain keeps its own Figtree / Source Serif 4 typography and white, black, and red visual system. It shares Eleventy with the personal site, not the personal site's visual theme.
+
+RL, NeuroAI and Bio-inspired begin with linked topic headings and plain nested bullet subtopics, followed by the unchanged paper lists. The overview is authored as ordinary Markdown before `Start here` or `Reading list`; `interestOverview: true` applies the shared two-column desktop / single-column phone styling to its first list. Only the main topic headings link to sections. Topic links use explicit heading identifiers such as `{#continual-adaptation}`. Eleventy uses the same Markdown renderer as research notes and the admin preview, so these anchors work without client JavaScript or a diagram dependency.
 
 ## Build and local preview
 

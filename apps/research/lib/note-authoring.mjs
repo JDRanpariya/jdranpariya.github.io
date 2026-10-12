@@ -30,6 +30,7 @@ const escape = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
   );
 const md = new MarkdownIt({ html: false, linkify: true });
+export { md as researchMarkdown };
 md.use(explicitAutoLinks);
 md.use(photoGallery);
 const linkOpen = md.renderer.rules.link_open;

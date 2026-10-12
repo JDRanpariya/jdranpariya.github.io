@@ -390,11 +390,13 @@ export function LibraryWorkspace({
         id="main"
         className="page-frame flex min-h-screen flex-col py-6 md:h-dvh md:min-h-0 md:overflow-hidden md:py-9"
       >
-        <div className="flex items-baseline justify-between gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
           <h1 className="text-[1.75rem] font-bold leading-none">Library</h1>
-          <span className="flex items-center gap-4 font-sans text-xs text-ink-muted">
-            <a href="/">Research</a>
+          <span className="flex flex-wrap items-center gap-4 font-sans text-xs text-ink-muted">
+            <a href="/">Jay Ranpariya</a>
             <a href="/reinforcement-learning/">RL</a>
+            <a href="/neuro-ai/">NeuroAI</a>
+            <a href="/bio-inspired/">Bio-inspired</a>
             <a href="/index">Index</a>
             <a href="/logout?returnTo=%2F" title={`Signed in as ${ownerEmail}`}>
               Sign out

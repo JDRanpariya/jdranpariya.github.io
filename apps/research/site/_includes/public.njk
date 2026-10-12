@@ -2,15 +2,27 @@
 layout: base.njk
 ---
 
+{% set isReadingPage = pageKind == "rl" or pageKind == "neuroai" or pageKind == "bioinspired" %}
+
 <div class="min-h-screen bg-page text-ink">
   <a href="#main" class="skip-link">Skip to content</a>
   <div class="research-public-navigation">
     <nav aria-label="Research" class="research-navigation">
-      <a href="/" class="research-navigation-name">Jay Ranpariya</a>
+      <a
+        href="/"
+        class="research-navigation-name"
+        {% if pageKind == "research" %}aria-current="page"{% endif %}
+        >Jay Ranpariya</a
+      >
       <span class="research-navigation-links">
-        <a href="/" {% if pageKind == "research" %}aria-current="page"{% endif %}>Research</a>
         <a href="/reinforcement-learning/" {% if pageKind == "rl" %}aria-current="page"{% endif %}
           >RL</a
+        >
+        <a href="/neuro-ai/" {% if pageKind == "neuroai" %}aria-current="page"{% endif %}
+          >NeuroAI</a
+        >
+        <a href="/bio-inspired/" {% if pageKind == "bioinspired" %}aria-current="page"{% endif %}
+          >Bio-inspired</a
         >
         <a href="/index" {% if pageKind == "index" %}aria-current="page"{% endif %}>Index</a>
       </span>
@@ -18,10 +30,11 @@ layout: base.njk
   </div>
   <main
     id="main"
-    class="{% if pageKind == 'research' %}research-notes-page{% elif pageKind == 'rl' %}research-reading-page{% else %}research-index-page{% endif %}"
+    class="{% if pageKind == 'research' %}research-notes-page{% elif isReadingPage %}research-reading-page{% else %}research-index-page{% endif %}"
   >
-    {% if pageKind == "rl" %}
-      <article class="research-reading-body">{{ content | safe }}</article>
+    {% if isReadingPage %}
+      {% set readingClasses = "research-reading-body research-interest-overview" if interestOverview else "research-reading-body" %}
+      <article class="{{ readingClasses }}">{{ content | safe }}</article>
     {% else %}
       {{ content | safe }}
     {% endif %}

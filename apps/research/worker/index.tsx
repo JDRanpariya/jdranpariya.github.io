@@ -250,13 +250,16 @@ const researchWorker = {
       if (path === "/index/index.html" && request.method === "GET")
         return Response.redirect(new URL("/index", url), 301);
       if (path === "/" && request.method === "GET") return asset(request, env, "/index.html");
-      if (path === "/reinforcement-learning" && ["GET", "HEAD"].includes(request.method)) {
+      const readingPage = ["/reinforcement-learning", "/neuro-ai", "/bio-inspired"].find(
+        (route) => path === route || path === `${route}/index.html`
+      );
+      if (readingPage && ["GET", "HEAD"].includes(request.method)) {
+        if (path.endsWith("/index.html"))
+          return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);
         if (!url.pathname.endsWith("/"))
-          return Response.redirect(new URL(`/reinforcement-learning/${url.search}`, url), 301);
-        return asset(request, env, "/reinforcement-learning/index.html");
+          return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);
+        return asset(request, env, `${readingPage}/index.html`);
       }
-      if (path === "/reinforcement-learning/index.html" && ["GET", "HEAD"].includes(request.method))
-        return Response.redirect(new URL(`/reinforcement-learning/${url.search}`, url), 301);
       if (
         (path === "/notes" || path.startsWith("/notes/")) &&
         ["GET", "HEAD"].includes(request.method)

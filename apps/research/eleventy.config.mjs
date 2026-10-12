@@ -1,7 +1,9 @@
 import { readFileSync } from "node:fs";
 import { copyResearchMedia } from "./lib/research-media.mjs";
+import { researchMarkdown } from "./lib/note-authoring.mjs";
 
 export default function configureResearchSite(eleventyConfig) {
+  eleventyConfig.setLibrary("md", researchMarkdown);
   eleventyConfig.addPassthroughCopy({ public: "/" });
   const homeHtml = readFileSync(new URL("./.cache/research-home.html", import.meta.url), "utf8");
   const notes = JSON.parse(

@@ -66,12 +66,92 @@ for (const url of paperUrls) {
 if (!rl.includes('data-domains="research.jdranpariya.com"')) {
   throw new Error("The RL page is missing public analytics.");
 }
-for (const html of [home, index, rl]) {
-  if (!html.includes('href="/reinforcement-learning/"'))
-    throw new Error("Public RL navigation missing.");
+const neuroai = await (await request("/neuro-ai/", 200)).text();
+for (const text of [
+  "NeuroAI interests",
+  "Start here",
+  "Embodied control and neuromechanics",
+  "Continual learning and memory",
+  "Substrate and efficient computation",
+  "Biologically plausible learning",
+]) {
+  if (!neuroai.includes(text)) throw new Error(`Public NeuroAI interests missing: ${text}`);
+}
+if (
+  neuroai.includes('name="robots" content="noindex') ||
+  neuroai.includes("<details") ||
+  neuroai.includes("103 checked reviews") ||
+  neuroai.includes("/assets/research.js")
+) {
+  throw new Error("NeuroAI must be an indexable static reading page without build notes.");
+}
+const neuroaiSource = readFileSync(new URL("../site/neuro-ai/index.md", import.meta.url), "utf8");
+const neuroaiUrls = [...neuroaiSource.matchAll(/^\s*- \[[^\]]+\]\((https:\/\/[^)]+)\)/gmu)].map(
+  (match) => match[1]
+);
+if (neuroaiUrls.length !== 48) throw new Error("Expected all 48 NeuroAI paper links.");
+for (const url of neuroaiUrls) {
+  if (!neuroai.includes(`href="${url}"`))
+    throw new Error(`NeuroAI paper link missing from public HTML: ${url}`);
+}
+if (!neuroai.includes('data-domains="research.jdranpariya.com"')) {
+  throw new Error("The NeuroAI page is missing public analytics.");
+}
+const bioinspired = await (await request("/bio-inspired/", 200)).text();
+const bioSource = readFileSync(new URL("../site/bio-inspired/index.md", import.meta.url), "utf8");
+const bioUrls = [...bioSource.matchAll(/^\s*- \[[^\]]+\]\((https:\/\/[^)]+)\)/gmu)].map(
+  (match) => match[1]
+);
+if (bioUrls.length !== 48) throw new Error("Expected all 48 Bio-inspired paper links.");
+for (const url of bioUrls) {
+  if (!bioinspired.includes(`href="${url}"`))
+    throw new Error(`Bio-inspired paper link missing from public HTML: ${url}`);
+}
+if (
+  !bioinspired.includes("Bio-inspired interests") ||
+  !bioinspired.includes('data-domains="research.jdranpariya.com"') ||
+  bioinspired.includes('name="robots" content="noindex') ||
+  bioinspired.includes("/assets/research.js") ||
+  bioinspired.includes("104 checked reviews") ||
+  bioinspired.includes("<details")
+)
+  throw new Error("Bio-inspired must remain a public static reading page without build notes.");
+for (const html of [home, index, rl, neuroai, bioinspired]) {
+  if (/>\s*Research\s*<\/a\s*>/u.test(html))
+    throw new Error("The name already links home; a separate Research section is redundant.");
+  if (!html.includes('class="research-navigation-name"'))
+    throw new Error("The shared navigation must retain the name link back home.");
+  for (const href of ["/reinforcement-learning/", "/neuro-ai/", "/bio-inspired/"]) {
+    if (!html.includes(`href="${href}"`)) throw new Error(`Public navigation missing: ${href}`);
+  }
+}
+for (const [label, html, count] of [
+  ["RL", rl, 4],
+  ["NeuroAI", neuroai, 4],
+  ["Bio-inspired", bioinspired, 5],
+]) {
+  if (
+    !html.includes('class="research-reading-body research-interest-overview"') ||
+    !html.includes("Areas of interest")
+  )
+    throw new Error(`${label} is missing its interest overview.`);
+  const links = [...html.matchAll(/href="#([^"]+)"/gu)]
+    .map((match) => match[1])
+    .filter((id) => id !== "main");
+  if (links.length !== count) throw new Error(`${label} interest overview is incomplete.`);
+  for (const id of links) {
+    if (!html.includes(`id="${id}"`)) throw new Error(`${label} has a broken topic link: ${id}`);
+  }
+  if (html.includes("{#")) throw new Error(`${label} is leaking authored heading identifiers.`);
 }
 await request("/reinforcement-learning", 301);
 await request("/reinforcement-learning/index.html", 301);
+await request("/neuro-ai/", 200, { method: "HEAD" });
+await request("/neuro-ai", 301);
+await request("/neuro-ai/index.html", 301);
+await request("/bio-inspired/", 200, { method: "HEAD" });
+await request("/bio-inspired", 301);
+await request("/bio-inspired/index.html", 301);
 for (const href of [
   "/library/great-minds",
   "/library/neuroai",
@@ -103,6 +183,8 @@ for (const url of [
   "https://research.jdranpariya.com/",
   "https://research.jdranpariya.com/index",
   "https://research.jdranpariya.com/reinforcement-learning/",
+  "https://research.jdranpariya.com/neuro-ai/",
+  "https://research.jdranpariya.com/bio-inspired/",
 ]) {
   if (!sitemap.includes(`<loc>${url}</loc>`))
     throw new Error(`Public page missing from sitemap: ${url}`);
