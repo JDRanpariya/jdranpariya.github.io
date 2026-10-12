@@ -9,6 +9,13 @@ The About page is editable as `src/about.md`. Its fixed heading and contact
 buttons live in `layouts/about.njk`, shared by the public page and draft preview.
 Other template-owned landing pages are not exposed as editable templates.
 
+The Research site file tree includes RL, NeuroAI, Bio-inspired and AI for science beside
+research-home.md. Their source paths, canonical URLs and page kinds are registered
+in apps/research/lib/reading-pages.mjs. The API permits only these exact reading
+page paths, not the site's templates or private library. Draft previews reuse
+the public research layout and reading styles. New notes from these pages are
+created under apps/research/content/, not inside the template tree.
+
 ## Photos
 
 Place the cursor between paragraphs and choose **Add photos**. Choose files or

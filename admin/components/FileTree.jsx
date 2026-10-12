@@ -103,7 +103,7 @@ export function FileTree({ files, query, current, layout, setLayout, onOpen, onC
             title={file.path}
             onClick={() => onOpen(file.path)}
           >
-            {file.path.split("/").at(-1)}
+            {file.displayName || file.path.split("/").at(-1)}
           </button>
         ))}
       </>

@@ -1,9 +1,73 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { isValidElement, type ReactElement } from "react";
-import { renderInline, ResearchNotes } from "./research-notes";
+import { renderInline, ResearchNotes, noteReferenceFromDestination } from "./research-notes";
 import { parseResearchHome, renderResearchHome, type ResearchNote } from "@/lib/research-home";
 import { renderToString } from "react-dom/server";
+import { researchReadingPages } from "../lib/reading-pages.mjs";
+
+it("reading pages and homepage resolve internal links but leave anchors and external pages alone", () => {
+  for (const route of ["/", ...researchReadingPages.map((page) => page.route)]) {
+    assert.equal(noteReferenceFromDestination(route), route);
+    assert.equal(noteReferenceFromDestination(`https://research.jdranpariya.com${route}`), route);
+  }
+  for (const href of [
+    "#safety",
+    "https://example.com/neuro-ai/",
+    "//example.com/neuro-ai/",
+    "mailto:jay@example.com",
+  ])
+    assert.equal(noteReferenceFromDestination(href), undefined);
+  const related: ResearchNote = { slug: "neuro-ai", title: "NeuroAI", body: "", url: "/neuro-ai/" };
+  const opened: string[] = [];
+  const link = renderInline("[NeuroAI](/neuro-ai)", new Map([[related.slug, related]]), (slug) =>
+    opened.push(slug)
+  ).find(isValidElement) as ReactElement<{
+    onClick: (event: object) => void;
+    href: string;
+    target?: string;
+  }>;
+  assert.equal(link.props.href, "/neuro-ai/");
+  assert.equal(link.props.target, undefined);
+  let prevented = false;
+  link.props.onClick({
+    preventDefault: () => {
+      prevented = true;
+    },
+  });
+  assert.deepEqual(opened, ["neuro-ai"]);
+  assert.equal(prevented, true);
+  link.props.onClick({
+    ctrlKey: true,
+    preventDefault: () => {
+      throw new Error("Modifier clicks must navigate normally");
+    },
+  });
+  assert.deepEqual(opened, ["neuro-ai"]);
+});
+
+it("a reading page uses the shared pane shell without duplicating its authored title", () => {
+  const note: ResearchNote = {
+    slug: "rl",
+    title: "RL",
+    body: "# RL",
+    html: '<h1>RL</h1><p><a href="/neuro-ai/">NeuroAI</a></p>',
+    url: "/reinforcement-learning/",
+    readingPage: true,
+    fullDocument: true,
+  };
+  const html = renderToString(
+    <ResearchNotes
+      initialDocument={{ title: "Research", body: "# Research", notes: [note] }}
+      initialPath={[]}
+      initialFocus={0}
+      rootSlug="rl"
+    />
+  );
+  assert.equal(html.match(/<h1/g)?.length, 1);
+  assert.ok(html.includes("research-reading-body research-interest-overview"));
+  assert.ok(html.includes('data-pane-index="0"'));
+});
 
 const note: ResearchNote = {
   slug: "learning-simulation-world-models",

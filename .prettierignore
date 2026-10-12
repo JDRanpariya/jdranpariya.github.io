@@ -43,6 +43,8 @@ src/llms.txt.njk
 # Emits raw JSON rather than HTML; the Jinja formatter cannot parse it
 apps/research/site/index.njk
 apps/research/site/notes.njk
+apps/research/site/_includes/public.njk
 
 # Nunjucks control flow with conditional </ol> inside {% if %} confuses the jinja parser
 src/sitemap.html.njk
+apps/research/site/robots.njk

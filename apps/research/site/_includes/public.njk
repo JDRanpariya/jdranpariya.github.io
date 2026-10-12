@@ -2,7 +2,7 @@
 layout: base.njk
 ---
 
-{% set isReadingPage = pageKind == "rl" or pageKind == "neuroai" or pageKind == "bioinspired" %}
+{% set isReadingPage = pageKind in researchReadingPageKinds %}
 
 <div class="min-h-screen bg-page text-ink">
   <a href="#main" class="skip-link">Skip to content</a>
@@ -15,24 +15,22 @@ layout: base.njk
         >Jay Ranpariya</a
       >
       <span class="research-navigation-links">
-        <a href="/reinforcement-learning/" {% if pageKind == "rl" %}aria-current="page"{% endif %}
-          >RL</a
-        >
-        <a href="/neuro-ai/" {% if pageKind == "neuroai" %}aria-current="page"{% endif %}
-          >NeuroAI</a
-        >
-        <a href="/bio-inspired/" {% if pageKind == "bioinspired" %}aria-current="page"{% endif %}
-          >Bio-inspired</a
-        >
+        {% for readingPage in researchReadingPages %}
+          <a href="{{ readingPage.route }}" {% if pageKind == readingPage.pageKind %}aria-current="page"{% endif %}>{{ readingPage.label }}</a>
+        {% endfor %}
         <a href="/index" {% if pageKind == "index" %}aria-current="page"{% endif %}>Index</a>
       </span>
     </nav>
   </div>
   <main
     id="main"
-    class="{% if pageKind == 'research' %}research-notes-page{% elif isReadingPage %}research-reading-page{% else %}research-index-page{% endif %}"
+    class="{% if pageKind == 'research' or (isReadingPage and not preview) %}research-notes-page{% elif isReadingPage %}research-reading-page{% else %}research-index-page{% endif %}"
   >
-    {% if isReadingPage %}
+    {% if isReadingPage and not preview %}
+      {% set readingDocument = researchReadingDocuments[pageKind] %}
+      <div id="research-root">{{ readingDocument.pageHtml | safe }}</div>
+      <script id="research-home-data" type="application/json">{{ readingDocument.bootstrap | safe }}</script>
+    {% elif isReadingPage %}
       {% set readingClasses = "research-reading-body research-interest-overview" if interestOverview else "research-reading-body" %}
       <article class="{{ readingClasses }}">{{ content | safe }}</article>
     {% else %}

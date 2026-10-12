@@ -8,6 +8,7 @@ import nunjucks from "nunjucks";
 import { createHash } from "node:crypto";
 import { parseDocument } from "./admin-renderer.mjs";
 import { sourceUrl } from "./admin-authoring.mjs";
+import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
 
 await mkdir("build/assets/js", { recursive: true });
 await mkdir("build/assets/css", { recursive: true });
@@ -29,7 +30,7 @@ function collectRules(container, target) {
   for (const node of container.nodes || []) {
     if (
       node.type === "rule" &&
-      /^\.(research-home-body|research-quote|research-note-content|research-note-body|photo-gallery)/.test(
+      /^\.(research-home-body|research-quote|research-note-content|research-note-body|research-public-navigation|research-navigation|research-reading|research-interest-overview|photo-gallery|skip-link)/.test(
         node.selector
       )
     ) {
@@ -51,6 +52,16 @@ collectRules(research, shared);
 const css = await postcss([
   tailwind({
     ...config,
+    theme: {
+      ...config.theme,
+      extend: {
+        ...config.theme.extend,
+        fontFamily: {
+          ...config.theme.extend.fontFamily,
+          body: config.theme.extend.fontFamily.serif,
+        },
+      },
+    },
     content: [{ raw: "research-home-body research-quote", extension: "html" }],
   }),
 ]).process(shared.toString(), {
@@ -104,6 +115,7 @@ await indexRoutes("build");
 // separate research build has already run on this machine.
 const { loadPublicNotes } = await import("../apps/research/lib/public-notes.mjs");
 routes.push(
+  ...researchReadingPages.map((page) => sourceUrl(page.path)),
   ...(await loadPublicNotes()).map((note) => `https://research.jdranpariya.com${note.url}`)
 );
 routes.push(
@@ -125,11 +137,13 @@ for (const name of [
   "components/footer.njk",
   "components/newsletter_form.njk",
   "components/webmentions.njk",
+  "research/public.njk",
 ]) {
-  const template = (await readFile(`src/_includes/${name}`, "utf8")).replace(
-    /^---[\s\S]*?---\s*/,
-    ""
-  );
+  const templatePath =
+    name === "research/public.njk"
+      ? "apps/research/site/_includes/public.njk"
+      : `src/_includes/${name}`;
+  const template = (await readFile(templatePath, "utf8")).replace(/^---[\s\S]*?---\s*/, "");
   compiled += nunjucks.precompileString(template, { name });
 }
 const previewPath = "build/assets/admin-preview.html";

@@ -2,6 +2,7 @@ import type { PublishedRecord } from "../components/public-research-index";
 import type { LibraryPageData } from "../lib/library-data";
 import { isCollectionId } from "../lib/research-collections";
 import type { ResearchHome } from "../lib/research-home";
+import { researchReadingPageKinds } from "../lib/reading-pages.mjs";
 import "./research.css";
 import { createRoot, hydrateRoot } from "react-dom/client";
 
@@ -13,7 +14,7 @@ function readJson<T>(id: string): T {
   return JSON.parse(element.textContent) as T;
 }
 
-if (page === "research") {
+if (["research", ...researchReadingPageKinds].includes(page || "")) {
   const root = document.getElementById("research-root");
   if (root) {
     const documentData = readJson<ResearchHome & { rootNote?: string }>("research-home-data");

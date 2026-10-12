@@ -3,6 +3,22 @@ import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import { validateAdminSource } from "../src/admin-source.js";
 import { validateSourceData } from "../../../scripts/frontmatter-schema.js";
+import { researchReadingPages } from "../../../apps/research/lib/reading-pages.mjs";
+
+test("all registered research reading pages pass publishing validation and cannot change route or layout", async () => {
+  for (const page of researchReadingPages) {
+    const source = await readFile(page.path, "utf8");
+    assert.doesNotThrow(() => validateAdminSource(page.path, source), page.path);
+    for (const invalid of [
+      source.replace("layout: public.njk", "layout: private.njk"),
+      source.replace(`permalink: ${page.route}index.html`, "permalink: /library/"),
+      source.replace(`pageKind: ${page.pageKind}`, "pageKind: login"),
+      source.replace("status: published", "status: draft"),
+      source.replace("interestOverview: true", "interestOverview: yes"),
+    ])
+      assert.throws(() => validateAdminSource(page.path, invalid));
+  }
+});
 
 const writing = (fields = "") =>
   `---\ntitle: Note\ndescription: A note\npublished: 2026-10-08\ntags: []\nsection: writings\nlayout: layouts/post.njk\n${fields}---\n\nBody\n`;

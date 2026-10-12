@@ -2,6 +2,10 @@ import nunjucks from "nunjucks/browser/nunjucks-slim.js";
 import { titleCase } from "../../scripts/admin-renderer.mjs";
 import { folderChildren } from "../../scripts/folder-index.mjs";
 import BuildList from "eleventy-plugin-toc/src/BuildList.js";
+import {
+  researchReadingPages,
+  researchReadingPageKinds,
+} from "../../apps/research/lib/reading-pages.mjs";
 
 export function templateEnvironment(templates) {
   const env = new nunjucks.Environment(new nunjucks.PrecompiledLoader(templates), {
@@ -78,6 +82,14 @@ export function templateEnvironment(templates) {
 }
 
 export function renderPage(env, result, path, files, manifest) {
+  if (result.researchReading)
+    return env.render("research/public.njk", {
+      ...result.frontmatter,
+      content: result.bodyHtml,
+      preview: true,
+      researchReadingPages,
+      researchReadingPageKinds,
+    });
   if (result.research) return result.html;
   const data = result.frontmatter;
   const collections = { ...manifest.collections };

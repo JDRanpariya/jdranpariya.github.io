@@ -1,5 +1,6 @@
 // Shared by the browser editor and its tests. Paths are source paths, not labels.
 import { researchRoute, researchContentRoot } from "../apps/research/lib/note-authoring.mjs";
+import { researchReadingPage } from "../apps/research/lib/reading-pages.mjs";
 const reserved = new Set(["admin", "css", "tags", "now", "interactive"]);
 export function sourceDirectories(files) {
   const directories = new Set(["src", researchContentRoot]);
@@ -34,6 +35,8 @@ export function creationPath(directory, name, kind = "file") {
 }
 
 export function sourceUrl(path) {
+  const readingPage = researchReadingPage(path);
+  if (readingPage) return `https://research.jdranpariya.com${readingPage.route}`;
   if (path.startsWith(`${researchContentRoot}/`))
     return `https://research.jdranpariya.com${researchRoute(path)}`;
   if (!/^src\/.+\.md$/.test(path)) return "";
@@ -45,6 +48,7 @@ export function sourceUrl(path) {
 }
 
 export function documentSection(path) {
+  if (researchReadingPage(path)) return "research";
   if (path.startsWith(`${researchContentRoot}/`)) return "research";
   if (path.startsWith("src/library/")) return path.split("/")[2];
   const root = path.split("/")[1];

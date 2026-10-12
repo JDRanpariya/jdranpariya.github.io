@@ -3,6 +3,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { resolve, relative } from "node:path";
 import { createHash } from "node:crypto";
 import { adminInternals } from "../workers/request-intelligence/src/admin.js";
+import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
 
 const projectRoot = resolve(import.meta.dir, "..");
 const buildRoot = resolve(projectRoot, "build");
@@ -46,7 +47,17 @@ const server = Bun.serve({
       });
     if (url.pathname === "/api/admin/files")
       return json({
-        files: [...(await filesUnder("src")), ...(await filesUnder("apps/research/content"))],
+        files: [
+          ...(await filesUnder("src")),
+          ...(await filesUnder("apps/research/content")),
+          ...(await Promise.all(
+            researchReadingPages.map(async ({ path }) => ({
+              path,
+              sha: "local-source",
+              size: (await readFile(resolve(projectRoot, path))).length,
+            }))
+          )),
+        ],
       });
     if (url.pathname === "/api/admin/media") {
       const { libraryMediaPath } =

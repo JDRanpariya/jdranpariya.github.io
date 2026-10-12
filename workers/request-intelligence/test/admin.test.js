@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { adminInternals, handleAdminRequest } from "../src/admin.js";
+import { researchReadingPages } from "../../../apps/research/lib/reading-pages.mjs";
 
 const env = {
   ADMIN_SESSION_SECRET: "a-test-secret-that-is-long-enough-for-a-session",
@@ -27,6 +28,15 @@ async function authenticatedRequest(path, init = {}) {
 }
 
 test("accepts only Markdown paths in the personal and research content roots", () => {
+  for (const page of researchReadingPages)
+    assert.equal(adminInternals.safeSourcePath(page.path), page.path);
+  for (const path of [
+    "apps/research/site/_includes/public.njk",
+    "apps/research/site/private/index.md",
+    "apps/research/site/neuro-ai/other.md",
+    "apps/research/site/neuro-ai/../index.md",
+  ])
+    assert.equal(adminInternals.safeSourcePath(path), null);
   assert.equal(adminInternals.safeSourcePath("src/writings/example.md"), "src/writings/example.md");
   assert.equal(
     adminInternals.safeSourcePath("apps/research/content/research-home.md"),
@@ -94,6 +104,13 @@ test("lists only editable Markdown files", async () => {
           },
           { path: "src/index.njk", type: "blob", sha: "two", size: 20 },
           { path: "README.md", type: "blob", sha: "three", size: 20 },
+          ...researchReadingPages.map((page) => ({
+            path: page.path,
+            type: "blob",
+            sha: "reading",
+            size: 10,
+          })),
+          { path: "apps/research/site/private/index.md", type: "blob", sha: "private", size: 10 },
         ],
       }),
       { status: 200, headers: { "content-type": "application/json" } }
@@ -104,7 +121,11 @@ test("lists only editable Markdown files", async () => {
     assert.equal(response.status, 200);
     assert.deepEqual(
       payload.files.map((file) => file.path),
-      ["apps/research/content/research-home.md", "src/writings/one.md"]
+      [
+        "apps/research/content/research-home.md",
+        ...researchReadingPages.map((page) => page.path).sort(),
+        "src/writings/one.md",
+      ]
     );
   } finally {
     globalThis.fetch = previousFetch;

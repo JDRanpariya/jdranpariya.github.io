@@ -71,7 +71,9 @@ export function App() {
   if (visible("edit")) columns.push(`minmax(0,${visible("preview") ? layout.ratio : 1}fr)`);
   if (visible("edit") && visible("preview")) columns.push("6px");
   if (visible("preview")) columns.push(`minmax(0,${visible("edit") ? 1 - layout.ratio : 1}fr)`);
-  const defaultDirectory = current?.path.slice(0, current.path.lastIndexOf("/")) || "src";
+  const defaultDirectory = current?.path.startsWith("apps/research/site/")
+    ? "apps/research/content"
+    : current?.path.slice(0, current.path.lastIndexOf("/")) || "src";
   return (
     <>
       <a className="admin-skip" href="#admin-main">

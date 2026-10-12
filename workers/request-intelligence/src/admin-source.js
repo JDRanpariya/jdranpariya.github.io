@@ -1,5 +1,6 @@
 import { load } from "js-yaml";
 import { validateSourceData } from "../../../scripts/frontmatter-schema.js";
+import { researchReadingPage } from "../../../apps/research/lib/reading-pages.mjs";
 
 const personalLayouts = new Set([
   "layouts/post",
@@ -35,9 +36,24 @@ export function validateAdminSource(path, content) {
   if (!data || typeof data !== "object" || Array.isArray(data))
     throw new Error("Frontmatter must be a YAML mapping.");
   const errors = [];
+  const readingPage = researchReadingPage(path);
   const research = path.startsWith("apps/research/content/");
   const now = path.startsWith("src/now/updates/");
-  if (research) {
+  if (readingPage) {
+    if (typeof data.title !== "string" || !data.title.trim()) errors.push("title is required.");
+    if (typeof data.description !== "string") errors.push("description must be text.");
+    if (data.status !== "published") errors.push("Public reading pages require status: published.");
+    if (data.layout !== "public.njk") errors.push("Research layout must be public.njk.");
+    if (data.pageKind !== readingPage.pageKind) errors.push("Keep this page's existing pageKind.");
+    if (data.permalink !== `${readingPage.route}index.html`)
+      errors.push(`Research permalink must be ${readingPage.route}index.html.`);
+    if (data.canonical !== `https://research.jdranpariya.com${readingPage.route}`)
+      errors.push("Keep this page's canonical research URL.");
+    if (data.interestOverview !== undefined && typeof data.interestOverview !== "boolean")
+      errors.push("interestOverview must be true or false.");
+    if (data.noindex || data.eleventyExcludeFromCollections)
+      errors.push("Public reading pages must remain indexable.");
+  } else if (research) {
     if (!/^(?:[a-zA-Z0-9][a-zA-Z0-9_-]*\/)*[a-zA-Z0-9][a-zA-Z0-9_-]*\.md$/.test(path.slice(22)))
       errors.push("Invalid research source path.");
     if (typeof data.title !== "string" || !data.title.trim()) errors.push("title is required.");

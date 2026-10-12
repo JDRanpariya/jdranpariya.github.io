@@ -16,6 +16,7 @@ import {
 } from "./admin-authoring.mjs";
 import { folderChildren } from "./folder-index.mjs";
 import { noteHtml, researchRoute } from "../apps/research/lib/note-authoring.mjs";
+import { researchReadingPage } from "../apps/research/lib/reading-pages.mjs";
 import { photoGallery } from "./photo-gallery.mjs";
 import { explicitAutoLinks } from "./markdown-links.mjs";
 
@@ -82,6 +83,18 @@ export function renderDocument(source, path, files = []) {
   if (path === "apps/research/content/research-home.md")
     return { html: renderResearch(source), research: true, frontmatter: {}, warnings: [] };
   const { frontmatter, body } = parseDocument(source);
+  const readingPage = researchReadingPage(path);
+  if (readingPage) {
+    const bodyHtml = noteHtml(body, { path }, []);
+    return {
+      html: bodyHtml,
+      bodyHtml,
+      frontmatter: { ...frontmatter, pageKind: readingPage.pageKind },
+      research: true,
+      researchReading: true,
+      warnings: [],
+    };
+  }
   if (path.startsWith("apps/research/content/")) {
     const notes = files
       .filter(
@@ -166,9 +179,10 @@ export function renderDocument(source, path, files = []) {
 export function buildFileTree(files, query = "") {
   const root = { directories: new Map(), files: [] };
   for (const file of files) {
+    const readingPage = researchReadingPage(file.path);
     if (
       query &&
-      !file.path
+      !`${file.path} ${readingPage?.label || ""}`
         .toLowerCase()
         .replaceAll("-", " ")
         .includes(query.toLowerCase().replaceAll("-", " "))
@@ -177,7 +191,9 @@ export function buildFileTree(files, query = "") {
     const personal = file.path.startsWith("src/");
     const parts = [
       personal ? "Personal site" : "Research site",
-      ...file.path.slice(personal ? 4 : "apps/research/content/".length).split("/"),
+      ...(readingPage
+        ? [readingPage.label]
+        : file.path.slice(personal ? 4 : "apps/research/content/".length).split("/")),
     ];
     let node = root;
     let key = "";
@@ -195,7 +211,7 @@ export function buildFileTree(files, query = "") {
         });
       node = node.directories.get(part);
     }
-    node.files.push(file);
+    node.files.push(readingPage ? { ...file, displayName: readingPage.label } : file);
   }
   return root;
 }

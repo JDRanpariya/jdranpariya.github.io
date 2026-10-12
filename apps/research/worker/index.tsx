@@ -23,6 +23,7 @@ import {
 } from "./auth";
 import { renderToString } from "react-dom/server";
 import { z } from "zod";
+import { researchReadingPages } from "../lib/reading-pages.mjs";
 
 type Environment = AuthEnvironment & { DB: D1Database; ASSETS: Fetcher };
 
@@ -250,9 +251,9 @@ const researchWorker = {
       if (path === "/index/index.html" && request.method === "GET")
         return Response.redirect(new URL("/index", url), 301);
       if (path === "/" && request.method === "GET") return asset(request, env, "/index.html");
-      const readingPage = ["/reinforcement-learning", "/neuro-ai", "/bio-inspired"].find(
-        (route) => path === route || path === `${route}/index.html`
-      );
+      const readingPage = researchReadingPages
+        .map((page) => page.route.slice(0, -1))
+        .find((route) => path === route || path === `${route}/index.html`);
       if (readingPage && ["GET", "HEAD"].includes(request.method)) {
         if (path.endsWith("/index.html"))
           return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);

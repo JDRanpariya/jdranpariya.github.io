@@ -2,6 +2,8 @@ import { test, expect } from "bun:test";
 import worker from "./index";
 import { readFileSync } from "node:fs";
 import { noteHtml, parseNote } from "../lib/note-authoring.mjs";
+import { researchReadingPages, researchReadingPageKinds } from "../lib/reading-pages.mjs";
+import nunjucks from "nunjucks";
 
 test("the index exposes both collections and sign-in even with no published entries", () => {
   const source = readFileSync(new URL("../site/index/index.njk", import.meta.url), "utf8");
@@ -57,6 +59,7 @@ test.each([
   ["reinforcement-learning", 12, 4],
   ["neuro-ai", 14, 4],
   ["bio-inspired", 15, 5],
+  ["ai-for-science", 14, 6],
 ])("%s has plain bullet subtopics and linked topic headings", (slug, count, branches) => {
   const source = readFileSync(new URL(`../site/${slug}/index.md`, import.meta.url), "utf8");
   const { data, body } = parseNote(source);
@@ -76,29 +79,42 @@ test.each([
   expect(html).not.toContain("<details");
 });
 
-test("shared public navigation links home, RL, NeuroAI, Bio-inspired and Index", () => {
-  const source = readFileSync(new URL("../site/_includes/public.njk", import.meta.url), "utf8");
-  const home = source.search(/>\s*Jay Ranpariya\s*<\/a\s*>/u);
-  const rl = source.search(/>\s*RL\s*<\/a\s*>/u);
-  const neuroai = source.search(/>\s*NeuroAI\s*<\/a\s*>/u);
-  const bioinspired = source.search(/>\s*Bio-inspired\s*<\/a\s*>/u);
-  const index = source.search(/>\s*Index\s*<\/a\s*>/u);
-  expect(home).toBeGreaterThan(-1);
-  expect(rl).toBeGreaterThan(home);
-  expect(neuroai).toBeGreaterThan(rl);
-  expect(bioinspired).toBeGreaterThan(neuroai);
-  expect(index).toBeGreaterThan(bioinspired);
-  expect(source).toContain('href="/reinforcement-learning/"');
-  expect(source).toContain('pageKind == "rl"');
-  expect(source).toContain('href="/neuro-ai/"');
-  expect(source).toContain('pageKind == "neuroai"');
-  expect(source).toContain('href="/bio-inspired/"');
-  expect(source).toContain('pageKind == "bioinspired"');
-  expect(source).not.toMatch(/>\s*Research\s*<\/a\s*>/u);
-  expect(source.match(/href="\/"/gu)).toHaveLength(1);
+test("AI for science preserves all 157 supplied links without internal build notes", () => {
+  const source = readFileSync(new URL("../site/ai-for-science/index.md", import.meta.url), "utf8");
+  expect(source).toContain("permalink: /ai-for-science/index.html");
+  expect(source).toContain("status: published");
+  expect(source.match(/^- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu)).toHaveLength(157);
+  expect(source).not.toContain("page:skip");
+  expect(source).not.toContain("_work/");
+  expect(source).not.toContain("noindex: true");
 });
 
-test.each(["reinforcement-learning", "neuro-ai", "bio-inspired"])(
+test("shared public navigation is generated from the same editable-page registry", () => {
+  const source = readFileSync(new URL("../site/_includes/public.njk", import.meta.url), "utf8");
+  const html = nunjucks.renderString(source.replace(/^---[\s\S]*?---/u, ""), {
+    pageKind: "aiscience",
+    preview: true,
+    content: "<h1>AI for science interests</h1>",
+    researchReadingPages,
+    researchReadingPageKinds,
+  });
+  const home = html.search(/>\s*Jay Ranpariya\s*<\/a\s*>/u);
+  const index = html.search(/>\s*Index\s*<\/a\s*>/u);
+  expect(home).toBeGreaterThan(-1);
+  let previous = home;
+  for (const page of researchReadingPages) {
+    const position = html.indexOf(`>${page.label}</a>`);
+    expect(position).toBeGreaterThan(previous);
+    expect(html).toContain(`href="${page.route}"`);
+    previous = position;
+  }
+  expect(index).toBeGreaterThan(previous);
+  expect(html).toContain('href="/ai-for-science/" aria-current="page"');
+  expect(html).not.toMatch(/>\s*Research\s*<\/a\s*>/u);
+  expect(html.match(/href="\/"/gu)).toHaveLength(1);
+});
+
+test.each(researchReadingPages.map((page) => page.slug))(
   "%s is public without consulting the private database and redirects URL aliases",
   async (slug) => {
     const paths = [];

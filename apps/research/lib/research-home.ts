@@ -8,6 +8,8 @@ export type ResearchNote = {
   url?: string;
   path?: string;
   folderIndex?: boolean;
+  readingPage?: boolean;
+  fullDocument?: boolean;
 };
 
 export type ResearchHome = {

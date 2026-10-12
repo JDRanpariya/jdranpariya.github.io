@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { buildFileTree, parseDocument, renderDocument, titleCase } from "./admin-renderer.mjs";
 import { sourceDirectories, creationPath, sourceUrl, newDocument } from "./admin-authoring.mjs";
 import { folderChildren, contentEntry } from "./folder-index.mjs";
@@ -7,6 +7,34 @@ import MarkdownIt from "markdown-it";
 import { explicitAutoLinks } from "./markdown-links.mjs";
 import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
 import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
+import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
+
+test("every public research reading page is editable with a correct URL, tree label and shared preview", async () => {
+  const sources = (await readdir("apps/research/site", { recursive: true }))
+    .filter((path) => path.endsWith(".md"))
+    .map((path) => `apps/research/site/${path}`)
+    .sort();
+  expect(researchReadingPages.map((page) => page.path).sort()).toEqual(sources);
+  const files = researchReadingPages.map((page) => ({ path: page.path }));
+  const tree = buildFileTree(files);
+  expect(tree.directories.get("Research site").files.map((file) => file.displayName)).toEqual(
+    researchReadingPages.map((page) => page.label)
+  );
+  expect(sourceDirectories(files)).not.toContain("apps/research/site");
+  for (const page of researchReadingPages) {
+    const source = await readFile(page.path, "utf8");
+    const result = renderDocument(source, page.path);
+    expect(sourceUrl(page.path)).toBe(`https://research.jdranpariya.com${page.route}`);
+    expect(result.researchReading).toBe(true);
+    expect(result.research).toBe(true);
+    expect(result.bodyHtml).toContain("Areas of interest");
+    expect(result.bodyHtml).not.toContain("{#");
+    expect(result.bodyHtml).not.toContain("post-hero");
+    expect(buildFileTree(files, page.label).directories.get("Research site")?.files).toHaveLength(
+      1
+    );
+  }
+});
 
 test("degree abbreviations stay plain text while intentional links survive in every renderer", () => {
   const body =
@@ -203,11 +231,16 @@ test("research uses its actual homepage structure with one title", async () => {
   expect(result.html).not.toContain(">research home<");
   expect(result.html).toContain('class="research-note-body research-home-body"');
   expect(result.html).toContain(renderResearchHome(parseResearchHome(source)));
-  expect(result.html.match(/<li>/g)).toHaveLength(5);
+  expect(result.html.match(/<li>/g)).toHaveLength((source.match(/^- /gmu) || []).length);
   expect(result.html).toContain("<h2>Areas of Interest</h2>");
   expect(result.html).toContain("<p><em>Embodied Intelligence");
   expect(result.html).toContain("<strong>Art of Formalization</strong>:");
-  expect(result.html).toContain("<strong>Learning and Memory</strong>:");
+  for (const match of source.matchAll(/^- \*\*[^*]+\*\*:/gmu))
+    expect(result.html).toContain(
+      noteHtml(match[0].slice(2), {})
+        .replace(/<\/?p>/gu, "")
+        .trim()
+    );
   expect(result.html).toContain("</ul>\n<p><em>Embodied Intelligence");
   expect(result.html).toContain(
     "how to map pure math efficiently on natural sciences and engineering?"

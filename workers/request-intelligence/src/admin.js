@@ -2,6 +2,7 @@ const API_ROOT = "/api/admin";
 import { libraryMediaPath, safeMediaPath, validateMedia, publishWithMedia } from "./admin-media.js";
 import { boundedJson, validateAdminSource } from "./admin-source.js";
 import { manageGuestbook } from "./guestbook.js";
+import { researchReadingPage } from "../../../apps/research/lib/reading-pages.mjs";
 const SESSION_COOKIE = "jay_admin_session";
 const REPOSITORY = "JDRanpariya/jdranpariya.github.io";
 const DEFAULT_BRANCH = "main";
@@ -102,6 +103,7 @@ function configurationReady(env) {
 
 function safeSourcePath(value) {
   const path = String(value || "");
+  if (researchReadingPage(path)) return path;
   const editableRoot = /^(?:src|apps\/research\/content)\/[a-zA-Z0-9][a-zA-Z0-9_./-]*\.md$/;
   if (!editableRoot.test(path)) return null;
   if (path.includes("..") || path.includes("//")) return null;

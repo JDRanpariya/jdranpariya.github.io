@@ -44,21 +44,24 @@ function resolveNote(reference: string, notes: ReadonlyMap<string, ResearchNote>
   return (
     notes.get(trimmed) ??
     [...notes.values()].find(
-      (note) => note.title.toLowerCase() === trimmed.toLowerCase() || note.url === trimmed
+      (note) =>
+        note.title.toLowerCase() === trimmed.toLowerCase() ||
+        note.url?.replace(/\/$/u, "") === trimmed.replace(/\/$/u, "")
     )
   );
 }
 
-function noteReferenceFromDestination(destination?: string) {
+export function noteReferenceFromDestination(destination?: string) {
   if (!destination) return undefined;
   if (destination.startsWith("note:")) return destination.slice(5);
-  if (destination.startsWith("/notes/")) return destination.split("#", 1)[0];
-  if (destination.startsWith("https://research.jdranpariya.com/notes/"))
-    return new URL(destination).pathname;
   if (destination.startsWith("/?")) {
     const query = destination.slice(2).split("#", 1)[0];
     return new URLSearchParams(query).getAll("notes").at(-1);
   }
+  if (destination.startsWith("/") && !destination.startsWith("//"))
+    return destination.split(/[?#]/u, 1)[0];
+  if (destination.startsWith("https://research.jdranpariya.com/"))
+    return new URL(destination).pathname;
   return undefined;
 }
 
@@ -277,7 +280,7 @@ export function ResearchNotes({
   const openTheme = useCallback(
     (slug: string, sourcePanelIndex: number) => {
       if (!noteBySlug.has(slug)) return;
-      if (slug === rootSlug) {
+      if (slug === (rootSlug || "research")) {
         focusPane(0);
         return;
       }
@@ -501,10 +504,14 @@ export function ResearchNotes({
             <div className="research-note-scroll">
               {panel.note ? (
                 <div className="research-note-content">
-                  <h1>{panel.note.title}</h1>
+                  {!panel.note.fullDocument && <h1>{panel.note.title}</h1>}
                   {panel.note.html !== undefined ? (
                     <div
-                      className="research-note-body"
+                      className={
+                        panel.note.readingPage
+                          ? "research-reading-body research-interest-overview"
+                          : "research-note-body"
+                      }
                       dangerouslySetInnerHTML={{ __html: panel.note.html }}
                       onClick={(event) => {
                         if (
@@ -574,7 +581,7 @@ export function ResearchNotes({
                       openTheme(note.slug, panelIndex);
                     }}
                   />
-                  {researchDocument.notes.length ? (
+                  {researchDocument.notes.some((note) => note.url?.startsWith("/notes/")) ? (
                     <nav className="research-notes-directory" aria-label="Research notes">
                       {renderInline("[Browse research notes](/notes/)", noteBySlug, (slug) =>
                         openTheme(slug, 0)

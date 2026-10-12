@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { copyResearchMedia } from "./lib/research-media.mjs";
 import { researchMarkdown } from "./lib/note-authoring.mjs";
+import { researchReadingPages, researchReadingPageKinds } from "./lib/reading-pages.mjs";
 
 export default function configureResearchSite(eleventyConfig) {
   eleventyConfig.setLibrary("md", researchMarkdown);
@@ -9,9 +10,16 @@ export default function configureResearchSite(eleventyConfig) {
   const notes = JSON.parse(
     readFileSync(new URL("./.cache/research-notes.json", import.meta.url), "utf8")
   );
+  const readingDocuments = JSON.parse(
+    readFileSync(new URL("./.cache/research-reading-pages.json", import.meta.url), "utf8")
+  );
   copyResearchMedia(
     eleventyConfig,
-    [homeHtml, ...notes.map((note) => note.pageHtml || note.html || "")].join("\n")
+    [
+      homeHtml,
+      ...notes.map((note) => note.pageHtml || note.html || ""),
+      ...Object.values(readingDocuments).map((document) => document.pageHtml),
+    ].join("\n")
   );
   eleventyConfig.addTransform("xml-declaration", (content, outputPath) =>
     outputPath?.endsWith(".xml") ? content.trimStart() : content
@@ -22,6 +30,9 @@ export default function configureResearchSite(eleventyConfig) {
     readFileSync(new URL("./.cache/research-home.json", import.meta.url), "utf8")
   );
   eleventyConfig.addGlobalData("researchNotes", notes);
+  eleventyConfig.addGlobalData("researchReadingDocuments", readingDocuments);
+  eleventyConfig.addGlobalData("researchReadingPages", researchReadingPages);
+  eleventyConfig.addGlobalData("researchReadingPageKinds", researchReadingPageKinds);
   eleventyConfig.addCollection("publicPages", (collection) =>
     collection
       .getAll()

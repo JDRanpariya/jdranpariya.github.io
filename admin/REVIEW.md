@@ -29,8 +29,9 @@ claim that every possible workflow is complete.
 
 ## Still limited
 
-- Research previews share rendering and styles, but do not yet render the full
-  native research shell. Do not treat them as pixel-exact public-page previews.
+- Research home/note previews share rendering and styles, but do not yet render
+  the full native research shell. The RL, NeuroAI, Bio-inspired and AI for science reading-page
+  previews now use their compiled public layout and shared navigation.
 - Personal previews do not run interactive site scripts. Code syntax
   highlighting and optional image-shortcode classes are not fully reproduced.
 - Template-owned landing pages other than About are not exposed as editable
