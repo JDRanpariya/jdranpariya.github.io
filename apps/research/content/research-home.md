@@ -22,3 +22,7 @@ We need our agents to be good enough!
 - **Learning and Memory**: How can an agent learn useful skills with far less real-world data without forgetting old skills or growing without bound? What and how an experience should be replayed, compressed, integrated, or forgotten when an agent is offline, and how can errors during physical practice decide what gets consolidated?What should come from demonstration, simulation, exploration, or practice on hardware? Can a agent reorganize, specialize, prune, reuse, and repair its own structure as its experience changes?
 
 _Embodied Intelligence deals with problem of perception, internal representations and control. I'm figuring how to define it well._
+
+- **Life and self organizing systems**: What do we mean by life? Self Propagation and Evolution are key. Can we recognize alt-life? not made up of cells and DNA? What are order parameters for life? Phase Transitions are different from ordinary thermodynamic response. It’s one way natural systems “Spontaneously form” order. Order is robust due to mutual reinforcement. What properties and processes are easy to obtain through physical dynamics alone? How about having a smallest physical system which mimics tiniest organism we know of maybe virus or amoeba?
+
+- **AI for science**: What are the fundamental things I’m trying to accomplish? How do I accomplish it with machines? AI Scientist(Autonomous Scientific Research). Math Discovery. a self-replicating system that enables a small set of machine tools to produce other tools using locally available raw materials.
