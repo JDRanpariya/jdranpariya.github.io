@@ -1,6 +1,6 @@
 # information, compression and learning dynamics
 
-I'm interested in understanding and reverse engineering intelligence to build better robots. Intelligence is very hard to define, but I like Levin's idea of [diverse intelligence](https://www.youtube.com/watch?v=Or_3tlEOLj4).
+I'm interested in understanding and reverse engineering intelligence to build better robots. Intelligence is very hard to define, but I like Levin's idea of [diverse intelligence](https://www.youtube.com/watch?v=Or_3tlEOLj4) and [intelligence without brains](https://www.youtube.com/watch?v=RpwW9Lw2Ku4).
 
 Anything you can formalize can be simulated but does substrate only matters for cost? carrying tradeoff for energy, time, parallelism, and noise tolerance or has other effects?
 
