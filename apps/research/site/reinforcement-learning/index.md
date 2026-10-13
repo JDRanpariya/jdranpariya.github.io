@@ -7,12 +7,17 @@ canonical: https://research.jdranpariya.com/reinforcement-learning/
 pageKind: rl
 interestOverview: true
 status: published
-lastUpdated: 2026-10-12
+lastUpdated: 2026-10-13
 ---
 
 # Reinforcement learning interests
 
 ## Areas of interest
+
+- **[Problem formulation](#problem-formulation)**
+  - Markov decision processes and their variants
+  - Partially observable MDPs
+  - Predictive representations
 
 - **[Safety and trust](#safety-and-trust)**
   - Safe RL and constrained MDPs
@@ -44,6 +49,18 @@ lastUpdated: 2026-10-12
 - [How to Train Your Robot with Deep Reinforcement Learning: Lessons We've Learned](https://arxiv.org/abs/2102.02915), Julian Ibarz et al., 2021, International Journal of Robotics Research.
 - [A Tour of Reinforcement Learning: The View from Continuous Control](https://arxiv.org/abs/1806.09460), Benjamin Recht, 2018, arXiv preprint.
 - [The Alberta Plan for AI Research](https://arxiv.org/abs/2208.11173), Richard S. Sutton et al., 2022, arXiv preprint.
+
+## Problem formulation {#problem-formulation}
+
+- Markov decision processes and their variants
+  - [A Unifying Framework for Reinforcement Learning and Planning](https://arxiv.org/abs/2006.15009), Thomas M. Moerland et al., 2022, Frontiers in Artificial Intelligence.
+  - [Robust Markov Decision Processes: A Place Where AI and Formal Methods Meet](https://arxiv.org/abs/2411.11451), Marnix Suilen et al., 2024, Principles of Verification (LNCS).
+  - [A Survey of Applications of Markov Decision Processes](https://doi.org/10.1057/jors.1993.181), D. J. White, 1993, Journal of the Operational Research Society 44(11).
+- Partially observable MDPs
+  - [Partially Observable Markov Decision Processes in Robotics: A Survey](https://arxiv.org/abs/2209.10342), Mikko Lauri et al., 2023, IEEE Transactions on Robotics 39(1).
+- Predictive representations
+  - [Predictive Representations: Building Blocks of Intelligence](https://doi.org/10.1162/neco_a_01705), Wilka Carvalho et al., 2024, Neural Computation 36(11).
+  - [The Successor Representation: Its Computational Logic and Neural Substrates](https://doi.org/10.1523/JNEUROSCI.0151-18.2018), Samuel J. Gershman, 2018, The Journal of Neuroscience 38(33).
 
 ## Safety and trust {#safety-and-trust}
 

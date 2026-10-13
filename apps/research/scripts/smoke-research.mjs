@@ -41,6 +41,8 @@ for (const text of [
   "Start here",
   "Safety and trust",
   "Learning on real systems",
+  "Problem formulation",
+  "Predictive Representations: Building Blocks of Intelligence",
   "Differentiable simulation",
   "Causality in robotics",
   "Continual adaptation",
@@ -61,7 +63,7 @@ const rlSource = readFileSync(
 const paperUrls = [...rlSource.matchAll(/^\s*- \[[^\]]+\]\((https?:\/\/[^)]+)\)/gmu)].map(
   (match) => match[1]
 );
-if (paperUrls.length !== 76) throw new Error("Expected all 76 RL reading links.");
+if (paperUrls.length !== 82) throw new Error("Expected all 82 RL reading links.");
 for (const url of paperUrls) {
   if (!rl.includes(`href="${url.replaceAll("&", "&amp;")}"`))
     throw new Error(`RL paper link missing from public HTML: ${url}`);
@@ -152,7 +154,7 @@ for (const html of [home, index, rl, neuroai, bioinspired, aiscience]) {
   }
 }
 for (const [label, html, count] of [
-  ["RL", rl, 4],
+  ["RL", rl, 5],
   ["NeuroAI", neuroai, 4],
   ["Bio-inspired", bioinspired, 5],
   ["AI for science", aiscience, 6],
