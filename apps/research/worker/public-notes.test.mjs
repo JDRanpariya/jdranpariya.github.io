@@ -32,7 +32,9 @@ test("RL interests are ordinary public Markdown with all 82 supplied reading lin
   expect(section).toContain("### Partially observable MDPs");
   expect(section).toContain("### Predictive representations");
   expect(source.match(/^### /gmu)).toHaveLength(13);
-  expect(source).toContain("#### Differentiable simulation {#differentiable-simulation}");
+  expect(source).not.toMatch(/^#### /mu);
+  expect(source).toContain("https://arxiv.org/abs/2508.09128");
+  expect(source).toContain("https://arxiv.org/abs/2407.05560");
   expect(source).toContain("### Causality in robotics {#causality-in-robotics}");
   expect(source).not.toContain("<details");
   expect(source).not.toContain("05b-rl-review-papers.md");

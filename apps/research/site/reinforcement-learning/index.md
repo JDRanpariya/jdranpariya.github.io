@@ -71,9 +71,6 @@ lastUpdated: 2026-10-13
 - [SafeMPO: Constrained Reinforcement Learning with Probabilistic Incremental Improvement](https://proceedings.iclr.cc/paper_files/paper/2026/file/1fa0c4e5a7e189729230d018b229abc7-Paper-Conference.pdf), Alexander Mattick et al., 2026, ICLR 2026.
 - [Constrained Reinforcement Learning Using Successor Representations](https://openreview.net/forum?id=6zUq7knzwA), Michael Girstl et al., 2026, Transactions on Machine Learning Research.
 - [ActSafe: Active Exploration with Safety Constraints for Reinforcement Learning](https://arxiv.org/abs/2410.09486), Yarden As et al., 2024, arXiv preprint.
-
-#### Safety filters and certificates {#safety-filters-and-certificates}
-
 - [A Review On Safe Reinforcement Learning Using Lyapunov and Barrier Functions](https://arxiv.org/abs/2508.09128), Dhruv Singh Kushwaha et al., 2025, Artificial Intelligence Review (2026).
 - [The Safety Filter: A Unified View of Safety-Critical Control in Autonomous Systems](https://arxiv.org/abs/2309.05837), Kai-Chieh Hsu et al., 2024, Annual Review of Control, Robotics, and Autonomous Systems 7.
 - [Safe Learning in Robotics: From Learning-Based Control to Safe Reinforcement Learning](https://arxiv.org/abs/2108.06266), Lukas Brunke et al., 2022, Annual Review of Control, Robotics, and Autonomous Systems 5.
@@ -96,17 +93,12 @@ lastUpdated: 2026-10-13
 
 ### Catastrophic forgetting and loss of plasticity {#catastrophic-forgetting-and-loss-of-plasticity}
 
-#### Continual RL {#continual-rl}
-
 - [A Survey of Continual Reinforcement Learning](https://arxiv.org/abs/2506.21872), Chaofan Pan et al., 2025, arXiv preprint.
 - [Advancements and Challenges in Continual Reinforcement Learning: A Comprehensive Review](https://arxiv.org/abs/2506.21899), Amara Zuffer et al., 2025, arXiv preprint.
 - [Towards Continual Reinforcement Learning: A Review and Perspectives](https://arxiv.org/abs/2012.13490), Khimya Khetarpal et al., 2022, Journal of Artificial Intelligence Research (arXiv 2020).
 - [Position: Lifetime tuning is incompatible with continual reinforcement learning](https://arxiv.org/abs/2404.02113), Golnaz Mesbahi et al., 2024, ICML 2025 (position track).
 - [Continual Learning as Computationally Constrained Reinforcement Learning](https://arxiv.org/abs/2307.04345), Saurabh Kumar et al., 2023, arXiv preprint.
 - [Research plan: Continual robot learning solely using onboard computers](https://drive.google.com/file/d/1Y7VoWPazBIO3HHndKtxeNZJRP5BqEN9R/view), A. Rupam Mahmood, 2026, CCAI renewal proposal (shared on Drive).
-
-#### Plasticity and distribution shift {#plasticity-and-distribution-shift}
-
 - [Plasticity Loss in Deep Reinforcement Learning: A Survey](https://arxiv.org/abs/2411.04832), Timo Klein et al., 2024, arXiv preprint.
 - [A Unified Causal-Origin Taxonomy of Distributional Shifts in Reinforcement Learning](https://arxiv.org/abs/2606.16933), Ardianto Wibowo et al., 2026, arXiv preprint.
 - [Loss of plasticity in deep continual learning](https://doi.org/10.1038/s41586-024-07711-7), Shibhansh Dohare et al., 2024, Nature.
@@ -119,18 +111,12 @@ lastUpdated: 2026-10-13
 - [Guided Reinforcement Learning: A Review and Evaluation for Efficient and Effective Real-World Robotics](https://doi.org/10.1109/mra.2022.3207664), Julian Eßer et al., 2023, IEEE Robotics & Automation Magazine.
 - [SERL: A Software Suite for Sample-Efficient Robotic Reinforcement Learning](https://arxiv.org/abs/2401.16013), Jianlan Luo et al., 2024, ICRA 2024.
 - [A Walk in the Park: Learning to Walk in 20 Minutes With Model-Free Reinforcement Learning](https://arxiv.org/abs/2208.07860), Laura Smith et al., 2022, arXiv preprint.
-
-#### Sim-to-real and system identification {#sim-to-real-and-system-identification}
-
 - [The Reality Gap in Robotics: Challenges, Solutions, and Best Practices](https://arxiv.org/abs/2510.20808), Elie Aljalbout et al., 2025, Annual Review of Control, Robotics, and Autonomous Systems.
 - [Robot Model Identification and Learning: A Modern Perspective](https://doi.org/10.1146/annurev-control-061523-102310), Lee et al., 2024, Annual Review of Control, Robotics, and Autonomous Systems.
 - [SPiDR: A Simple Approach for Zero-Shot Safety in Sim-to-Real Transfer](https://arxiv.org/abs/2509.18648), Yarden As et al., 2025, arXiv preprint.
 - [Teaching robots to build simulations of themselves](https://www.nature.com/articles/s42256-025-01006-w), Yuhang Hu et al., 2025, Nature Machine Intelligence.
 - [Generative Digital Twins for Real2Sim and Sim2Real Transfer in Robotics (ICRA 2026)](https://awesomedigitaltwin.github.io/2026_ICRA.html), workshop.
 - [SimR: Simulation in Robotics (ICRA 2026)](https://cs.pomona.edu/~ajc/tutorials/simr-icra2026/), tutorial.
-
-#### Differentiable simulation {#differentiable-simulation}
-
 - [A Review of Differentiable Simulators](https://arxiv.org/abs/2407.05560), Rhys Newbury et al., 2024, IEEE Access.
 - [Do Differentiable Simulators Give Better Policy Gradients?](https://arxiv.org/pdf/2202.00817), H. J. Terry Suh et al., 2022, ICML 2022.
 - [gradSim: Differentiable simulation for system identification and visuomotor control](https://gradsim.github.io/), Krishna Murthy Jatavallabhula et al., 2021, ICLR 2021.
