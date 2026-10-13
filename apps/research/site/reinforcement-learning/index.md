@@ -21,21 +21,15 @@ lastUpdated: 2026-10-13
 
 - **[Safety and trust](#safety-and-trust)**
   - Safe RL and constrained MDPs
-  - Safety filters and certificates
   - Verification
   - Explainability and interpretability
 
-- **[Learning on real systems](#learning-on-real-systems)**
+- **[Continual adaptation on real robots](#continual-adaptation)**
+  - catastrophic forgetting and loss of plasticity
   - Sample efficiency and priors
-  - Sim-to-real and system identification
-  - Differentiable simulation
   - Causality in robotics
   - World models and model-based RL
   - Real-time learning, delays and partial observability
-
-- **[Continual adaptation](#continual-adaptation)**
-  - Continual RL
-  - Plasticity and distribution shift
 
 - **[Temporal abstraction and credit assignment](#temporal-abstraction-and-credit-assignment)**
   - Hierarchical RL and skills
@@ -52,15 +46,20 @@ lastUpdated: 2026-10-13
 
 ## Problem formulation {#problem-formulation}
 
-- Markov decision processes and their variants
-  - [A Unifying Framework for Reinforcement Learning and Planning](https://arxiv.org/abs/2006.15009), Thomas M. Moerland et al., 2022, Frontiers in Artificial Intelligence.
-  - [Robust Markov Decision Processes: A Place Where AI and Formal Methods Meet](https://arxiv.org/abs/2411.11451), Marnix Suilen et al., 2024, Principles of Verification (LNCS).
-  - [A Survey of Applications of Markov Decision Processes](https://doi.org/10.1057/jors.1993.181), D. J. White, 1993, Journal of the Operational Research Society 44(11).
-- Partially observable MDPs
-  - [Partially Observable Markov Decision Processes in Robotics: A Survey](https://arxiv.org/abs/2209.10342), Mikko Lauri et al., 2023, IEEE Transactions on Robotics 39(1).
-- Predictive representations
-  - [Predictive Representations: Building Blocks of Intelligence](https://doi.org/10.1162/neco_a_01705), Wilka Carvalho et al., 2024, Neural Computation 36(11).
-  - [The Successor Representation: Its Computational Logic and Neural Substrates](https://doi.org/10.1523/JNEUROSCI.0151-18.2018), Samuel J. Gershman, 2018, The Journal of Neuroscience 38(33).
+### Markov decision processes and their variants
+
+- [A Unifying Framework for Reinforcement Learning and Planning](https://arxiv.org/abs/2006.15009), Thomas M. Moerland et al., 2022, Frontiers in Artificial Intelligence.
+- [Robust Markov Decision Processes: A Place Where AI and Formal Methods Meet](https://arxiv.org/abs/2411.11451), Marnix Suilen et al., 2024, Principles of Verification (LNCS).
+- [A Survey of Applications of Markov Decision Processes](https://doi.org/10.1057/jors.1993.181), D. J. White, 1993, Journal of the Operational Research Society 44(11).
+
+### Partially observable MDPs
+
+- [Partially Observable Markov Decision Processes in Robotics: A Survey](https://arxiv.org/abs/2209.10342), Mikko Lauri et al., 2023, IEEE Transactions on Robotics 39(1).
+
+### Predictive representations
+
+- [Predictive Representations: Building Blocks of Intelligence](https://doi.org/10.1162/neco_a_01705), Wilka Carvalho et al., 2024, Neural Computation 36(11).
+- [The Successor Representation: Its Computational Logic and Neural Substrates](https://doi.org/10.1523/JNEUROSCI.0151-18.2018), Samuel J. Gershman, 2018, The Journal of Neuroscience 38(33).
 
 ## Safety and trust {#safety-and-trust}
 
@@ -73,7 +72,7 @@ lastUpdated: 2026-10-13
 - [Constrained Reinforcement Learning Using Successor Representations](https://openreview.net/forum?id=6zUq7knzwA), Michael Girstl et al., 2026, Transactions on Machine Learning Research.
 - [ActSafe: Active Exploration with Safety Constraints for Reinforcement Learning](https://arxiv.org/abs/2410.09486), Yarden As et al., 2024, arXiv preprint.
 
-### Safety filters and certificates {#safety-filters-and-certificates}
+#### Safety filters and certificates {#safety-filters-and-certificates}
 
 - [A Review On Safe Reinforcement Learning Using Lyapunov and Barrier Functions](https://arxiv.org/abs/2508.09128), Dhruv Singh Kushwaha et al., 2025, Artificial Intelligence Review (2026).
 - [The Safety Filter: A Unified View of Safety-Critical Control in Autonomous Systems](https://arxiv.org/abs/2309.05837), Kai-Chieh Hsu et al., 2024, Annual Review of Control, Robotics, and Autonomous Systems 7.
@@ -93,7 +92,25 @@ lastUpdated: 2026-10-13
 - [A Survey on Interpretable Reinforcement Learning](https://doi.org/10.1007/s10994-024-06543-w), Claire Glanois et al., 2024, Machine Learning (arXiv 2112.13112).
 - [SINDy-RL: Interpretable and Efficient Model-Based Reinforcement Learning](https://arxiv.org/abs/2403.09110), Nicholas Zolman et al., 2024, Nature Communications (2025).
 
-## Learning on real systems {#learning-on-real-systems}
+## Continual adaptation on real robots {#continual-adaptation}
+
+### Catastrophic forgetting and loss of plasticity {#catastrophic-forgetting-and-loss-of-plasticity}
+
+#### Continual RL {#continual-rl}
+
+- [A Survey of Continual Reinforcement Learning](https://arxiv.org/abs/2506.21872), Chaofan Pan et al., 2025, arXiv preprint.
+- [Advancements and Challenges in Continual Reinforcement Learning: A Comprehensive Review](https://arxiv.org/abs/2506.21899), Amara Zuffer et al., 2025, arXiv preprint.
+- [Towards Continual Reinforcement Learning: A Review and Perspectives](https://arxiv.org/abs/2012.13490), Khimya Khetarpal et al., 2022, Journal of Artificial Intelligence Research (arXiv 2020).
+- [Position: Lifetime tuning is incompatible with continual reinforcement learning](https://arxiv.org/abs/2404.02113), Golnaz Mesbahi et al., 2024, ICML 2025 (position track).
+- [Continual Learning as Computationally Constrained Reinforcement Learning](https://arxiv.org/abs/2307.04345), Saurabh Kumar et al., 2023, arXiv preprint.
+- [Research plan: Continual robot learning solely using onboard computers](https://drive.google.com/file/d/1Y7VoWPazBIO3HHndKtxeNZJRP5BqEN9R/view), A. Rupam Mahmood, 2026, CCAI renewal proposal (shared on Drive).
+
+#### Plasticity and distribution shift {#plasticity-and-distribution-shift}
+
+- [Plasticity Loss in Deep Reinforcement Learning: A Survey](https://arxiv.org/abs/2411.04832), Timo Klein et al., 2024, arXiv preprint.
+- [A Unified Causal-Origin Taxonomy of Distributional Shifts in Reinforcement Learning](https://arxiv.org/abs/2606.16933), Ardianto Wibowo et al., 2026, arXiv preprint.
+- [Loss of plasticity in deep continual learning](https://doi.org/10.1038/s41586-024-07711-7), Shibhansh Dohare et al., 2024, Nature.
+- [Plasticity as the Mirror of Empowerment](https://arxiv.org/abs/2505.10361), David Abel et al., 2025, NeurIPS 2025.
 
 ### Sample efficiency and priors {#sample-efficiency-and-priors}
 
@@ -103,7 +120,7 @@ lastUpdated: 2026-10-13
 - [SERL: A Software Suite for Sample-Efficient Robotic Reinforcement Learning](https://arxiv.org/abs/2401.16013), Jianlan Luo et al., 2024, ICRA 2024.
 - [A Walk in the Park: Learning to Walk in 20 Minutes With Model-Free Reinforcement Learning](https://arxiv.org/abs/2208.07860), Laura Smith et al., 2022, arXiv preprint.
 
-### Sim-to-real and system identification {#sim-to-real-and-system-identification}
+#### Sim-to-real and system identification {#sim-to-real-and-system-identification}
 
 - [The Reality Gap in Robotics: Challenges, Solutions, and Best Practices](https://arxiv.org/abs/2510.20808), Elie Aljalbout et al., 2025, Annual Review of Control, Robotics, and Autonomous Systems.
 - [Robot Model Identification and Learning: A Modern Perspective](https://doi.org/10.1146/annurev-control-061523-102310), Lee et al., 2024, Annual Review of Control, Robotics, and Autonomous Systems.
@@ -112,7 +129,7 @@ lastUpdated: 2026-10-13
 - [Generative Digital Twins for Real2Sim and Sim2Real Transfer in Robotics (ICRA 2026)](https://awesomedigitaltwin.github.io/2026_ICRA.html), workshop.
 - [SimR: Simulation in Robotics (ICRA 2026)](https://cs.pomona.edu/~ajc/tutorials/simr-icra2026/), tutorial.
 
-### Differentiable simulation {#differentiable-simulation}
+#### Differentiable simulation {#differentiable-simulation}
 
 - [A Review of Differentiable Simulators](https://arxiv.org/abs/2407.05560), Rhys Newbury et al., 2024, IEEE Access.
 - [Do Differentiable Simulators Give Better Policy Gradients?](https://arxiv.org/pdf/2202.00817), H. J. Terry Suh et al., 2022, ICML 2022.
@@ -144,24 +161,6 @@ lastUpdated: 2026-10-13
 - [Partially Observable Markov Decision Processes in Robotics: A Survey](https://arxiv.org/abs/2209.10342), Mikko Lauri et al., 2022, IEEE Transactions on Robotics.
 - [Real-Time Reinforcement Learning](https://arxiv.org/abs/1911.04448), Simon Ramstedt et al., 2019, NeurIPS 2019.
 - [Streaming Deep Reinforcement Learning Finally Works](https://arxiv.org/abs/2410.14606), Mohamed Elsayed et al., 2024, arXiv preprint.
-
-## Continual adaptation {#continual-adaptation}
-
-### Continual RL {#continual-rl}
-
-- [A Survey of Continual Reinforcement Learning](https://arxiv.org/abs/2506.21872), Chaofan Pan et al., 2025, arXiv preprint.
-- [Advancements and Challenges in Continual Reinforcement Learning: A Comprehensive Review](https://arxiv.org/abs/2506.21899), Amara Zuffer et al., 2025, arXiv preprint.
-- [Towards Continual Reinforcement Learning: A Review and Perspectives](https://arxiv.org/abs/2012.13490), Khimya Khetarpal et al., 2022, Journal of Artificial Intelligence Research (arXiv 2020).
-- [Position: Lifetime tuning is incompatible with continual reinforcement learning](https://arxiv.org/abs/2404.02113), Golnaz Mesbahi et al., 2024, ICML 2025 (position track).
-- [Continual Learning as Computationally Constrained Reinforcement Learning](https://arxiv.org/abs/2307.04345), Saurabh Kumar et al., 2023, arXiv preprint.
-- [Research plan: Continual robot learning solely using onboard computers](https://drive.google.com/file/d/1Y7VoWPazBIO3HHndKtxeNZJRP5BqEN9R/view), A. Rupam Mahmood, 2026, CCAI renewal proposal (shared on Drive).
-
-### Plasticity and distribution shift {#plasticity-and-distribution-shift}
-
-- [Plasticity Loss in Deep Reinforcement Learning: A Survey](https://arxiv.org/abs/2411.04832), Timo Klein et al., 2024, arXiv preprint.
-- [A Unified Causal-Origin Taxonomy of Distributional Shifts in Reinforcement Learning](https://arxiv.org/abs/2606.16933), Ardianto Wibowo et al., 2026, arXiv preprint.
-- [Loss of plasticity in deep continual learning](https://doi.org/10.1038/s41586-024-07711-7), Shibhansh Dohare et al., 2024, Nature.
-- [Plasticity as the Mirror of Empowerment](https://arxiv.org/abs/2505.10361), David Abel et al., 2025, NeurIPS 2025.
 
 ## Temporal abstraction and credit assignment {#temporal-abstraction-and-credit-assignment}
 

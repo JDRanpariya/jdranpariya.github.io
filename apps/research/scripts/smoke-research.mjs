@@ -39,10 +39,11 @@ const rl = await (await request("/reinforcement-learning/", 200)).text();
 for (const text of [
   "Reinforcement learning interests",
   "Start here",
-  "Safety and trust",
-  "Learning on real systems",
   "Problem formulation",
   "Predictive Representations: Building Blocks of Intelligence",
+  "Safety and trust",
+  "Continual adaptation on real robots",
+  "Catastrophic forgetting and loss of plasticity",
   "Differentiable simulation",
   "Causality in robotics",
   "Continual adaptation",
@@ -154,7 +155,7 @@ for (const html of [home, index, rl, neuroai, bioinspired, aiscience]) {
   }
 }
 for (const [label, html, count] of [
-  ["RL", rl, 5],
+  ["RL", rl, 4],
   ["NeuroAI", neuroai, 4],
   ["Bio-inspired", bioinspired, 5],
   ["AI for science", aiscience, 6],

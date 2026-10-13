@@ -8,6 +8,25 @@ import { explicitAutoLinks } from "./markdown-links.mjs";
 import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
 import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
 import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
+import postcss from "postcss";
+
+test("research overview spacing uses the same responsive gap-based grid in site and preview", async () => {
+  const stylesheet = postcss.parse(await readFile("apps/research/client/research.css", "utf8"));
+  const selector = ".research-interest-overview > ul:first-of-type";
+  const overview = [];
+  stylesheet.walkRules(selector, (rule) => overview.push(rule));
+  expect(overview).toHaveLength(1);
+  const utilities = overview[0].nodes.find((node) => node.name === "apply").params.split(/\s+/);
+  for (const utility of ["grid", "grid-cols-1", "sm:grid-cols-2", "gap-x-10", "gap-y-6"])
+    expect(utilities).toContain(utility);
+  stylesheet.walkRules((rule) => {
+    if (!rule.selector.includes("research-interest-overview")) return;
+    for (const node of rule.nodes)
+      if (node.type === "decl") expect(node.prop).not.toMatch(/^columns?$|^column-/);
+  });
+  const previewBuilder = await readFile("scripts/build-admin-preview.mjs", "utf8");
+  expect(previewBuilder).toContain('readFile("apps/research/client/research.css", "utf8")');
+});
 
 test("every public research reading page is editable with a correct URL, tree label and shared preview", async () => {
   const sources = (await readdir("apps/research/site", { recursive: true }))

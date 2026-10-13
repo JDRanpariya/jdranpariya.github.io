@@ -536,8 +536,16 @@ a:hover {
     @apply mt-8 mb-3 font-body text-base font-semibold leading-7 text-ink;
   }
 
+  .research-reading-body h4 {
+    @apply mt-6 mb-3 font-body text-sm font-semibold leading-6 text-ink;
+  }
+
   .research-reading-body ul {
-    @apply my-4 list-disc space-y-4 pl-6 marker:text-accent;
+    @apply my-4 list-disc pl-6 marker:text-accent;
+  }
+
+  .research-reading-body li + li {
+    margin-top: 1rem;
   }
 
   .research-reading-body a {
@@ -545,13 +553,16 @@ a:hover {
   }
 
   .research-interest-overview > ul:first-of-type {
-    @apply my-6 list-none gap-x-10 space-y-0 pl-0;
-    columns: 16rem 2;
+    @apply my-6 grid grid-cols-1 items-start gap-x-10 gap-y-6 list-none pl-0 sm:grid-cols-2;
   }
 
   .research-interest-overview > ul:first-of-type > li {
-    @apply break-inside-avoid text-sm leading-relaxed;
-    margin-block: 0 1.5rem;
+    @apply min-w-0 text-sm leading-relaxed;
+    margin-block: 0;
+  }
+
+  .research-interest-overview > ul:first-of-type > li + li {
+    margin-block: 0;
   }
 
   .research-interest-overview > ul:first-of-type > li > p {
@@ -563,11 +574,16 @@ a:hover {
   }
 
   .research-interest-overview > ul:first-of-type ul {
-    @apply mt-2 mb-0 list-disc space-y-1 pl-5;
+    @apply mt-2 mb-0 list-disc pl-5;
+  }
+
+  .research-interest-overview > ul:first-of-type ul > li + li {
+    margin-top: 0.25rem;
   }
 
   .research-reading-body h2,
-  .research-reading-body h3 {
+  .research-reading-body h3,
+  .research-reading-body h4 {
     @apply scroll-mt-6;
   }
 

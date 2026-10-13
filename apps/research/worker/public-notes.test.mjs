@@ -21,24 +21,57 @@ test("RL interests are ordinary public Markdown with all 82 supplied reading lin
   expect(source).toContain("permalink: /reinforcement-learning/index.html");
   expect(source).toContain("status: published");
   expect(source.match(/^\s*- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu)).toHaveLength(82);
-  expect(source.match(/^## /gmu)).toHaveLength(8);
+  expect(source.match(/^## /gmu)).toHaveLength(7);
   const problem = source.indexOf("## Problem formulation {#problem-formulation}");
   const safety = source.indexOf("## Safety and trust {#safety-and-trust}");
   expect(problem).toBeGreaterThan(-1);
   expect(safety).toBeGreaterThan(problem);
   const section = source.slice(problem, safety);
-  expect(section.match(/^  - \[/gmu)).toHaveLength(6);
-  expect(section).toContain("- Markov decision processes and their variants");
-  expect(section).toContain("- Partially observable MDPs");
-  expect(section).toContain("- Predictive representations");
-  expect(source.match(/^### /gmu)).toHaveLength(14);
-  expect(source).toContain("### Differentiable simulation {#differentiable-simulation}");
+  expect(section.match(/^- \[/gmu)).toHaveLength(6);
+  expect(section).toContain("### Markov decision processes and their variants");
+  expect(section).toContain("### Partially observable MDPs");
+  expect(section).toContain("### Predictive representations");
+  expect(source.match(/^### /gmu)).toHaveLength(13);
+  expect(source).toContain("#### Differentiable simulation {#differentiable-simulation}");
   expect(source).toContain("### Causality in robotics {#causality-in-robotics}");
   expect(source).not.toContain("<details");
   expect(source).not.toContain("05b-rl-review-papers.md");
   expect(source).not.toContain("117 checked reviews");
   expect(source).not.toContain("page:skip");
   expect(source).not.toContain("noindex: true");
+});
+
+test("RL body follows the authored overview groups and subtopic order", () => {
+  const source = readFileSync(
+    new URL("../site/reinforcement-learning/index.md", import.meta.url),
+    "utf8"
+  );
+  const overview = source.split("## Areas of interest\n")[1].split("## Start here")[0];
+  const groups = [
+    ...overview.matchAll(
+      /^- \*\*\[([^\]]+)\]\(#([^)]+)\)\*\*\n([\s\S]*?)(?=^- \*\*|(?![\s\S]))/gmu
+    ),
+  ];
+  let previous = source.indexOf("## Start here");
+  for (const [, title, id, nested] of groups) {
+    const position = source.indexOf(`## ${title} {#${id}}`);
+    expect(position).toBeGreaterThan(previous);
+    const end = source.indexOf("\n## ", position + 1);
+    const section = source.slice(position, end < 0 ? undefined : end);
+    const labels = [...nested.matchAll(/^  - (.+)$/gmu)].map((match) => match[1].toLowerCase());
+    const headings = [...section.matchAll(/^### (.+?)(?: \{#[^}]+\})?$/gmu)].map((match) =>
+      match[1].toLowerCase()
+    );
+    expect(headings).toEqual(labels);
+    previous = position;
+  }
+  expect(groups.map((group) => group[1])).toEqual([
+    "Problem formulation",
+    "Safety and trust",
+    "Continual adaptation on real robots",
+    "Temporal abstraction and credit assignment",
+  ]);
+  expect(source).not.toContain("## Learning on real systems");
 });
 
 test("NeuroAI interests are ordinary public Markdown with all 48 supplied paper links", () => {
@@ -68,7 +101,7 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
 });
 
 test.each([
-  ["reinforcement-learning", 17, 5],
+  ["reinforcement-learning", 13, 4],
   ["neuro-ai", 14, 4],
   ["bio-inspired", 15, 5],
   ["ai-for-science", 14, 6],
