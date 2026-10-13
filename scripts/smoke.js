@@ -50,6 +50,23 @@ for (const p of required) {
   }
 }
 
+// Research is a separate site: desktop, mobile, and footer links keep this page open.
+const homepage = readFileSync(join(BUILD, "index.html"), "utf8");
+const researchLinks = [
+  ...homepage.matchAll(/<a\b[^>]*href="https:\/\/research\.jdranpariya\.com\/"[^>]*>/gu),
+].map((match) => match[0]);
+if (
+  researchLinks.length >= 3 &&
+  researchLinks.every((link) => {
+    const rel = link.match(/\brel="([^"]*)"/u)?.[1].split(/\s+/u) || [];
+    return (
+      /\btarget="_blank"/u.test(link) && rel.includes("noopener") && rel.includes("noreferrer")
+    );
+  })
+)
+  ok("desktop, mobile, and footer Research links open safely in a new tab");
+else fail("Research navigation links must use target=_blank and rel=noopener noreferrer");
+
 // Markdown components need to survive both Tailwind's content scan and PurgeCSS.
 const stylesheet = readFileSync(join(BUILD, "css/style.css"), "utf8");
 if (stylesheet.includes(".photo-gallery") && stylesheet.includes("scroll-snap-type:x proximity"))
