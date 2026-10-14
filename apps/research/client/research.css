@@ -663,8 +663,11 @@ a:hover {
   }
 }
 
+/* Keep prose links discoverable before hover in documents and note panes. */
+.research-note-body a,
+.research-reading-body a,
 .research-note-content a {
-  color: var(--ink);
+  color: var(--accent);
   text-decoration-line: underline;
   text-decoration-color: var(--accent);
   text-decoration-thickness: 1.5px;
