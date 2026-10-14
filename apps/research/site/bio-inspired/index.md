@@ -14,6 +14,9 @@ lastUpdated: 2026-10-12
 
 ## Areas of interest
 
+- **[Origin and Emergence of Life](#origin-and-emergence-of-life)**
+  - cooperative symbiogenesis
+
 - **[Evolutionary robotics and co-design](#evolutionary-robotics-and-co-design)**
   - Body–brain co-design
   - Evolving real robots
