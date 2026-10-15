@@ -34,8 +34,7 @@ export function Preview({ current, files, manifest, imageMap, onOpen, publicUrl,
         imageMap
       );
       footnotes.current?.();
-      root.className =
-        result.research && !result.researchReading ? "admin-preview-page admin-research-page" : "";
+      root.className = "";
       root.innerHTML = html;
       footnotes.current = initPostFootnotes(doc, doc.defaultView);
       doc.documentElement.scrollTop = scroll;

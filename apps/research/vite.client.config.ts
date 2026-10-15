@@ -10,9 +10,9 @@ export default defineConfig({
     copyPublicDir: false,
     cssCodeSplit: false,
     rollupOptions: {
-      input: "client/main.tsx",
+      input: { research: "client/main.tsx", index: "client/index.ts" },
       output: {
-        entryFileNames: "research.js",
+        entryFileNames: "[name].js",
         chunkFileNames: "[name]-[hash].js",
         assetFileNames: (asset) =>
           asset.name?.endsWith(".css") ? "research.css" : "[name][extname]",

@@ -1,36 +1,39 @@
 import { readFileSync } from "node:fs";
 import { copyResearchMedia } from "./lib/research-media.mjs";
-import { researchMarkdown } from "./lib/note-authoring.mjs";
+import { noteHtml, parseNote } from "./lib/note-authoring.mjs";
+import { loadPublicNotes } from "./lib/public-notes.mjs";
 import { researchReadingPages, researchReadingPageKinds } from "./lib/reading-pages.mjs";
 
-export default function configureResearchSite(eleventyConfig) {
-  eleventyConfig.setLibrary("md", researchMarkdown);
+export default async function configureResearchSite(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ public: "/" });
-  const homeHtml = readFileSync(new URL("./.cache/research-home.html", import.meta.url), "utf8");
-  const notes = JSON.parse(
-    readFileSync(new URL("./.cache/research-notes.json", import.meta.url), "utf8")
-  );
-  const readingDocuments = JSON.parse(
-    readFileSync(new URL("./.cache/research-reading-pages.json", import.meta.url), "utf8")
-  );
+  eleventyConfig.addPassthroughCopy({ "../../assets/js/codex-notes.js": "/assets/codex-notes.js" });
+  const notes = await loadPublicNotes();
+  const home = readFileSync(new URL("./content/research-home.md", import.meta.url), "utf8");
+  const routes = [
+    { slug: "research", url: "/", title: home.match(/^#\s+(.+)$/m)?.[1], body: home },
+    ...notes,
+  ];
+  for (const page of researchReadingPages) {
+    const { body } = parseNote(readFileSync(page.path.replace("apps/research/", ""), "utf8"));
+    routes.push({ slug: page.slug, url: page.route, title: page.label, body });
+  }
+  const homeHtml = noteHtml(home, {}, routes);
+  for (const note of notes) note.html = noteHtml(note.body, note, routes);
+  // Eleventy owns the page HTML; one Markdown renderer also serves admin drafts.
+  eleventyConfig.setLibrary("md", { render: (source) => noteHtml(source, {}, routes) });
   copyResearchMedia(
     eleventyConfig,
-    [
-      homeHtml,
-      ...notes.map((note) => note.pageHtml || note.html || ""),
-      ...Object.values(readingDocuments).map((document) => document.pageHtml),
-    ].join("\n")
+    [homeHtml, ...routes.map((note) => noteHtml(note.body, note, routes))].join("\n")
   );
   eleventyConfig.addTransform("xml-declaration", (content, outputPath) =>
     outputPath?.endsWith(".xml") ? content.trimStart() : content
   );
   eleventyConfig.addGlobalData("researchHomeHtml", homeHtml);
   eleventyConfig.addGlobalData(
-    "researchHomeJson",
-    readFileSync(new URL("./.cache/research-home.json", import.meta.url), "utf8")
+    "researchNoteRoutes",
+    JSON.stringify(routes.map(({ slug, url }) => ({ slug, url }))).replaceAll("<", "\\u003c")
   );
   eleventyConfig.addGlobalData("researchNotes", notes);
-  eleventyConfig.addGlobalData("researchReadingDocuments", readingDocuments);
   eleventyConfig.addGlobalData("researchReadingPages", researchReadingPages);
   eleventyConfig.addGlobalData("researchReadingPageKinds", researchReadingPageKinds);
   eleventyConfig.addCollection("publicPages", (collection) =>

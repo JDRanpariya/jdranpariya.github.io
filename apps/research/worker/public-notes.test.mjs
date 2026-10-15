@@ -138,7 +138,10 @@ test("AI for science preserves all 157 supplied links without internal build not
 
 test("shared public navigation is generated from the same editable-page registry", () => {
   const source = readFileSync(new URL("../site/_includes/public.njk", import.meta.url), "utf8");
-  const html = nunjucks.renderString(source.replace(/^---[\s\S]*?---/u, ""), {
+  const env = new nunjucks.Environment(new nunjucks.FileSystemLoader("site/_includes"), {
+    autoescape: true,
+  });
+  const html = env.renderString(source.replace(/^---[\s\S]*?---/u, ""), {
     pageKind: "aiscience",
     preview: true,
     content: "<h1>AI for science interests</h1>",
@@ -150,13 +153,13 @@ test("shared public navigation is generated from the same editable-page registry
   expect(home).toBeGreaterThan(-1);
   let previous = home;
   for (const page of researchReadingPages) {
-    const position = html.indexOf(`>${page.label}</a>`);
+    const position = html.search(new RegExp(`>\\s*${page.label}\\s*</a\\s*>`));
     expect(position).toBeGreaterThan(previous);
     expect(html).toContain(`href="${page.route}"`);
     previous = position;
   }
   expect(index).toBeGreaterThan(previous);
-  expect(html).toContain('href="/ai-for-science/" aria-current="page"');
+  expect(html).toMatch(/href="\/ai-for-science\/"\s+aria-current="page"/);
   expect(html).not.toMatch(/>\s*Research\s*<\/a\s*>/u);
   expect(html.match(/href="\/"/gu)).toHaveLength(1);
 });

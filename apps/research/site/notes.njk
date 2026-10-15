@@ -12,5 +12,7 @@ eleventyComputed:
 pageKind: research
 ---
 
-<div id="research-root">{{ note.pageHtml | safe }}</div>
-<script id="research-home-data" type="application/json">{{ note.bootstrap | safe }}</script>
+<div class="research-note-body">
+  {% if not note.body.startsWith('# ') %}<h1>{{ note.title }}</h1>{% endif %}
+  {{ note.html | safe }}
+</div>

@@ -139,10 +139,12 @@ for (const name of [
   "components/newsletter_form.njk",
   "components/webmentions.njk",
   "research/public.njk",
+  "components/research-navigation.njk",
+  "components/research-document.njk",
 ]) {
   const templatePath =
-    name === "research/public.njk"
-      ? "apps/research/site/_includes/public.njk"
+    name === "research/public.njk" || name.startsWith("components/research-")
+      ? `apps/research/site/_includes/${name.replace(/^research\//, "")}`
       : `src/_includes/${name}`;
   const template = (await readFile(templatePath, "utf8")).replace(/^---[\s\S]*?---\s*/, "");
   compiled += nunjucks.precompileString(template, { name });

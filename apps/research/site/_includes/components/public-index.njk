@@ -1,0 +1,52 @@
+{% if records.length %}
+  <div class="index-tools" data-index-tools hidden>
+    <nav aria-label="Index collections" class="index-filters">
+      <button type="button" data-index-filter="all" aria-pressed="true">All</button>
+      {% for value, label in badges %}
+        <button type="button" data-index-filter="{{ value }}" aria-pressed="false">
+          {{ 'People' if value == 'great-minds' else label }}
+        </button>
+      {% endfor %}
+    </nav>
+    <label class="index-search"
+      ><span class="sr-only">Search the research index</span
+      ><input type="search" placeholder="Search" data-index-search
+    /></label>
+  </div>
+{% endif %}
+<div class="index-results">
+  {% for record in records %}
+    <article
+      class="index-record"
+      data-index-record
+      data-collection="{{ record.collection }}"
+      data-search="{{ [record.name, record.lead, record.institution, record.country, record.primary, record.publicNotes, record.tags | join(' ')] | join(' ') | lower }}"
+    >
+      <div>
+        <h2>
+          <a href="{{ record.url }}" class="underline" target="_blank" rel="noopener noreferrer"
+            >{{ record.name }} →</a
+          >
+        </h2>
+        {% if record.lead %}
+          <p class="mt-2 font-sans text-sm text-ink-muted">{{ record.lead }}</p>
+        {% endif %}
+        <p class="mt-1 font-sans text-sm text-ink-muted">
+          {{ [record.institution, record.country] | select | join(' · ') }}
+        </p>
+      </div>
+      <div class="index-record-note">
+        <p class="leading-[1.8] text-ink-secondary">{{ record.publicNotes or record.summary }}</p>
+        {% if record.tags.length %}
+          <p class="mt-3 font-sans text-sm text-ink-muted">{{ record.tags | join(' · ') }}</p>
+        {% endif %}
+      </div>
+      <p class="font-sans text-xs uppercase tracking-wide text-ink-muted md:text-right">
+        {{ badges[record.collection] }}
+      </p>
+    </article>
+  {% endfor %}
+  <p class="index-empty" data-index-empty {% if records.length %}hidden{% endif %}>
+    {{ 'No matching entries.' if records.length else 'No entries published yet.' }}
+  </p>
+</div>

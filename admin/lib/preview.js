@@ -82,15 +82,15 @@ export function templateEnvironment(templates) {
 }
 
 export function renderPage(env, result, path, files, manifest) {
-  if (result.researchReading)
+  if (result.research)
     return env.render("research/public.njk", {
       ...result.frontmatter,
-      content: result.bodyHtml,
+      pageKind: result.researchReading ? result.frontmatter.pageKind : "research",
+      content: result.researchReading ? result.bodyHtml : result.html,
       preview: true,
       researchReadingPages,
       researchReadingPageKinds,
     });
-  if (result.research) return result.html;
   const data = result.frontmatter;
   const collections = { ...manifest.collections };
   if (data.folderIndex)

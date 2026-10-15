@@ -5,10 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ title }}</title>
     <meta name="description" content="{{ description }}" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://jay-cloud.vercel.app; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://jay-cloud.vercel.app; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/research.css" />
     {% if noindex %}<meta name="robots" content="noindex, nofollow" />{% endif %}
-    {% if canonical %}<link rel="canonical" href="{{ canonical }}" />{% endif %}
+    {% if canonical %}
+      <link rel="canonical" href="{{ canonical }}" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="{{ title }}" />
+      <meta property="og:description" content="{{ description }}" />
+      <meta property="og:url" content="{{ canonical }}" />
+      <meta property="og:site_name" content="Jay Ranpariya · Research" />
+      <meta name="twitter:card" content="summary" />
+    {% endif %}
     {% if pageKind == "research" or pageKind == "index" or pageKind in researchReadingPageKinds %}
       <script
         src="https://jay-cloud.vercel.app/script.js"
@@ -19,7 +32,13 @@
         defer
       ></script>
     {% endif %}
-    <script type="module" src="/assets/research.js"></script>
+    {% if pageKind == 'research' or pageKind in researchReadingPageKinds %}
+      <script src="/assets/codex-notes.js" defer></script>
+    {% elif pageKind == 'index' %}
+      <script type="module" src="/assets/index.js"></script>
+    {% elif pageKind == 'library' or pageKind == 'login' %}
+      <script type="module" src="/assets/research.js"></script>
+    {% endif %}
   </head>
   <body class="antialiased" data-page="{{ pageKind }}">
     {{ content | safe }}

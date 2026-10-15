@@ -1,10 +1,6 @@
-import type { PublishedRecord } from "../components/public-research-index";
 import type { LibraryPageData } from "../lib/library-data";
 import { isCollectionId } from "../lib/research-collections";
-import type { ResearchHome } from "../lib/research-home";
-import { researchReadingPageKinds } from "../lib/reading-pages.mjs";
 import "./research.css";
-import { createRoot, hydrateRoot } from "react-dom/client";
 
 const page = document.body.dataset.page;
 
@@ -14,58 +10,40 @@ function readJson<T>(id: string): T {
   return JSON.parse(element.textContent) as T;
 }
 
-if (["research", ...researchReadingPageKinds].includes(page || "")) {
-  const root = document.getElementById("research-root");
-  if (root) {
-    const documentData = readJson<ResearchHome & { rootNote?: string }>("research-home-data");
-    const params = new URL(location.href).searchParams;
-    const path = params
-      .getAll("notes")
-      .filter((slug) => documentData.notes.some((note) => note.slug === slug));
-    const requestedFocus = Number.parseInt(params.get("noteFocus") ?? String(path.length), 10);
-    const focus = Number.isFinite(requestedFocus)
-      ? Math.max(0, Math.min(requestedFocus, path.length))
-      : path.length;
-    void import("../components/research-notes").then(({ ResearchNotes }) => {
-      const view = (
-        <ResearchNotes
-          initialDocument={documentData}
-          initialFocus={focus}
-          initialPath={path}
-          rootSlug={documentData.rootNote}
-        />
-      );
-      if (path.length) createRoot(root).render(view);
-      else hydrateRoot(root, view);
-    });
-  }
-}
-
-if (page === "index") {
-  const root = document.getElementById("index-root");
-  if (root) {
-    const records = readJson<PublishedRecord[]>("index-data");
-    void import("../components/public-research-index").then(({ PublicResearchIndex }) => {
-      hydrateRoot(root, <PublicResearchIndex records={records} />);
-    });
-  }
-}
-
 if (page === "library") {
   const root = document.getElementById("library-root");
   if (root) {
-    const payload = readJson<{ data: LibraryPageData; email: string }>("library-data");
+    type LibraryPayload = { data: LibraryPageData; email: string };
+    let payload: LibraryPayload | null = null;
+    try {
+      payload = readJson<LibraryPayload | null>("library-data");
+    } catch {
+      // A static preview or incomplete response may lack the Worker payload.
+    }
     const collection = location.pathname.split("/")[2];
-    if (collection && isCollectionId(collection)) {
-      void import("../components/library-workspace").then(({ LibraryWorkspace }) => {
+    if (payload?.data && collection && isCollectionId(collection)) {
+      const { data, email } = payload;
+      void Promise.all([
+        import("react-dom/client"),
+        import("../components/library-workspace"),
+      ]).then(([{ createRoot }, { LibraryWorkspace }]) => {
         createRoot(root).render(
-          <LibraryWorkspace
-            collection={collection}
-            initialData={payload.data}
-            ownerEmail={payload.email}
-          />
+          <LibraryWorkspace collection={collection} initialData={data} ownerEmail={email} />
         );
       });
+    } else {
+      const message = document.createElement("main");
+      message.className = "page-frame py-16";
+      const heading = document.createElement("h1");
+      heading.className = "text-2xl font-bold";
+      heading.textContent = "Library unavailable";
+      const link = document.createElement("a");
+      link.href = "/index";
+      link.className = "mt-6 inline-block underline";
+      link.textContent = "Return to research index";
+      message.appendChild(heading);
+      message.appendChild(link);
+      root.replaceChildren(message);
     }
   }
 }

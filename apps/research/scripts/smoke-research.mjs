@@ -15,9 +15,9 @@ async function request(path, expected, options = {}) {
 const home = await (await request("/", 200)).text();
 if (
   !home.includes("information, compression and learning dynamics") ||
-  !home.includes("research-home-data")
+  !home.includes('data-note-trail="research"')
 ) {
-  throw new Error("The public research page is missing its content or hydration data.");
+  throw new Error("The public research page is missing its Eleventy document.");
 }
 if (!home.includes('data-domains="research.jdranpariya.com"')) {
   throw new Error("The research homepage is missing public analytics.");
@@ -26,7 +26,9 @@ if (!home.includes('data-domains="research.jdranpariya.com"')) {
 const index = await (await request("/index", 200)).text();
 if (
   !index.includes("Research index") ||
-  !index.includes('id="index-data"') ||
+  !index.includes('id="index-root"') ||
+  !index.includes("/assets/index.js") ||
+  index.includes("/assets/research.js") ||
   index.includes("privateNotes") ||
   index.includes('"researchFit"')
 ) {
@@ -161,11 +163,15 @@ for (const [label, html, count] of [
   ["AI for science", aiscience, 6],
 ]) {
   if (
-    !html.includes('id="research-root"') ||
-    !html.includes('id="research-home-data"') ||
-    !html.includes("/assets/research.js")
+    !html.includes('data-note-trail="research"') ||
+    !html.includes('id="research-note-routes"') ||
+    !html.includes("/assets/codex-notes.js") ||
+    html.includes("/assets/research.js") ||
+    html.includes('id="research-home-data"')
   )
-    throw new Error(`${label} is missing its shared sliding-pane bootstrap.`);
+    throw new Error(
+      `${label} must use Eleventy HTML and the shared note-trail enhancement, not React hydration.`
+    );
   if (
     !html.includes('class="research-reading-body research-interest-overview"') ||
     !html.includes("Areas of interest")

@@ -1,15 +1,15 @@
 # Research site
 
-Source for [research.jdranpariya.com](https://research.jdranpariya.com), in the personal-site repository. The public site uses Eleventy 3. A small Cloudflare Worker handles the private library, D1-backed selected index, and authentication. The React components are client islands for sliding notes, index filtering, and the private editor; there is no Next.js server.
+Source for [research.jdranpariya.com](https://research.jdranpariya.com), in the personal-site repository. Public pages use Eleventy 3, Markdown and shared Nunjucks layouts, without React rendering or hydration. The personal site's `assets/js/codex-notes.js` progressively adds note trails. A small Cloudflare Worker handles the private library, D1-backed selected index and authentication. React remains only in the private library editor; there is no Next.js server.
 
 ## Pages and data
 
-- `/`: public research questions. `content/research-home.md` is the only source for this prose. Eleventy builds the initial HTML so the page is readable without JavaScript. React hydrates the sliding-note interface. No public note pages have been authored yet.
-- `/index`: entries Jay has chosen to publish. The Worker reads D1 on each request and server-renders the selected records. Only records marked `Keep` **and** `Publish` appear. The page works without JavaScript; React adds filtering and search.
+- `/`: public research questions. `content/research-home.md` is the only source for this prose. Eleventy renders the complete document; JavaScript is optional. No public note pages have been authored yet.
+- `/index`: entries Jay has chosen to publish. The Worker reads D1 on each request and renders the selected records with the same ahead-of-time-compiled Nunjucks partial used by Eleventy. Only records marked `Keep` **and** `Publish` appear. The page works without JavaScript; a small progressive enhancement adds filtering and search, without React or runtime template compilation.
 - `/reinforcement-learning/`: Jay's public RL topic groups and linked review-paper reading list, authored in `site/reinforcement-learning/index.md`. Eleventy renders ordinary Markdown headings and paper lists without a login or JavaScript. The shared navigation links to it as RL. The private `/library/rl` lab workspace remains separate.
 - `/neuro-ai/`: Jay's public NeuroAI topic groups and linked review-paper reading list, authored in `site/neuro-ai/index.md`. It uses the same static reading layout as RL. This reading list is separate from the authenticated `/library/neuroai` lab workspace.
 - `/bio-inspired/`: Jay's public bio-inspired topic groups and linked review-paper reading list, authored in `site/bio-inspired/index.md`. It shares the RL and NeuroAI reading layout. The section navigation is RL · NeuroAI · Bio-inspired · AI for science · Index; Jay Ranpariya links back to the homepage without a separate Research item.
-- `/ai-for-science/`: Public AI for science interests and reading list at `site/ai-for-science/index.md`. Navigation, hydration, canonical routes and admin access share `lib/reading-pages.mjs`; register future reading pages there.
+- `/ai-for-science/`: Public AI for science interests and reading list at `site/ai-for-science/index.md`. Navigation, canonical routes and admin access share `lib/reading-pages.mjs`; register future reading pages there.
 - `/library/great-minds`, `/library/neuroai` and `/library/rl` (reinforcement learning labs): private annotation workspace. The Worker authenticates before serving a page or record data. The browser receives only the current 40-record page, not the entire catalogs.
 - `data/source/`: reviewed census snapshots. `data/catalogs/`: generated JSON bundled only in the Worker, not the public client JavaScript. D1 stores decisions and notes; source rows remain unchanged.
 
@@ -19,7 +19,7 @@ RL, NeuroAI, Bio-inspired and AI for science begin with linked topic headings an
 
 ## Build and local preview
 
-All registered reading pages reuse the homepage's ResearchNotes component. Internal
+All registered reading pages and published notes use `public.njk`, with shared navigation, a normal article, and the personal site's note-trail controller. Internal
 links to these pages, the homepage or published notes open sliding panes without
 a full navigation; source panes keep their scroll position. Section anchors stay
 in the current page, external links stay external, and modifier-clicks retain
@@ -75,6 +75,6 @@ The personal site's authenticated `/admin/` editor supports both sites. In the R
 
 For example, `content/memory/index.md` becomes `/notes/memory/`, and `content/memory/sleep.md` becomes `/notes/memory/sleep/`. The generated frontmatter includes the correct research permalink and layout. Set `status: "published"` when ready. The admin Publish action saves the source to GitHub; new note pages require a research build/deploy to become live. Only published sources enter the static HTML, public bootstrap data and sitemap. `/notes/` lists top-level notes and folders when published notes exist. `/index` remains the separately curated D1-backed research index.
 
-The homepage and note pages render ordinary Markdown using the same renderer as the admin preview. Headings, paragraphs, emphasis, lists, quotes and galleries retain their authored order; the homepage does not convert headings into a generated bullet list. Optional identifiers such as `## Memory {#memory}` provide stable heading anchors. Wiki links such as `[[Memory]]` and Markdown links to `/notes/memory/` open native sliding panes without refreshing the current note. They also have ordinary canonical URLs that work without JavaScript. Headings do not create note pages. The homepage fetches its latest Markdown from GitHub on load while retaining the deployed note manifest and open panes; built HTML remains its stable fallback.
+The homepage and note pages render ordinary Markdown using the same renderer as the admin preview. Headings, paragraphs, emphasis, lists, quotes and galleries retain their authored order; the homepage does not convert headings into a generated bullet list. Optional identifiers such as `## Memory {#memory}` provide stable heading anchors. Wiki links such as `[[Memory]]` and Markdown links to `/notes/memory/` open native sliding panes without refreshing the current note. They also have ordinary canonical URLs that work without JavaScript. Headings do not create note pages. Hover or keyboard focus previews a linked note; clicking commits it to a horizontal trail. Existing slug-based `?notes=` URLs remain supported. Built HTML is the single published version: the browser no longer fetches a competing homepage copy from GitHub.
 
 The private library is for annotating census records, not editing the public research questions.

@@ -1,0 +1,20 @@
+<div class="research-public-navigation">
+  <nav aria-label="Research" class="research-navigation">
+    <a
+      href="/"
+      class="research-navigation-name"
+      {% if pageKind == 'research' %}aria-current="page"{% endif %}
+      >Jay Ranpariya</a
+    >
+    <span class="research-navigation-links">
+      {% for readingPage in researchReadingPages %}
+        <a
+          href="{{ readingPage.route }}"
+          {% if pageKind == readingPage.pageKind %}aria-current="page"{% endif %}
+          >{{ readingPage.label }}</a
+        >
+      {% endfor %}
+      <a href="/index" {% if pageKind == 'index' %}aria-current="page"{% endif %}>Index</a>
+    </span>
+  </nav>
+</div>

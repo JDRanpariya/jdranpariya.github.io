@@ -1,4 +1,5 @@
-// Spatial note trails for the Codex of Understanding. This follows the same
+// Shared spatial note trails for the personal Codex and research Eleventy pages.
+// This follows the same
 // interaction contract as Scholium: native horizontal panning, readable fixed
 // width panes, measured 40px ancestor rails, explicit focus, and non-mutating
 // previews before navigation is committed.
@@ -7,13 +8,15 @@
   "use strict";
 
   const CODEX_ROOT = "/odysseys/the-codex-of-understanding/";
-  const STACK_PARAM = "stackedNotes";
+  const researchSection = document.querySelector('[data-note-trail="research"]');
+  const isResearch = Boolean(researchSection);
+  const STACK_PARAM = isResearch ? "notes" : "stackedNotes";
   const FOCUS_PARAM = "noteFocus";
   const PANE_EDGE = 40;
 
-  if (!window.location.pathname.startsWith(CODEX_ROOT)) return;
+  if (!isResearch && !window.location.pathname.startsWith(CODEX_ROOT)) return;
 
-  const section = document.querySelector("#main > section");
+  const section = researchSection || document.querySelector("#main > section");
   const sourceArticle = section && section.querySelector("article");
   if (!section || !sourceArticle) return;
   const originalSectionChildren = [...section.childNodes];
@@ -30,17 +33,44 @@
   let previewDismissPoint = null;
   let previewDismissTarget = null;
   let nativeScrollY = window.scrollY;
+  let navigationSequence = 0;
+  let horizontalGesture = false;
+  let panSettleTimer;
+  let pointerStart;
+  const routes = isResearch
+    ? JSON.parse(document.getElementById("research-note-routes")?.textContent || "[]")
+    : [];
 
-  function canonicalUrl(value) {
-    return new URL(value, window.location.origin);
+  function canonicalUrl(value, context = window.location.href) {
+    // Keep existing slug-based research trails usable after removing React.
+    const legacy = isResearch && routes.find((route) => route.slug === value);
+    const url = new URL(legacy?.url || value, context);
+    if (isResearch && url.origin === "https://research.jdranpariya.com") {
+      url.host = window.location.host;
+      url.protocol = window.location.protocol;
+    }
+    if (isResearch && url.pathname !== "/" && !url.pathname.endsWith("/")) url.pathname += "/";
+    return url;
+  }
+
+  function linkUrl(link) {
+    const context = link.closest("[data-note-url]")?.dataset.noteUrl || baseUrl.pathname;
+    return canonicalUrl(link.getAttribute("href"), new URL(context, window.location.origin));
   }
 
   function isCodexUrl(url) {
-    return url.origin === window.location.origin && url.pathname.startsWith(CODEX_ROOT);
+    return (
+      url.origin === window.location.origin &&
+      (isResearch
+        ? routes.some((route) => route.url === url.pathname)
+        : url.pathname.startsWith(CODEX_ROOT))
+    );
   }
 
   function plainPrimaryClick(event) {
-    return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+    return (
+      event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
+    );
   }
 
   function compactLabel(value, limit = 58) {
@@ -51,6 +81,26 @@
   }
 
   function extractNote(documentNode, url) {
+    if (isResearch) {
+      const article = documentNode.querySelector("#main .research-document");
+      const heading = article?.querySelector("h1");
+      if (!article || !heading) throw new Error(`Could not find note content at ${url.pathname}`);
+      const pane = document.createElement("article");
+      pane.className = "codex-note-pane";
+      pane.dataset.noteUrl = url.pathname;
+      const scroller = document.createElement("div");
+      scroller.className = "codex-pane-scroll";
+      const body = article.cloneNode(true);
+      body.classList.add("research-note-content");
+      scroller.append(body);
+      pane.append(scroller);
+      return {
+        title: heading.textContent.trim(),
+        excerpt: article.textContent.replace(/\s+/g, " ").trim(),
+        url,
+        pane,
+      };
+    }
     const article = documentNode.querySelector("#main article");
     const hero = article && article.querySelector(".post-hero");
     const prose = article && article.querySelector(".prose-site");
@@ -77,11 +127,24 @@
   const initialEntry = extractNote(document, baseUrl);
   noteCache.set(baseUrl.pathname, initialEntry);
 
+  if (isResearch) {
+    const navigation = document.querySelector(".research-public-navigation");
+    const measureNavigation = () =>
+      section.style.setProperty(
+        "--research-nav-height",
+        `${navigation?.getBoundingClientRect().height || 44}px`
+      );
+    measureNavigation();
+    if (navigation) new ResizeObserver(measureNavigation).observe(navigation);
+  }
+
   async function loadNote(value) {
     const url = canonicalUrl(value);
     const cached = noteCache.get(url.pathname);
     if (cached) return cached;
-    const response = await fetch(`${url.pathname}${url.search}`, { headers: { Accept: "text/html" } });
+    const response = await fetch(`${url.pathname}${url.search}`, {
+      headers: { Accept: "text/html" },
+    });
     if (!response.ok) throw new Error(`Could not load ${url.pathname}`);
     const documentNode = new DOMParser().parseFromString(await response.text(), "text/html");
     const note = extractNote(documentNode, url);
@@ -117,9 +180,15 @@
   function previewTargetRect(element, point) {
     const rect = element.getBoundingClientRect();
     if (!point) return rect;
-    return [...element.getClientRects()].find(
-      (line) => point.x >= line.left && point.x <= line.right && point.y >= line.top && point.y <= line.bottom
-    ) || rect;
+    return (
+      [...element.getClientRects()].find(
+        (line) =>
+          point.x >= line.left &&
+          point.x <= line.right &&
+          point.y >= line.top &&
+          point.y <= line.bottom
+      ) || rect
+    );
   }
 
   function previewPosition(rect, placement, width, height) {
@@ -137,16 +206,31 @@
       const left = clampLeft(centerX - 42);
       const below = rect.bottom + gap;
       if (below + height <= window.innerHeight - margin) {
-        return { left, top: below, side: "below", arrow: Math.min(width - 22, Math.max(22, centerX - left)) };
+        return {
+          left,
+          top: below,
+          side: "below",
+          arrow: Math.min(width - 22, Math.max(22, centerX - left)),
+        };
       }
       const top = Math.max(minTop, rect.top - gap - height);
-      return { left, top, side: "above", arrow: Math.min(width - 22, Math.max(22, centerX - left)) };
+      return {
+        left,
+        top,
+        side: "above",
+        arrow: Math.min(width - 22, Math.max(22, centerX - left)),
+      };
     }
 
     const top = clampTop(rect.top - 18);
     const right = rect.right + gap;
     if (right + width <= window.innerWidth - margin) {
-      return { left: right, top, side: "right", arrow: Math.min(height - 22, Math.max(22, centerY - top)) };
+      return {
+        left: right,
+        top,
+        side: "right",
+        arrow: Math.min(height - 22, Math.max(22, centerY - top)),
+      };
     }
     const left = rect.left - gap - width;
     if (left >= margin) {
@@ -165,7 +249,8 @@
   }
 
   function showPreview(entry, index, element, placement, point) {
-    if (previewDismissPoint || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (previewDismissPoint || !window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+      return;
     const sequence = ++previewSequence;
     const preview = document.createElement("aside");
     preview.className = "codex-note-preview";
@@ -178,7 +263,12 @@
     requestAnimationFrame(() => {
       if (sequence !== previewSequence || !document.contains(element)) return preview.remove();
       const target = previewTargetRect(element, point);
-      const position = previewPosition(target, placement, preview.offsetWidth, preview.offsetHeight);
+      const position = previewPosition(
+        target,
+        placement,
+        preview.offsetWidth,
+        preview.offsetHeight
+      );
       preview.dataset.side = position.side;
       preview.style.setProperty("--preview-left", `${position.left}px`);
       preview.style.setProperty("--preview-top", `${position.top}px`);
@@ -198,7 +288,10 @@
     const stack = section.querySelector(".codex-note-stack");
     const pane = stack?.querySelector(`[data-trail-index="${index}"]`);
     if (!stack || !pane) return;
-    stack.scrollTo({ left: paneFocusScrollLeft(index, stack, pane), behavior });
+    stack.scrollTo({
+      left: paneFocusScrollLeft(index, stack, pane),
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : behavior,
+    });
   }
 
   function restorePaneScroll(scroll, top) {
@@ -212,8 +305,12 @@
     const panes = [...section.querySelectorAll(".codex-note-pane")];
     panes.forEach((pane, index) => {
       const next = panes[index + 1];
-      const isObscured = Boolean(next && next.getBoundingClientRect().left < pane.getBoundingClientRect().right - 1);
+      const isObscured = Boolean(
+        next && next.getBoundingClientRect().left < pane.getBoundingClientRect().right - 1
+      );
       pane.classList.toggle("is-obscured", isObscured);
+      const scroller = pane.querySelector(".codex-pane-scroll");
+      if (scroller) scroller.inert = isObscured;
       const spine = pane.querySelector(".codex-pane-spine");
       if (spine) {
         spine.setAttribute("aria-hidden", String(!isObscured));
@@ -226,13 +323,17 @@
     const active = entries[focusIndex];
     if (!active) return;
     document.title = `${active.title} | JD Ranpariya`;
-    window.dispatchEvent(new CustomEvent("codex:active-note", { detail: { url: active.url.pathname, title: active.title } }));
+    window.dispatchEvent(
+      new CustomEvent("codex:active-note", {
+        detail: { url: active.url.pathname, title: active.title },
+      })
+    );
   }
 
   function createPath() {
     const path = document.createElement("nav");
     path.className = "codex-note-path";
-    path.setAttribute("aria-label", "Open Codex notes");
+    path.setAttribute("aria-label", isResearch ? "Open research notes" : "Open Codex notes");
     entries.forEach((entry, index) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -269,7 +370,7 @@
     section.classList.add("codex-stack-section", "codex-has-path");
     const stack = document.createElement("div");
     stack.className = "codex-note-stack has-path";
-    stack.setAttribute("aria-label", "Open Codex notes");
+    stack.setAttribute("aria-label", isResearch ? "Open research notes" : "Open Codex notes");
 
     entries.forEach((entry, index) => {
       const pane = entry.pane.cloneNode(true);
@@ -283,7 +384,10 @@
       spine.className = "codex-pane-spine";
       spine.dataset.codexFocus = String(index);
       spine.dataset.previewIndex = String(index);
-      spine.setAttribute("aria-label", `Focus pane ${String(index + 1).padStart(2, "0")}: ${entry.title}`);
+      spine.setAttribute(
+        "aria-label",
+        `Focus pane ${String(index + 1).padStart(2, "0")}: ${entry.title}`
+      );
       spine.setAttribute("aria-hidden", "true");
       spine.tabIndex = -1;
       const number = document.createElement("span");
@@ -295,9 +399,9 @@
 
       const nextEntry = entries[index + 1];
       pane.querySelectorAll("a[href]").forEach((link) => {
-        if (!isCodexUrl(canonicalUrl(link.href))) return;
+        if (!isCodexUrl(linkUrl(link))) return;
         link.classList.add("codex-internal-link");
-        if (nextEntry && canonicalUrl(link.href).pathname === nextEntry.url.pathname) {
+        if (nextEntry && linkUrl(link).pathname === nextEntry.url.pathname) {
           link.classList.add("is-open-note");
         }
       });
@@ -315,9 +419,14 @@
       });
       if (nativeAnchor && nativeAnchor.index >= 0) {
         const rootScroll = stack.querySelector('[data-trail-index="0"] .codex-pane-scroll');
-        const rootLink = rootScroll?.querySelectorAll(".prose-site a[href]")[nativeAnchor.index];
+        const rootLink = rootScroll?.querySelectorAll(
+          isResearch ? "a[href]" : ".prose-site a[href]"
+        )[nativeAnchor.index];
         if (rootLink) {
-          restorePaneScroll(rootScroll, rootScroll.scrollTop + rootLink.getBoundingClientRect().top - nativeAnchor.top);
+          restorePaneScroll(
+            rootScroll,
+            rootScroll.scrollTop + rootLink.getBoundingClientRect().top - nativeAnchor.top
+          );
         }
       }
       scrollPaneToIndex(focusIndex, behavior);
@@ -329,10 +438,19 @@
           heading.focus({ preventScroll: true });
         }
       }
+      const activePane = stack.querySelector(`[data-trail-index="${focusIndex}"]`);
+      const hash = entries[focusIndex]?.url.hash;
+      if (hash) {
+        const target = [...activePane.querySelectorAll("[id]")].find(
+          (node) => node.id === decodeURIComponent(hash.slice(1))
+        );
+        target?.scrollIntoView({ block: "start", inline: "nearest", behavior: "auto" });
+      }
     });
   }
 
-  function focusPane(index, historyMode = "push") {
+  function focusPane(index, historyMode = "push", scrollToFocus = true) {
+    navigationSequence += 1;
     const bounded = Math.max(0, Math.min(index, entries.length - 1));
     focusIndex = bounded;
     section.querySelectorAll(".codex-note-pane").forEach((pane, paneIndex) => {
@@ -344,11 +462,12 @@
       else button.removeAttribute("aria-current");
     });
     activeChanged();
-    scrollPaneToIndex(bounded);
+    if (scrollToFocus) scrollPaneToIndex(bounded);
     setHistory(historyMode);
   }
 
   async function openNote(value, sourceIndex, sourceLink) {
+    const sequence = ++navigationSequence;
     const targetUrl = canonicalUrl(value);
     const existingIndex = entries.findIndex((entry) => entry.url.pathname === targetUrl.pathname);
     if (existingIndex >= 0) {
@@ -358,12 +477,16 @@
 
     try {
       const note = await loadNote(targetUrl);
-      const nativeAnchor = sourceLink?.isConnected && !section.classList.contains("codex-stack-section")
-        ? {
-            index: [...sourceArticle.querySelectorAll(".prose-site a[href]")].indexOf(sourceLink),
-            top: sourceLink.getBoundingClientRect().top,
-          }
-        : null;
+      if (sequence !== navigationSequence) return;
+      const nativeAnchor =
+        sourceLink?.isConnected && !section.classList.contains("codex-stack-section")
+          ? {
+              index: [
+                ...sourceArticle.querySelectorAll(isResearch ? "a[href]" : ".prose-site a[href]"),
+              ].indexOf(sourceLink),
+              top: sourceLink.getBoundingClientRect().top,
+            }
+          : null;
       entries = [...entries.slice(0, sourceIndex + 1), note];
       focusIndex = entries.length - 1;
       render({ focusHeading: true, nativeAnchor });
@@ -374,19 +497,31 @@
   }
 
   async function restoreFromUrl() {
+    const sequence = ++navigationSequence;
     const params = new URL(window.location.href).searchParams;
     const restored = [initialEntry];
+    const restoredPaths = new Set([initialEntry.url.pathname]);
     for (const value of params.getAll(STACK_PARAM)) {
-      const url = canonicalUrl(value);
-      if (!isCodexUrl(url)) continue;
+      let url;
+      try {
+        url = canonicalUrl(value);
+      } catch {
+        continue;
+      }
+      if (!isCodexUrl(url) || restoredPaths.has(url.pathname)) continue;
       try {
         restored.push(await loadNote(url));
+        restoredPaths.add(url.pathname);
       } catch {
         break;
       }
     }
+    if (sequence !== navigationSequence) return;
     entries = restored;
-    const requestedFocus = Number.parseInt(params.get(FOCUS_PARAM) || String(entries.length - 1), 10);
+    const requestedFocus = Number.parseInt(
+      params.get(FOCUS_PARAM) || String(entries.length - 1),
+      10
+    );
     focusIndex = Number.isFinite(requestedFocus)
       ? Math.max(0, Math.min(requestedFocus, entries.length - 1))
       : entries.length - 1;
@@ -396,17 +531,24 @@
   entries = [initialEntry];
   void restoreFromUrl();
 
-  const previewTargetSelector = ".codex-note-pane a[href], article .prose-site a[href], .codex-pane-spine, .codex-note-path button";
+  const bodyLinkSelector = isResearch
+    ? ".research-document a[href]"
+    : "article .prose-site a[href]";
+  const previewTargetSelector = `.codex-note-pane a[href], ${bodyLinkSelector}, .codex-pane-spine, .codex-note-path button`;
 
   function previewLink(target, point) {
-    const url = canonicalUrl(target.href);
-    if (!isCodexUrl(url)) return;
+    const url = linkUrl(target);
+    if (!isCodexUrl(url) || target.target === "_blank") return;
+    const sourceUrl = target.closest("[data-note-url]")?.dataset.noteUrl || baseUrl.pathname;
+    if (url.pathname === sourceUrl && url.hash) return;
     const sequence = previewSequence;
-    void loadNote(url).then((entry) => {
-      if (sequence !== previewSequence || previewDismissPoint || !target.isConnected) return;
-      if (!target.matches(":hover") && document.activeElement !== target) return;
-      showPreview(entry, undefined, target, "inline", point);
-    }).catch(() => {});
+    void loadNote(url)
+      .then((entry) => {
+        if (sequence !== previewSequence || previewDismissPoint || !target.isConnected) return;
+        if (!target.matches(":hover") && document.activeElement !== target) return;
+        showPreview(entry, undefined, target, "inline", point);
+      })
+      .catch(() => {});
   }
 
   function previewTarget(target, point) {
@@ -416,10 +558,20 @@
     }
     const index = Number(target.dataset.codexFocus);
     const entry = entries[index];
-    if (entry) showPreview(entry, index, target, target.closest(".codex-note-path") ? "path" : "spine", point);
+    if (entry)
+      showPreview(
+        entry,
+        index,
+        target,
+        target.closest(".codex-note-path") ? "path" : "spine",
+        point
+      );
   }
 
   section.addEventListener("pointerdown", function (event) {
+    pointerStart = event.target.closest(".codex-note-stack")
+      ? { x: event.clientX, y: event.clientY }
+      : null;
     const target = event.target.closest(previewTargetSelector);
     if (!target) return;
     previewDismissPoint = { x: event.clientX, y: event.clientY };
@@ -427,15 +579,29 @@
     hidePreview();
   });
 
-  section.addEventListener("pointermove", function (event) {
-    if (!previewDismissPoint) return;
-    if (Math.hypot(event.clientX - previewDismissPoint.x, event.clientY - previewDismissPoint.y) <= 12) return;
-    if (previewDismissTarget?.isConnected && previewDismissTarget.contains(event.target)) return;
-    previewDismissPoint = null;
-    previewDismissTarget = null;
-    const target = event.target.closest(previewTargetSelector);
-    if (target) previewTarget(target, { x: event.clientX, y: event.clientY });
-  }, { passive: true });
+  section.addEventListener(
+    "pointermove",
+    function (event) {
+      if (
+        pointerStart &&
+        Math.abs(event.clientX - pointerStart.x) > 18 &&
+        Math.abs(event.clientX - pointerStart.x) > Math.abs(event.clientY - pointerStart.y) * 1.25
+      )
+        horizontalGesture = true;
+      if (!previewDismissPoint) return;
+      if (
+        Math.hypot(event.clientX - previewDismissPoint.x, event.clientY - previewDismissPoint.y) <=
+        12
+      )
+        return;
+      if (previewDismissTarget?.isConnected && previewDismissTarget.contains(event.target)) return;
+      previewDismissPoint = null;
+      previewDismissTarget = null;
+      const target = event.target.closest(previewTargetSelector);
+      if (target) previewTarget(target, { x: event.clientX, y: event.clientY });
+    },
+    { passive: true }
+  );
 
   section.addEventListener("pointerleave", function () {
     previewDismissPoint = null;
@@ -452,13 +618,30 @@
       return;
     }
 
-    const link = event.target.closest(".codex-note-pane a[href], article .prose-site a[href]");
-    if (!link || !plainPrimaryClick(event)) return;
-    const url = canonicalUrl(link.href);
+    const link = event.target.closest(`.codex-note-pane a[href], ${bodyLinkSelector}`);
+    if (
+      !link ||
+      link.target === "_blank" ||
+      link.hasAttribute("download") ||
+      !plainPrimaryClick(event)
+    )
+      return;
+    const url = linkUrl(link);
     if (!isCodexUrl(url)) return;
     const sourcePane = link.closest(".codex-note-pane");
     const sourceIndex = sourcePane ? Number(sourcePane.dataset.trailIndex) : 0;
-    if (url.pathname === entries[sourceIndex].url.pathname && url.hash) return;
+    if (url.pathname === entries[sourceIndex].url.pathname && url.hash) {
+      if (sourcePane) {
+        const target = [...sourcePane.querySelectorAll("[id]")].find(
+          (node) => node.id === decodeURIComponent(url.hash.slice(1))
+        );
+        if (target) {
+          event.preventDefault();
+          target.scrollIntoView({ block: "start", inline: "nearest", behavior: "auto" });
+        }
+      }
+      return;
+    }
     event.preventDefault();
     hidePreview();
     void openNote(url, sourceIndex, link);
@@ -466,7 +649,12 @@
 
   section.addEventListener("pointerover", function (event) {
     const target = event.target.closest(previewTargetSelector);
-    if (!target || previewDismissPoint || (event.relatedTarget && target.contains(event.relatedTarget))) return;
+    if (
+      !target ||
+      previewDismissPoint ||
+      (event.relatedTarget && target.contains(event.relatedTarget))
+    )
+      return;
     previewTarget(target, { x: event.clientX, y: event.clientY });
   });
 
@@ -487,17 +675,58 @@
   });
 
   section.addEventListener("focusout", hidePreview);
-  section.addEventListener("scroll", measureObscuredPanes, true);
-  section.addEventListener("wheel", (event) => {
-    if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-    const stack = event.target.closest(".codex-note-stack");
-    if (!stack) return;
-    event.preventDefault();
-    stack.scrollLeft += event.deltaY;
-  }, { passive: false });
+  function settlePan(stack) {
+    clearTimeout(panSettleTimer);
+    panSettleTimer = setTimeout(() => {
+      if (!horizontalGesture) return;
+      horizontalGesture = false;
+      const pane = stack.querySelector(".codex-note-pane");
+      if (!pane || !stack.isConnected) return;
+      const maximum = stack.scrollWidth - stack.clientWidth;
+      const index =
+        maximum > 0 && stack.scrollLeft >= maximum - 2
+          ? entries.length - 1
+          : Math.round(stack.scrollLeft / Math.max(1, pane.offsetWidth - PANE_EDGE));
+      if (index !== focusIndex) focusPane(index, "replace", false);
+    }, 150);
+  }
+  section.addEventListener("pointerup", () => {
+    pointerStart = null;
+  });
+  section.addEventListener("pointercancel", () => {
+    pointerStart = null;
+    horizontalGesture = false;
+  });
+  section.addEventListener(
+    "scroll",
+    (event) => {
+      measureObscuredPanes();
+      if (horizontalGesture && event.target.matches(".codex-note-stack")) settlePan(event.target);
+    },
+    true
+  );
+  section.addEventListener(
+    "wheel",
+    (event) => {
+      const stack = event.target.closest(".codex-note-stack");
+      if (!stack) return;
+      if (Math.abs(event.deltaX) > 1) {
+        horizontalGesture = true;
+        settlePan(stack);
+      }
+      if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      horizontalGesture = true;
+      event.preventDefault();
+      stack.scrollLeft += event.deltaY;
+      settlePan(stack);
+    },
+    { passive: false }
+  );
   window.addEventListener("resize", measureObscuredPanes);
   window.addEventListener("keydown", (event) => event.key === "Escape" && hidePreview());
   window.addEventListener("popstate", () => void restoreFromUrl());
   window.addEventListener("pageshow", (event) => event.persisted && void restoreFromUrl());
-  window.addEventListener("pagehide", () => { document.title = originalTitle; });
+  window.addEventListener("pagehide", () => {
+    document.title = originalTitle;
+  });
 })();

@@ -76,7 +76,7 @@ md.use(photoGallery);
 
 function renderResearch(source) {
   const doc = parseResearchHome(source);
-  return `<div class="research-root-note"><div class="research-note-body research-home-body">${renderResearchHome(doc)}</div></div>`;
+  return `<div class="research-note-body research-home-body">${renderResearchHome(doc)}</div>`;
 }
 
 export function renderDocument(source, path, files = []) {
@@ -117,7 +117,7 @@ export function renderDocument(source, path, files = []) {
       folderIndex: frontmatter.folderIndex === true,
     };
     return {
-      html: `<div class="research-note-content"><h1>${escapeHtml(note.title)}</h1><div class="research-note-body">${noteHtml(body, note, notes)}</div></div>`,
+      html: `<div class="research-note-body">${body.startsWith("# ") ? "" : `<h1>${escapeHtml(note.title)}</h1>`}${noteHtml(body, note, notes)}</div>`,
       frontmatter,
       research: true,
       warnings: [],

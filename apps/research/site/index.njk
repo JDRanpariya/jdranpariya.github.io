@@ -6,5 +6,8 @@ description: Jay Ranpariya's research questions and selected research index.
 canonical: https://research.jdranpariya.com/
 pageKind: research
 ---
-<div id="research-root">{{ researchHomeHtml | safe }}</div>
-<script id="research-home-data" type="application/json">{{ researchHomeJson | safe }}</script>
+
+<div class="research-note-body research-home-body">{{ researchHomeHtml | safe }}</div>
+{% if researchNotes.length %}<nav class="research-notes-directory" aria-label="Research notes">
+  <a href="/notes/">Browse research notes</a>
+</nav>{% endif %}

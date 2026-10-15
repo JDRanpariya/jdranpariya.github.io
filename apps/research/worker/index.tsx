@@ -1,4 +1,5 @@
-import { PublicResearchIndex, type PublishedRecord } from "../components/public-research-index";
+import type { PublishedRecord } from "../lib/public-index";
+import { renderPublicIndex } from "../.cache/public-index.mjs";
 import { getLibraryPage } from "../lib/library-data";
 import {
   getPublishedAnnotations,
@@ -21,7 +22,6 @@ import {
   sessionCookie,
   type AuthEnvironment,
 } from "./auth";
-import { renderToString } from "react-dom/server";
 import { z } from "zod";
 import { researchReadingPages } from "../lib/reading-pages.mjs";
 
@@ -109,17 +109,12 @@ async function publicIndex(request: Request, env: Environment): Promise<Response
 
   const response = await asset(request, env, "/index/index.html");
   if (!response.ok) return response;
-  const rendered = renderToString(<PublicResearchIndex records={records} />);
+  const rendered = renderPublicIndex(records);
   const owner = await getAdminUser(request, env);
   return new HTMLRewriter()
     .on("#index-root", {
       element(element) {
         element.setInnerContent(rendered, { html: true });
-      },
-    })
-    .on("#index-data", {
-      element(element) {
-        element.setInnerContent(serialized(records), { html: true });
       },
     })
     .on("#library-link", {

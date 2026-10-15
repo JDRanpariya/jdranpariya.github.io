@@ -1,0 +1,10 @@
+<section class="research-reading-page" data-note-trail="research">
+  <article class="research-document">
+    {% if isReadingPage %}
+      {% set readingClasses = 'research-reading-body research-interest-overview' if interestOverview else 'research-reading-body' %}
+      <div class="{{ readingClasses }}">{{ content | safe }}</div>
+    {% else %}
+      {{ content | safe }}
+    {% endif %}
+  </article>
+</section>

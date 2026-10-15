@@ -5,9 +5,6 @@ import { tmpdir } from "node:os";
 import Eleventy from "@11ty/eleventy";
 import { loadPublicNotes } from "./public-notes.mjs";
 import { noteHtml, researchRoute } from "./note-authoring.mjs";
-import { ResearchNotes } from "../components/research-notes";
-import { renderToString } from "react-dom/server";
-import { createElement } from "react";
 import configureResearchSite from "../eleventy.config.mjs";
 
 test("nested research sources produce actual Eleventy pages, child indexes and sitemap, without leaking drafts", async () => {
@@ -29,28 +26,13 @@ test("nested research sources produce actual Eleventy pages, child indexes and s
     expect(folder.html).toContain('href="/notes/learning/sub/"');
     expect(folder.html).not.toContain("Secret draft");
     expect(folder.html).not.toContain('href="/notes/learning/sub/deep/"');
-    const home = { title: "Research", body: "# Research", notes };
-    const pages = notes.map((note) => ({
-      ...note,
-      description: "",
-      pageHtml: renderToString(
-        createElement(ResearchNotes, {
-          initialDocument: home,
-          initialPath: [],
-          initialFocus: 0,
-          rootSlug: note.slug,
-        })
-      ),
-      bootstrap: JSON.stringify({ ...home, rootNote: note.slug }).replaceAll("<", "\\u003c"),
-    }));
     const site = new Eleventy("site", join(fixture, "output"), {
       configPath: false,
       quietMode: true,
-      config(config) {
-        configureResearchSite(config);
-        config.addGlobalData("researchNotes", pages);
+      async config(config) {
+        await configureResearchSite(config);
+        config.addGlobalData("researchNotes", notes);
         config.addGlobalData("researchHomeHtml", "<h1>Research</h1>");
-        config.addGlobalData("researchHomeJson", JSON.stringify(home));
       },
     });
     await site.write();
@@ -58,6 +40,10 @@ test("nested research sources produce actual Eleventy pages, child indexes and s
     expect(html).toContain("<h1>Memory</h1>");
     expect(html).toContain("<h2>Practice</h2>");
     expect(html).toContain('class="research-note-body"');
+    expect(html).toContain('data-note-trail="research"');
+    expect(html).toContain("/assets/codex-notes.js");
+    expect(html).not.toContain("/assets/research.js");
+    expect(html).not.toContain("research-home-data");
     expect(html).not.toContain("Secret draft");
     const sitemap = await readFile(join(fixture, "output/sitemap.xml"), "utf8");
     expect(sitemap.startsWith("<?xml")).toBe(true);

@@ -6,33 +6,15 @@ layout: base.njk
 
 <div class="min-h-screen bg-page text-ink">
   <a href="#main" class="skip-link">Skip to content</a>
-  <div class="research-public-navigation">
-    <nav aria-label="Research" class="research-navigation">
-      <a
-        href="/"
-        class="research-navigation-name"
-        {% if pageKind == "research" %}aria-current="page"{% endif %}
-        >Jay Ranpariya</a
-      >
-      <span class="research-navigation-links">
-        {% for readingPage in researchReadingPages %}
-          <a href="{{ readingPage.route }}" {% if pageKind == readingPage.pageKind %}aria-current="page"{% endif %}>{{ readingPage.label }}</a>
-        {% endfor %}
-        <a href="/index" {% if pageKind == "index" %}aria-current="page"{% endif %}>Index</a>
-      </span>
-    </nav>
-  </div>
+  {% include 'components/research-navigation.njk' %}
   <main
     id="main"
-    class="{% if pageKind == 'research' or (isReadingPage and not preview) %}research-notes-page{% elif isReadingPage %}research-reading-page{% else %}research-index-page{% endif %}"
+    tabindex="-1"
+    class="{% if pageKind == 'research' or isReadingPage %}research-notes-page{% else %}research-index-page{% endif %}"
   >
-    {% if isReadingPage and not preview %}
-      {% set readingDocument = researchReadingDocuments[pageKind] %}
-      <div id="research-root">{{ readingDocument.pageHtml | safe }}</div>
-      <script id="research-home-data" type="application/json">{{ readingDocument.bootstrap | safe }}</script>
-    {% elif isReadingPage %}
-      {% set readingClasses = "research-reading-body research-interest-overview" if interestOverview else "research-reading-body" %}
-      <article class="{{ readingClasses }}">{{ content | safe }}</article>
+    {% if isReadingPage or pageKind == 'research' %}
+      {% include 'components/research-document.njk' %}
+      {% if not preview %}<script id="research-note-routes" type="application/json">{{ researchNoteRoutes | safe }}</script>{% endif %}
     {% else %}
       {{ content | safe }}
     {% endif %}
