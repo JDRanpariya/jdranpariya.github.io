@@ -6,7 +6,10 @@ import { parseDocument, renderDocument } from "./admin-renderer.mjs";
 import { adminInternals } from "../workers/request-intelligence/src/admin.js";
 
 test("footer keeps all eight navigation links in two columns on phones and desktops", () => {
-  const html = nunjucks.renderString(readFileSync("src/_includes/components/footer.njk", "utf8"));
+  const html = new nunjucks.Environment(new nunjucks.FileSystemLoader("src/_includes")).render(
+    "components/footer.njk",
+    { page: { url: "/" } }
+  );
   const nav = html.match(/<nav\b[^>]*aria-label="Footer"[^>]*>([\s\S]*?)<\/nav>/)?.[0];
   expect(nav).toBeDefined();
   const list = nav.match(/<ul\b[^>]*>/)?.[0];
@@ -28,9 +31,12 @@ test("footer keeps all eight navigation links in two columns on phones and deskt
 });
 
 test("mobile navigation can scroll to its final About link", () => {
-  const html = nunjucks.renderString(readFileSync("src/_includes/components/nav.njk", "utf8"), {
-    page: { url: "/about/" },
-  });
+  const html = new nunjucks.Environment(new nunjucks.FileSystemLoader("src/_includes")).render(
+    "components/nav.njk",
+    {
+      page: { url: "/about/" },
+    }
+  );
   const menu = html.match(/<aside\b[^>]*id="mobile-menu"[^>]*>([\s\S]*?)<\/aside>/)?.[0];
   expect(menu).toBeDefined();
   expect(menu).toContain("overflow-y-auto");

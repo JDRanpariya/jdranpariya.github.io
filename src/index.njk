@@ -8,7 +8,7 @@ lastUpdated: 2026-10-09
 
 {% from "components/post-index.njk" import indexHeader, postList %}
 
-<section class="max-w-content mx-auto space-y-16 px-6 py-12 md:py-20">
+<section class="page-content page-section space-y-16">
   <!-- Opening -->
   <header class="space-y-4">
     <h1 class="font-heading text-h1 text-ink">Jay Ranpariya</h1>
@@ -46,10 +46,7 @@ lastUpdated: 2026-10-09
     <ul class="m-0 flex list-none flex-wrap gap-x-2 gap-y-1 p-0 text-body-sm">
       {% for topic in collections.writingTopics %}
         <li>
-          <a
-            href="/tags/{{ topic | slugify }}/"
-            class="text-ink underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
-            >{{ topic }}</a
+          <a href="/tags/{{ topic | slugify }}/" class="text-ink text-link">{{ topic }}</a
           >{% if not loop.last %}<span class="text-ink-muted" aria-hidden="true">,</span>{% endif %}
         </li>
       {% endfor %}
@@ -64,26 +61,13 @@ lastUpdated: 2026-10-09
       Follow me via email,
       <a
         href="/feed.xml"
-        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
+        class="text-link"
         data-umami-event="rss-click"
         data-umami-event-location="home"
         >RSS</a
-      >,
-      <a
-        href="https://x.com/jdranpariya"
-        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
-        >X</a
-      >,
-      <a
-        href="https://github.com/jdranpariya"
-        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
-        >GitHub</a
-      >, and
-      <a
-        href="https://linkedin.com/in/jdranpariya"
-        class="underline decoration-border decoration-[1.5px] underline-offset-4 transition-colors duration-base hover:text-accent hover:decoration-accent"
-        >LinkedIn</a
-      >.
+      >, <a href="https://x.com/jdranpariya" class="text-link">X</a>,
+      <a href="https://github.com/jdranpariya" class="text-link">GitHub</a>, and
+      <a href="https://linkedin.com/in/jdranpariya" class="text-link">LinkedIn</a>.
     </p>
 
     {% set newsletterLocation = "home" %}

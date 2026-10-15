@@ -5,11 +5,19 @@
   "use strict";
 
   // ---------- mobile menu ----------
+  const desktopMenu = window.matchMedia("(min-width: 1024px)");
+  let menuBackground = [];
+  let previousOverflow = false;
+
   function openMobileMenu() {
     const menu = document.getElementById("mobile-menu");
     const backdrop = document.getElementById("menu-backdrop");
     const toggle = document.getElementById("mobile-menu-toggle");
-    if (!menu) return;
+    if (!menu || desktopMenu.matches || !menu.hasAttribute("inert")) return;
+    previousOverflow = document.body.classList.contains("overflow-hidden");
+    menuBackground = Array.from(document.querySelectorAll("body > nav, body > main, body > footer"))
+      .map((element) => ({ element, inert: element.inert }));
+    menuBackground.forEach(({ element }) => { element.inert = true; });
     menu.classList.remove("translate-x-full");
     menu.removeAttribute("inert");
     if (backdrop) backdrop.classList.remove("opacity-0", "pointer-events-none");
@@ -19,21 +27,24 @@
     if (closeButton) closeButton.focus();
   }
 
-  function closeMobileMenu() {
+  function closeMobileMenu(restoreFocus = true) {
     const menu = document.getElementById("mobile-menu");
     const backdrop = document.getElementById("menu-backdrop");
     const toggle = document.getElementById("mobile-menu-toggle");
+    if (!menu || menu.hasAttribute("inert")) return;
     if (menu) {
       menu.classList.add("translate-x-full");
       menu.setAttribute("inert", "");
     }
     if (backdrop) backdrop.classList.add("opacity-0", "pointer-events-none");
-    document.body.classList.remove("overflow-hidden");
+    document.body.classList.toggle("overflow-hidden", previousOverflow);
+    menuBackground.forEach(({ element, inert }) => { element.inert = inert; });
+    menuBackground = [];
     if (toggle) {
       toggle.setAttribute("aria-expanded", "false");
       // Always restore focus to the toggle. For nav-link closes this fires
       // right before the browser navigates away, which is harmless.
-      toggle.focus();
+      if (restoreFocus) toggle.focus();
     }
   }
 
@@ -256,11 +267,34 @@
     } catch (e) {}
   });
 
-  // Escape closes the mobile menu.
-  document.addEventListener("keydown", function (event) {
-    if (event.key !== "Escape") return;
+  // Keep keyboard focus in the visible menu, and release the page when the
+  // desktop navigation replaces it (including device rotation).
+  desktopMenu.addEventListener("change", function (event) {
+    if (!event.matches) return;
     const menu = document.getElementById("mobile-menu");
-    if (menu && !menu.classList.contains("translate-x-full")) closeMobileMenu();
+    const focusInMenu = menu?.contains(document.activeElement);
+    closeMobileMenu(false);
+    if (focusInMenu) document.querySelector('nav[aria-label="Primary"] a')?.focus();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    const menu = document.getElementById("mobile-menu");
+    if (!menu || menu.hasAttribute("inert")) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMobileMenu();
+    } else if (event.key === "Tab") {
+      const links = menu.querySelectorAll('a[href], button:not([disabled])');
+      const first = links[0];
+      const last = links[links.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    }
   });
 
   // ---------- anonymous session context ----------

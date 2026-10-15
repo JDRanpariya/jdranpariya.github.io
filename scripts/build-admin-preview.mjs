@@ -133,6 +133,7 @@ for (const name of [
   "layouts/about.njk",
   "layouts/folder.njk",
   "components/nav.njk",
+  "components/navigation.njk",
   "components/post-index.njk",
   "components/footer.njk",
   "components/newsletter_form.njk",

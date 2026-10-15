@@ -1,0 +1,38 @@
+{# One registry for desktop, mobile, and footer navigation. #}
+{% macro navigationLinks(location, currentUrl="") %}
+  {%
+    set links = [
+      ["/writings/", "Writings", false, ["desktop", "mobile", "footer"]],
+      ["/notes/", "Notes", false, ["mobile", "footer"]],
+      ["/library/", "Library", false, ["desktop", "mobile", "footer"]],
+      ["https://research.jdranpariya.com/", "Research", true, ["desktop", "mobile", "footer"]],
+      ["/odysseys/", "Odysseys", false, ["mobile", "footer"]],
+      ["/projects/", "Projects", false, ["desktop", "mobile", "footer"]],
+      ["/guestbook/", "Guestbook", false, ["mobile", "footer"]],
+      ["/now/", "Now", false, ["desktop", "mobile"]],
+      ["/about/", "About", false, ["desktop", "mobile"]],
+      ["/feed.xml", "RSS", false, ["footer"]]
+    ]
+  %}
+  {% for item in links %}
+    {% if location in item[3] %}
+      <li>
+        <a
+          href="{{ item[0] }}"
+          class="nav-link{% if location == 'mobile' %}
+            block py-2 text-lg
+          {% elif location == 'footer' %}
+            block py-[0.85rem]
+          {% endif %}"
+          {% if location == 'mobile' %}data-action="close-mobile-menu"{% endif %}
+          {% if item[2] %}target="_blank" rel="noopener noreferrer"{% endif %}
+          {% if currentUrl and currentUrl.startsWith(item[0]) %}aria-current="page"{% endif %}
+          {% if item[0] == '/feed.xml' %}
+            data-umami-event="rss-click" data-umami-event-location="footer"
+          {% endif %}
+          >{{ item[1] }}</a
+        >
+      </li>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}

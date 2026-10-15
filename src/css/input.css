@@ -100,7 +100,7 @@
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+    font-family: var(--font-heading);
     transition:
       opacity 150ms linear,
       color 130ms ease,
@@ -120,7 +120,7 @@
 
   .codex-pane-spine span {
     flex: none;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 0.56rem;
     letter-spacing: 0.06em;
   }
@@ -248,14 +248,14 @@
   .codex-preview-index {
     margin: 0 0 0.5rem;
     color: var(--color-ink-muted);
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 0.56rem;
     letter-spacing: 0.07em;
   }
 
   .codex-note-preview h2 {
     margin: 0;
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 1.52rem;
     font-weight: 560;
     line-height: 1.15;
@@ -267,7 +267,7 @@
     overflow: hidden;
     margin: 0.9375rem 0 0;
     color: var(--color-ink-secondary);
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 0.92rem;
     line-height: 1.62;
     -webkit-box-orient: vertical;
@@ -331,6 +331,14 @@
  * ========================================================================== */
 
 :root {
+  --font-heading: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+  --font-body: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --width-reading: 42.5rem;
+  --width-content: 44rem;
+  --width-wide: 64rem;
+  --width-page: 89rem;
   /* color */
   --color-bg: #ffffff;
   --color-surface: #f5f5f3;
@@ -373,7 +381,7 @@ html {
 }
 
 body {
-  font-family: "Source Serif 4", ui-serif, Georgia, serif;
+  font-family: var(--font-body);
   font-size: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
   line-height: 1.75;
   font-optical-sizing: auto;
@@ -398,7 +406,7 @@ h3.font-serif,
 h4.font-serif,
 h5.font-serif,
 h6.font-serif {
-  font-family: Figtree, Avenir, "Avenir Next", system-ui, sans-serif;
+  font-family: var(--font-heading);
   letter-spacing: -0.03em;
 }
 
@@ -414,11 +422,7 @@ button,
 .field-help,
 .post-meta,
 .index-row__meta {
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-ui);
 }
 
 /* ==========================================================================
@@ -446,7 +450,7 @@ button,
   color: var(--color-ink);
   border: 2px solid var(--color-accent);
   border-radius: 4px;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.875rem;
   text-decoration: none;
   transform: translateY(-150%);
@@ -479,7 +483,24 @@ button,
  * ========================================================================== */
 
 @layer components {
+  .site-shell {
+    @apply max-w-page mx-auto px-6 md:px-8;
+  }
+  .page-section {
+    @apply py-16 md:py-24;
+  }
+  .page-content {
+    @apply max-w-content mx-auto px-6;
+  }
+  .page-wide {
+    @apply max-w-wide mx-auto px-6;
+  }
+
   /* ---------------- Navigation ------------------------------------------- */
+
+  #mobile-menu[inert] {
+    box-shadow: none;
+  }
 
   .nav-link {
     @apply font-sans text-[0.9375rem] font-medium text-ink transition-colors;
@@ -563,11 +584,7 @@ button,
    * is inserted between items via ::before. Used for post tags, writing-list
    * tags, tag-index cloud, and project tech stacks. */
   .chip {
-    font-family:
-      system-ui,
-      -apple-system,
-      "Segoe UI",
-      sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.8125rem;
     color: var(--color-ink-muted);
     text-decoration: none;
@@ -626,7 +643,7 @@ button,
   /* ---------------- Index rows (list pages) ------------------------------ */
 
   .post-index {
-    @apply max-w-content mx-auto px-6 py-12 md:py-20;
+    @apply page-content page-section;
   }
   .post-index__header {
     @apply mb-12 space-y-3;
@@ -641,7 +658,7 @@ button,
     @apply m-0 list-none space-y-3 p-0;
   }
   .post-list__link {
-    @apply grid grid-cols-[4.75rem_1fr] items-baseline gap-2 py-1;
+    @apply grid grid-cols-[4.75rem_minmax(0,1fr)] items-baseline gap-2 py-1;
   }
   .post-list__link[data-dated="false"] {
     @apply block;
@@ -736,10 +753,10 @@ button,
     color: var(--color-ink);
   }
 
-  /* Italic serif, not bold. It reads as a deck/dek — a quiet editor's note
+  /* Regular serif, not bold. It reads as a deck/dek — a quiet editor's note
    * under the title, not a second headline competing for attention. */
   .post-hero__lead {
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-style: normal;
     font-weight: 400;
     font-size: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
@@ -753,11 +770,7 @@ button,
   /* Plain paragraph (not flex). A <span> with .whitespace-nowrap keeps
    * "· Updated X" together when the line wraps on narrow screens. */
   .post-hero__meta {
-    font-family:
-      system-ui,
-      -apple-system,
-      "Segoe UI",
-      sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.8125rem;
     line-height: 1.6;
     margin-top: 2.5rem;
@@ -792,7 +805,7 @@ button,
   }
   .post-newsletter h2 {
     margin-bottom: 1rem;
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 1.125rem;
     font-weight: 500;
     line-height: 1.5;
@@ -804,7 +817,7 @@ button,
 
   .post-reply {
     margin-top: 2.5rem;
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
   }
   .post-reply h2 {
     margin-bottom: 0.25rem;
@@ -822,7 +835,7 @@ button,
     border-top: 1px solid var(--color-border);
   }
   .read-next__eyebrow {
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -846,12 +859,12 @@ button,
     gap: 0.5rem;
   }
   .read-next__title {
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 1.25rem;
     font-weight: 500;
   }
   .read-next__desc {
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: 0.875rem;
     color: var(--color-ink-muted);
     line-height: 1.4;
@@ -974,12 +987,12 @@ button,
 
   .prose-site {
     max-width: 65ch;
-    font-family: "Source Serif 4", ui-serif, Georgia, serif;
+    font-family: var(--font-body);
     font-size: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
     line-height: 1.75;
     font-optical-sizing: auto;
     color: var(--color-ink);
-    word-wrap: break-word;
+    overflow-wrap: anywhere;
   }
   .prose-site > * + * {
     margin-top: 0.8em;
@@ -1021,7 +1034,10 @@ button,
     color: var(--color-ink);
   }
 
-  .prose-site a {
+  .text-link,
+  .prose-site a,
+  .sidenote-item a,
+  .fn-inline a {
     color: inherit;
     text-decoration: underline;
     text-decoration-thickness: 1.5px;
@@ -1031,7 +1047,10 @@ button,
       color var(--duration-base) var(--ease-standard),
       text-decoration-color var(--duration-base) var(--ease-standard);
   }
-  .prose-site a:hover {
+  .text-link:hover,
+  .prose-site a:hover,
+  .sidenote-item a:hover,
+  .fn-inline a:hover {
     color: var(--color-accent);
     text-decoration-color: var(--color-accent);
   }
@@ -1126,7 +1145,7 @@ button,
   }
 
   .prose-site code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: 0.9em;
     background-color: var(--color-card);
     color: var(--color-accent);
@@ -1134,7 +1153,7 @@ button,
     border-radius: 4px;
   }
   .prose-site pre {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: 0.9em;
     line-height: 1.6;
     background-color: var(--color-surface);
@@ -1160,7 +1179,7 @@ button,
     border-radius: 6px;
   }
   .prose-site figcaption {
-    font-family: system-ui, sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.875rem;
     font-style: italic;
     color: var(--color-ink-muted);
@@ -1223,6 +1242,9 @@ button,
   }
 
   .prose-site table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
     width: 100%;
     border-collapse: collapse;
     margin: 1.5em 0;
@@ -1264,20 +1286,9 @@ button,
  * Links inside them need the same accent underline treatment.
  * ========================================================================== */
 
-.sidenote-item a,
-.fn-inline a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
-  text-decoration-color: var(--color-accent);
-  transition:
-    color var(--duration-base) var(--ease-standard),
-    text-decoration-color var(--duration-base) var(--ease-standard);
-}
-.sidenote-item a:hover,
-.fn-inline a:hover {
-  color: var(--color-accent);
+.sidenote-item,
+.fn-inline {
+  overflow-wrap: anywhere;
 }
 
 /* ==========================================================================
@@ -1504,7 +1515,7 @@ button,
  * ========================================================================== */
 
 .toc {
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.875rem;
   color: var(--color-ink-muted);
 }
@@ -1516,7 +1527,7 @@ button,
   border: 0;
   padding: 0.25rem 0;
   cursor: pointer;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1977,7 +1988,7 @@ body.codex-note-mode > nav > div {
   overflow-x: auto;
   padding: 0 0.875rem;
   background: var(--color-bg);
-  font-family: "Figtree", Avenir, "Avenir Next", system-ui, sans-serif;
+  font-family: var(--font-heading);
   scrollbar-width: none;
 }
 
@@ -2030,7 +2041,7 @@ body.codex-note-mode > nav > div {
 .codex-note-path button span {
   flex: none;
   color: var(--color-ink-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.02em;
 }

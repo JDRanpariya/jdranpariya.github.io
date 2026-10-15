@@ -31,10 +31,10 @@ export default {
         },
       },
       fontFamily: {
-        serif: ["Source Serif 4", "ui-serif", "Georgia", "serif"],
-        heading: ["Figtree", "Avenir", "Avenir Next", "system-ui", "sans-serif"],
-        sans: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+        serif: ["var(--font-body)"],
+        heading: ["var(--font-heading)"],
+        sans: ["var(--font-ui)"],
+        mono: ["var(--font-mono)"],
       },
       fontSize: {
         // Named type scale, matches DESIGN.md §4.
@@ -63,10 +63,10 @@ export default {
         "ui-xs": ["0.75rem", { lineHeight: "1.4", letterSpacing: "0.05em" }],
       },
       maxWidth: {
-        reading: "min(65ch, 100% - 3rem)",
-        content: "44rem",
-        wide: "64rem",
-        page: "89rem",
+        reading: "var(--width-reading)",
+        content: "var(--width-content)",
+        wide: "var(--width-wide)",
+        page: "var(--width-page)",
       },
       borderRadius: {
         none: "0",

@@ -5,8 +5,10 @@ isPostLayout: true
 
 {% set tableOfContents = content | toc %}
 
-<section class="max-w-page mx-auto px-4 md:px-6 py-16 md:py-24">
-  <div class="grid grid-cols-1 lg:grid-cols-[1fr_min(42.5rem,100%)_1fr] gap-6 lg:gap-8">
+<section class="site-shell page-section">
+  <div
+    class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_min(var(--width-reading),100%)_minmax(0,1fr)] gap-6 lg:gap-8"
+  >
     <!-- ---------------------------------------------------------------- -->
     <!-- Left: TOC (desktop sidebar, collapsible)                          -->
     <!-- ---------------------------------------------------------------- -->

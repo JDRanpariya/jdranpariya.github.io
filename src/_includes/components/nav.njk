@@ -1,10 +1,12 @@
+{% from "components/navigation.njk" import navigationLinks %}
+
 <!-- Top navigation.
      Active-state styling is driven by [aria-current="page"] on the link (see
      .nav-link in src/css/input.css) — no conditional class strings in the
      template.
 -->
 <nav class="relative z-40" aria-label="Primary">
-  <div class="max-w-page mx-auto px-6 md:px-8 py-6 flex items-center justify-between">
+  <div class="site-shell py-6 flex items-center justify-between">
     <!-- Wordmark -->
     <a href="/" class="inline-flex items-center font-heading text-2xl text-ink min-h-[44px]">
       <span aria-hidden="true">=^.^=</span>
@@ -14,27 +16,7 @@
     <div class="flex items-center gap-6 md:gap-8">
       <!-- Primary links -->
       <ul class="hidden lg:flex items-center gap-6 list-none m-0 p-0">
-        {%
-          set primary = [
-            ["/writings/", "Writings"],
-            ["/library/",  "Library"],
-            ["https://research.jdranpariya.com/", "Research", true],
-            ["/projects/", "Projects"],
-            ["/now/",      "Now"],
-            ["/about/",    "About"]
-          ]
-        %}
-        {% for item in primary %}
-          <li>
-            <a
-              href="{{ item[0] }}"
-              class="nav-link"
-              {% if item[2] %}target="_blank" rel="noopener noreferrer"{% endif %}
-              {% if page.url and page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
-              >{{ item[1] }}</a
-            >
-          </li>
-        {% endfor %}
+        {{ navigationLinks("desktop", page.url) }}
       </ul>
 
       <!-- Mobile menu toggle -->
@@ -78,7 +60,7 @@
      transform so it stays correct even if JS hasn't run yet. -->
 <aside
   id="mobile-menu"
-  class="fixed top-0 right-0 h-full w-80 max-w-sm overflow-y-auto overscroll-contain bg-bg shadow-sheet z-50 lg:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
+  class="fixed top-0 right-0 h-full w-80 max-w-full overflow-y-auto overscroll-contain bg-bg shadow-sheet z-50 lg:hidden translate-x-full transition-transform duration-slow ease-[cubic-bezier(0.4,0,0.2,1)]"
   aria-label="Site navigation"
   inert
 >
@@ -106,30 +88,14 @@
   </div>
 
   <ul class="px-6 py-8 space-y-5 list-none m-0">
-    {%
-      set primary = [
-        ["/writings/", "Writings"],
-        ["/notes/",    "Notes"],
-        ["/library/",  "Library"],
-        ["https://research.jdranpariya.com/", "Research", true],
-        ["/odysseys/", "Odysseys"],
-        ["/projects/", "Projects"],
-        ["/guestbook/", "Guestbook"],
-        ["/now/",      "Now"],
-        ["/about/",    "About"]
-      ]
-    %}
-    {% for item in primary %}
-      <li>
-        <a
-          href="{{ item[0] }}"
-          class="nav-link block py-2 text-lg"
-          data-action="close-mobile-menu"
-          {% if item[2] %}target="_blank" rel="noopener noreferrer"{% endif %}
-          {% if page.url and page.url.startsWith(item[0]) %}aria-current="page"{% endif %}
-          >{{ item[1] }}</a
-        >
-      </li>
-    {% endfor %}
+    {{ navigationLinks("mobile", page.url) }}
   </ul>
 </aside>
+
+<noscript>
+  <nav class="lg:hidden px-6" aria-label="Mobile navigation">
+    <ul class="list-none m-0 p-0">
+      {{ navigationLinks("mobile", page.url) }}
+    </ul>
+  </nav>
+</noscript>
