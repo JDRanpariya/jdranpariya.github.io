@@ -41,7 +41,6 @@ export default {
                 /^nav-link$/,
                 /^index-(list|row)(__.*)?$/,
                 /^card-media(__.*)?$/,
-                /^project-modal(__.*)?$/,
                 /^post-hero(__.*)?$/,
                 // Shared index variants include data attributes rendered by Nunjucks.
                 /^post-(index|list)/,
