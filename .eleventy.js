@@ -219,7 +219,7 @@ export default function (eleventyConfig) {
       render(tokens, idx) {
         if (tokens[idx].nesting === 1) {
           const label = tokens[idx].info.trim().slice("references".length).trim() || "References";
-          return `<details class="references-block">\n<summary>${label}</summary>\n`;
+          return `<details class="references-block">\n<summary>${escapeAttr(label)}</summary>\n`;
         } else {
           return `</details>\n`;
         }
@@ -384,10 +384,10 @@ export default function (eleventyConfig) {
 
       // Prose content sits in a column capped at 42.5rem (680px) — see the
       // grid-cols-[1fr_min(42.5rem,100%)_1fr] layout in post.njk.
-      return `<img src="${largest.url}" srcset="${srcset}" sizes="(min-width: 1024px) 680px, 100vw" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy" width="${largest.width}" height="${largest.height}">`;
+      return `<img src="${largest.url}" srcset="${srcset}" sizes="(min-width: 1024px) 680px, 100vw" alt="${escapeAttr(alt)}" loading="lazy" width="${largest.width}" height="${largest.height}">`;
     } catch (e) {
       console.warn(`[md-image] optimization failed for ${src}: ${e.message}. Using raw src.`);
-      return `<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}" loading="lazy">`;
+      return `<img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" loading="lazy">`;
     }
   };
 

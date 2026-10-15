@@ -444,7 +444,7 @@
   </head>
 
   <body class="bg-bg text-ink min-h-screen flex flex-col antialiased"
-      data-title="{{ title | safe }}"
+      data-title="{{ title | escape }}"
       data-section="{{ section | default('general') }}"
       data-tags="{{ tags | default([]) | join(',') }}"
       data-series="{{ series | default('') }}">
