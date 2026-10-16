@@ -15,25 +15,22 @@ lastUpdated: 2026-10-13
 ## Areas of interest
 
 - **[Problem formulation](#problem-formulation)**
-  - Markov decision processes and their variants
   - Partially observable MDPs
   - Predictive representations
 
 - **[Safety and trust](#safety-and-trust)**
-  - Safe RL and constrained MDPs
+  - Safe RL
+  - constrained MDPs
   - Verification
-  - Explainability and interpretability
 
-- **[Continual adaptation on real robots](#continual-adaptation)**
-  - catastrophic forgetting and loss of plasticity
-  - Sample efficiency and priors
-  - Causality in robotics
-  - World models and model-based RL
-  - Real-time learning, delays and partial observability
+- **[Continual Learning](#continual-adaptation)**
+  - catastrophic forgetting
+  - loss of plasticity
 
-- **[Temporal abstraction and credit assignment](#temporal-abstraction-and-credit-assignment)**
-  - Hierarchical RL and skills
+- **[Interactive Long Horizon tasks](#interactive-long-horizon-tasks)**
   - Credit assignment
+
+- **[Sample Efficiency](#sample-efficiency)**
 
 ## Start here
 
