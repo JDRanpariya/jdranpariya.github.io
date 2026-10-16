@@ -4,6 +4,7 @@
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import postcss from "postcss";
 
 const BUILD = "build";
 let failures = 0;
@@ -72,6 +73,31 @@ const stylesheet = readFileSync(join(BUILD, "css/style.css"), "utf8");
 if (stylesheet.includes(".photo-gallery") && stylesheet.includes("scroll-snap-type:x proximity"))
   ok("responsive photo gallery rules survive production CSS processing");
 else fail("photo gallery component styles are missing from production CSS");
+
+// The preview must retain shared, grouped reading-page rules and their tokens.
+try {
+  const previewCss = postcss.parse(
+    readFileSync(join(BUILD, "assets/css/admin-research-preview.css"), "utf8")
+  );
+  const readingPage = {};
+  const tokens = {};
+  previewCss.walkRules((rule) => {
+    if (rule.selectors.includes(".research-reading-page"))
+      rule.walkDecls((declaration) => (readingPage[declaration.prop] = declaration.value));
+    if (rule.selector === ":root")
+      rule.walkDecls((declaration) => (tokens[declaration.prop] = declaration.value));
+  });
+  if (
+    parseFloat(readingPage["padding-left"]) > 0 &&
+    parseFloat(readingPage["padding-right"]) > 0 &&
+    readingPage["max-width"] === "var(--width-document)" &&
+    parseFloat(tokens["--width-document"]) > 0
+  )
+    ok("research preview retains page gutters and its shared width token");
+  else fail("research preview is missing its reading-page gutters or width token");
+} catch (error) {
+  fail(`could not verify research preview spacing: ${error.message}`);
+}
 
 // 2. Sitemap is valid XML and contains expected URLs
 console.log("\n[2] sitemap.xml");

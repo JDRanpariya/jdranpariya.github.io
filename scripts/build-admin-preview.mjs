@@ -30,9 +30,12 @@ function collectRules(container, target) {
   for (const node of container.nodes || []) {
     if (
       node.type === "rule" &&
-      /^\.(research-home-body|research-quote|research-note-content|research-note-body|research-public-navigation|research-navigation|research-reading|research-interest-overview|photo-gallery|skip-link)/.test(
-        node.selector
-      )
+      (node.selector === ":root" ||
+        node.selectors.some((selector) =>
+          /^\.(research-home-body|research-quote|research-note-content|research-note-body|research-public-navigation|research-navigation|research-reading|research-interest-overview|photo-gallery|skip-link)/.test(
+            selector
+          )
+        ))
     ) {
       target.append(node.clone());
     } else if (node.type === "atrule" && node.nodes) {
