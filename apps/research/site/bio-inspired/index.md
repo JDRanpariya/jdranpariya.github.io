@@ -7,14 +7,14 @@ canonical: https://research.jdranpariya.com/bio-inspired/
 pageKind: bioinspired
 interestOverview: true
 status: published
-lastUpdated: 2026-10-12
+lastUpdated: 2026-10-16
 ---
 
 # Bio-inspired interests
 
 ## Areas of interest
 
-- **[Origin and Emergence of Life](#origin-and-emergence-of-life)**
+- **Origin and Emergence of Life**
   - cooperative symbiogenesis
 
 - **[Evolutionary robotics and co-design](#evolutionary-robotics-and-co-design)**

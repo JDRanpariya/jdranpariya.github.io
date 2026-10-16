@@ -43,37 +43,30 @@ test("RL interests are ordinary public Markdown with all 82 supplied reading lin
   expect(source).not.toContain("noindex: true");
 });
 
-test("RL body follows the authored overview groups and subtopic order", () => {
+test("RL overview preserves authored labels while linking to existing reading sections", () => {
   const source = readFileSync(
     new URL("../site/reinforcement-learning/index.md", import.meta.url),
     "utf8"
   );
   const overview = source.split("## Areas of interest\n")[1].split("## Start here")[0];
-  const groups = [
-    ...overview.matchAll(
-      /^- \*\*\[([^\]]+)\]\(#([^)]+)\)\*\*\n([\s\S]*?)(?=^- \*\*|(?![\s\S]))/gmu
-    ),
-  ];
-  let previous = source.indexOf("## Start here");
-  for (const [, title, id, nested] of groups) {
-    const position = source.indexOf(`## ${title} {#${id}}`);
+  const groups = [...overview.matchAll(/^- \*\*\[([^\]]+)\]\(#([^)]+)\)\*\*/gmu)].map(
+    ([, title, id]) => [title, id]
+  );
+  expect(groups).toEqual([
+    ["Problem formulation", "problem-formulation"],
+    ["Safety and trust", "safety-and-trust"],
+    ["Continual Learning", "continual-adaptation"],
+    ["Interactive Long Horizon tasks", "temporal-abstraction-and-credit-assignment"],
+    ["Sample Efficiency", "sample-efficiency-and-priors"],
+  ]);
+  const html = noteHtml(parseNote(source).body, {});
+  let previous = -1;
+  for (const [title, id] of groups) {
+    const position = html.indexOf(`<a href="#${id}">${title}</a>`);
     expect(position).toBeGreaterThan(previous);
-    const end = source.indexOf("\n## ", position + 1);
-    const section = source.slice(position, end < 0 ? undefined : end);
-    const labels = [...nested.matchAll(/^  - (.+)$/gmu)].map((match) => match[1].toLowerCase());
-    const headings = [...section.matchAll(/^### (.+?)(?: \{#[^}]+\})?$/gmu)].map((match) =>
-      match[1].toLowerCase()
-    );
-    expect(headings).toEqual(labels);
+    expect(html).toContain(`id="${id}"`);
     previous = position;
   }
-  expect(groups.map((group) => group[1])).toEqual([
-    "Problem formulation",
-    "Safety and trust",
-    "Continual adaptation on real robots",
-    "Temporal abstraction and credit assignment",
-  ]);
-  expect(source).not.toContain("## Learning on real systems");
 });
 
 test("NeuroAI interests are ordinary public Markdown with all 48 supplied paper links", () => {
@@ -96,6 +89,10 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
   expect(source).toContain("status: published");
   expect(source.match(/^- \[[^\]]+\]\(https:\/\/[^)]+\)/gmu)).toHaveLength(48);
   expect(source.match(/^### /gmu)).toHaveLength(15);
+  expect(source).toContain("**Origin and Emergence of Life**\n  - cooperative symbiogenesis");
+  expect(noteHtml(parseNote(source).body, {})).not.toContain(
+    'href="#origin-and-emergence-of-life"'
+  );
   expect(source).not.toContain("10b-bioinspired-review-papers.md");
   expect(source).not.toContain("104 checked reviews");
   expect(source).not.toContain("page:skip");
@@ -103,28 +100,31 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
 });
 
 test.each([
-  ["reinforcement-learning", 13, 4],
-  ["neuro-ai", 14, 4],
-  ["bio-inspired", 15, 5],
-  ["ai-for-science", 14, 6],
-])("%s has plain bullet subtopics and linked topic headings", (slug, count, branches) => {
-  const source = readFileSync(new URL(`../site/${slug}/index.md`, import.meta.url), "utf8");
-  const { data, body } = parseNote(source);
-  const overview = body.split(/## (?:Start here|Reading list)/u)[0];
-  const html = noteHtml(body, {});
-  const ids = [...html.matchAll(/\bid="([^"]+)"/gu)].map((match) => match[1]);
-  const links = [...overview.matchAll(/\]\(#([^)]+)\)/gu)].map((match) => match[1]);
-  expect(data.interestOverview).toBe(true);
-  expect(overview.match(/^- \*\*\[/gmu)).toHaveLength(branches);
-  expect(overview.match(/^  - /gmu)).toHaveLength(count);
-  expect(overview).not.toContain(" · ");
-  expect(overview).not.toMatch(/^  - \[/mu);
-  expect(links).toHaveLength(branches);
-  expect(new Set(ids).size).toBe(ids.length);
-  for (const id of links) expect(ids).toContain(id);
-  expect(html).not.toContain("{#");
-  expect(html).not.toContain("<details");
-});
+  ["reinforcement-learning", 8, 5, 5],
+  ["neuro-ai", 14, 4, 4],
+  ["bio-inspired", 16, 6, 5],
+  ["ai-for-science", 14, 6, 6],
+])(
+  "%s has plain bullet subtopics and valid topic links",
+  (slug, count, branches, linkedBranches) => {
+    const source = readFileSync(new URL(`../site/${slug}/index.md`, import.meta.url), "utf8");
+    const { data, body } = parseNote(source);
+    const overview = body.split(/## (?:Start here|Reading list)/u)[0];
+    const html = noteHtml(body, {});
+    const ids = [...html.matchAll(/\bid="([^"]+)"/gu)].map((match) => match[1]);
+    const links = [...overview.matchAll(/\]\(#([^)]+)\)/gu)].map((match) => match[1]);
+    expect(data.interestOverview).toBe(true);
+    expect(overview.match(/^- \*\*/gmu)).toHaveLength(branches);
+    expect(overview.match(/^  - /gmu)).toHaveLength(count);
+    expect(overview).not.toContain(" · ");
+    expect(overview).not.toMatch(/^  - \[/mu);
+    expect(links).toHaveLength(linkedBranches);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of links) expect(ids).toContain(id);
+    expect(html).not.toContain("{#");
+    expect(html).not.toContain("<details");
+  }
+);
 
 test("AI for science preserves all 157 supplied links without internal build notes", () => {
   const source = readFileSync(new URL("../site/ai-for-science/index.md", import.meta.url), "utf8");

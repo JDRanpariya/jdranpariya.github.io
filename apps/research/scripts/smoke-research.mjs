@@ -157,7 +157,7 @@ for (const html of [home, index, rl, neuroai, bioinspired, aiscience]) {
   }
 }
 for (const [label, html, count] of [
-  ["RL", rl, 4],
+  ["RL", rl, 5],
   ["NeuroAI", neuroai, 4],
   ["Bio-inspired", bioinspired, 5],
   ["AI for science", aiscience, 6],

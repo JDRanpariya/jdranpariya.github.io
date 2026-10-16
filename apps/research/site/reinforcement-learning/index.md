@@ -7,7 +7,7 @@ canonical: https://research.jdranpariya.com/reinforcement-learning/
 pageKind: rl
 interestOverview: true
 status: published
-lastUpdated: 2026-10-13
+lastUpdated: 2026-10-16
 ---
 
 # Reinforcement learning interests
@@ -27,10 +27,10 @@ lastUpdated: 2026-10-13
   - catastrophic forgetting
   - loss of plasticity
 
-- **[Interactive Long Horizon tasks](#interactive-long-horizon-tasks)**
+- **[Interactive Long Horizon tasks](#temporal-abstraction-and-credit-assignment)**
   - Credit assignment
 
-- **[Sample Efficiency](#sample-efficiency)**
+- **[Sample Efficiency](#sample-efficiency-and-priors)**
 
 ## Start here
 
