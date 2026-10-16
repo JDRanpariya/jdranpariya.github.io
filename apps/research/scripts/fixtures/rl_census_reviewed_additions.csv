@@ -1,0 +1,2 @@
+id,name,entity_type,lead,institution,country,city,url,primary,topics,summary,question,question_basis,evidence_url_1,evidence_url_2,active_as_of,elite
+unit-abcdef12345678,Shared Neural Learning Lab,lab,Alex Shared,Example Institute,India,Bengaluru,https://example.org/shared/,biological reinforcement learning,continuous motor learning,Reviewed cross-collection unit.,,,https://example.org/plan,https://example.org/shared/,2026-10-14,no

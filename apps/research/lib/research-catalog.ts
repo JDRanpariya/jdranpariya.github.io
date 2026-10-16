@@ -1,6 +1,8 @@
 import greatMinds from "@/data/catalogs/great-minds.json";
 import neuroAi from "@/data/catalogs/neuroai.json";
 import rl from "@/data/catalogs/rl.json";
+import bioInspired from "@/data/catalogs/bio-inspired.json";
+import aiForScience from "@/data/catalogs/ai-for-science.json";
 import { collectionIds, type CollectionId } from "@/lib/research-collections";
 import { z } from "zod";
 
@@ -9,6 +11,36 @@ export type { CollectionId } from "@/lib/research-collections";
 
 export const fitValues = ["strong", "partial", ""] as const;
 export const tierValues = ["1", "2", "3", ""] as const;
+
+const webUrl = z
+  .string()
+  .url()
+  .refine((value) => /^https?:\/\//u.test(value));
+export const researchPlanSchema = z.object({
+  title: z.string().min(1),
+  url: webUrl,
+  author: z.string().min(1),
+  kind: z.enum(["plan", "agenda", "roadmap", "statement", "proposal"]),
+  evidenceUrl: webUrl,
+});
+export const labResourcesSchema = z.object({
+  leadSites: z.array(z.object({ name: z.string().min(1), url: webUrl, evidenceUrl: webUrl })),
+  researchPlans: z.array(researchPlanSchema),
+  teamMembers: z.array(
+    z.object({
+      name: z.string().min(1),
+      role: z.string(),
+      personalUrl: webUrl,
+      evidenceUrl: webUrl,
+      researchPlans: z.array(researchPlanSchema),
+    })
+  ),
+  resourcesReview: z.object({
+    status: z.enum(["checked", "partial", "source_limited"]),
+    checkedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/u),
+  }),
+});
+export type ResearchPlan = z.infer<typeof researchPlanSchema>;
 
 export const catalogRecordSchema = z.object({
   id: z.string().min(1),
@@ -28,6 +60,28 @@ export const catalogRecordSchema = z.object({
   evidenceUrls: z.array(z.string()),
   status: z.string(),
   activity: z.string(),
+  lifespan: z.string().optional(),
+  aliases: z.array(z.string()).optional(),
+  perspective: z.string().optional(),
+  perspectiveBasis: z.string().optional(),
+  perspectiveSourceUrl: webUrl.optional(),
+  readingPaths: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        url: webUrl,
+        kind: z.string().min(1),
+        yearLabel: z.string(),
+        whyRead: z.string().min(1),
+        sourceUrl: webUrl,
+        accessNote: z.string(),
+      })
+    )
+    .optional(),
+  leadSites: labResourcesSchema.shape.leadSites.optional(),
+  researchPlans: labResourcesSchema.shape.researchPlans.optional(),
+  teamMembers: labResourcesSchema.shape.teamMembers.optional(),
+  resourcesReview: labResourcesSchema.shape.resourcesReview.optional(),
   // Private triage fields (NeuroAI and RL). Never sent to the library or public index.
   elite: z.boolean().optional(),
   fit: z.enum(fitValues).optional(),
@@ -65,6 +119,8 @@ const catalogs: Record<CollectionId, CatalogRecord[]> = {
   "great-minds": greatMinds as CatalogRecord[],
   neuroai: neuroAi as CatalogRecord[],
   rl: rl as CatalogRecord[],
+  "bio-inspired": bioInspired as CatalogRecord[],
+  "ai-for-science": aiForScience as CatalogRecord[],
 };
 
 export function getCatalog(collection: CollectionId): CatalogRecord[] {

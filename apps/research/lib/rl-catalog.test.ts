@@ -15,7 +15,7 @@ import {
 const root = path.resolve(import.meta.dirname, "..");
 const fixtures = path.join(root, "scripts", "fixtures");
 
-function buildFixtureCatalog(): CatalogRecord[] {
+function buildFixtureCatalog(includeReviewedAddition = false): CatalogRecord[] {
   const dir = mkdtempSync(path.join(tmpdir(), "rl-catalog-"));
   const output = path.join(dir, "rl.json");
   try {
@@ -28,6 +28,9 @@ function buildFixtureCatalog(): CatalogRecord[] {
         path.join(fixtures, "rl_census_europe.csv"),
         "--rl-source",
         path.join(fixtures, "rl_census_world.csv"),
+        ...(includeReviewedAddition
+          ? ["--rl-source", path.join(fixtures, "rl_census_reviewed_additions.csv")]
+          : []),
         "--rl-output",
         output,
       ],
@@ -81,6 +84,18 @@ describe("reinforcement learning catalog", () => {
       buildFixtureCatalog().map((item) => item.id),
       built.map((item) => item.id)
     );
+  });
+
+  it("preserves reviewed shared unit ids without changing existing RL ids", () => {
+    const expanded = buildFixtureCatalog(true);
+    const shared = expanded.find((record) => record.name === "Shared Neural Learning Lab");
+    assert.equal(shared?.id, "unit-abcdef12345678");
+    assert.equal(shared?.collection, "rl");
+    for (const existing of built) {
+      assert.equal(expanded.find((record) => record.name === existing.name)?.id, existing.id);
+    }
+    assert.equal(expanded.length, built.length + 1);
+    for (const record of expanded) catalogRecordSchema.parse(record);
   });
 
   it("strips private fields before records leave the Worker", () => {

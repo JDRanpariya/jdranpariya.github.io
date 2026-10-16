@@ -203,6 +203,8 @@ for (const href of [
   "/library/great-minds",
   "/library/neuroai",
   "/library/rl",
+  "/library/bio-inspired",
+  "/library/ai-for-science",
   "/login?returnTo=%2Flibrary%2Fgreat-minds",
 ]) {
   if (!index.includes(`href="${href}"`)) throw new Error(`Index access link missing: ${href}`);
@@ -221,9 +223,15 @@ await request("/library/neuroai", 302);
 await request("/library/neuroai/index.html", 301);
 await request("/library/rl", 302);
 await request("/library/rl/index.html", 301);
+await request("/library/bio-inspired", 302);
+await request("/library/bio-inspired/index.html", 301);
+await request("/library/ai-for-science", 302);
+await request("/library/ai-for-science/index.html", 301);
 await request("/api/library/annotations?collection=great-minds", 401);
 await request("/api/library/annotations?collection=neuroai", 401);
 await request("/api/library/annotations?collection=rl", 401);
+await request("/api/library/annotations?collection=bio-inspired", 401);
+await request("/api/library/annotations?collection=ai-for-science", 401);
 const robots = await (await request("/robots.txt", 200)).text();
 for (const directive of [
   "User-agent: *",

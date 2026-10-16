@@ -36,7 +36,9 @@
         </p>
       </div>
       <div class="index-record-note">
-        <p class="leading-[1.8] text-ink-secondary">{{ record.publicNotes or record.summary }}</p>
+        <p class="leading-[1.8] text-ink-secondary">
+          {{ record.publicNotes or record.perspective or record.summary }}
+        </p>
         {% if record.tags.length %}
           <p class="mt-3 font-sans text-sm text-ink-muted">{{ record.tags | join(' · ') }}</p>
         {% endif %}

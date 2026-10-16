@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import { filterLibraryRecords } from "./library-data";
 import {
@@ -57,6 +58,15 @@ describe("library filters", () => {
 
 describe("generated catalogs", () => {
   const neuroai = getCatalog("neuroai");
+  const reviewedPath = new URL("../data/source/reviewed-census-v3.json", import.meta.url);
+  const reviewed = existsSync(reviewedPath)
+    ? (JSON.parse(readFileSync(reviewedPath, "utf8")) as {
+        catalogs: Partial<Record<string, CatalogRecord[]>>;
+      })
+    : null;
+  const membership: { id: string; decision: string; destinationId: string | null }[] = JSON.parse(
+    readFileSync(new URL("../data/source/catalog-membership.json", import.meta.url), "utf8")
+  );
 
   it("match the catalog schema with unique ids", () => {
     for (const collection of collectionIds) {
@@ -75,9 +85,19 @@ describe("generated catalogs", () => {
   });
 
   it("adds public directory people without private triage", () => {
+    if (reviewed?.catalogs.neuroai) {
+      assert.equal(neuroai.length, reviewed.catalogs.neuroai.length);
+      for (const person of neuroai.filter((item) => item.id.startsWith("ep-"))) {
+        assert.ok(person.activity.length > 0, `${person.id}: current programme evidence`);
+        assert.ok(person.evidenceUrls.length >= 2, `${person.id}: source-backed programme`);
+        assert.ok(["CORE", "STRONGLY_RELATED"].includes(person.status));
+      }
+      return;
+    }
     const people = neuroai.filter((item) => item.status === "ADDITIONAL_RESEARCHER");
-    assert.equal(neuroai.length, 487);
-    assert.equal(people.length, 65);
+    const removed = membership.filter((row) => row.decision !== "keep");
+    assert.equal(neuroai.length, 487 - removed.length);
+    assert.equal(people.length, 65 - removed.filter((row) => row.id.startsWith("ep-")).length);
     for (const person of people) {
       assert.match(person.id, /^ep-[0-9a-f]{14}$/u);
       assert.equal(person.entityType, "researcher");
@@ -88,6 +108,23 @@ describe("generated catalogs", () => {
       assert.equal(person.position, undefined);
       assert.deepEqual(person.evidenceUrls, []);
     }
+  });
+
+  it("excludes reviewed NeuroAI mismatches and resolves RL moves without new identities", () => {
+    const retained = new Set(neuroai.map((row) => row.id));
+    const rlIds = new Set(getCatalog("rl").map((row) => row.id));
+    for (const decision of membership) {
+      if (!reviewed?.catalogs.neuroai) {
+        assert.equal(retained.has(decision.id), decision.decision === "keep");
+      }
+      if (decision.decision === "move_rl") {
+        assert.ok(decision.destinationId && rlIds.has(decision.destinationId));
+      }
+    }
+    assert.ok(!retained.has("ep-1537a500ad1b38"));
+    assert.ok(!retained.has("ep-7109e63d3c9a74"));
+    assert.ok(rlIds.has("rl-bd9c33d4878cc2"));
+    assert.ok(rlIds.has("rl-cf924860203864"));
   });
 
   it("contains no private triage fields in the committed catalogs", () => {

@@ -7,6 +7,7 @@ import {
   type PublicCatalogRecord,
 } from "@/lib/research-catalog";
 import type { Decision } from "@/lib/research-annotations";
+import { visibleDecision } from "./library-decisions";
 
 export const libraryPageSize = 40;
 
@@ -59,7 +60,7 @@ export async function getLibraryPage({
 
   for (const record of catalog) {
     const saved = annotationMap.get(record.id);
-    const recordDecision = normalizeDecision(saved?.decision);
+    const recordDecision = visibleDecision(saved?.decision);
     counts[recordDecision] += 1;
   }
 
@@ -100,29 +101,34 @@ export function filterLibraryRecords(
   annotationMap: Map<string, { decision: string }>,
   { query = "", decision = "all" }: LibraryFilters = {}
 ): CatalogRecord[] {
-  const needle = query.trim().toLocaleLowerCase();
+  const searchable = (value: string) =>
+    value.normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase();
+  const needle = searchable(query.trim());
   return catalog.filter((record) => {
     if (
       decision !== "all" &&
-      normalizeDecision(annotationMap.get(record.id)?.decision) !== decision
+      visibleDecision(annotationMap.get(record.id)?.decision) !== visibleDecision(decision)
     )
       return false;
     if (!needle) return true;
-    return [
-      record.name,
-      record.lead,
-      record.institution,
-      record.country,
-      record.primary,
-      record.summary,
-      ...record.topics,
-    ]
-      .join(" ")
-      .toLocaleLowerCase()
-      .includes(needle);
+    return searchable(
+      [
+        record.name,
+        record.lead,
+        record.institution,
+        record.country,
+        record.primary,
+        record.summary,
+        record.perspective ?? "",
+        ...(record.aliases ?? []),
+        ...(record.readingPaths ?? []).flatMap((work) => [work.title, work.whyRead]),
+        ...record.topics,
+        ...(record.teamMembers ?? []).flatMap((member) => [
+          member.name,
+          ...member.researchPlans.map((plan) => plan.title),
+        ]),
+        ...(record.researchPlans ?? []).map((plan) => plan.title),
+      ].join(" ")
+    ).includes(needle);
   });
-}
-
-function normalizeDecision(value?: string): Decision {
-  return value === "keep" || value === "maybe" || value === "remove" ? value : "unreviewed";
 }

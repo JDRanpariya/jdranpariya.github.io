@@ -2,7 +2,14 @@
 
 import type { DecisionCounts, LibraryAnnotationView, LibraryPageData } from "@/lib/library-data";
 import type { Decision, ResearchFit } from "@/lib/research-annotations";
+import {
+  savedDecision,
+  visibleDecision,
+  visibleDecisions as decisions,
+} from "@/lib/library-decisions";
 import { collectionIds, collectionMeta, type CollectionId } from "@/lib/research-collections";
+import { LabLead, LabResources } from "./lab-resources";
+import { GreatMindResources } from "./great-mind-resources";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 type Draft = {
@@ -17,43 +24,22 @@ type Draft = {
 
 type SaveState = { kind: "idle" | "saving" | "saved" | "error"; text: string };
 
-const decisions: Array<{ value: Decision; label: string }> = [
-  { value: "unreviewed", label: "Unreviewed" },
-  { value: "keep", label: "Keep" },
-  { value: "maybe", label: "Maybe" },
-  { value: "remove", label: "Remove" },
-];
-
-const researchFits: Array<{ value: ResearchFit; label: string }> = [
-  { value: "", label: "Not assessed" },
-  { value: "strong", label: "Strong" },
-  { value: "partial", label: "Partial" },
-  { value: "low", label: "Low" },
-];
-
 const searchPlaceholder: Record<CollectionId, string> = {
   "great-minds": "Search people",
   neuroai: "Search NeuroAI groups",
   rl: "Search reinforcement learning labs",
+  "bio-inspired": "Search Bio-inspired groups",
+  "ai-for-science": "Search AI/ML for science groups",
 };
 
-/** Collections whose records are research units Jay rates for fit (not individual people). */
-function assessesFit(collection: CollectionId): boolean {
-  return collection !== "great-minds";
-}
-
-function fitLabel(value: ResearchFit): string {
-  return researchFits.find((option) => option.value === value)?.label ?? "Not assessed";
-}
-
 function normalizeResearchFit(value: string): ResearchFit {
-  return researchFits.find((option) => option.value === value)?.value ?? "";
+  return value === "strong" || value === "partial" || value === "low" ? value : "";
 }
 
 const statusColor: Record<Decision, string> = {
   unreviewed: "bg-ink-muted",
   keep: "bg-success",
-  maybe: "bg-warning",
+  maybe: "bg-ink-muted",
   remove: "bg-danger",
 };
 
@@ -70,9 +56,7 @@ function emptyDraft(): Draft {
 }
 
 function normalizeDecision(value: string): Decision {
-  return decisions.some((decision) => decision.value === value)
-    ? (value as Decision)
-    : "unreviewed";
+  return savedDecision(value);
 }
 
 function draftsFromAnnotations(annotations: LibraryAnnotationView[]) {
@@ -353,7 +337,11 @@ export function LibraryWorkspace({
     if (before.decision !== saved.decision) {
       setPageData((current) => ({
         ...current,
-        counts: adjustCounts(current.counts, before.decision, saved.decision),
+        counts: adjustCounts(
+          current.counts,
+          visibleDecision(before.decision),
+          visibleDecision(saved.decision)
+        ),
       }));
     }
   }
@@ -397,6 +385,7 @@ export function LibraryWorkspace({
             <a href="/reinforcement-learning/">RL</a>
             <a href="/neuro-ai/">NeuroAI</a>
             <a href="/bio-inspired/">Bio-inspired</a>
+            <a href="/ai-for-science/">AI for science</a>
             <a href="/index">Index</a>
             <a href="/logout?returnTo=%2F" title={`Signed in as ${ownerEmail}`}>
               Sign out
@@ -503,11 +492,6 @@ export function LibraryWorkspace({
                         {[record.institution, record.country].filter(Boolean).join(" · ") ||
                           record.primary}
                       </span>
-                      {assessesFit(activeCollection) && draft.researchFit ? (
-                        <span className="mt-1 block font-sans text-xs text-ink-muted">
-                          Fit: {fitLabel(draft.researchFit)}
-                        </span>
-                      ) : null}
                     </span>
                     {draft.isPublished ? (
                       <span className="ml-auto shrink-0 font-sans text-[0.625rem] text-ink-muted">
@@ -548,16 +532,35 @@ export function LibraryWorkspace({
                       <div>
                         <p className="ui-label">{selected.entityType.replaceAll("_", " ")}</p>
                         <h2 className="mt-1 text-[1.5rem] font-bold leading-tight md:text-[1.75rem]">
-                          {selected.name}
+                          {selected.entityType === "researcher" &&
+                          selected.leadSites?.find((site) => site.name === selected.name) ? (
+                            <a
+                              href={
+                                selected.leadSites.find((site) => site.name === selected.name)?.url
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="lab-resource-link"
+                            >
+                              {selected.name}
+                            </a>
+                          ) : (
+                            selected.name
+                          )}
                         </h2>
                       </div>
-                      <a href={selected.url} className="shrink-0 font-sans text-sm underline">
+                      <a
+                        href={selected.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 font-sans text-sm underline"
+                      >
                         Visit site →
                       </a>
                     </div>
                     {selected.lead ? (
                       <p className="mt-3 text-[0.9375rem] leading-6">
-                        <strong>Lead:</strong> {selected.lead}
+                        <strong>Lead:</strong> <LabLead record={selected} />
                       </p>
                     ) : null}
                     {selected.institution ? (
@@ -566,14 +569,21 @@ export function LibraryWorkspace({
                       </p>
                     ) : null}
                     <p className="mt-1 font-sans text-sm text-ink-muted">
-                      {[selected.city, selected.country].filter(Boolean).join(", ")}
+                      {[
+                        selected.lifespan,
+                        [selected.city, selected.country].filter(Boolean).join(", "),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
-                    {selected.summary ? (
+                    {selected.summary && !selected.perspective ? (
                       <p className="mt-4 text-[0.9375rem] leading-7 text-ink-secondary">
                         {selected.summary}
                       </p>
                     ) : null}
-                    {selected.question ? (
+                    {activeCollection === "great-minds" && selected.perspective ? (
+                      <GreatMindResources record={selected} />
+                    ) : activeCollection === "great-minds" && selected.question ? (
                       <div className="mt-4">
                         <p className="ui-label">Life question</p>
                         <p className="mt-1 text-[0.9375rem] leading-7 text-ink-secondary">
@@ -581,6 +591,7 @@ export function LibraryWorkspace({
                         </p>
                       </div>
                     ) : null}
+                    {activeCollection !== "great-minds" ? <LabResources record={selected} /> : null}
                     {selected.topics.length ? (
                       <p className="mt-4 font-sans text-xs leading-5 text-ink-muted">
                         {selected.topics.join(" · ")}
@@ -594,14 +605,24 @@ export function LibraryWorkspace({
                       {decisions.map((decision) => (
                         <label
                           key={decision.value}
-                          className={`flex min-h-10 cursor-pointer items-center gap-2 px-0.5 py-2 font-sans text-sm transition-colors ${selectedDraft.decision === decision.value ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
+                          className={`flex min-h-10 cursor-pointer items-center gap-2 px-0.5 py-2 font-sans text-sm transition-colors ${visibleDecision(selectedDraft.decision) === decision.value ? "font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
                         >
                           <input
                             type="radio"
                             name={`decision-${selected.id}`}
                             value={decision.value}
-                            checked={selectedDraft.decision === decision.value}
+                            checked={visibleDecision(selectedDraft.decision) === decision.value}
                             onChange={() => void chooseDecision(selected.id, decision.value)}
+                            onClick={() => {
+                              // A legacy Maybe looks checked under Unreviewed.
+                              // An explicit click should still clear that old value.
+                              if (
+                                selectedDraft.decision === "maybe" &&
+                                decision.value === "unreviewed"
+                              ) {
+                                void chooseDecision(selected.id, "unreviewed");
+                              }
+                            }}
                             className="sr-only"
                           />
                           <span
@@ -615,29 +636,6 @@ export function LibraryWorkspace({
                   </fieldset>
 
                   <div className="mt-5 pt-1">
-                    {assessesFit(activeCollection) ? (
-                      <label className="mb-5 block max-w-xs">
-                        <span className="ui-label">Fit to my research</span>
-                        <select
-                          value={selectedDraft.researchFit}
-                          onChange={(event) =>
-                            updateLocal(selected.id, {
-                              researchFit: normalizeResearchFit(event.target.value),
-                            })
-                          }
-                          className="ui-control mt-1.5"
-                        >
-                          {researchFits.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        <span className="mt-1 block font-sans text-xs text-ink-muted">
-                          Your assessment. Details can go in private notes.
-                        </span>
-                      </label>
-                    ) : null}
                     <label className="block">
                       <span className="ui-label">Private notes</span>
                       <textarea

@@ -188,6 +188,11 @@ a:hover {
   text-decoration-color: var(--accent);
 }
 
+.lab-resource-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
 .library-search {
   border: 0;
   border-radius: 0;

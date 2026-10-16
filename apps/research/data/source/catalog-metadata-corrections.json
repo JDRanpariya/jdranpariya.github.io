@@ -1,0 +1,100 @@
+[
+  {
+    "id": "R0046",
+    "collection": "neuroai",
+    "lead": "Yalda Mohsenzadeh",
+    "sources": [
+      {
+        "url": "https://mohsenzadehlab.com/people",
+        "note": "The lab’s current first-party People page explicitly names Yalda Mohsenzadeh as its Principal Investigator and describes her as an Associate Professor at Western University. The catalog lead “Ali Mohsenzadeh” does not match the verified PI."
+      }
+    ]
+  },
+  {
+    "id": "R0342",
+    "collection": "neuroai",
+    "lead": "Ah-Hwee Tan",
+    "sources": [
+      {
+        "url": "https://sites.google.com/smu.edu.sg/neural-and-cognitive-computing/members",
+        "note": "The group’s current first-party Members page explicitly names Ah-Hwee Tan as Principal Investigator; his linked self-managed homepage confirms the Neural and Cognitive Computing Group affiliation. The catalog lead “Prof. Kang” is not the PI named by the group roster."
+      }
+    ]
+  },
+  {
+    "id": "R0286",
+    "collection": "neuroai",
+    "lead": "Masaki Takeda",
+    "sources": [
+      {
+        "url": "https://braincom-kut.com/en/member/",
+        "note": "The official member page identifies Masaki Takeda as Center Director and Professor; the official About page is signed by him as director in April 2025."
+      },
+      {
+        "url": "https://braincom-kut.com/en/center/",
+        "note": "Official About page names Masaki Takeda as Director, Research Center for Brain Communication (April 2025)."
+      }
+    ]
+  },
+  {
+    "id": "R0600",
+    "collection": "neuroai",
+    "lead": "Jonathan Cohen; Leigh Nystrom",
+    "sources": [
+      {
+        "url": "https://ncclab.princeton.edu/people/",
+        "note": "Current official roster names Jonathan Cohen as Director and Leigh Nystrom as Co-Director; replaces placeholder Lab leadership."
+      }
+    ]
+  },
+  {
+    "id": "R0104",
+    "collection": "neuroai",
+    "lead": "Yao Dezhong",
+    "sources": [
+      {
+        "url": "https://faculty.uestc.edu.cn/yaodezhong/en/index.htm",
+        "note": "UESTC's official faculty profile identifies Dezhong Yao as dean/founder of the Sichuan Institute for Brain Science and Brain-Inspired Intelligence (2018.12–), and lists current work experience there as director (2018.10–Now); lines 69 and 413–415 in the web-opened page. This first-party profile supports correcting the catalog lead from Tiejun Liu to Yao Dezhong."
+      }
+    ]
+  },
+  {
+    "id": "rl-018e47849688e1",
+    "collection": "rl",
+    "lead": "Yutaka Matsuo and Yusuke Iwasawa",
+    "sources": [
+      {
+        "url": "https://weblab.t.u-tokyo.ac.jp/en/members/staff/",
+        "note": "Completed same-lab first-party staff/student review identifies current professor Yutaka Matsuo and associate professor Yusuke Iwasawa as joint lab leads. Matches NeuroAI same-lab lead naming and two independently verified lead sites."
+      }
+    ]
+  },
+  {
+    "id": "rl-a9d496c463ca0a",
+    "collection": "rl",
+    "name": "Boston Dynamics Atlas learning team",
+    "lead": "Michael Lutter",
+    "sources": [
+      {
+        "url": "https://kuindersma.github.io/",
+        "note": "Root independently read current self-authored site: Scott Kuindersma joined Google DeepMind and identifies Boston Dynamics as his previous role; remove obsolete current lead naming."
+      },
+      {
+        "url": "https://www.mlutter.eu/",
+        "note": "Root independently read current self-authored site: Michael Lutter leads the Atlas Dexterous Manipulation team and lists Technical Manager of Atlas RL Manipulation Team from February2025-present. He is the verified current technical lead; full broader Atlas roster remains source limited in raw resource review."
+      }
+    ]
+  },
+  {
+    "id": "rl-09e1ac97f23e6f",
+    "collection": "rl",
+    "name": "Cognitive Cooperating Robots Lab (RoCoCo)",
+    "lead": "Daniele Nardi",
+    "sources": [
+      {
+        "url": "https://research.uniroma1.it/laboratorio/145174",
+        "note": "Root independently read current official Sapienza laboratory record. Responsabile table names Daniele Nardi; Luca Iocchi appears among staff rather than the responsible lead. Remove outdated Iocchi parenthetical from title; retain same original recordID."
+      }
+    ]
+  }
+]
