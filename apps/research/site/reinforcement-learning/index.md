@@ -12,25 +12,7 @@ lastUpdated: 2026-10-16
 
 # Reinforcement learning interests
 
-## Areas of interest
-
-- **[Problem formulation](#problem-formulation)**
-  - Partially observable MDPs
-  - Predictive representations
-
-- **[Safety and trust](#safety-and-trust)**
-  - Safe RL
-  - constrained MDPs
-  - Verification
-
-- **[Continual Learning](#continual-adaptation)**
-  - catastrophic forgetting
-  - loss of plasticity
-
-- **[Interactive Long Horizon tasks](#temporal-abstraction-and-credit-assignment)**
-  - Credit assignment
-
-- **[Sample Efficiency](#sample-efficiency-and-priors)**
+My research interest in RL lies in *safe and continually learning embodied agents*. I'm working on Canonical model of intelligent agents, theory of continual learning for those agents and building real world benchmark to evaluate them.
 
 ## Start here
 
