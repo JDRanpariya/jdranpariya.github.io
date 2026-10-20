@@ -12,7 +12,7 @@ lastUpdated: 2026-10-16
 
 # Reinforcement learning interests
 
-My research interest in RL lies in *safe and continually learning embodied agents*. I'm working on Canonical model of intelligent agents, theory of continual learning for those agents and building real world benchmark to evaluate them.
+My research interest in RL lies in _safe and continually learning embodied agents_. I'm working on Canonical model of intelligent agents, theory of continual learning for those agents and building real world benchmark to evaluate them.
 
 ## Start here
 

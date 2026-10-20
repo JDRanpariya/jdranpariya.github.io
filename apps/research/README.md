@@ -15,7 +15,7 @@ Source for [research.jdranpariya.com](https://research.jdranpariya.com), in the 
 
 The research subdomain keeps its own Figtree / Source Serif 4 typography and white, black, and red visual system. It shares Eleventy with the personal site, not the personal site's visual theme.
 
-RL, NeuroAI, Bio-inspired and AI for science begin with linked topic headings and plain nested bullet subtopics, followed by the unchanged paper lists. The overview is authored as ordinary Markdown before `Start here` or `Reading list`; `interestOverview: true` applies the shared two-column desktop / single-column phone styling to its first list. Only the main topic headings link to sections. Topic links use explicit heading identifiers such as `{#continual-adaptation}`. Eleventy uses the same Markdown renderer as research notes and the admin preview, so these anchors work without client JavaScript or a diagram dependency.
+NeuroAI, Bio-inspired and AI for science begin with linked topic headings and plain nested bullet subtopics, followed by the unchanged paper lists. RL currently begins with its short research statement and `Start here` reading list. An overview is authored as ordinary Markdown before `Start here` or `Reading list`; `interestOverview: true` applies the shared two-column desktop / single-column phone styling only when the page contains an `Areas of interest` section. Only the main topic headings link to sections. Topic links use explicit heading identifiers such as `{#continual-adaptation}`. Eleventy uses the same Markdown renderer as research notes and the admin preview, so these anchors work without client JavaScript or a diagram dependency.
 
 ## Build and local preview
 

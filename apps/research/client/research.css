@@ -518,32 +518,34 @@ a:hover {
     @apply underline;
   }
 
-  .research-interest-overview > ul:first-of-type {
+  /* Only the Areas of interest list is a two-column topic overview. A page
+     without that section (for example RL) must keep its first list marked. */
+  .research-interest-overview > h2#areas-of-interest + ul {
     @apply my-6 grid grid-cols-1 items-start gap-x-10 gap-y-6 list-none pl-0 sm:grid-cols-2;
   }
 
-  .research-interest-overview > ul:first-of-type > li {
+  .research-interest-overview > h2#areas-of-interest + ul > li {
     @apply min-w-0 text-sm leading-relaxed;
     margin-block: 0;
   }
 
-  .research-interest-overview > ul:first-of-type > li + li {
+  .research-interest-overview > h2#areas-of-interest + ul > li + li {
     margin-block: 0;
   }
 
-  .research-interest-overview > ul:first-of-type > li > p {
+  .research-interest-overview > h2#areas-of-interest + ul > li > p {
     @apply m-0;
   }
 
-  .research-interest-overview > ul:first-of-type strong {
+  .research-interest-overview > h2#areas-of-interest + ul strong {
     @apply block text-base font-semibold leading-6 text-ink;
   }
 
-  .research-interest-overview > ul:first-of-type ul {
+  .research-interest-overview > h2#areas-of-interest + ul ul {
     @apply mt-2 mb-0 list-disc pl-5;
   }
 
-  .research-interest-overview > ul:first-of-type ul > li + li {
+  .research-interest-overview > h2#areas-of-interest + ul ul > li + li {
     margin-top: 0.25rem;
   }
 

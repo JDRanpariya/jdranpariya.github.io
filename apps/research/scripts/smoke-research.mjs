@@ -156,11 +156,11 @@ for (const html of [home, index, rl, neuroai, bioinspired, aiscience]) {
     if (!html.includes(`href="${href}"`)) throw new Error(`Public navigation missing: ${href}`);
   }
 }
-for (const [label, html, count] of [
-  ["RL", rl, 5],
-  ["NeuroAI", neuroai, 4],
-  ["Bio-inspired", bioinspired, 5],
-  ["AI for science", aiscience, 6],
+for (const [label, html, count, hasOverview] of [
+  ["RL", rl, 0, false],
+  ["NeuroAI", neuroai, 4, true],
+  ["Bio-inspired", bioinspired, 5, true],
+  ["AI for science", aiscience, 6, true],
 ]) {
   if (
     !html.includes('data-note-trail="research"') ||
@@ -173,10 +173,13 @@ for (const [label, html, count] of [
       `${label} must use Eleventy HTML and the shared note-trail enhancement, not React hydration.`
     );
   if (
-    !html.includes('class="research-reading-body research-interest-overview"') ||
-    !html.includes("Areas of interest")
+    hasOverview &&
+    (!html.includes('class="research-reading-body research-interest-overview"') ||
+      !html.includes("Areas of interest"))
   )
     throw new Error(`${label} is missing its interest overview.`);
+  if (!hasOverview && html.includes("Areas of interest"))
+    throw new Error(`${label} unexpectedly contains an interest overview.`);
   const links = [...html.matchAll(/href="#([^"]+)"/gu)]
     .map((match) => match[1])
     .filter((id) => id !== "main");

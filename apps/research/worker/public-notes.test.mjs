@@ -21,7 +21,7 @@ test("RL interests are ordinary public Markdown with all 82 supplied reading lin
   expect(source).toContain("permalink: /reinforcement-learning/index.html");
   expect(source).toContain("status: published");
   expect(source.match(/^\s*- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu)).toHaveLength(82);
-  expect(source.match(/^## /gmu)).toHaveLength(7);
+  expect(source.match(/^## /gmu)).toHaveLength(6);
   const problem = source.indexOf("## Problem formulation {#problem-formulation}");
   const safety = source.indexOf("## Safety and trust {#safety-and-trust}");
   expect(problem).toBeGreaterThan(-1);
@@ -43,30 +43,16 @@ test("RL interests are ordinary public Markdown with all 82 supplied reading lin
   expect(source).not.toContain("noindex: true");
 });
 
-test("RL overview preserves authored labels while linking to existing reading sections", () => {
+test("RL keeps its Start here reading list as ordinary Markdown", () => {
   const source = readFileSync(
     new URL("../site/reinforcement-learning/index.md", import.meta.url),
     "utf8"
   );
-  const overview = source.split("## Areas of interest\n")[1].split("## Start here")[0];
-  const groups = [...overview.matchAll(/^- \*\*\[([^\]]+)\]\(#([^)]+)\)\*\*/gmu)].map(
-    ([, title, id]) => [title, id]
-  );
-  expect(groups).toEqual([
-    ["Problem formulation", "problem-formulation"],
-    ["Safety and trust", "safety-and-trust"],
-    ["Continual Learning", "continual-adaptation"],
-    ["Interactive Long Horizon tasks", "temporal-abstraction-and-credit-assignment"],
-    ["Sample Efficiency", "sample-efficiency-and-priors"],
-  ]);
+  expect(source).not.toContain("## Areas of interest");
   const html = noteHtml(parseNote(source).body, {});
-  let previous = -1;
-  for (const [title, id] of groups) {
-    const position = html.indexOf(`<a href="#${id}">${title}</a>`);
-    expect(position).toBeGreaterThan(previous);
-    expect(html).toContain(`id="${id}"`);
-    previous = position;
-  }
+  expect(html).toContain("<h2>Start here</h2>");
+  expect(html).toContain("<ul>");
+  expect(html).toContain("Deep Reinforcement Learning for Robotics");
 });
 
 test("NeuroAI interests are ordinary public Markdown with all 48 supplied paper links", () => {
@@ -100,7 +86,6 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
 });
 
 test.each([
-  ["reinforcement-learning", 8, 5, 5],
   ["neuro-ai", 14, 4, 4],
   ["bio-inspired", 16, 6, 5],
   ["ai-for-science", 14, 6, 6],
