@@ -10,7 +10,11 @@ status: published
 lastUpdated: 2026-10-16
 ---
 
+
 # Bio-inspired interests
+
+
+Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
 
 ## Areas of interest
 
