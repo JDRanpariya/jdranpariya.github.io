@@ -22,6 +22,7 @@ My research interest in RL lies in _safe and continually learning embodied agent
 - [How to Train Your Robot with Deep Reinforcement Learning: Lessons We've Learned](https://arxiv.org/abs/2102.02915), Julian Ibarz et al., 2021, International Journal of Robotics Research.
 - [A Tour of Reinforcement Learning: The View from Continuous Control](https://arxiv.org/abs/1806.09460), Benjamin Recht, 2018, arXiv preprint.
 - [The Alberta Plan for AI Research](https://arxiv.org/abs/2208.11173), Richard S. Sutton et al., 2022, arXiv preprint.
+- [The Reality Gap in Robotics: Challenges, Solutions, and Best Practices](https://www.annualreviews.org/content/journals/10.1146/annurev-control-031924-100130) (Aljalbout et al., Annual Review, 2026)
 
 ## Problem formulation {#problem-formulation}
 
