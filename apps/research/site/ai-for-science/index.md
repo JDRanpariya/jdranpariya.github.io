@@ -12,7 +12,7 @@ lastUpdated: 2026-10-12
 
 # AI for science interests
 
-## Areas of interest
+## Areas of interest {#areas-of-interest}
 
 - **[Laboratory automation](#laboratory-automation)**
   - Self-driving labs and robot scientists

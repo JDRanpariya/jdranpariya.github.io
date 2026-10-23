@@ -16,7 +16,7 @@ lastUpdated: 2026-10-16
 
 Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
 
-## Areas of interest
+## Areas of interest {#areas-of-interest}
 
 - **Origin and Emergence of Life**
   - cooperative symbiogenesis

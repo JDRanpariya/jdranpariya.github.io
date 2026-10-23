@@ -12,7 +12,7 @@ lastUpdated: 2026-10-12
 
 # NeuroAI interests
 
-## Areas of interest
+## Areas of interest {#areas-of-interest}
 
 - **[Embodied control and neuromechanics](#embodied-control-and-neuromechanics)**
   - Neuromechanical models and virtual animals
