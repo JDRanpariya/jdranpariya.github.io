@@ -43,6 +43,7 @@ Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
   - Organoid and in-vitro neural computing
   - DNA and molecular computing
   - Basal cognition and collective intelligence of cells
+  - Patterns and the Platonic space hypothesis
 
 ## Reading list
 
@@ -145,7 +146,12 @@ Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
 
 ### Basal cognition and collective intelligence of cells {#basal-cognition-and-collective-intelligence-of-cells}
 
-- [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/), field guide to his talks, papers and books, 2026.
 - [Wetware network-based AI: a chemical approach to embodied cognition for robotics and artificial intelligence](https://doi.org/10.3389/frobt.2025.1694338), Damiano et al., 2026, Frontiers in Robotics and AI.
 - [Collective intelligence: A unifying concept for integrating biology across scales and substrates](https://doi.org/10.1038/s42003-024-06037-4), McMillen et al., 2024, Communications Biology.
 - [From reinforcement learning to agency: Frameworks for understanding basal cognition](https://doi.org/10.1016/j.biosystems.2023.105107), Seifert et al., 2024, BioSystems.
+
+### Patterns and the Platonic space hypothesis {#patterns-and-the-platonic-space-hypothesis}
+
+- [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/), field guide to his talks, papers and books, 2026.
+- [Ingressing Minds: Causal, Non-Physical Patterns In-Form Natural, Synthetic, and Hybrid Embodiments](https://doi.org/10.3390/philosophies11050161), Michael Levin, 2026, Philosophies.
+- [Classical sorting algorithms as a model of morphogenesis: self-sorting arrays reveal unexpected competencies in a minimal model of basal intelligence](https://doi.org/10.1177/10597123241269740), Zhang et al., 2024, Adaptive Behavior.

@@ -69,12 +69,12 @@ test("NeuroAI interests are ordinary public Markdown with all 48 supplied paper 
   expect(source).not.toContain("noindex: true");
 });
 
-test("Bio-inspired interests preserve all 48 supplied papers without internal build notes", () => {
+test("Bio-inspired interests preserve all 50 supplied papers without internal build notes", () => {
   const source = readFileSync(new URL("../site/bio-inspired/index.md", import.meta.url), "utf8");
   expect(source).toContain("permalink: /bio-inspired/index.html");
   expect(source).toContain("status: published");
-  expect(source.match(/^- \[[^\]]+\]\(https:\/\/[^)]+\)/gmu)).toHaveLength(48);
-  expect(source.match(/^### /gmu)).toHaveLength(15);
+  expect(source.match(/^- \[[^\]]+\]\(https:\/\/[^)]+\)/gmu)).toHaveLength(50);
+  expect(source.match(/^### /gmu)).toHaveLength(16);
   expect(source).toContain("**Origin and Emergence of Life**\n  - cooperative symbiogenesis");
   expect(noteHtml(parseNote(source).body, {})).not.toContain(
     'href="#origin-and-emergence-of-life"'
@@ -87,7 +87,7 @@ test("Bio-inspired interests preserve all 48 supplied papers without internal bu
 
 test.each([
   ["neuro-ai", 14, 4, 4],
-  ["bio-inspired", 16, 6, 5],
+  ["bio-inspired", 17, 6, 5],
   ["ai-for-science", 14, 6, 6],
 ])(
   "%s has plain bullet subtopics and valid topic links",
