@@ -91,7 +91,7 @@ export function noteHtml(body, note, notes = []) {
   const children = note.folderIndex
     ? notes
         .filter((child) => {
-          if (child.path === note.path) return false;
+          if (!child.path || child.path === note.path) return false;
           const container = child.path.replace(/\/index\.md$/, "").replace(/\/[^/]+$/, "");
           return container === note.path.replace(/\/index\.md$/, "");
         })
