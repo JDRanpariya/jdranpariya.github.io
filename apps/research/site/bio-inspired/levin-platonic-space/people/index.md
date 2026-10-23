@@ -1,12 +1,17 @@
 ---
-title: "People and labs"
+layout: public.njk
+permalink: /bio-inspired/levin-platonic-space/people/index.html
+title: "People and labs · Levin on Platonic space · Jay Ranpariya"
 description: "The people and labs around Levin's Platonic space idea, with how each connects to him."
+canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/people/
+pageKind: bioinspired
 status: draft
+lastUpdated: 2026-10-23
 ---
 
 # People and labs
 
-[Guide](/notes/bio-inspired/levin-platonic-space/) · [Talks](/notes/bio-inspired/levin-platonic-space/talks/) · [Papers](/notes/bio-inspired/levin-platonic-space/papers/) · [Books](/notes/bio-inspired/levin-platonic-space/books/) · [Mathematics](/notes/bio-inspired/levin-platonic-space/mathematics/) · People and labs
+Part of the field guide [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/).
 
 These are the people and labs around Michael Levin's work on Platonic space and patterns. The first group gave talks at his Platonic Space symposium or discussed the topic with him. The second group is the labs that he lists as of interest, with their key works and any link to him.
 

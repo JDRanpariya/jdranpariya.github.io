@@ -1,12 +1,17 @@
 ---
-title: "Papers"
+layout: public.njk
+permalink: /bio-inspired/levin-platonic-space/papers/index.html
+title: "Papers · Levin on Platonic space · Jay Ranpariya"
 description: "Levin papers on Platonic space, the model systems behind it, and papers not available."
+canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/papers/
+pageKind: bioinspired
 status: draft
+lastUpdated: 2026-10-23
 ---
 
 # Papers
 
-[Guide](/notes/bio-inspired/levin-platonic-space/) · [Talks](/notes/bio-inspired/levin-platonic-space/talks/) · Papers · [Books](/notes/bio-inspired/levin-platonic-space/books/) · [Mathematics](/notes/bio-inspired/levin-platonic-space/mathematics/) · [People and labs](/notes/bio-inspired/levin-platonic-space/people/)
+Part of the field guide [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/).
 
 This page lists the papers behind the guide. The core papers state the Platonic space idea. The model-system papers give the simulations and formal tools he uses as evidence, with a note on how strong each one is. A short list of other papers gives background terms. Some key texts are not openly available.
 

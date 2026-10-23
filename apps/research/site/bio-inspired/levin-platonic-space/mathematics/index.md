@@ -1,12 +1,17 @@
 ---
-title: "Mathematics"
+layout: public.njk
+permalink: /bio-inspired/levin-platonic-space/mathematics/index.html
+title: "Mathematics · Levin on Platonic space · Jay Ranpariya"
 description: "The mathematics behind Levin's examples, a learning path, and how accurate his statements are."
+canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/mathematics/
+pageKind: bioinspired
 status: draft
+lastUpdated: 2026-10-23
 ---
 
 # Mathematics
 
-[Guide](/notes/bio-inspired/levin-platonic-space/) · [Talks](/notes/bio-inspired/levin-platonic-space/talks/) · [Papers](/notes/bio-inspired/levin-platonic-space/papers/) · [Books](/notes/bio-inspired/levin-platonic-space/books/) · Mathematics · [People and labs](/notes/bio-inspired/levin-platonic-space/people/)
+Part of the field guide [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/).
 
 This page lists the mathematics that Michael Levin uses in his argument about Platonic space and in his papers. Each item gives his use, the standard statement with a source, and a verdict on his statement. The verdicts are our judgement. Most of his written statements are correct, and the errors come mostly in unscripted talk.
 

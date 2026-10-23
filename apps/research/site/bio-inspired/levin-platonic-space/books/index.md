@@ -1,12 +1,17 @@
 ---
-title: "Books"
+layout: public.njk
+permalink: /bio-inspired/levin-platonic-space/books/index.html
+title: "Books · Levin on Platonic space · Jay Ranpariya"
 description: "Books Levin cites or recommends, with what he uses each one for."
+canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/books/
+pageKind: bioinspired
 status: draft
+lastUpdated: 2026-10-23
 ---
 
 # Books
 
-[Guide](/notes/bio-inspired/levin-platonic-space/) · [Talks](/notes/bio-inspired/levin-platonic-space/talks/) · [Papers](/notes/bio-inspired/levin-platonic-space/papers/) · Books · [Mathematics](/notes/bio-inspired/levin-platonic-space/mathematics/) · [People and labs](/notes/bio-inspired/levin-platonic-space/people/)
+Part of the field guide [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/).
 
 These are the books that Michael Levin cites or recommends in his talks, blog posts and papers. The groups start with the books closest to his argument about Platonic space and patterns. Each book has a short note on what he uses it for and up to two places where he uses it.
 

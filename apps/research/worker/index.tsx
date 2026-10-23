@@ -256,6 +256,17 @@ const researchWorker = {
           return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);
         return asset(request, env, `${readingPage}/index.html`);
       }
+      // Sub-pages of a reading page (e.g. /bio-inspired/levin-platonic-space/) are static Eleventy pages.
+      const readingSection = researchReadingPages
+        .map((page) => page.route.slice(0, -1))
+        .find((route) => path.startsWith(`${route}/`));
+      if (readingSection && ["GET", "HEAD"].includes(request.method)) {
+        if (path.endsWith("/index.html"))
+          return Response.redirect(new URL(`${path.slice(0, -10)}${url.search}`, url), 301);
+        if (!url.pathname.endsWith("/"))
+          return Response.redirect(new URL(`${path}/${url.search}`, url), 301);
+        return asset(request, env, `${path}/index.html`);
+      }
       if (
         (path === "/notes" || path.startsWith("/notes/")) &&
         ["GET", "HEAD"].includes(request.method)

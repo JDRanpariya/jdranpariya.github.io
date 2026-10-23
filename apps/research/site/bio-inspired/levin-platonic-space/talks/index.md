@@ -1,12 +1,17 @@
 ---
-title: "Talks"
+layout: public.njk
+permalink: /bio-inspired/levin-platonic-space/talks/index.html
+title: "Talks · Levin on Platonic space · Jay Ranpariya"
 description: "Talks, interviews and blog posts by Michael Levin on Platonic space and patterns."
+canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/talks/
+pageKind: bioinspired
 status: draft
+lastUpdated: 2026-10-23
 ---
 
 # Talks
 
-[Guide](/notes/bio-inspired/levin-platonic-space/) · Talks · [Papers](/notes/bio-inspired/levin-platonic-space/papers/) · [Books](/notes/bio-inspired/levin-platonic-space/books/) · [Mathematics](/notes/bio-inspired/levin-platonic-space/mathematics/) · [People and labs](/notes/bio-inspired/levin-platonic-space/people/)
+Part of the field guide [Michael Levin on Platonic space, patterns and mathematics](/bio-inspired/levin-platonic-space/).
 
 This page lists talks, interviews, podcasts and symposium sessions on what Michael Levin means by Platonic space, patterns and mathematics. Each entry says if Levin speaks, how much of it is on the theme, and what it adds. Some entries are talks by guests or critics about his idea. Where a video has a key passage, a link opens it at that point. The blog section lists his posts on the theme, newest first.
 
