@@ -43,6 +43,7 @@ Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
   - Organoid and in-vitro neural computing
   - DNA and molecular computing
   - Basal cognition and collective intelligence of cells
+  - [Patterns, free lunches and the Platonic space hypothesis](/notes/bio-inspired/levin-platonic-space/)
 
 ## Reading list
 
