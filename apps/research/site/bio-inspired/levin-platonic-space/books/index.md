@@ -1,12 +1,12 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/levin-platonic-space/books/index.html
-title: "Books · Levin on Platonic space · Jay Ranpariya"
+title: "Books · Levin on Platonic space"
 description: "Books Levin cites or recommends, with what he uses each one for."
 canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/books/
 pageKind: bioinspired
-status: draft
-lastUpdated: 2026-10-23
+status: published
+lastUpdated: 2026-10-24
 ---
 
 # Books

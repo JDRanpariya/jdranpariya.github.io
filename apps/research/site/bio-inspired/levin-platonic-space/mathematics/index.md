@@ -1,12 +1,12 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/levin-platonic-space/mathematics/index.html
-title: "Mathematics · Levin on Platonic space · Jay Ranpariya"
+title: "Mathematics · Levin on Platonic space"
 description: "The mathematics behind Levin's examples, a learning path, and how accurate his statements are."
 canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/mathematics/
 pageKind: bioinspired
-status: draft
-lastUpdated: 2026-10-23
+status: published
+lastUpdated: 2026-10-24
 ---
 
 # Mathematics
@@ -109,7 +109,7 @@ This page lists the mathematics that Michael Levin uses in his argument about Pl
 - **Word2vec offsets.** His statement: correct. A paper of his uses king minus man plus woman, which comes close to queen, to show geometry of meaning. Standard statement: In word2vec embeddings, some relations between words appear as constant vector offsets. [Mikolov et al. 2013](https://arxiv.org/abs/1301.3781). The example is standard.
 - **Sorting algorithms as minimal agents.** His statement: correct. A paper of his finds competencies that nobody programmed, such as delayed gratification, in simple sorting algorithms. Standard statement: Bubble sort swaps neighbours that are out of order until the list is sorted. The paper defines its own measures. [Classical sorting algorithms as a model of morphogenesis](https://doi.org/10.1177/10597123241269740). The results hold as the paper defines them.
 - **Gene networks that learn.** His statement: correct. He says that gene-network equations show six kinds of learning, which he calls a free gift from the mathematics of networks. Standard statement: A published study trained models of gene regulatory networks and found several kinds of learning in them. [Biswas et al. 2021](https://doi.org/10.1016/j.isci.2021.102131). The gene-network result is published. The result for predator–prey equations is not yet published.
-- **Random Boolean networks.** His statement: correct. He uses them to say that you get out more than you put in. Standard statement: Random networks of Boolean genes show ordered behaviour, especially near a critical point. [Kauffman 1969](https://doi.org/10.1016/0022-5193(69)90015-0). He uses the result correctly.
+- **Random Boolean networks.** His statement: correct. He uses them to say that you get out more than you put in. Standard statement: Random networks of Boolean genes show ordered behaviour, especially near a critical point. [Kauffman 1969](<https://doi.org/10.1016/0022-5193(69)90015-0>). He uses the result correctly.
 - **Platonic representation hypothesis.** His statement: loose. He uses it to say that machine-learning models converge on the same ideas. Standard statement: The hypothesis says that representations in different models converge toward one shared statistical model of reality. [Huh et al. 2024](https://arxiv.org/abs/2405.07987). The hypothesis is about learned representations and does not show ingression.
 - **t-SNE with five clusters.** His statement: loose. He reads five clusters in a t-SNE plot as five discrete types of training effect. Standard statement: t-SNE keeps local neighbours, but the number and spacing of clusters can depend on its settings. [Wikipedia: t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding). To show that the types are discrete needs a check beyond t-SNE.
 - **Simulated annealing and cognitive temperature.** His statement: correct. He says that stress raises the temperature of a system so that it can reach new states. Standard statement: Simulated annealing accepts worse moves with a probability that falls as the temperature is lowered. [Kirkpatrick et al. 1983](https://doi.org/10.1126/science.220.4598.671). He uses it correctly as an analogy.

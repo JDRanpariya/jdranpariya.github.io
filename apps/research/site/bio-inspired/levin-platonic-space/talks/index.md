@@ -1,12 +1,12 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/levin-platonic-space/talks/index.html
-title: "Talks · Levin on Platonic space · Jay Ranpariya"
+title: "Talks · Levin on Platonic space"
 description: "Talks, interviews and blog posts by Michael Levin on Platonic space and patterns."
 canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/talks/
 pageKind: bioinspired
-status: draft
-lastUpdated: 2026-10-23
+status: published
+lastUpdated: 2026-10-24
 ---
 
 # Talks

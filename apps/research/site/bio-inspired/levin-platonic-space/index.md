@@ -1,12 +1,12 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/levin-platonic-space/index.html
-title: "Levin on Platonic space · Jay Ranpariya"
+title: "Levin on Platonic space"
 description: "A field guide to Michael Levin on Platonic space, patterns and mathematics."
 canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/
 pageKind: bioinspired
-status: draft
-lastUpdated: 2026-10-23
+status: published
+lastUpdated: 2026-10-24
 ---
 
 # Michael Levin on Platonic space, patterns and mathematics

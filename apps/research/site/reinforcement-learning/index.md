@@ -91,7 +91,6 @@ My research interest in RL lies in _safe and continually learning embodied agent
 - [Guided Reinforcement Learning: A Review and Evaluation for Efficient and Effective Real-World Robotics](https://doi.org/10.1109/mra.2022.3207664), Julian Eßer et al., 2023, IEEE Robotics & Automation Magazine.
 - [SERL: A Software Suite for Sample-Efficient Robotic Reinforcement Learning](https://arxiv.org/abs/2401.16013), Jianlan Luo et al., 2024, ICRA 2024.
 - [A Walk in the Park: Learning to Walk in 20 Minutes With Model-Free Reinforcement Learning](https://arxiv.org/abs/2208.07860), Laura Smith et al., 2022, arXiv preprint.
-- [The Reality Gap in Robotics: Challenges, Solutions, and Best Practices](https://arxiv.org/abs/2510.20808), Elie Aljalbout et al., 2025, Annual Review of Control, Robotics, and Autonomous Systems.
 - [Robot Model Identification and Learning: A Modern Perspective](https://doi.org/10.1146/annurev-control-061523-102310), Lee et al., 2024, Annual Review of Control, Robotics, and Autonomous Systems.
 - [SPiDR: A Simple Approach for Zero-Shot Safety in Sim-to-Real Transfer](https://arxiv.org/abs/2509.18648), Yarden As et al., 2025, arXiv preprint.
 - [Teaching robots to build simulations of themselves](https://www.nature.com/articles/s42256-025-01006-w), Yuhang Hu et al., 2025, Nature Machine Intelligence.

@@ -1,12 +1,12 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/levin-platonic-space/papers/index.html
-title: "Papers · Levin on Platonic space · Jay Ranpariya"
+title: "Papers · Levin on Platonic space"
 description: "Levin papers on Platonic space, the model systems behind it, and papers not available."
 canonical: https://research.jdranpariya.com/bio-inspired/levin-platonic-space/papers/
 pageKind: bioinspired
-status: draft
-lastUpdated: 2026-10-23
+status: published
+lastUpdated: 2026-10-24
 ---
 
 # Papers
