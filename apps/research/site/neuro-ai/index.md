@@ -1,7 +1,7 @@
 ---
 layout: public.njk
 permalink: /neuro-ai/index.html
-title: NeuroAI · Jay Ranpariya
+title: NeuroAI
 description: My NeuroAI interests and review-paper reading list.
 canonical: https://research.jdranpariya.com/neuro-ai/
 pageKind: neuroai

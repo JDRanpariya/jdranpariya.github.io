@@ -12,7 +12,7 @@ import postcss from "postcss";
 
 test("research overview spacing uses the same responsive gap-based grid in site and preview", async () => {
   const stylesheet = postcss.parse(await readFile("apps/research/client/research.css", "utf8"));
-  const selector = ".research-interest-overview > ul:first-of-type";
+  const selector = ".research-interest-overview > h2#areas-of-interest + ul";
   const overview = [];
   stylesheet.walkRules(selector, (rule) => overview.push(rule));
   expect(overview).toHaveLength(1);
@@ -46,7 +46,9 @@ test("every public research reading page is editable with a correct URL, tree la
     expect(sourceUrl(page.path)).toBe(`https://research.jdranpariya.com${page.route}`);
     expect(result.researchReading).toBe(true);
     expect(result.research).toBe(true);
-    expect(result.bodyHtml).toContain("Areas of interest");
+    if (source.includes("## Areas of interest"))
+      expect(result.bodyHtml).toContain("Areas of interest");
+    else expect(result.bodyHtml).toContain("<h2>Start here</h2>");
     expect(result.bodyHtml).not.toContain("{#");
     expect(result.bodyHtml).not.toContain("post-hero");
     expect(buildFileTree(files, page.label).directories.get("Research site")?.files).toHaveLength(

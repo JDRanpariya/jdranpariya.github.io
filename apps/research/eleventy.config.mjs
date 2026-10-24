@@ -3,8 +3,18 @@ import { copyResearchMedia } from "./lib/research-media.mjs";
 import { noteHtml, parseNote } from "./lib/note-authoring.mjs";
 import { loadPublicNotes } from "./lib/public-notes.mjs";
 import { researchReadingPages, researchReadingPageKinds } from "./lib/reading-pages.mjs";
+import { metadataFor, jsonLdScript } from "../../scripts/site-metadata.mjs";
 
 export default async function configureResearchSite(eleventyConfig) {
+  const site = JSON.parse(
+    readFileSync(new URL("../../src/_data/site.json", import.meta.url), "utf8")
+  );
+  eleventyConfig.addGlobalData("site", site);
+  eleventyConfig.addGlobalData("eleventyComputed", {
+    metadata: (data) => metadataFor(data, site, { research: true }),
+  });
+  eleventyConfig.addFilter("jsonLdScript", jsonLdScript);
+  eleventyConfig.addWatchTarget("../../src/_data/site.json");
   eleventyConfig.addPassthroughCopy({ public: "/" });
   eleventyConfig.addPassthroughCopy({ "../../assets/js/codex-notes.js": "/assets/codex-notes.js" });
   const notes = await loadPublicNotes();

@@ -1,12 +1,9 @@
 ---
 title: About
-description: "JD Ranpariya, master's student in Erlangen, curious about physical AI,
-  embodied intelligence, and what it actually means for a system to be alive to
-  its environment."
 layout: layouts/about.njk
 section: "about"
 permalink: /about/
-lastUpdated: 2026-10-08
+lastUpdated: 2026-10-24
 ---
 
 I'm finishing my [thesis](https://contact-from-current.pages.dev) in multimodal imitation learning. My [interest](https://research.jdranpariya.com/) lies in reverse engineering intelligence via various approaches like [NeuroAI](https://jdranpariya.com/writings/neuro-ai/) and [Diverse Intelligence](https://www.mdpi.com/2409-9287/11/5/161) to build better [Physical AI](https://jdranpariya.com/writings/physical-ai-primer-intro/) Systems.

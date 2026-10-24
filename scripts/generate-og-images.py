@@ -14,9 +14,11 @@ import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
+import json
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
+SITE = json.loads((ROOT / "src" / "_data" / "site.json").read_text(encoding="utf-8"))
 ASSETS = ROOT / "assets"
 FONTS_DIR = ASSETS / "fonts" / "og-static"  # static OTF files
 OG_DIR = ASSETS / "og"
@@ -123,9 +125,9 @@ def render_card(title, output_path, is_default=False):
     img = Image.new('RGBA', (CARD_W, CARD_H), BG)
     draw = ImageDraw.Draw(img)
 
-    display_title = "JD Ranpariya" if is_default else title
+    display_title = SITE["name"] if is_default else title
     show_rule = not is_default
-    tagline = "Physical AI Researcher & Builder" if is_default else None
+    tagline = SITE["description"] if is_default else None
 
     # Title
     size = 64 if is_default else title_font_size(display_title)
@@ -159,13 +161,14 @@ def render_card(title, output_path, is_default=False):
     if tagline:
         tag_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=26)
         tag_y = rule_y + 50 if not show_rule else rule_y + 50
-        bbox = draw.textbbox((0, 0), tagline, font=tag_font)
-        tag_w = bbox[2] - bbox[0]
-        draw.text(((CARD_W - tag_w) // 2, tag_y), tagline, fill=INK_MUTED, font=tag_font)
+        for index, line in enumerate(wrap_text(tagline, tag_font, 800, draw)):
+            bbox = draw.textbbox((0, 0), line, font=tag_font)
+            tag_w = bbox[2] - bbox[0]
+            draw.text(((CARD_W - tag_w) // 2, tag_y + index * 34), line, fill=INK_MUTED, font=tag_font)
 
     # Author
     author_font = ImageFont.truetype(FONT_LITERATA_MEDIUM, size=24)
-    author_text = "JD Ranpariya"
+    author_text = SITE["name"]
     bbox = draw.textbbox((0, 0), author_text, font=author_font)
     author_w = bbox[2] - bbox[0]
     author_y = CARD_H - 60
@@ -173,7 +176,7 @@ def render_card(title, output_path, is_default=False):
 
     # URL
     url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url_text = "jdranpariya.com"
+    url_text = SITE["url"].split("://", 1)[-1]
     bbox = draw.textbbox((0, 0), url_text, font=url_font)
     url_w = bbox[2] - bbox[0]
     url_y = author_y - 28
@@ -258,14 +261,14 @@ def render_guestbook_card(output_path):
 
     # Author
     author_font = ImageFont.truetype(FONT_LITERATA_MEDIUM, size=24)
-    author = "JD Ranpariya"
+    author = SITE["name"]
     bbox = draw.textbbox((0, 0), author, font=author_font)
     aw = bbox[2] - bbox[0]
     draw.text(((CARD_W - aw) // 2, CARD_H - 60), author, fill=INK_MUTED, font=author_font)
 
     # URL
     url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url = "jdranpariya.com"
+    url = SITE["url"].split("://", 1)[-1]
     bbox = draw.textbbox((0, 0), url, font=url_font)
     uw = bbox[2] - bbox[0]
     draw.text(((CARD_W - uw) // 2, CARD_H - 60 - 28), url, fill=INK_FAINT, font=url_font)

@@ -1,7 +1,7 @@
 ---
 layout: public.njk
 permalink: /bio-inspired/index.html
-title: Bio-inspired · Jay Ranpariya
+title: Bio-inspired
 description: My bio-inspired interests and review-paper reading list.
 canonical: https://research.jdranpariya.com/bio-inspired/
 pageKind: bioinspired
@@ -10,9 +10,7 @@ status: published
 lastUpdated: 2026-10-16
 ---
 
-
 # Bio-inspired interests
-
 
 Reading list [levin](https://drmichaellevin.org/resources/inspiration.html)
 

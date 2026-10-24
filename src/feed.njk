@@ -4,18 +4,18 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en" xml:base="{{ site.url }}/">
-  <title>JD Ranpariya</title>
-  <subtitle type="text">Exploring the intersection of AI, biology, neuroscience, and embodied cognition</subtitle>
+  <title>{{ site.name | escape }}</title>
+  <subtitle type="text">{{ site.description | escape }}</subtitle>
   <link href="{{ site.url }}/feed.xml" rel="self" type="application/atom+xml" />
   <link href="{{ site.url }}/" rel="alternate" type="text/html" />
   <updated>{{ collections.feedEntries | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
   <id>{{ site.url }}/feed.xml</id>
   <author>
-    <name>JD Ranpariya</name>
-    <email>jaydeepranpariya037@gmail.com</email>
+    <name>{{ site.name | escape }}</name>
+    <email>{{ site.email | escape }}</email>
   </author>
   <generator>Eleventy</generator>
-  <rights>© 2025–2026 JD Ranpariya</rights>
+  <rights>© 2025–{{ collections.feedEntries | getNewestCollectionItemDate | dateToFormat('yyyy') }} {{ site.name | escape }}</rights>
   {%- for post in collections.feedEntries | limit(20) %}
   {%- set isNowUpdate = post.inputPath.startsWith('./src/now/updates/') %}
   {%- if isNowUpdate %}
@@ -42,8 +42,8 @@ eleventyExcludeFromCollections: true
       <name>{{ post.data.author }}</name>
     </author>
     {%- endif %}
-    {%- if post.data.description %}
-    <summary>{{ post.data.description | escape }}</summary>
+    {%- if post.data.metadata.description %}
+    <summary>{{ post.data.metadata.description | escape }}</summary>
     {%- endif %}
     <content type="text/html" src="{{ site.url }}{{ postUrl }}" />
     {%- if isNowUpdate %}

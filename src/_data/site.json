@@ -1,3 +1,37 @@
 {
-  "url": "https://jdranpariya.com"
+  "url": "https://jdranpariya.com",
+  "name": "Jay Ranpariya",
+  "description": "Jay Ranpariya writes about life, science, and engineering, and how ideas shape society.",
+  "email": "jay@jdranpariya.com",
+  "socialHandle": "@jdranpariya",
+  "sameAs": [
+    "https://github.com/jdranpariya",
+    "https://www.linkedin.com/in/jdranpariya/",
+    "https://x.com/jdranpariya",
+    "https://www.goodreads.com/user/show/161877825-jay"
+  ],
+  "image": {
+    "path": "/assets/og/default.png",
+    "width": 1200,
+    "height": 630
+  },
+  "manifest": {
+    "themeColor": "#ffffff",
+    "backgroundColor": "#ffffff",
+    "icons": [
+      { "src": "/assets/logo/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+      { "src": "/assets/logo/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+    ]
+  },
+  "sectionDescriptions": {
+    "guest book": "Notes from friends and strangers. Leave a message in Jay Ranpariya's guestbook.",
+    "tags index": "Browse topics across Jay Ranpariya's writings, notes, reading, and projects.",
+    "reckoning-the-dead": "Unearthing the greats who got lost in time, and the ideas they left behind.",
+    "alchemists-hearth": "Kitchen experiments, cooking failures, and the occasional dish that turns out great.",
+    "odysseys": "Long-term explorations into science, philosophy, and the mapping of human knowledge."
+  },
+  "research": {
+    "url": "https://research.jdranpariya.com",
+    "description": "Jay Ranpariya's research questions and selected research index."
+  }
 }

@@ -9,7 +9,7 @@ layout: layouts/base
 section: "tag"
 eleventyComputed:
   title: "Items tagged with {{ tag | replace('-', ' ') | smartTitleCase }}"
-  description: "Items tagged {{ tag }}: writings, books, projects, and more by Jaydeep Ranpariya."
+  description: "Items tagged {{ tag }}: writings, books, projects, and more by {{ site.name }}."
 ---
 
 {% from "components/post-index.njk" import indexHeader, postList %}

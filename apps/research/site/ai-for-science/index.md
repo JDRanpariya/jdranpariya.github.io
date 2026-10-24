@@ -1,7 +1,7 @@
 ---
 layout: public.njk
 permalink: /ai-for-science/index.html
-title: AI for science · Jay Ranpariya
+title: AI for science
 description: My AI for science interests and reading list.
 canonical: https://research.jdranpariya.com/ai-for-science/
 pageKind: aiscience

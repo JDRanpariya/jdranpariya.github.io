@@ -1,7 +1,7 @@
 ---
 layout: public.njk
 permalink: /reinforcement-learning/index.html
-title: RL · Jay Ranpariya
+title: RL
 description: My reinforcement learning interests and review-paper reading list.
 canonical: https://research.jdranpariya.com/reinforcement-learning/
 pageKind: rl

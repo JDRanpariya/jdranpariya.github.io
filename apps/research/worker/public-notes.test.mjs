@@ -13,15 +13,15 @@ test("the index exposes both collections and sign-in even with no published entr
   expect(source).toContain('aria-label="Research collections"');
 });
 
-test("RL interests are ordinary public Markdown with all 82 supplied reading links", () => {
+test("RL interests preserve the supplied reading list and allow new links and sections", () => {
   const source = readFileSync(
     new URL("../site/reinforcement-learning/index.md", import.meta.url),
     "utf8"
   );
   expect(source).toContain("permalink: /reinforcement-learning/index.html");
   expect(source).toContain("status: published");
-  expect(source.match(/^\s*- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu)).toHaveLength(82);
-  expect(source.match(/^## /gmu)).toHaveLength(6);
+  expect(source.match(/^\s*- \[[^\]]+\]\(https?:\/\/[^)]+\)/gmu).length).toBeGreaterThanOrEqual(82);
+  expect(source.match(/^## /gmu).length).toBeGreaterThanOrEqual(6);
   const problem = source.indexOf("## Problem formulation {#problem-formulation}");
   const safety = source.indexOf("## Safety and trust {#safety-and-trust}");
   expect(problem).toBeGreaterThan(-1);

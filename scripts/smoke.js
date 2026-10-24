@@ -350,6 +350,14 @@ try {
   fail(`analytics instrumentation check failed: ${e.message}`);
 }
 
+// Metadata is shared with RSS, social cards, and the manifest; validate the actual output.
+console.log("\n[10] shared metadata");
+try {
+  await import("./check-metadata.mjs");
+} catch (error) {
+  fail(error.message);
+}
+
 // Summary
 console.log("");
 if (failures > 0) {

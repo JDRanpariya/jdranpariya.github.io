@@ -19,6 +19,7 @@ import { registerFrontmatterValidation } from "./scripts/frontmatter-schema.js";
 import { folderChildren, contentEntry } from "./scripts/folder-index.mjs";
 import { photoGallery } from "./scripts/photo-gallery.mjs";
 import { explicitAutoLinks } from "./scripts/markdown-links.mjs";
+import { jsonLdScript } from "./scripts/site-metadata.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const markdownItKatex = typeof mk === "function" ? mk : mk.default;
@@ -62,6 +63,7 @@ const FAVORITE_WRITING_SLUGS = [
 ];
 
 export default function (eleventyConfig) {
+  eleventyConfig.addFilter("jsonLdScript", jsonLdScript);
   eleventyConfig.addGlobalData("nonContentTags", NON_CONTENT_TAGS);
   const includeDrafts = process.env.ELEVENTY_ENV !== "prod";
   const isContent = (item) => contentEntry(item, includeDrafts);
