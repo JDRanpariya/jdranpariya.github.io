@@ -9,6 +9,36 @@ import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
 import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
 import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
 import postcss from "postcss";
+import nunjucks from "nunjucks";
+import { renderPage } from "../admin/lib/preview.js";
+
+test("the shared navigation keeps its public no-JS fallback out of sandboxed previews", () => {
+  const env = new nunjucks.Environment(new nunjucks.FileSystemLoader("src/_includes"), {
+    autoescape: true,
+  });
+  // Render the real nav through renderPage so this also checks the preview
+  // context, rather than passing a flag the admin might forget to supply.
+  const previewEnv = {
+    render: (template, context) =>
+      template === "components/nav.njk" ? env.render(template, context) : "",
+  };
+  const html = renderPage(
+    previewEnv,
+    { frontmatter: {}, bodyHtml: "<p>Draft</p>" },
+    "src/writings/example.md",
+    [],
+    { collections: {} }
+  );
+  expect(html).toContain('aria-label="Primary"');
+  expect(html).toContain('id="mobile-menu"');
+  expect(html).not.toContain("<noscript>");
+  expect(html).not.toContain('aria-label="Mobile navigation"');
+
+  const publicHtml = env.render("components/nav.njk", { page: { url: "/writings/" } });
+  expect(publicHtml).toContain("<noscript>");
+  expect(publicHtml).toContain('aria-label="Mobile navigation"');
+  expect(publicHtml).toContain('href="/about/"');
+});
 
 test("research overview spacing uses the same responsive gap-based grid in site and preview", async () => {
   const stylesheet = postcss.parse(await readFile("apps/research/client/research.css", "utf8"));

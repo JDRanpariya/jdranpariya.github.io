@@ -92,10 +92,12 @@
   </ul>
 </aside>
 
-<noscript>
-  <nav class="lg:hidden px-6" aria-label="Mobile navigation">
-    <ul class="list-none m-0 p-0">
-      {{ navigationLinks("mobile", page.url) }}
-    </ul>
-  </nav>
-</noscript>
+{% if not preview %}
+  <noscript>
+    <nav class="lg:hidden px-6" aria-label="Mobile navigation">
+      <ul class="list-none m-0 p-0">
+        {{ navigationLinks("mobile", page.url) }}
+      </ul>
+    </nav>
+  </noscript>
+{% endif %}

@@ -101,6 +101,7 @@ export function renderPage(env, result, path, files, manifest) {
     }));
   const context = {
     ...data,
+    preview: true,
     content: result.bodyHtml,
     page: { url: data.permalink || `/${path.slice(4).replace(/\.md$/, "")}/`, inputPath: path },
     collections,
@@ -122,7 +123,10 @@ export function renderPage(env, result, path, files, manifest) {
 export function sanitizePreview(html, imageMap = {}) {
   const doc = new DOMParser().parseFromString(html, "text/html");
   doc
-    .querySelectorAll("script,iframe,object,embed,meta,link,base,style,foreignObject")
+    // The sandbox disables scripts. A noscript subtree parsed in this inert
+    // document can become visible markup text when inserted into that frame.
+    // It is a public no-JS fallback, not part of the scripted site preview.
+    .querySelectorAll("script,noscript,iframe,object,embed,meta,link,base,style,foreignObject")
     .forEach((node) => node.remove());
   doc.querySelectorAll("*").forEach((node) => {
     for (const attr of [...node.attributes]) {

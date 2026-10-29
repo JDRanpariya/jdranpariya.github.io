@@ -1,7 +1,7 @@
 ---
 title: building different box of tools
 published: 2026-02-15
-lastUpdated: 2026-08-22
+lastUpdated: 2026-10-29
 tags: [skills, life]
 section: writings
 status: published
@@ -82,6 +82,14 @@ But the moment I looked into how Feynman did it, it wasn't the same. He figured 
 It turns out this works because it is just the algebraic identity (a − b)² = a² − 2ab + b², which I arrived at not through algebra but through analogy. I took a specific trick for 50, asked what the pattern behind it was, and extracted a rule that works for any round number.
 
 **When you encounter a technique that works in one context, ask whether the underlying structure applies more broadly. Instead of just learning the trick focus on extracting the principle. That is how you add tools to your box rather than just collecting isolated techniques.**
+
+## In the age of LLMs
+
+LLMs are the greatest tools we ever had for knowledge work but everyone has them so they don't give you an edge. Miles explains it well in [How to avoid AI Brainrot](https://www.youtube.com/watch?v=uXC7OuCas2Q). With such power at our disposal, we're forgetting how to read, think and write. Outsourcing them feels good but the cost isn't worth paying.
+
+Be patient with the slow work of understanding, and use LLMs as a tool to support your quest of inquiry. For example, I've found them to be good at exploring large amounts of data and consolidating a list of candidates that you can filter through your taste (say you want to find lineage of open problems in field of neuroscience, it can lay all available resources (in your preferred taxonomy) at your fingertips and then use your taste to decide what's worth your time, go through them yourself and make comments as you read).
+
+Our brains are much better at compressing, storing and making relevant connections between memories. *Current models are nowhere near us when it comes to making interesting connections between ideas, people or situations* (as of Oct 29, 2026). **So build your taste by reading, thinking and writing.**
 
 ::: references
 
