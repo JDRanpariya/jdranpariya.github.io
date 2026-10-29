@@ -81,7 +81,7 @@ But the moment I looked into how Feynman did it, it wasn't the same. He figured 
 
 It turns out this works because it is just the algebraic identity (a − b)² = a² − 2ab + b², which I arrived at not through algebra but through analogy. I took a specific trick for 50, asked what the pattern behind it was, and extracted a rule that works for any round number.
 
-**When you encounter a technique that works in one context, ask whether the underlying structure applies more broadly. Do not just learn the trick. Extract the principle. That is how you add tools to your box rather than just collecting isolated techniques.**
+**When you encounter a technique that works in one context, ask whether the underlying structure applies more broadly. Instead of just learning the trick focus on extracting the principle. That is how you add tools to your box rather than just collecting isolated techniques.**
 
 ::: references
 
