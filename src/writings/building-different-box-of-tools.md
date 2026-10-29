@@ -89,7 +89,7 @@ LLMs are the greatest tools we ever had for knowledge work but everyone has them
 
 Be patient with the slow work of understanding, and use LLMs as a tool to support your quest of inquiry. For example, I've found them to be good at exploring large amounts of data and consolidating a list of candidates that you can filter through your taste (say you want to find lineage of open problems in field of neuroscience, it can lay all available resources (in your preferred taxonomy) at your fingertips and then use your taste to decide what's worth your time, go through them yourself and make comments as you read).
 
-Our brains are much better at compressing, storing and making relevant connections between memories. *Current models are nowhere near us when it comes to making interesting connections between ideas, people or situations* (as of Oct 29, 2026). **So build your taste by reading, thinking and writing.**
+Our brains are much better at compressing, storing and making relevant connections between memories. *Current models are nowhere near us when it comes to making interesting connections between ideas, people or situations* (as of Oct 29, 2026). **It's time you start building your taste by reading, thinking and writing.**
 
 ::: references
 
