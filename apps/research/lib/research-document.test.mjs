@@ -30,6 +30,11 @@ test("all public reading sources use the same Eleventy layout and overview contr
   for (const page of researchReadingPages) {
     const source = readFileSync(page.path.replace("apps/research/", ""), "utf8");
     expect(source).toContain("layout: public.njk");
+    if (page.pageKind === "publications") {
+      expect(source).toContain("interestOverview: false");
+      expect(source).not.toContain("## Areas of interest");
+      continue;
+    }
     expect(source).toContain("interestOverview: true");
     if (page.slug === "reinforcement-learning")
       expect(source).not.toContain("## Areas of interest");

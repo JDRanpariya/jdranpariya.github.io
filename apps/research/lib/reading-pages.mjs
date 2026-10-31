@@ -1,6 +1,7 @@
 // Explicit editable page registry. Templates and private library data are not sources.
 export const researchReadingPages = Object.freeze(
   [
+    { slug: "publications", pageKind: "publications", label: "Publications" },
     { slug: "reinforcement-learning", pageKind: "rl", label: "RL" },
     { slug: "neuro-ai", pageKind: "neuroai", label: "NeuroAI" },
     { slug: "bio-inspired", pageKind: "bioinspired", label: "Bio-inspired" },

@@ -2,6 +2,7 @@
   <article class="research-document">
     {% if isReadingPage %}
       {% set readingClasses = 'research-reading-body research-interest-overview' if interestOverview else 'research-reading-body' %}
+      {% if pageKind == 'publications' %}{% set readingClasses = readingClasses + ' research-publications-body' %}{% endif %}
       <div class="{{ readingClasses }}">{{ content | safe }}</div>
     {% else %}
       {{ content | safe }}
