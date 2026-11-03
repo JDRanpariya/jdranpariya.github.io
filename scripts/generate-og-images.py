@@ -1,311 +1,172 @@
-"""
-scripts/generate-og-images.py
+"""Generate social cards from rendered HTML, not a second frontmatter parser.
 
-Generates Open Graph social preview images (1200×630).
-Uses Pillow + fontTools for text rendering with self-hosted fonts.
-No browser, no Node native addons, 100% reliable.
-
-Requires: Pillow, fontTools (already installed)
-Run: python3 scripts/generate-og-images.py
+Run after Eleventy: python3 scripts/generate-og-images.py [--input build] [--research].
+The research homepage's authored screenshot is passed through, never re-rendered.
+All image dimensions, glyph bounds and duplicate output mappings are validated.
 """
 
-import os
-import sys
-from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
-import textwrap
+import argparse
+import hashlib
 import json
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlparse
 
-# ─── Paths ────────────────────────────────────────────────────────────────────
+from PIL import Image, ImageDraw, ImageFont
+from fontTools.ttLib import TTFont
+from fontTools.varLib.instancer import instantiateVariableFont
+
 ROOT = Path(__file__).resolve().parent.parent
-SITE = json.loads((ROOT / "src" / "_data" / "site.json").read_text(encoding="utf-8"))
-ASSETS = ROOT / "assets"
-FONTS_DIR = ASSETS / "fonts" / "og-static"  # static OTF files
-OG_DIR = ASSETS / "og"
-SRC_WRITINGS = ROOT / "src" / "writings"
-SRC_LIBRARY_BOOKS = ROOT / "src" / "library" / "books"
-SRC_LIBRARY_PAPERS = ROOT / "src" / "library" / "papers"
-SRC_LIBRARY_LECTURES = ROOT / "src" / "library" / "lectures"
+SITE = json.loads((ROOT / "src/_data/site.json").read_text())
+WIDTH, HEIGHT = SITE["image"]["width"], SITE["image"]["height"]
+BG, INK, MUTED, ACCENT = "#ffffff", "#121212", "#686764", "#b8321c"
 
-CARD_W = 1200
-CARD_H = 630
 
-# Design tokens (from src/css/input.css)
-BG = "#ffffff"
-INK = "#121212"
-INK_MUTED = "#686764"
-INK_FAINT = "#9d9c99"
-ACCENT = "#b8321c"
+class PageMetadata(HTMLParser):
+    def __init__(self, html):
+        super().__init__(convert_charrefs=True)
+        self.meta = {}
+        self.feed(html)
 
-# ─── Fonts ────────────────────────────────────────────────────────────────────
-FONT_FRAUNCES_BOLD = str(FONTS_DIR / "Fraunces-Bold.otf")
-FONT_LITERATA_REGULAR = str(FONTS_DIR / "Literata-Regular.otf")
-FONT_LITERATA_MEDIUM = str(FONTS_DIR / "Literata-Medium.otf")
+    def handle_starttag(self, tag, attributes):
+        attributes = dict(attributes)
+        if tag == "meta":
+            key = attributes.get("property", attributes.get("name"))
+            if key:
+                self.meta[key] = attributes.get("content", "")
 
-# ─── Title Case ───────────────────────────────────────────────────────────────
-SMALL_WORDS = {
-    "a", "an", "and", "as", "at", "but", "by", "for", "in",
-    "nor", "of", "on", "or", "so", "the", "to", "up", "yet",
-    "with", "vs", "via",
-}
 
-ACRONYMS = {
-    "ai", "rl", "pid", "nmpc", "lqr", "mpc", "vlms", "llms",
-    "gpu", "cpu", "cad", "ar", "vr",
-}
+def static_font(filename, weight):
+    """Use the actual webfonts; no stale, separately maintained font binaries."""
+    source = ROOT / "assets/fonts" / filename
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()[:12]
+    output = ROOT / ".cache/og-fonts" / f"{source.stem}-{weight}-{digest}.ttf"
+    if not output.exists():
+        output.parent.mkdir(parents=True, exist_ok=True)
+        font = TTFont(source)
+        instantiateVariableFont(font, {"wght": weight}, inplace=True)
+        font.flavor = None
+        font.save(output)
+        font.close()
+    return str(output)
 
-SPECIAL_CASING = {
-    "neuroai": "NeuroAI",
-}
 
-def smart_title_case(s):
-    """Port of .eleventy.js smartTitleCase filter."""
-    if not s:
-        return ""
-    import re
-    tokens = re.split(r'(\s+)', str(s))
-    word_indices = [i for i, t in enumerate(tokens) if re.search(r'\S', t)]
-    first_idx = word_indices[0] if word_indices else 0
-    last_idx = word_indices[-1] if word_indices else 0
-
-    result = []
-    for i, token in enumerate(tokens):
-        if not re.search(r'\S', token):
-            result.append(token)
+def wrap_text(text, font, maximum_width):
+    """Wrap by measured glyph width, including a single overlong URL/word."""
+    lines, current = [], ""
+    for word in str(text).split():
+        candidate = f"{current} {word}".strip()
+        if font.getlength(candidate) <= maximum_width:
+            current = candidate
             continue
-        # Preserve all-caps tokens (AI, UNIX, RL, JAX)
-        if re.match(r'^[A-Z0-9]{2,}$', token):
-            result.append(token)
-            continue
-        lower = token.lower()
-        if lower in SPECIAL_CASING:
-            result.append(SPECIAL_CASING[lower])
-            continue
-        if lower in ACRONYMS:
-            result.append(token.upper())
-            continue
-        bare = re.sub(r'[^a-z]', '', lower)
-        if i != first_idx and i != last_idx and bare in SMALL_WORDS:
-            result.append(lower)
-        else:
-            result.append(re.sub(r'([a-z])', lambda c: c.group(1).upper(), lower, count=1))
-    return ''.join(result)
-
-
-# ─── Text wrapping ────────────────────────────────────────────────────────────
-def wrap_text(text, font, max_width, draw):
-    """Wrap text to fit within max_width pixels."""
-    words = text.split(' ')
-    lines = []
-    current = ''
-    for word in words:
-        test = f"{current} {word}".strip()
-        bbox = draw.textbbox((0, 0), test, font=font)
-        if bbox[2] - bbox[0] > max_width and current:
+        if current:
             lines.append(current)
-            current = word
-        else:
-            current = test
+            current = ""
+        for character in word:
+            if current and font.getlength(current + character) > maximum_width:
+                lines.append(current)
+                current = ""
+            current += character
     if current:
         lines.append(current)
     return lines
 
 
-# ─── Card rendering ───────────────────────────────────────────────────────────
-def title_font_size(title):
-    if len(title) > 48:
-        return 44
-    if len(title) > 36:
-        return 50
-    return 56
-
-
-def render_card(title, output_path, is_default=False):
-    """Render a single OG card."""
-    img = Image.new('RGBA', (CARD_W, CARD_H), BG)
-    draw = ImageDraw.Draw(img)
-
-    display_title = SITE["name"] if is_default else title
-    show_rule = not is_default
-    tagline = SITE["description"] if is_default else None
-
-    # Title
-    size = 64 if is_default else title_font_size(display_title)
-    title_font = ImageFont.truetype(FONT_FRAUNCES_BOLD, size=size)
-    max_width = 1040
-
-    lines = wrap_text(display_title, title_font, max_width, draw)
-    line_height = int(size * 1.25)
-
-    # Calculate vertical centering
-    title_total_h = len(lines) * line_height
-    if is_default:
-        title_start_y = (CARD_H - title_total_h - 140) // 2
+def render_card(meta, output):
+    heading = static_font("figtree-latin-wght-normal.woff2", 700)
+    body = static_font("source-serif-4-latin-wght-normal.woff2", 400)
+    image = Image.new("RGB", (WIDTH, HEIGHT), BG)
+    draw = ImageDraw.Draw(image)
+    title = meta["og:title"].removesuffix(f" · {SITE['name']}")
+    for size in range(68, 27, -2):
+        title_font = ImageFont.truetype(heading, size)
+        lines = wrap_text(title, title_font, WIDTH - 160)
+        line_height = round(size * 1.22)
+        if len(lines) * line_height <= 260:
+            break
     else:
-        title_start_y = (CARD_H - title_total_h - 150) // 2
+        raise ValueError(f"Title cannot fit a social card: {title}")
+    title_height = len(lines) * line_height
+    top = 95 + (260 - title_height) / 2
+    bounds = []
 
-    for i, line in enumerate(lines):
-        bbox = draw.textbbox((0, 0), line, font=title_font)
-        text_w = bbox[2] - bbox[0]
-        x = (CARD_W - text_w) // 2
-        y = title_start_y + i * line_height
-        draw.text((x, y), line, fill=INK, font=title_font)
+    def text(line, font, y, colour):
+        # 'mt' anchors the visible glyph top, rather than the baseline/ascender.
+        position = (WIDTH / 2, y)
+        box = draw.textbbox(position, line, font=font, anchor="mt")
+        if not (60 <= box[0] <= box[2] <= WIDTH - 60 and 40 <= box[1] <= box[3] <= HEIGHT - 35):
+            raise ValueError(f"Text outside safe bounds: {line!r}, {box}")
+        bounds.append(box)
+        draw.text(position, line, font=font, fill=colour, anchor="mt")
 
-    # Red accent rule
-    rule_y = title_start_y + title_total_h + 40
-    if show_rule:
-        rule_x = (CARD_W - 180) // 2
-        draw.rectangle([rule_x, rule_y, rule_x + 180, rule_y + 2], fill=ACCENT)
-
-    # Tagline (default card)
-    if tagline:
-        tag_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=26)
-        tag_y = rule_y + 50 if not show_rule else rule_y + 50
-        for index, line in enumerate(wrap_text(tagline, tag_font, 800, draw)):
-            bbox = draw.textbbox((0, 0), line, font=tag_font)
-            tag_w = bbox[2] - bbox[0]
-            draw.text(((CARD_W - tag_w) // 2, tag_y + index * 34), line, fill=INK_MUTED, font=tag_font)
-
-    # Author
-    author_font = ImageFont.truetype(FONT_LITERATA_MEDIUM, size=24)
-    author_text = SITE["name"]
-    bbox = draw.textbbox((0, 0), author_text, font=author_font)
-    author_w = bbox[2] - bbox[0]
-    author_y = CARD_H - 60
-    draw.text(((CARD_W - author_w) // 2, author_y), author_text, fill=INK_MUTED, font=author_font)
-
-    # URL
-    url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url_text = SITE["url"].split("://", 1)[-1]
-    bbox = draw.textbbox((0, 0), url_text, font=url_font)
-    url_w = bbox[2] - bbox[0]
-    url_y = author_y - 28
-    draw.text(((CARD_W - url_w) // 2, url_y), url_text, fill=INK_FAINT, font=url_font)
-
-    # Save
-    img.save(output_path, format='PNG', optimize=True)
+    for index, line in enumerate(lines):
+        text(line, title_font, top + index * line_height, INK)
+    rule_y = top + title_height + 24
+    draw.rectangle((WIDTH / 2 - 90, rule_y, WIDTH / 2 + 90, rule_y + 2), fill=ACCENT)
+    # The homepage is an identity card; article cards keep the focus on the title.
+    if urlparse(meta["og:url"]).path in ("", "/"):
+        font = ImageFont.truetype(body, 26)
+        description_lines = wrap_text(meta["og:description"], font, WIDTH - 240)
+        if len(description_lines) > 3:
+            raise ValueError("Homepage description exceeds the card's three-line space")
+        for index, line in enumerate(description_lines):
+            text(line, font, rule_y + 28 + index * 34, MUTED)
+    if title != SITE["name"]:
+        text(SITE["name"], ImageFont.truetype(body, 24), 525, MUTED)
+    text(urlparse(meta["og:url"]).netloc, ImageFont.truetype(body, 20), 565, MUTED)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output, format="PNG", optimize=True)
+    return bounds
 
 
-# ─── Page discovery ───────────────────────────────────────────────────────────
-def parse_frontmatter(text):
-    """Minimal YAML frontmatter parser."""
-    if not text.startswith('---'):
-        return {}
-    end = text.index('---', 3)
-    fm = text[3:end]
-    result = {}
-    for line in fm.split('\n'):
-        m = __import__('re').match(r'^(\w[\w-]*):\s*(.*)', line)
-        if m:
-            val = m.group(2).strip()
-            # Strip inline YAML comments
-            val = __import__('re').sub(r'\s+#.*$', '', val)
-            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
-                val = val[1:-1]
-            result[m.group(1)] = val
-    return result
+def generate(directory, research=False):
+    directory = directory.resolve()
+    origin = SITE["research"]["url"] if research else SITE["url"]
+    records, mapped = [], {}
+    for html_file in sorted(directory.rglob("*.html")):
+        meta = PageMetadata(html_file.read_text(encoding="utf-8")).meta
+        if "og:site_name" not in meta:
+            continue  # Auth shells, sandbox previews, redirects, and demos.
+        required = ("og:title", "og:description", "og:url", "og:image", "og:image:alt")
+        if any(not meta.get(key, "").strip() for key in required):
+            raise ValueError(f"Missing social metadata: {html_file}")
+        image_url = urlparse(meta["og:image"])
+        if image_url.netloc != urlparse(origin).netloc:
+            raise ValueError(f"Cross-site social image: {html_file}: {meta['og:image']}")
+        image_path = unquote(image_url.path)
+        if not image_path.startswith("/assets/og/"):
+            raise ValueError(f"Unexpected social image path: {image_path}")
+        output = (directory / image_path.lstrip("/")).resolve()
+        if not output.is_relative_to(directory / "assets/og"):
+            raise ValueError(f"Unsafe social image path: {image_path}")
+        signature = tuple(meta[key] for key in required)
+        if output in mapped and mapped[output] != signature:
+            raise ValueError(f"Different pages overwrite the same thumbnail: {image_path}")
+        mapped[output] = signature
+        screenshot = research and image_path == SITE["research"]["image"]
+        bounds = [] if screenshot else render_card(meta, output)
+        with Image.open(output) as image:
+            if image.size != (WIDTH, HEIGHT):
+                raise ValueError(f"Wrong social image dimensions: {output}: {image.size}")
+            image.verify()
+        if output.stat().st_size > 1_000_000:
+            raise ValueError(f"Social image exceeds 1 MB: {output}")
+        records.append({
+            "page": meta["og:url"], "title": meta["og:title"],
+            "image": meta["og:image"], "bytes": output.stat().st_size,
+            "screenshot": screenshot, "textBounds": bounds,
+        })
+    if not records:
+        raise ValueError(f"No public social previews found under {directory}")
+    audit = directory / "assets/og/audit.json"
+    audit.parent.mkdir(parents=True, exist_ok=True)
+    audit.write_text(json.dumps(records, indent=2) + "\n")
+    print(f"Verified {len(records)} public previews ({len(mapped)} unique images) in {directory}")
 
 
-def discover_pages():
-    pages = []
-
-    for src_dir, prefix, file_prefix in [
-        (SRC_WRITINGS, "", ""),
-        (SRC_LIBRARY_BOOKS, "library/books/", "book-"),
-        (SRC_LIBRARY_PAPERS, "library/papers/", "paper-"),
-        (SRC_LIBRARY_LECTURES, "library/lectures/", "lecture-"),
-    ]:
-        if not src_dir.exists():
-            continue
-        section_type = src_dir.parent.name if prefix else "writing"
-        for f in sorted(src_dir.glob('*.md')):
-            text = f.read_text(encoding='utf-8')
-            fm = parse_frontmatter(text)
-            if fm.get('status') == 'draft':
-                continue
-            slug = f.stem
-            raw_title = fm.get('title', slug)
-            display_title = smart_title_case(raw_title)
-            pages.append({
-                'type': section_type,
-                'slug': f"{prefix}{slug}",
-                'title': display_title,
-                'filename': f"{file_prefix}{slug}.png",
-            })
-
-    return pages
-
-
-def render_guestbook_card(output_path):
-    """Special card for the guestbook page with tagline."""
-    img = Image.new('RGBA', (CARD_W, CARD_H), BG)
-    draw = ImageDraw.Draw(img)
-
-    title = "Guest Book"
-    title_font = ImageFont.truetype(FONT_FRAUNCES_BOLD, size=64)
-    bbox = draw.textbbox((0, 0), title, font=title_font)
-    tw = bbox[2] - bbox[0]
-    title_y = 230
-    draw.text(((CARD_W - tw) // 2, title_y), title, fill=INK, font=title_font)
-
-    # Rule
-    rule_y = int(title_y + 64 * 1.25) + 40
-    draw.rectangle([(CARD_W - 180) // 2, rule_y, (CARD_W - 180) // 2 + 180, rule_y + 2], fill=ACCENT)
-
-    # Tagline
-    tag_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=26)
-    tagline = "Notes from friends & strangers"
-    bbox = draw.textbbox((0, 0), tagline, font=tag_font)
-    tw2 = bbox[2] - bbox[0]
-    draw.text(((CARD_W - tw2) // 2, rule_y + 50), tagline, fill=INK_MUTED, font=tag_font)
-
-    # Author
-    author_font = ImageFont.truetype(FONT_LITERATA_MEDIUM, size=24)
-    author = SITE["name"]
-    bbox = draw.textbbox((0, 0), author, font=author_font)
-    aw = bbox[2] - bbox[0]
-    draw.text(((CARD_W - aw) // 2, CARD_H - 60), author, fill=INK_MUTED, font=author_font)
-
-    # URL
-    url_font = ImageFont.truetype(FONT_LITERATA_REGULAR, size=18)
-    url = SITE["url"].split("://", 1)[-1]
-    bbox = draw.textbbox((0, 0), url, font=url_font)
-    uw = bbox[2] - bbox[0]
-    draw.text(((CARD_W - uw) // 2, CARD_H - 60 - 28), url, fill=INK_FAINT, font=url_font)
-
-    img.save(output_path, format='PNG', optimize=True)
-
-
-# ─── Main ────────────────────────────────────────────────────────────────────
-def main():
-    OG_DIR.mkdir(parents=True, exist_ok=True)
-
-    print("Discovering pages...")
-    pages = discover_pages()
-
-    # 1. Default site-wide card
-    print("Generating default card...")
-    render_card("", OG_DIR / "default.png", is_default=True)
-    print("  → assets/og/default.png")
-
-    # 1b. Guestbook card
-    print("Generating guestbook card...")
-    render_guestbook_card(OG_DIR / "guestbook.png")
-    print("  → assets/og/guestbook.png")
-
-    # 2. Per-article cards
-    count = 0
-    for page in pages:
-        print(f"  [{page['type']}] {page['title']} ... ", end="", flush=True)
-        try:
-            render_card(page['title'], OG_DIR / page['filename'])
-            print("✓")
-            count += 1
-        except Exception as e:
-            print(f"✗ {e}")
-
-    print(f"\nDone. {count} cards + 1 default → assets/og/")
-
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", type=Path, default=ROOT / "build")
+    parser.add_argument("--research", action="store_true")
+    args = parser.parse_args()
+    generate(args.input, research=args.research)

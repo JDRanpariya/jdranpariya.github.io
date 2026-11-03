@@ -54,7 +54,9 @@ describe("shared site metadata", () => {
       site
     );
     expect(book.type).toBe("article");
-    expect(book.image).toBe(`${site.url}/assets/og/book-test.png`);
+    expect(book.image).toMatch(
+      /^https:\/\/jdranpariya.com\/assets\/og\/book-test\.png\?v=[a-f0-9]{12}$/
+    );
   });
 
   test("research shares identity but keeps its own description and canonical", () => {
@@ -69,9 +71,34 @@ describe("shared site metadata", () => {
     );
     expect(metadata.siteName).toBe(`${site.name} · Research`);
     expect(metadata.url).toBe(`${site.research.url}/reinforcement-learning/`);
-    expect(metadata.image).toBe(`${site.url}${site.image.path}`);
+    expect(new URL(metadata.image).origin).toBe(site.research.url);
+    expect(new URL(metadata.image).pathname).toBe("/assets/og/research-reinforcement-learning.png");
     expect(metadata.description).toBe("RL reading list.");
     expect(metadata.title).toBe(`RL · ${site.name}`);
+  });
+
+  test("research homepage uses its own first-screen screenshot, never the personal card", () => {
+    const personal = metadataFor({ section: "home" }, site);
+    const research = metadataFor({ pageKind: "research" }, site, { research: true });
+    expect(new URL(research.image).pathname).toBe(site.research.image);
+    expect(new URL(research.image).origin).toBe(site.research.url);
+    expect(research.image).not.toBe(personal.image);
+    expect(research.imageAlt).toContain("homepage screenshot");
+  });
+
+  test("notes, projects and indexes each get a relevant thumbnail", () => {
+    const images = ["/notes/one/", "/projects/two/", "/odysseys/three/", "/tags/life/"].map(
+      (url) => metadataFor({ title: url, page: { url } }, site).image
+    );
+    expect(new Set(images).size).toBe(4);
+    expect(images.every((image) => !image.includes("default.png"))).toBe(true);
+  });
+
+  test("changed descriptions invalidate social-image caches without unstable build timestamps", () => {
+    const data = { title: "Test", description: "Original", page: { url: "/test/" } };
+    const first = metadataFor(data, site).image;
+    expect(metadataFor(data, site).image).toBe(first);
+    expect(metadataFor({ ...data, description: "Updated" }, site).image).not.toBe(first);
   });
 
   test("JSON-LD survives quotes, apostrophes, and HTML without escaping into entities", () => {

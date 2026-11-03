@@ -12,6 +12,7 @@
   ],
   "image": {
     "path": "/assets/og/default.png",
+    "revision": "2026-11-03",
     "width": 1200,
     "height": 630
   },
@@ -32,6 +33,7 @@
   },
   "research": {
     "url": "https://research.jdranpariya.com",
+    "image": "/assets/og/research-home-2026-11-03.jpg",
     "description": "Jay Ranpariya's research questions and selected research index."
   }
 }

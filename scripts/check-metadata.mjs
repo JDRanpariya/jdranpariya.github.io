@@ -28,9 +28,15 @@ function checkDirectory(directory, research = false) {
       assert.ok(description, `Missing description: ${path}`);
       assert.equal(socialDescription, description, `Inconsistent descriptions: ${path}`);
       const image = html.match(/<meta property="og:image" content="([^"]*)"/u)?.[1];
-      assert.ok(image?.startsWith(site.url), `Missing absolute social image: ${path}`);
-      if (!research)
-        assert.ok(existsSync(`build${new URL(image).pathname}`), `Missing social image: ${path}`);
+      const expectedOrigin = research ? site.research.url : site.url;
+      assert.equal(new URL(image).origin, expectedOrigin, `Cross-site social image: ${path}`);
+      const output = research ? "apps/research/_site" : "build";
+      assert.ok(existsSync(`${output}${new URL(image).pathname}`), `Missing social image: ${path}`);
+      assert.equal(
+        html.match(/<meta name="twitter:image" content="([^"]*)"/u)?.[1],
+        image,
+        `Twitter and Open Graph images disagree: ${path}`
+      );
       for (const match of html.matchAll(
         /<script type="application\/ld\+json">([\s\S]*?)<\/script>/gu
       )) {

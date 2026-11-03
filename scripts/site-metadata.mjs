@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 // Shared metadata rules for both Eleventy sites. Page descriptions remain author-owned.
 export function jsonForScript(value) {
   return JSON.stringify(value)
@@ -45,7 +47,15 @@ export function metadataFor(data, site, { research = false } = {}) {
     imagePath = `/assets/og/${prefixes[data.section]}${data.page?.fileSlug}.png`;
   } else if (!research && data.section === "guest book") {
     imagePath = "/assets/og/guestbook.png";
+  } else if (new URL(url).pathname !== "/") {
+    const slug = new URL(url).pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9-]+/gi, "-");
+    imagePath = `/assets/og/${research ? "research" : "page"}-${slug}.png`;
   }
+  if (research && new URL(url).pathname === "/") imagePath = site.research.image;
+  const imageRevision = createHash("sha256")
+    .update(JSON.stringify([site.image.revision, data.title || site.name, description, url]))
+    .digest("hex")
+    .slice(0, 12);
   const person = {
     "@type": "Person",
     "@id": `${site.url}/#person`,
@@ -117,9 +127,13 @@ export function metadataFor(data, site, { research = false } = {}) {
     url,
     siteName: research ? `${site.name} · Research` : site.name,
     type: article ? "article" : "website",
-    image: new URL(imagePath, site.url).href,
+    image: `${new URL(imagePath, origin).href}?v=${imageRevision}`,
     imageAlt:
-      data.section === "guest book" ? `Guest Book · ${site.name}` : `${title} · ${site.name}`,
+      research && new URL(url).pathname === "/"
+        ? `Research homepage screenshot · ${site.name}`
+        : title === site.name
+          ? title
+          : `${title} · ${site.name}`,
     structuredData,
   };
 }
