@@ -4,9 +4,9 @@ fullTitle: "Multimodal Imitation Learning via Hardware-Native Proprioception for
 description: "My master's thesis at Fraunhofer IIS, testing whether raw servo-bus signals improve imitation-learning policies for contact-rich SO-101 manipulation."
 image: "/assets/images/projects/multimodal-imitation-learning-card.png"
 tech: ["PyTorch", "LeRobot", "SO-101", "Imitation Learning", "Proprioception"]
-status: "active"
+status: "finished"
 published: 2026-05-02
-lastUpdated: 2026-09-18
+lastUpdated: 2026-11-05
 layout: layouts/post.njk
 section: "projects"
 tags: ["robotics", "AI", "physical-ai"]
@@ -33,4 +33,4 @@ The SO-101's STS3215 servos expose current, load, and voltage readings through t
 
 ## Status
 
-This is active thesis work. I will add the complete results and thesis after the work is public.
+The thesis work is finished. [Read the thesis manuscript](https://research.jdranpariya.com/publications/thesis.pdf).

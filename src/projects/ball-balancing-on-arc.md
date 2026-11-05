@@ -4,9 +4,9 @@ fullTitle: "Ball Balancing on Arc"
 description: "A 13-controller benchmark on real ball-on-arc hardware: 650 trials across classical control, RL, offline RL, and world models."
 image: "/assets/images/projects/ball_on_arc_cart.png"
 tech: ["RL", "Sim2Real", "World Models", "Nonlinear Dynamics", "Control Theory"]
-status: "under-review"
+status: "finished"
 published: 2026-04-14
-lastUpdated: 2026-09-18
+lastUpdated: 2026-11-05
 layout: layouts/post
 section: "projects"
 tags: ["robotics", "simulation"]
