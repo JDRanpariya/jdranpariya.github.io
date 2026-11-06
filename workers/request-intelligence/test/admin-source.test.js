@@ -3,10 +3,10 @@ import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import { validateAdminSource } from "../src/admin-source.js";
 import { validateSourceData } from "../../../scripts/frontmatter-schema.js";
-import { researchReadingPages } from "../../../apps/research/lib/reading-pages.mjs";
+import { discoverResearchArticles } from "../../../apps/research/lib/research-article-sources.mjs";
 
-test("all registered research reading pages pass publishing validation and cannot change route or layout", async () => {
-  for (const page of researchReadingPages) {
+test("all discovered research articles pass publishing validation and cannot change route or layout", async () => {
+  for (const page of await discoverResearchArticles()) {
     const source = await readFile(page.path, "utf8");
     assert.doesNotThrow(() => validateAdminSource(page.path, source), page.path);
     for (const invalid of [
@@ -14,7 +14,10 @@ test("all registered research reading pages pass publishing validation and canno
       source.replace(`permalink: ${page.route}index.html`, "permalink: /library/"),
       source.replace(`pageKind: ${page.pageKind}`, "pageKind: login"),
       source.replace("status: published", "status: draft"),
-      source.replace("interestOverview: true", "interestOverview: yes"),
+      source
+        .replace("layout: public.njk", "layout: public.njk\ninterestOverview: nope")
+        .replace(/\ninterestOverview: (?:true|false)/, ""),
+      source.replace("layout: public.njk", "layout: public.njk\neleventyComputed: {}"),
     ])
       assert.throws(() => validateAdminSource(page.path, invalid));
   }

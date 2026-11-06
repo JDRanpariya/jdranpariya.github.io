@@ -16,7 +16,7 @@ import {
 } from "./admin-authoring.mjs";
 import { folderChildren } from "./folder-index.mjs";
 import { noteHtml, researchRoute } from "../apps/research/lib/note-authoring.mjs";
-import { researchReadingPage } from "../apps/research/lib/reading-pages.mjs";
+import { researchArticle } from "../apps/research/lib/reading-pages.mjs";
 import { photoGallery } from "./photo-gallery.mjs";
 import { explicitAutoLinks } from "./markdown-links.mjs";
 
@@ -83,9 +83,13 @@ export function renderDocument(source, path, files = []) {
   if (path === "apps/research/content/research-home.md")
     return { html: renderResearch(source), research: true, frontmatter: {}, warnings: [] };
   const { frontmatter, body } = parseDocument(source);
-  const readingPage = researchReadingPage(path);
+  const readingPage = researchArticle(path);
   if (readingPage) {
-    const bodyHtml = noteHtml(body, { path }, []);
+    const articleRoutes = files.flatMap((file) => {
+      const article = researchArticle(file.path);
+      return article ? [{ slug: article.slug, url: article.route, title: article.label }] : [];
+    });
+    const bodyHtml = noteHtml(body, { path }, articleRoutes);
     return {
       html: bodyHtml,
       bodyHtml,
@@ -179,7 +183,7 @@ export function renderDocument(source, path, files = []) {
 export function buildFileTree(files, query = "") {
   const root = { directories: new Map(), files: [] };
   for (const file of files) {
-    const readingPage = researchReadingPage(file.path);
+    const readingPage = researchArticle(file.path);
     if (
       query &&
       !`${file.path} ${readingPage?.label || ""}`

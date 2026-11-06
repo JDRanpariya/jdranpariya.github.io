@@ -23,9 +23,10 @@ import {
   type AuthEnvironment,
 } from "./auth";
 import { z } from "zod";
-import { researchReadingPages } from "../lib/reading-pages.mjs";
+import articleRoutes from "../.cache/research-article-routes.json";
 
 type Environment = AuthEnvironment & { DB: D1Database; ASSETS: Fetcher };
+const publicArticles = new Set(articleRoutes);
 
 const loginSchema = z.object({
   passphrase: z.string().min(1).max(1_000),
@@ -246,26 +247,11 @@ const researchWorker = {
       if (path === "/index/index.html" && request.method === "GET")
         return Response.redirect(new URL("/index", url), 301);
       if (path === "/" && request.method === "GET") return asset(request, env, "/index.html");
-      const readingPage = researchReadingPages
-        .map((page) => page.route.slice(0, -1))
-        .find((route) => path === route || path === `${route}/index.html`);
-      if (readingPage && ["GET", "HEAD"].includes(request.method)) {
-        if (path.endsWith("/index.html"))
-          return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);
-        if (!url.pathname.endsWith("/"))
-          return Response.redirect(new URL(`${readingPage}/${url.search}`, url), 301);
-        return asset(request, env, `${readingPage}/index.html`);
-      }
-      // Sub-pages of a reading page (e.g. /bio-inspired/levin-platonic-space/) are static Eleventy pages.
-      const readingSection = researchReadingPages
-        .map((page) => page.route.slice(0, -1))
-        .find((route) => path.startsWith(`${route}/`));
-      if (readingSection && ["GET", "HEAD"].includes(request.method)) {
-        if (path.endsWith("/index.html"))
-          return Response.redirect(new URL(`${path.slice(0, -10)}${url.search}`, url), 301);
-        if (!url.pathname.endsWith("/"))
-          return Response.redirect(new URL(`${path}/${url.search}`, url), 301);
-        return asset(request, env, `${path}/index.html`);
+      const article = path.endsWith("/index.html") ? path.slice(0, -10) : `${path}/`;
+      if (publicArticles.has(article) && ["GET", "HEAD"].includes(request.method)) {
+        if (url.pathname !== article)
+          return Response.redirect(new URL(`${article}${url.search}`, url), 301);
+        return asset(request, env, `${article}index.html`);
       }
       if (
         (path === "/notes" || path.startsWith("/notes/")) &&

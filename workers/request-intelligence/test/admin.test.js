@@ -35,6 +35,10 @@ test("accepts only Markdown paths in the personal and research content roots", (
     "apps/research/site/private/index.md",
     "apps/research/site/neuro-ai/other.md",
     "apps/research/site/neuro-ai/../index.md",
+    "apps/research/site/library/neuroai/index.md",
+    "apps/research/site/login/index.md",
+    "apps/research/site/_includes/index.md",
+    "apps/research/site/api/index.md",
   ])
     assert.equal(adminInternals.safeSourcePath(path), null);
   assert.equal(adminInternals.safeSourcePath("src/writings/example.md"), "src/writings/example.md");
@@ -47,6 +51,8 @@ test("accepts only Markdown paths in the personal and research content roots", (
   assert.equal(adminInternals.safeSourcePath("apps/other/content/example.md"), null);
   assert.equal(adminInternals.safeSourcePath("README.md"), null);
   assert.equal(adminInternals.safeSourcePath("src/admin.njk"), null);
+  const future = "apps/research/site/future-topic/reading/index.md";
+  assert.equal(adminInternals.safeSourcePath(future), future);
 });
 
 test("seals and opens an authenticated session", async () => {
@@ -111,6 +117,18 @@ test("lists only editable Markdown files", async () => {
             size: 10,
           })),
           { path: "apps/research/site/private/index.md", type: "blob", sha: "private", size: 10 },
+          {
+            path: "apps/research/site/future-topic/index.md",
+            type: "blob",
+            sha: "future",
+            size: 10,
+          },
+          {
+            path: "apps/research/site/symlink/index.md",
+            type: "blob",
+            mode: "120000",
+            sha: "link",
+          },
         ],
       }),
       { status: 200, headers: { "content-type": "application/json" } }
@@ -123,10 +141,64 @@ test("lists only editable Markdown files", async () => {
       payload.files.map((file) => file.path),
       [
         "apps/research/content/research-home.md",
-        ...researchReadingPages.map((page) => page.path).sort(),
+        ...[
+          ...researchReadingPages.map((page) => page.path),
+          "apps/research/site/future-topic/index.md",
+        ].sort(),
         "src/writings/one.md",
       ]
     );
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+});
+
+test("opens and updates newly discovered research Markdown using its repository SHA", async () => {
+  const path = "apps/research/site/future-topic/reading/index.md";
+  const sha = "a".repeat(40);
+  const content = [
+    "---",
+    "title: Reading",
+    "description: A research reading page.",
+    "status: published",
+    "layout: public.njk",
+    "pageKind: future-topic",
+    "permalink: /future-topic/reading/index.html",
+    "canonical: https://research.jdranpariya.com/future-topic/reading/",
+    "---",
+    "# Reading",
+  ].join("\n");
+  const previousFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (url, init) => {
+    requests.push({ url, init });
+    return Response.json(
+      init.method === "PUT"
+        ? { content: { sha } }
+        : { encoding: "base64", content: Buffer.from(content).toString("base64"), sha }
+    );
+  };
+  try {
+    const opened = await handleAdminRequest(
+      await authenticatedRequest(`/api/admin/file?path=${encodeURIComponent(path)}`),
+      env
+    );
+    assert.equal(opened.status, 200);
+    assert.equal((await opened.json()).content, content);
+    for (const version of [undefined, sha]) {
+      const saved = await handleAdminRequest(
+        await authenticatedRequest("/api/admin/file", {
+          method: "PUT",
+          headers: { "content-type": "application/json", "x-csrf-token": "test-csrf" },
+          body: JSON.stringify({ path, content, sha: version }),
+        }),
+        env
+      );
+      assert.equal(saved.status, version ? 200 : 400);
+    }
+    assert.equal(requests.length, 2);
+    assert.ok(requests.every(({ url }) => url.includes(`/contents/${path}`)));
+    assert.equal(JSON.parse(requests[1].init.body).sha, sha);
   } finally {
     globalThis.fetch = previousFetch;
   }

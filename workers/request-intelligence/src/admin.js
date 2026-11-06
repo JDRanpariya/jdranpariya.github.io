@@ -2,7 +2,7 @@ const API_ROOT = "/api/admin";
 import { libraryMediaPath, safeMediaPath, validateMedia, publishWithMedia } from "./admin-media.js";
 import { boundedJson, validateAdminSource } from "./admin-source.js";
 import { manageGuestbook } from "./guestbook.js";
-import { researchReadingPage } from "../../../apps/research/lib/reading-pages.mjs";
+import { researchArticle } from "../../../apps/research/lib/reading-pages.mjs";
 const SESSION_COOKIE = "jay_admin_session";
 const REPOSITORY = "JDRanpariya/jdranpariya.github.io";
 const DEFAULT_BRANCH = "main";
@@ -103,7 +103,7 @@ function configurationReady(env) {
 
 function safeSourcePath(value) {
   const path = String(value || "");
-  if (researchReadingPage(path)) return path;
+  if (researchArticle(path)) return path;
   const editableRoot = /^(?:src|apps\/research\/content)\/[a-zA-Z0-9][a-zA-Z0-9_./-]*\.md$/;
   if (!editableRoot.test(path)) return null;
   if (path.includes("..") || path.includes("//")) return null;
@@ -210,7 +210,7 @@ async function listFiles(auth, env) {
       response.status
     );
   const files = (payload.tree || [])
-    .filter((item) => item.type === "blob" && safeSourcePath(item.path))
+    .filter((item) => item.type === "blob" && item.mode !== "120000" && safeSourcePath(item.path))
     .map((item) => ({ path: item.path, sha: item.sha, size: item.size || 0 }))
     .sort((a, b) => a.path.localeCompare(b.path));
   return authenticatedJson(auth, { files, truncated: payload.truncated === true });
@@ -261,6 +261,15 @@ async function publishFile(request, auth, env) {
   const content = typeof body.content === "string" ? body.content : null;
   if (!sourcePath || content === null)
     return authenticatedJson(auth, { error: "A Markdown path and content are required." }, 400);
+  if (
+    researchArticle(sourcePath) &&
+    (typeof body.sha !== "string" || !/^[a-f0-9]{40}$/i.test(body.sha))
+  )
+    return authenticatedJson(
+      auth,
+      { error: "Open the existing research page before publishing." },
+      400
+    );
   if (encoder.encode(content).byteLength > 1_500_000)
     return authenticatedJson(auth, { error: "The file is too large." }, 413);
   try {

@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import nunjucks from "nunjucks";
-import { researchReadingPages, researchReadingPage } from "./reading-pages.mjs";
+import { researchReadingPages, researchArticle } from "./reading-pages.mjs";
 import { renderDocument } from "../../../scripts/admin-renderer.mjs";
 
 const homeSource = readFileSync(new URL("../content/research-home.md", import.meta.url), "utf8");
@@ -12,7 +12,7 @@ const pageSource = readFileSync(new URL("../site/publications/index.md", import.
 test("publications have an editable page, not a duplicate list on the homepage", () => {
   expect(homeSource).not.toContain("## Publications");
   expect(homeSource).not.toContain("/publications/");
-  expect(researchReadingPage(pagePath)?.route).toBe("/publications/");
+  expect(researchArticle(pagePath)?.route).toBe("/publications/");
   const rendered = renderDocument(pageSource, pagePath);
   expect(rendered.researchReading).toBe(true);
   const html = rendered.html;
@@ -22,6 +22,12 @@ test("publications have an editable page, not a duplicate list on the homepage",
     "Learning Contact Representations from Zero-Cost Proprioceptive Effort Signals"
   );
   expect(html).toContain("Master's thesis manuscript");
+  const titles = [...html.matchAll(/<li>\s*<p><strong>(.*?)<\/strong><\/p>/g)].map(
+    (match) => match[1]
+  );
+  expect(titles).toHaveLength(2);
+  expect(titles.every((title) => !title.includes("<a"))).toBe(true);
+  expect(html.match(/href="\/publications\/[^"#]+\.pdf"/g)).toHaveLength(2);
   expect(html).not.toContain("peer-reviewed");
   expect(html).toContain('href="https://contact-from-current.pages.dev/"');
   const downloads = [

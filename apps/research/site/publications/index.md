@@ -7,18 +7,18 @@ canonical: https://research.jdranpariya.com/publications/
 pageKind: publications
 interestOverview: false
 status: published
-lastUpdated: 2026-10-31
+lastUpdated: 2026-11-06
 ---
 
 # Publications
 
-- **[A Ball-on-Arc Benchmark: Classical and Learning-Based Control on Realistic Deployment Hardware](/publications/ball-on-arc-arxiv.pdf)**
+- **A Ball-on-Arc Benchmark: Classical and Learning-Based Control on Realistic Deployment Hardware**
 
   Jaydeepkumar Ranpariya et al. · Manuscript · 2026
 
   [PDF with supplementary material (47 pages)](/publications/ball-on-arc-arxiv.pdf) · [Project](https://ball-on-arc.pages.dev/) · [Code and data](https://github.com/JDRanpariya/ball-balancing-on-arc)
 
-- **[Learning Contact Representations from Zero-Cost Proprioceptive Effort Signals for Contact-Rich Visuomotor Imitation Learning](/publications/thesis.pdf)**
+- **Learning Contact Representations from Zero-Cost Proprioceptive Effort Signals for Contact-Rich Visuomotor Imitation Learning**
 
   Jaydeepkumar Ranpariya · Master's thesis manuscript · FAU Erlangen-Nürnberg · 2026
 

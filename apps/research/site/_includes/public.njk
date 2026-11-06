@@ -2,7 +2,7 @@
 layout: base.njk
 ---
 
-{% set isReadingPage = pageKind in researchReadingPageKinds %}
+{% set isReadingPage = isResearchArticle or pageKind in researchReadingPageKinds %}
 
 <div class="min-h-screen bg-page text-ink">
   <a href="#main" class="skip-link">Skip to content</a>

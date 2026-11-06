@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import nunjucks from "nunjucks";
+import { discoverResearchArticles } from "../lib/research-article-sources.mjs";
 
 // Ahead-of-time compilation uses the same Nunjucks source as Eleventy. The
 // Worker only uses the slim runtime, never eval, Function or runtime compilation.
@@ -18,3 +19,8 @@ export function renderPublicIndex(records) {
 });
 await mkdir(".cache", { recursive: true });
 await writeFile(".cache/public-index.mjs", module);
+const articles = await discoverResearchArticles();
+await writeFile(
+  ".cache/research-article-routes.json",
+  JSON.stringify(articles.map(({ route }) => route))
+);

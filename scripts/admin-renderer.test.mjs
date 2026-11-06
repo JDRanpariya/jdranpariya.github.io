@@ -7,7 +7,7 @@ import MarkdownIt from "markdown-it";
 import { explicitAutoLinks } from "./markdown-links.mjs";
 import { noteHtml } from "../apps/research/lib/note-authoring.mjs";
 import { parseResearchHome, renderResearchHome } from "../apps/research/lib/research-home.ts";
-import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
+import { discoverResearchArticles } from "../apps/research/lib/research-article-sources.mjs";
 import postcss from "postcss";
 import nunjucks from "nunjucks";
 import { renderPage } from "../admin/lib/preview.js";
@@ -63,28 +63,31 @@ test("every public research reading page is editable with a correct URL, tree la
     .filter((path) => path.endsWith(".md"))
     .map((path) => `apps/research/site/${path}`)
     .sort();
-  expect(researchReadingPages.map((page) => page.path).sort()).toEqual(sources);
-  const files = researchReadingPages.map((page) => ({ path: page.path }));
+  const articles = await discoverResearchArticles();
+  expect(articles.map((page) => page.path).sort()).toEqual(sources);
+  const future = { path: "apps/research/site/future-topic/reading/index.md" };
+  const files = [...articles.map((page) => ({ path: page.path })), future];
   const tree = buildFileTree(files);
-  expect(tree.directories.get("Research site").files.map((file) => file.displayName)).toEqual(
-    researchReadingPages.map((page) => page.label)
-  );
+  expect(tree.directories.get("Research site").files.map((file) => file.displayName)).toEqual([
+    ...articles.map((page) => page.label),
+    "Future Topic / Reading",
+  ]);
   expect(sourceDirectories(files)).not.toContain("apps/research/site");
-  for (const page of researchReadingPages) {
+  for (const page of articles) {
     const source = await readFile(page.path, "utf8");
     const result = renderDocument(source, page.path);
     expect(sourceUrl(page.path)).toBe(`https://research.jdranpariya.com${page.route}`);
     expect(result.researchReading).toBe(true);
     expect(result.research).toBe(true);
-    if (source.includes("## Areas of interest"))
-      expect(result.bodyHtml).toContain("Areas of interest");
-    else expect(result.bodyHtml).toContain("<h2>Start here</h2>");
+    expect(result.bodyHtml).toMatch(/<h1(?:\s[^>]*)?>[^<]+<\/h1>/);
     expect(result.bodyHtml).not.toContain("{#");
     expect(result.bodyHtml).not.toContain("post-hero");
-    expect(buildFileTree(files, page.label).directories.get("Research site")?.files).toHaveLength(
-      1
+    expect(buildFileTree(files, page.label).directories.get("Research site")?.files).toContainEqual(
+      { path: page.path, displayName: page.label }
     );
   }
+  expect(renderDocument("# Future reading", future.path).researchReading).toBe(true);
+  expect(sourceUrl(future.path)).toBe("https://research.jdranpariya.com/future-topic/reading/");
 });
 
 test("degree abbreviations stay plain text while intentional links survive in every renderer", () => {

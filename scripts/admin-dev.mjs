@@ -3,7 +3,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { resolve, relative } from "node:path";
 import { createHash } from "node:crypto";
 import { adminInternals } from "../workers/request-intelligence/src/admin.js";
-import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
+import { researchSiteSourceRoot } from "../apps/research/lib/reading-pages.mjs";
 
 const projectRoot = resolve(import.meta.dir, "..");
 const buildRoot = resolve(projectRoot, "build");
@@ -50,13 +50,7 @@ const server = Bun.serve({
         files: [
           ...(await filesUnder("src")),
           ...(await filesUnder("apps/research/content")),
-          ...(await Promise.all(
-            researchReadingPages.map(async ({ path }) => ({
-              path,
-              sha: "local-source",
-              size: (await readFile(resolve(projectRoot, path))).length,
-            }))
-          )),
+          ...(await filesUnder(researchSiteSourceRoot)),
         ],
       });
     if (url.pathname === "/api/admin/media") {

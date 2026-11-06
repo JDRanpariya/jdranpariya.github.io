@@ -8,7 +8,7 @@ import nunjucks from "nunjucks";
 import { createHash } from "node:crypto";
 import { parseDocument } from "./admin-renderer.mjs";
 import { sourceUrl } from "./admin-authoring.mjs";
-import { researchReadingPages } from "../apps/research/lib/reading-pages.mjs";
+import { discoverResearchArticles } from "../apps/research/lib/research-article-sources.mjs";
 
 await mkdir("build/assets/js", { recursive: true });
 await mkdir("build/assets/css", { recursive: true });
@@ -118,7 +118,7 @@ await indexRoutes("build");
 // separate research build has already run on this machine.
 const { loadPublicNotes } = await import("../apps/research/lib/public-notes.mjs");
 routes.push(
-  ...researchReadingPages.map((page) => sourceUrl(page.path)),
+  ...(await discoverResearchArticles()).map((page) => sourceUrl(page.path)),
   ...(await loadPublicNotes()).map((note) => `https://research.jdranpariya.com${note.url}`)
 );
 routes.push(

@@ -86,6 +86,7 @@ export function renderPage(env, result, path, files, manifest) {
     return env.render("research/public.njk", {
       ...result.frontmatter,
       pageKind: result.researchReading ? result.frontmatter.pageKind : "research",
+      isResearchArticle: result.researchReading,
       content: result.researchReading ? result.bodyHtml : result.html,
       preview: true,
       researchReadingPages,

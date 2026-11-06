@@ -2,7 +2,8 @@ import { readFileSync } from "node:fs";
 import { copyResearchMedia } from "./lib/research-media.mjs";
 import { noteHtml, parseNote } from "./lib/note-authoring.mjs";
 import { loadPublicNotes } from "./lib/public-notes.mjs";
-import { researchReadingPages, researchReadingPageKinds } from "./lib/reading-pages.mjs";
+import { researchReadingPages, researchArticleErrors } from "./lib/reading-pages.mjs";
+import { discoverResearchArticles } from "./lib/research-article-sources.mjs";
 import { metadataFor, jsonLdScript } from "../../scripts/site-metadata.mjs";
 
 export default async function configureResearchSite(eleventyConfig) {
@@ -23,9 +24,14 @@ export default async function configureResearchSite(eleventyConfig) {
     { slug: "research", url: "/", title: home.match(/^#\s+(.+)$/m)?.[1], body: home },
     ...notes,
   ];
-  for (const page of researchReadingPages) {
-    const { body } = parseNote(readFileSync(page.path.replace("apps/research/", ""), "utf8"));
-    routes.push({ slug: page.slug, url: page.route, title: page.label, body });
+  const articles = await discoverResearchArticles();
+  for (const page of articles) {
+    const { data, body } = parseNote(
+      readFileSync(new URL(`../../${page.path}`, import.meta.url), "utf8")
+    );
+    const errors = researchArticleErrors(data, page);
+    if (errors.length) throw new Error(`${page.path}: ${errors.join(" ")}`);
+    routes.push({ slug: page.slug, url: page.route, title: data.title, body });
   }
   const homeHtml = noteHtml(home, {}, routes);
   for (const note of notes) note.html = noteHtml(note.body, note, routes);
@@ -45,7 +51,9 @@ export default async function configureResearchSite(eleventyConfig) {
   );
   eleventyConfig.addGlobalData("researchNotes", notes);
   eleventyConfig.addGlobalData("researchReadingPages", researchReadingPages);
-  eleventyConfig.addGlobalData("researchReadingPageKinds", researchReadingPageKinds);
+  eleventyConfig.addGlobalData("researchReadingPageKinds", [
+    ...new Set(articles.map((page) => page.pageKind)),
+  ]);
   eleventyConfig.addCollection("publicPages", (collection) =>
     collection
       .getAll()
